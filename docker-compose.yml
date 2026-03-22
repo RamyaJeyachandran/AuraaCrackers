@@ -112,11 +112,10 @@ services:
     restart: always
 
   nginx:
-    image: nginx:latest
+    build: ./nginx
     ports:
       - "8080:80"
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./static:/var/www/static
       - ./media:/var/www/media
     depends_on:

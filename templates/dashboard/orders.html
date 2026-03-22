@@ -1,0 +1,248 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Orders Management | Auraa Admin{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+    <!-- Header -->
+    <div class="mb-12 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+        <div>
+            <h1 class="text-4xl font-black text-gray-900 tracking-tight uppercase mb-2">Manage <span class="text-auraa-red">Orders</span></h1>
+            <p class="text-gray-500 font-bold uppercase tracking-widest text-[10px]">Overview of all customer orders</p>
+        </div>
+        <div class="flex items-center space-x-4">
+            <div class="px-5 py-2.5 bg-auraa-red rounded-full shadow-lg shadow-auraa-red/30 flex items-center space-x-2 border border-red-500/30">
+                <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
+                <span class="text-[10px] font-black text-white uppercase tracking-widest">Total: {{ page_obj.paginator.count|default:orders.count }}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="mb-8 bg-auraa-red p-6 rounded-[2.5rem] shadow-xl relative group">
+        <div class="absolute inset-0 overflow-hidden rounded-[2.5rem] pointer-events-none">
+            <div class="absolute -top-24 -right-24 w-48 h-48 bg-white/10 rounded-full blur-[60px] group-hover:bg-white/20 transition-all duration-1000"></div>
+        </div>
+        <div class="relative z-10 flex flex-col md:flex-row gap-4 w-full">
+            <form method="GET" class="relative w-full flex flex-col md:flex-row items-center gap-4">
+                <div class="relative w-full md:w-96 flex-shrink-0">
+                    <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 text-white w-[18px] h-[18px]"></i>
+                    <input type="text" name="q" id="search-input" placeholder="Search Trans No or Customer..." value="{{ search_query|default:'' }}" 
+                           class="w-full pl-12 pr-12 py-3.5 bg-white/10 border border-white/20 rounded-2xl text-sm font-bold text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-white/40 transition-all"
+                           oninput="toggleClearSearchBtn()">
+                    <button type="button" id="clear-search-btn" onclick="clearSearch()" class="absolute right-4 top-1/2 -translate-y-1/2 text-white hover:text-white transition-colors {% if not search_query %}hidden{% endif %}">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+                <div class="relative w-full md:w-56">
+                    <input type="hidden" name="status" id="status-input" value="{{ selected_status|default:'All' }}">
+                    <button type="button" onclick="toggleAdminCatDropdown(event)" class="w-full bg-white/10 hover:bg-white/20 border border-white/20 rounded-2xl px-6 py-3.5 text-[10px] font-black uppercase tracking-widest text-white flex items-center justify-between transition-all group shadow-sm backdrop-blur-sm">
+                        <span id="admin-cat-label" class="truncate text-center w-full">
+                            {% if selected_status and selected_status != 'All' %}
+                                {{ selected_status }}
+                            {% else %}
+                                ALL STATUSES
+                            {% endif %}
+                        </span>
+                        <i data-lucide="chevron-down" id="admin-cat-chevron" class="w-4 h-4 transition-transform shrink-0"></i>
+                    </button>
+                    
+                    <div id="admin-cat-options" class="hidden absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-y-auto max-h-64 z-[70] animate-in fade-in slide-in-from-top-2 duration-200 scrollbar-thin scrollbar-thumb-auraa-red scrollbar-track-gray-100">
+                        <div onclick="selectAdminCat('All', 'ALL STATUSES')" class="w-full px-6 py-3 text-center text-[10px] font-black uppercase tracking-widest cursor-pointer transition-colors border-b border-gray-100 {% if not selected_status or selected_status == 'All' %}bg-gray-500 text-white{% else %}text-gray-600 hover:bg-gray-50 hover:text-auraa-red{% endif %}">
+                            ALL STATUSES
+                        </div>
+                        {% for st in statuses %}
+                        <div onclick="selectAdminCat('{{ st|escapejs }}', '{{ st|escapejs }}')" class="w-full px-6 py-3 text-center text-[10px] font-black uppercase tracking-widest cursor-pointer transition-colors border-b border-gray-50 last:border-0 {% if selected_status == st %}bg-auraa-red text-white{% else %}text-gray-600 hover:bg-red-50 hover:text-auraa-red{% endif %}">
+                            {{ st }}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <div class="relative w-full md:w-56">
+                    <input type="hidden" name="category" id="category-input" value="{{ selected_category|default:'All' }}">
+                    <button type="button" onclick="toggleAdminCatDropdown2(event)" class="w-full bg-white/10 hover:bg-white/20 border border-white/20 rounded-2xl px-6 py-3.5 text-[10px] font-black uppercase tracking-widest text-white flex items-center justify-between transition-all group shadow-sm backdrop-blur-sm">
+                        <span id="admin-cat-label2" class="truncate text-center w-full">
+                            {% if selected_category and selected_category != 'All' %}
+                                {{ selected_category }}
+                            {% else %}
+                                ALL CATEGORIES
+                            {% endif %}
+                        </span>
+                        <i data-lucide="chevron-down" id="admin-cat-chevron2" class="w-4 h-4 transition-transform shrink-0"></i>
+                    </button>
+                    
+                    <div id="admin-cat-options2" class="hidden absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-y-auto max-h-64 z-[70] animate-in fade-in slide-in-from-top-2 duration-200 scrollbar-thin scrollbar-thumb-auraa-red scrollbar-track-gray-100">
+                        <div onclick="selectAdminCat2('All', 'ALL CATEGORIES')" class="w-full px-6 py-3 text-center text-[10px] font-black uppercase tracking-widest cursor-pointer transition-colors border-b border-gray-100 {% if not selected_category or selected_category == 'All' %}bg-gray-500 text-white{% else %}text-gray-600 hover:bg-gray-50 hover:text-auraa-red{% endif %}">
+                            ALL CATEGORIES
+                        </div>
+                        {% for cat in categories %}
+                        <div onclick="selectAdminCat2('{{ cat.name|escapejs }}', '{{ cat.name|escapejs }}')" class="w-full px-6 py-3 text-center text-[10px] font-black uppercase tracking-widest cursor-pointer transition-colors border-b border-gray-50 last:border-0 {% if selected_category == cat.name %}bg-auraa-red text-white{% else %}text-gray-600 hover:bg-red-50 hover:text-auraa-red{% endif %}">
+                            {{ cat.name }}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <noscript><button type="submit" class="hidden">Search</button></noscript>
+            </form>
+        </div>
+    </div>
+
+    <!-- Orders Table -->
+    <div class="bg-white rounded-[2.5rem] border border-gray-100 shadow-xl overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead class="bg-auraa-red text-white">
+                    <tr class="border-b border-auraa-red/20">
+                        <th class="py-6 px-8 text-[10px] font-black uppercase tracking-widest text-white/90">Trans No</th>
+                        <th class="py-6 px-8 text-[10px] font-black uppercase tracking-widest text-white/90">Customer</th>
+                        <th class="py-6 px-8 text-[10px] font-black uppercase tracking-widest text-white/90 text-center">Amount</th>
+                        <th class="py-6 px-8 text-[10px] font-black uppercase tracking-widest text-white/90 text-center">Date</th>
+                        <th class="py-6 px-8 text-[10px] font-black uppercase tracking-widest text-white/90 text-center">Status</th>
+                        <th class="py-6 px-8 text-[10px] font-black uppercase tracking-widest text-white/90 text-center">Action</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-50">
+                    {% for order in orders %}
+                    <tr class="hover:bg-gray-50/50 transition-colors group">
+                        <td class="py-6 px-8">
+                            <span class="text-sm font-black text-gray-900 uppercase">{{ order.trans_no }}</span>
+                            {% if order.promo_code %}
+                            <div class="mt-1">
+                                <span class="px-2 py-0.5 bg-auraa-red text-white text-[8px] font-black uppercase rounded">{{ order.promo_code }}</span>
+                            </div>
+                            {% endif %}
+                        </td>
+                        <td class="py-6 px-8">
+                            <div class="flex flex-col">
+                                <span class="text-sm font-black text-gray-900 uppercase">{{ order.customer.name }}</span>
+                                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{{ order.customer.contact_person_no }}</span>
+                            </div>
+                        </td>
+                        <td class="py-6 px-8 text-center">
+                            <span class="text-sm font-black text-gray-900 uppercase">₹ {{ order.grand_amt }}</span>
+                        </td>
+                        <td class="py-6 px-8 text-center">
+                            <span class="text-xs font-bold text-gray-500 uppercase">{{ order.trans_dt|date:"M d, Y" }}</span>
+                        </td>
+                        <td class="py-6 px-8 text-center">
+                            {% if order.status == 'New' %}
+                                <span class="inline-flex items-center space-x-2 px-3 py-1.5 bg-blue-500 text-white shadow-md shadow-blue-500/30 text-[9px] font-black uppercase tracking-widest rounded-full w-fit">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
+                                    <span>New</span>
+                                </span>
+                            {% elif order.status == 'Progressing' %}
+                                <span class="inline-flex items-center space-x-2 px-3 py-1.5 bg-orange-500 text-white shadow-md shadow-orange-500/30 text-[9px] font-black uppercase tracking-widest rounded-full w-fit">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
+                                    <span>Progressing</span>
+                                </span>
+                            {% elif order.status == 'Shipped' %}
+                                <span class="inline-flex items-center space-x-2 px-3 py-1.5 bg-purple-500 text-white shadow-md shadow-purple-500/30 text-[9px] font-black uppercase tracking-widest rounded-full w-fit">
+                                    <i data-lucide="truck" class="w-2.5 h-2.5 text-white"></i>
+                                    <span>Shipped</span>
+                                </span>
+                            {% elif order.status == 'Delivered' %}
+                                <span class="inline-flex items-center space-x-2 px-3 py-1.5 bg-green-500 text-white shadow-md shadow-green-500/30 text-[9px] font-black uppercase tracking-widest rounded-full w-fit">
+                                    <i data-lucide="check" class="w-2.5 h-2.5 text-white"></i>
+                                    <span>Delivered</span>
+                                </span>
+                            {% elif order.status == 'Cancelled' %}
+                                <span class="inline-flex items-center space-x-2 px-3 py-1.5 bg-red-500 text-white shadow-md shadow-red-500/30 text-[9px] font-black uppercase tracking-widest rounded-full w-fit">
+                                    <i data-lucide="x" class="w-2.5 h-2.5 text-white"></i>
+                                    <span>Cancelled</span>
+                                </span>
+                            {% else %}
+                                <span class="inline-flex items-center space-x-2 px-3 py-1.5 bg-gray-500 text-white shadow-md shadow-gray-500/30 text-[9px] font-black uppercase tracking-widest rounded-full w-fit">
+                                    <span>{{ order.status }}</span>
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td class="py-6 px-8 text-center">
+                            <a href="{% url 'dashboard_order_detail' order.trans_no %}" class="inline-block p-2 bg-auraa-red text-white shadow-md shadow-red-500/30 rounded-xl hover:bg-red-600 hover:shadow-lg hover:shadow-red-500/40 transition-all transform hover:-translate-y-0.5">
+                                <i data-lucide="eye" class="w-4 h-4"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="py-32 text-center">
+                            <div class="flex flex-col items-center">
+                                <div class="w-20 h-20 bg-gray-50 rounded-[2rem] flex items-center justify-center text-gray-200 mb-6">
+                                    <i data-lucide="shopping-cart" class="w-10 h-10"></i>
+                                </div>
+                                <h3 class="text-lg font-black text-gray-900 uppercase tracking-widest mb-2">No Orders Found</h3>
+                                <p class="text-xs font-bold text-gray-400 uppercase tracking-widest">There are currently no orders to display.</p>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+    </div>
+
+    {% include 'includes/pagination.html' %}
+</div>
+
+<script>
+// Custom Dropdown Logic
+function toggleAdminCatDropdown(e) {
+    if (e) e.stopPropagation();
+    const options = document.getElementById('admin-cat-options');
+    const chevron = document.getElementById('admin-cat-chevron');
+    options.classList.toggle('hidden');
+    chevron.classList.toggle('rotate-180');
+}
+
+function selectAdminCat(val, labelText) {
+    document.getElementById('status-input').value = val;
+    document.getElementById('status-input').closest('form').submit();
+}
+
+window.addEventListener('click', () => {
+    const options1 = document.getElementById('admin-cat-options');
+    const chevron1 = document.getElementById('admin-cat-chevron');
+    if (options1 && !options1.classList.contains('hidden')) {
+        options1.classList.add('hidden');
+        chevron1.classList.remove('rotate-180');
+    }
+
+    const options2 = document.getElementById('admin-cat-options2');
+    const chevron2 = document.getElementById('admin-cat-chevron2');
+    if (options2 && !options2.classList.contains('hidden')) {
+        options2.classList.add('hidden');
+        chevron2.classList.remove('rotate-180');
+    }
+});
+
+// Category Dropdown Logic
+function toggleAdminCatDropdown2(e) {
+    if (e) e.stopPropagation();
+    const options = document.getElementById('admin-cat-options2');
+    const chevron = document.getElementById('admin-cat-chevron2');
+    options.classList.toggle('hidden');
+    chevron.classList.toggle('rotate-180');
+}
+
+function selectAdminCat2(val, labelText) {
+    document.getElementById('category-input').value = val;
+    document.getElementById('category-input').closest('form').submit();
+}
+
+// Search Clear Logic
+function toggleClearSearchBtn() {
+    const input = document.getElementById('search-input');
+    const btn = document.getElementById('clear-search-btn');
+    if (input.value.length > 0) {
+        btn.classList.remove('hidden');
+    } else {
+        btn.classList.add('hidden');
+    }
+}
+
+function clearSearch() {
+    document.getElementById('search-input').value = '';
+    document.getElementById('search-input').closest('form').submit();
+}
+</script>
+{% endblock %}

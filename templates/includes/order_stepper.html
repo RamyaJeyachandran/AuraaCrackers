@@ -1,0 +1,40 @@
+<div class="relative flex items-center justify-between w-full max-w-2xl mx-auto py-12">
+    <!-- Progress Line Background -->
+    <div class="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-gray-200"></div>
+    
+    <!-- Active Progress Line -->
+    <div class="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-auraa-red transition-all duration-500 shadow-[0_0_10px_rgba(239,68,68,0.5)]" 
+         style="width: {{ progress_per|default:0 }}%"></div>
+
+    {% for stage in stages %}
+    <div class="relative z-10 flex flex-col items-center group">
+        <!-- Circle Indicator -->
+        <div class="w-10 h-10 rounded-full flex items-center justify-center transition-all duration-500 border-2
+                    {% if forloop.counter0 <= current_idx %}
+                        bg-auraa-red border-auraa-red text-white shadow-lg scale-110
+                    {% else %}
+                        bg-white border-gray-200 text-gray-400
+                    {% endif %}">
+            {% if forloop.counter0 < current_idx %}
+                <i data-lucide="check" class="w-5 h-5"></i>
+            {% elif forloop.counter0 == current_idx %}
+                <i data-lucide="circle-dot" class="w-5 h-5 animate-pulse"></i>
+            {% else %}
+                <span class="text-xs font-black">{{ forloop.counter }}</span>
+            {% endif %}
+        </div>
+        
+        <!-- Label -->
+        <div class="absolute -bottom-8 whitespace-nowrap text-center">
+            <span class="text-[10px] uppercase tracking-widest font-black transition-colors duration-500
+                         {% if forloop.counter0 <= current_idx %}
+                            text-auraa-red
+                         {% else %}
+                            text-gray-400
+                         {% endif %}">
+                {{ stage }}
+            </span>
+        </div>
+    </div>
+    {% endfor %}
+</div>

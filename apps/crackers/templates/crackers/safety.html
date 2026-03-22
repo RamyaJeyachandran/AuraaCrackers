@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Safety Tips & Guidelines | Auraa Crackers - Safe Celebrations{% endblock %}
+
+{% block content %}
+<div class="pb-20 bg-[#fafafa]">
+    <!-- Playful Hero Section -->
+    <section class="relative py-20 md:py-32 overflow-hidden bg-emerald-600 text-white">
+        <!-- Abstract Trust & Protection Background -->
+        <div class="absolute inset-0 z-0">
+            <img src="{% static 'images/safety_abstract_bg.png' %}" class="w-full h-full object-cover opacity-30 mix-blend-soft-light" alt="">
+            <div class="absolute inset-0 bg-gradient-to-r from-emerald-600 via-emerald-600/60 to-transparent"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-emerald-600 via-transparent to-black/20"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 animate-fade-in-up">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <!-- Safety Hero Image (Now on Left) -->
+                <div class="relative order-2 lg:order-1">
+                    <div class="relative z-10 bg-white p-4 rounded-[3rem] shadow-2xl transform lg:-rotate-3 hover:rotate-0 transition-transform duration-500">
+                        <img src="{% static 'images/safety_hero.png' %}" alt="Safety Hero" class="rounded-[2.5rem] w-full h-auto">
+                        <div class="absolute -top-6 -left-6 bg-yellow-400 text-gray-900 w-20 h-20 rounded-full flex items-center justify-center font-black text-2xl shadow-xl border-4 border-white animate-bounce">
+                            SAFE!
+                        </div>
+                    </div>
+                    <!-- Decorative blobs -->
+                    <div class="absolute -top-20 -right-20 w-64 h-64 bg-emerald-400/30 rounded-full blur-3xl animate-pulse"></div>
+                    <div class="absolute -bottom-20 -left-20 w-80 h-80 bg-white/20 rounded-full blur-3xl"></div>
+                </div>
+
+                <!-- Text Content (Now on Right) -->
+                <div class="text-center lg:text-left order-1 lg:order-2">
+                    <div class="inline-flex items-center space-x-2 bg-white text-emerald-600 px-6 py-2 rounded-full mb-8 shadow-lg">
+                        <i data-lucide="shield" class="w-5 h-5 fill-current"></i>
+                        <span class="text-sm font-black uppercase tracking-widest">Certified Safety Protocol</span>
+                    </div>
+                    <h1 class="text-5xl md:text-7xl font-black text-white mb-8 leading-tight tracking-tighter uppercase">
+                        The <span class="text-yellow-400">Golden</span> <br />
+                        <span class="bg-white text-emerald-600 px-4 rounded-2xl">Standard</span>
+                    </h1>
+                    <p class="text-white/90 text-xl font-medium max-w-xl mx-auto lg:mx-0 leading-relaxed">
+                        At Auraa, safety is our top priority. Learn the <span class="font-bold underline decoration-yellow-400 decoration-4">ESSENTIAL</span> guidelines to ensure every celebration is secure and joyful.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Wavy background element -->
+        <div class="absolute bottom-0 left-0 right-0 h-20 bg-[#fafafa] rounded-t-[100%] scale-x-150"></div>
+    </section>
+
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 animate-fade-in-up">
+        <div class="text-center mb-20 text-gray-900">
+            <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tight mb-4">
+                The <span class="text-emerald-500">Golden</span> Rules
+            </h2>
+            <div class="w-24 h-2 bg-yellow-400 mx-auto rounded-full"></div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+            <!-- Do's Section -->
+            <div class="space-y-8">
+                <div class="flex items-center space-x-4 mb-12">
+                    <div class="w-16 h-16 bg-emerald-500 text-white rounded-3xl flex items-center justify-center shadow-lg shadow-emerald-200 rotate-3">
+                        <i data-lucide="check-circle-2" class="w-8 h-8"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-4xl font-black text-emerald-600 uppercase tracking-tight">The "Yes" List</h3>
+                        <p class="text-gray-500 font-bold text-sm uppercase tracking-widest">Always do these!</p>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 gap-6">
+                    <div class="bg-white p-6 rounded-[2rem] border-2 border-emerald-50 shadow-sm hover:shadow-xl hover:border-emerald-200 transition-all group flex items-center space-x-6 hover:scale-105">
+                        <div class="w-20 h-20 shrink-0 rounded-2xl flex items-center justify-center transition-transform group-hover:rotate-12 bg-emerald-50 overflow-hidden p-2">
+                            <img src="{% static 'images/safety/yes_instructions.png' %}" class="w-full h-full object-contain" alt="Instructions">
+                        </div>
+                        <p class="text-gray-700 font-bold text-lg leading-tight">Display Fireworks as per the Warnings and Instructions Mentioned on the Pack.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-[2rem] border-2 border-emerald-50 shadow-sm hover:shadow-xl hover:border-emerald-200 transition-all group flex items-center space-x-6 hover:scale-105">
+                        <div class="w-20 h-20 shrink-0 rounded-2xl flex items-center justify-center transition-transform group-hover:rotate-12 bg-blue-50 overflow-hidden p-2">
+                            <img src="{% static 'images/safety/yes_dealer.png' %}" class="w-full h-full object-contain" alt="Authorized Dealer">
+                        </div>
+                        <p class="text-gray-700 font-bold text-lg leading-tight">Buy Fireworks Directly from Manufacturer or from Authorized Dealer only.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-[2rem] border-2 border-emerald-50 shadow-sm hover:shadow-xl hover:border-emerald-200 transition-all group flex items-center space-x-6 hover:scale-105">
+                        <div class="w-20 h-20 shrink-0 rounded-2xl flex items-center justify-center transition-transform group-hover:rotate-12 bg-cyan-50 overflow-hidden p-2">
+                            <img src="{% static 'images/safety/yes_water.png' %}" class="w-full h-full object-contain" alt="Water Safety">
+                        </div>
+                        <p class="text-gray-700 font-bold text-lg leading-tight">Keep a Bucket of Water or a Garden Hose Handy in Case of Fire or Other Mishap.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Don'ts Section -->
+            <div class="space-y-8">
+                <div class="flex items-center space-x-4 mb-12">
+                    <div class="w-16 h-16 bg-auraa-red text-white rounded-3xl flex items-center justify-center shadow-lg shadow-red-200 -rotate-3">
+                        <i data-lucide="x" class="w-8 h-8"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-4xl font-black text-auraa-red uppercase tracking-tight">The "No" List</h3>
+                        <p class="text-gray-500 font-bold text-sm uppercase tracking-widest">Never do these!</p>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 gap-6">
+                    <div class="bg-white p-6 rounded-[2rem] border-2 border-red-50 shadow-sm hover:shadow-xl hover:border-red-200 transition-all group flex items-center space-x-6 hover:scale-105">
+                        <div class="w-20 h-20 shrink-0 rounded-2xl flex items-center justify-center transition-transform group-hover:-rotate-12 bg-red-50 overflow-hidden p-2">
+                            <img src="{% static 'images/safety/no_holding.png' %}" class="w-full h-full object-contain" alt="No Holding">
+                        </div>
+                        <p class="text-gray-700 font-bold text-lg leading-tight">Never Ignite Fireworks while Holding them. Put them Down then Ignite them and walk away.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-[2rem] border-2 border-red-50 shadow-sm hover:shadow-xl hover:border-red-200 transition-all group flex items-center space-x-6 hover:scale-105">
+                        <div class="w-20 h-20 shrink-0 rounded-2xl flex items-center justify-center transition-transform group-hover:-rotate-12 bg-orange-50 overflow-hidden p-2">
+                            <img src="{% static 'images/safety/no_container.png' %}" class="w-full h-full object-contain" alt="No Containers">
+                        </div>
+                        <p class="text-gray-700 font-bold text-lg leading-tight">Don't put Fireworks in any Container to Ignite.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-[2rem] border-2 border-red-50 shadow-sm hover:shadow-xl hover:border-red-200 transition-all group flex items-center space-x-6 hover:scale-105">
+                        <div class="w-20 h-20 shrink-0 rounded-2xl flex items-center justify-center transition-transform group-hover:-rotate-12 bg-amber-50 overflow-hidden p-2">
+                            <img src="{% static 'images/safety/no_malfunction.png' %}" class="w-full h-full object-contain" alt="Malfunctioning">
+                        </div>
+                        <p class="text-gray-700 font-bold text-lg leading-tight">Any Malfunctioning Fireworks should be Abandoned.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fun Safety Badge Section -->
+        <div class="mt-32 bg-yellow-400 rounded-[3rem] p-12 md:p-20 text-center relative overflow-hidden">
+            <div class="relative z-10 text-gray-900">
+                <div class="inline-block mb-8 animate-bounce">
+                    <i data-lucide="shield-check" class="w-[120px] h-[120px]"></i>
+                </div>
+                <h2 class="text-4xl md:text-6xl font-black uppercase tracking-tighter mb-8">
+                    You're Now a <br />
+                    <span class="bg-white text-auraa-red px-6 py-2 rounded-3xl inline-block mt-4 shadow-xl">Safety Legend!</span>
+                </h2>
+                <p class="text-gray-900/80 text-xl font-bold max-w-2xl mx-auto mb-12">
+                    Remember, a true hero always looks out for their friends and family. Let's make this celebration the best one ever!
+                </p>
+                <button class="bg-gray-900 text-white px-12 py-5 rounded-2xl font-black uppercase tracking-widest hover:bg-auraa-red transition-all transform hover:scale-110 shadow-2xl">
+                    I Promise to be Safe!
+                </button>
+            </div>
+            
+            <!-- Decorative background patterns -->
+            <div class="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
+                <i data-lucide="zap" class="absolute top-10 left-10 w-10 h-10"></i>
+                <i data-lucide="zap" class="absolute bottom-20 right-20 w-14 h-14"></i>
+                <i data-lucide="zap" class="absolute top-1/2 left-1/4 w-8 h-8"></i>
+            </div>
+        </div>
+
+        <!-- Legal Notice -->
+        <div class="mt-20 bg-red-600 rounded-[2rem] p-8 md:p-12 border-4 border-dashed border-white/30 relative text-white shadow-2xl shadow-red-500/30">
+            <div class="flex items-center space-x-4 mb-6">
+                <i data-lucide="alert-triangle" class="w-6 h-6 text-white"></i>
+                <h4 class="text-sm font-black text-white uppercase tracking-widest">Official Safety Protocol</h4>
+            </div>
+            <div class="space-y-4 text-sm font-bold leading-relaxed">
+                <p class="opacity-90">
+                    As per 2018 supreme court order, online sale of firecrackers are not permitted! We value our customers and at the same time, respect jurisdiction. We request you to add your products to the cart and submit the required crackers through the enquiry button. We will contact you within 24 hrs and confirm the order through WhatsApp or phone call.
+                </p>
+                <p class="opacity-90">
+                    Our License No.526/2023. The Auraa Crackers as a company following 100% legal & statutory compliances and all our shops, go-downs are maintained as per the explosive acts.
+                </p>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

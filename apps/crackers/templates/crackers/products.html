@@ -1,0 +1,506 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block title %}Our Products | Auraa Crackers - 500+ Varieties{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="flex flex-col md:flex-row gap-8">
+        <!-- Sidebar - Desktop -->
+        <aside class="hidden md:block w-64 space-y-8">
+            <div>
+                <h3 class="text-sm font-bold uppercase tracking-widest text-gray-900 mb-4">Categories</h3>
+                <div class="space-y-2">
+                    <a href="?category=All" class="block w-full text-left px-3 py-2 rounded-lg text-sm transition-colors {% if not selected_category or selected_category == 'All' %}bg-auraa-red text-white font-bold{% else %}text-gray-600 hover:bg-gray-100{% endif %}">
+                        All Products
+                    </a>
+                    {% for cat in categories %}
+                    <a href="?category={{ cat.name|urlencode }}" class="block w-full text-left px-3 py-2 rounded-lg text-sm transition-colors {% if selected_category == cat.name %}bg-auraa-red text-white font-bold{% else %}text-gray-600 hover:bg-gray-100{% endif %}">
+                        {{ cat.name }}
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="bg-red-50 p-6 rounded-2xl border border-red-100">
+                <h4 class="text-auraa-red font-bold text-sm mb-2">Need Help?</h4>
+                <p class="text-xs text-red-800 leading-relaxed mb-4">
+                    Can't find what you're looking for? Contact our experts for personalized recommendations.
+                </p>
+                <button class="text-xs font-bold uppercase tracking-widest text-auraa-red hover:underline">
+                    Chat with us
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-grow space-y-8">
+            <!-- Controls -->
+            <div class="bg-auraa-red p-6 rounded-[2.5rem] shadow-xl relative group">
+                <div class="absolute inset-0 overflow-hidden rounded-[2.5rem] pointer-events-none">
+                    <div class="absolute -top-24 -right-24 w-48 h-48 bg-white/10 rounded-full blur-[60px] group-hover:bg-white/20 transition-all duration-1000"></div>
+                </div>
+                <div class="relative z-10 flex flex-col sm:flex-row gap-4 justify-between items-center w-full">
+                    <form method="GET" class="relative w-full sm:w-72">
+                        {% if selected_category %}<input type="hidden" name="category" value="{{ selected_category }}">{% endif %}
+                        <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 text-white w-[18px] h-[18px]"></i>
+                        <input type="text" name="q" id="search-input" placeholder="Search products..." value="{{ search_query|default:'' }}" 
+                               class="w-full pl-12 pr-12 py-3.5 bg-white/10 border border-white/20 rounded-2xl text-sm font-bold text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-white/40 transition-all"
+                               oninput="toggleClearSearch()">
+                        <button type="button" id="clear-search" onclick="clearSearch()" 
+                                class="absolute right-4 top-1/2 -translate-y-1/2 text-white transition-all {% if not search_query %}hidden{% endif %}">
+                            <i data-lucide="x" class="w-4 h-4"></i>
+                        </button>
+                    </form>
+
+                <div class="flex flex-col sm:flex-row items-center gap-6 w-full sm:w-auto">
+                    <div class="flex items-center space-x-3 text-[10px] font-black uppercase tracking-[0.2em] text-white shrink-0">
+                        <i data-lucide="filter" class="w-4 h-4 text-white"></i>
+                        <span>Sort by:</span>
+                    </div>
+
+                    <!-- Custom Sort Dropdown -->
+                    <div class="relative w-full sm:w-56" id="custom-sort-container">
+                        <button onclick="toggleSortDropdown(event)" 
+                                class="w-full bg-white/10 border border-white/20 rounded-2xl px-6 py-3.5 text-xs font-black uppercase tracking-widest text-white flex items-center justify-between group hover:bg-white/20 transition-all">
+                            <span id="current-sort-label">
+                                {% if sort_by == 'price-low' %}Price: Low to High
+                                {% elif sort_by == 'price-high' %}Price: High to Low
+                                {% elif sort_by == 'name' %}Name: A-Z
+                                {% else %}Featured{% endif %}
+                            </span>
+                            <i data-lucide="chevron-down" id="sort-chevron" class="w-4 h-4 transition-transform"></i>
+                        </button>
+                        
+                        <div id="sort-options" class="hidden absolute top-full left-0 right-0 mt-3 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden z-[70] animate-in fade-in slide-in-from-top-2 duration-200">
+                            <button onclick="updateSort('featured')" class="w-full px-6 py-4 text-left text-[10px] font-black uppercase tracking-widest {% if sort_by == 'featured' or not sort_by %}bg-auraa-red text-white{% else %}text-gray-600 hover:bg-red-50 hover:text-auraa-red{% endif %} transition-colors border-b border-gray-50 flex items-center justify-between">
+                                <span>Featured</span>
+                                {% if sort_by == 'featured' or not sort_by %}<i data-lucide="check" class="w-3 h-3"></i>{% endif %}
+                            </button>
+                            <button onclick="updateSort('price-low')" class="w-full px-6 py-4 text-left text-[10px] font-black uppercase tracking-widest {% if sort_by == 'price-low' %}bg-auraa-red text-white{% else %}text-gray-600 hover:bg-red-50 hover:text-auraa-red{% endif %} transition-colors border-b border-gray-50 flex items-center justify-between">
+                                <span>Price: Low to High</span>
+                                {% if sort_by == 'price-low' %}<i data-lucide="check" class="w-3 h-3"></i>{% endif %}
+                            </button>
+                            <button onclick="updateSort('price-high')" class="w-full px-6 py-4 text-left text-[10px] font-black uppercase tracking-widest {% if sort_by == 'price-high' %}bg-auraa-red text-white{% else %}text-gray-600 hover:bg-red-50 hover:text-auraa-red{% endif %} transition-colors border-b border-gray-50 flex items-center justify-between">
+                                <span>Price: High to Low</span>
+                                {% if sort_by == 'price-high' %}<i data-lucide="check" class="w-3 h-3"></i>{% endif %}
+                            </button>
+                            <button onclick="updateSort('name')" class="w-full px-6 py-4 text-left text-[10px] font-black uppercase tracking-widest {% if sort_by == 'name' %}bg-auraa-red text-white{% else %}text-gray-600 hover:bg-red-50 hover:text-auraa-red{% endif %} transition-colors flex items-center justify-between">
+                                <span>Name: A-Z</span>
+                                {% if sort_by == 'name' %}<i data-lucide="check" class="w-3 h-3"></i>{% endif %}
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <button onclick="toggleMobileSidebar()" class="md:hidden p-3.5 bg-white/10 border border-white/10 rounded-2xl text-white hover:bg-white/20 transition-all">
+                        <i data-lucide="sliders-horizontal" class="w-5 h-5"></i>
+                    </button>
+                </div>
+                </div> <!-- added closing tag -->
+            </div>
+
+            <!-- Product Table -->
+            <div id="product-list" class="space-y-12">
+                {% if products %}
+                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-gray-900 border-b border-gray-800">
+                                    <th class="py-4 px-6 text-[10px] font-black uppercase tracking-widest text-white">Code</th>
+                                    <th class="py-4 px-6 text-[10px] font-black uppercase tracking-widest text-white">Image</th>
+                                    <th class="py-4 px-6 text-[10px] font-black uppercase tracking-widest text-white">Product Name</th>
+                                    <th class="py-4 px-6 text-[10px] font-black uppercase tracking-widest text-white">Actual Price</th>
+                                    <th class="py-4 px-6 text-[10px] font-black uppercase tracking-widest text-white">Price</th>
+                                    <th class="py-4 px-6 text-[10px] font-black uppercase tracking-widest text-white">Quantity</th>
+                                    <th class="py-4 px-6 text-[10px] font-black uppercase tracking-widest text-white">Total</th>
+                                </tr>
+                            </thead>
+                                {% regroup products by category as category_list %}
+                                {% for category_group in category_list %}
+                                <tbody class="group transition-all">
+                                    <tr class="bg-auraa-red shadow-lg cursor-pointer hover:bg-red-600 transition-colors" onclick="toggleCategory('cat-{{ category_group.grouper.id }}')">
+                                        <td colspan="7" class="py-5 px-8">
+                                            <div class="flex justify-between items-center">
+                                                <div class="flex items-center space-x-3">
+                                                    <i data-lucide="chevron-down" id="icon-cat-{{ category_group.grouper.id }}" class="w-5 h-5 text-white transition-transform duration-300"></i>
+                                                    <h2 class="text-sm font-black uppercase tracking-[0.3em] text-white">{{ category_group.grouper.name }}</h2>
+                                                </div>
+                                                <span class="text-[10px] font-black text-white bg-white/20 px-3 py-1 rounded-full border border-white/20 shadow-sm">{{ category_group.list|length }} Items</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tbody id="cat-{{ category_group.grouper.id }}" class="divide-y divide-gray-50">
+                                    {% for product in category_group.list %}
+                                        {% include 'includes/product_row.html' %}
+                                    {% endfor %}
+                                </tbody>
+                                {% endfor %}
+                        </table>
+                    </div>
+                    {% include 'includes/pagination.html' %}
+                </div>
+
+                <!-- Order Summary Section -->
+                {% if user.is_authenticated %}
+                <div class="mt-12 bg-white rounded-[2rem] border border-gray-100 shadow-xl overflow-hidden">
+                    <div class="p-8 md:p-12">
+                        <div class="text-center mb-10">
+                            <button onclick="toggleCartSidebar()" class="inline-block px-12 py-4 bg-auraa-red text-white rounded-[1.2rem] font-black uppercase tracking-[0.2em] text-[10px] shadow-xl shadow-auraa-red/20 hover:bg-gray-900 transition-all transform hover:-translate-y-1">
+                                PLEASE CHECK YOUR ORDER
+                            </button>
+                        </div>
+                        <div class="flex flex-col md:flex-row justify-end items-start md:items-center gap-12">
+                            <div class="space-y-4 w-full md:w-80">
+                                <div class="flex justify-between items-center text-sm pt-2">
+                                    <span class="text-gray-500 font-bold uppercase tracking-widest">Net Total</span>
+                                    <span class="font-black text-gray-900" id="summary-net-total">₹ 0.00</span>
+                                </div>
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="text-gray-500 font-bold uppercase tracking-widest">Discount Total</span>
+                                    <span class="font-black text-green-600" id="summary-discount-total">₹ 0.00</span>
+                                </div>
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="text-gray-500 font-bold uppercase tracking-widest">Sub Total</span>
+                                    <span class="font-black text-gray-900" id="summary-sub-total">₹ 0.00</span>
+                                </div>
+                                <div class="flex flex-col space-y-2 border-t border-gray-100 pt-4" id="promo-section">
+                                    <div class="flex justify-between items-center text-xs text-auraa-red font-black">
+                                        <button onclick="showPromoInput()" class="uppercase tracking-widest hover:underline flex items-center space-x-2">
+                                            <i data-lucide="ticket" class="w-3 h-3"></i>
+                                            <span>Have Promotion Code?</span>
+                                        </button>
+                                        <span id="promo-discount-display">₹ 0.00</span>
+                                    </div>
+                                    <div id="promo-input-container" class="hidden flex items-center space-x-2 mt-2">
+                                        <input type="text" id="promo-code-input" placeholder="Enter Code" class="flex-grow px-4 py-2 bg-gray-50 border border-gray-100 rounded-xl text-[10px] font-bold focus:outline-none focus:border-auraa-red">
+                                        <button onclick="applyPromoCode()" class="px-4 py-2 bg-gray-900 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-auraa-red transition-all">Apply</button>
+                                    </div>
+                                </div>
+                                <div class="flex justify-between items-center text-sm font-black text-red-500 italic pb-4">
+                                    <span class="uppercase tracking-widest text-[10px]">Min.Order Amount</span>
+                                    <span id="summary-min-order">₹ 3000.00</span>
+                                </div>
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="text-gray-500 font-bold uppercase tracking-widest">Packing Charges (3%)</span>
+                                    <span class="font-black text-gray-900" id="summary-packing">₹ 0.00</span>
+                                </div>
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="text-gray-500 font-bold uppercase tracking-widest">Round OFF</span>
+                                    <span class="font-black text-gray-900" id="summary-round-off">₹ 0.00</span>
+                                </div>
+                                <div class="flex justify-between items-center pt-6 border-t-2 border-gray-900">
+                                    <span class="text-lg font-black uppercase tracking-tighter text-gray-900">Overall Amount</span>
+                                    <span class="text-2xl font-black text-auraa-red" id="summary-overall">₹ 0.00</span>
+                                </div>
+                                <div class="pt-8">
+                                    <button onclick="handlePlaceOrder()" class="w-full py-5 bg-gray-900 text-white rounded-[1.5rem] font-black uppercase tracking-[0.2em] text-sm shadow-2xl hover:bg-auraa-red transition-all transform hover:-translate-y-1 shadow-black/30">
+                                        PLACE ORDER
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                {% endif %}
+
+                {% else %}
+                <div class="text-center py-20 bg-gray-50 rounded-3xl border border-dashed border-gray-200">
+                    <div class="text-gray-400 mb-4 flex justify-center">
+                        <i data-lucide="search" class="w-12 h-12"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">No products found</h3>
+                    <p class="text-gray-500">Try adjusting your filters or search query.</p>
+                    <a href="?category=All" class="mt-6 inline-block text-auraa-red font-bold uppercase tracking-widest text-sm hover:underline">
+                        Clear all filters
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </main>
+    </div>
+</div>
+
+<!-- Mobile Sidebar Overlay (Implementation in JS below) -->
+<div id="mobile-sidebar" class="hidden md:hidden fixed inset-0 z-[60]">
+    <div class="absolute inset-0 bg-black/50" onclick="toggleMobileSidebar()"></div>
+    <div class="absolute right-0 top-0 bottom-0 w-80 bg-white p-6 shadow-2xl overflow-y-auto">
+        <div class="flex justify-between items-center mb-8">
+            <h3 class="text-lg font-black uppercase tracking-tight">Filters</h3>
+            <button onclick="toggleMobileSidebar()" class="p-2 hover:bg-gray-100 rounded-full">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+        </div>
+        
+        <div class="space-y-8">
+            <div>
+                <h4 class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4">Categories</h4>
+                <div class="grid grid-cols-1 gap-2">
+                    <a href="?category=All" class="text-left px-4 py-3 rounded-xl text-sm transition-all {% if not selected_category or selected_category == 'All' %}bg-auraa-red text-white font-bold{% else %}bg-gray-50 text-gray-600{% endif %}">
+                        All Products
+                    </a>
+                    {% for cat in categories %}
+                    <a href="?category={{ cat.name|urlencode }}" class="text-left px-4 py-3 rounded-xl text-sm transition-all {% if selected_category == cat.name %}bg-auraa-red text-white font-bold{% else %}bg-gray-50 text-gray-600{% endif %}">
+                        {{ cat.name }}
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include 'includes/zoom_modal.html' %}
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Page-specific Sort Logic
+    function toggleSortDropdown(e) {
+        if (e) e.stopPropagation();
+        const options = document.getElementById('sort-options');
+        const chevron = document.getElementById('sort-chevron');
+        if (!options) return;
+        options.classList.toggle('hidden');
+        chevron.classList.toggle('rotate-180');
+    }
+
+    // Selection Tracking
+    function selectProductRow(pid, event) {
+        if (event) {
+            // If the user clicked on buttons/inputs, don't trigger row selection logic twice 
+            // but we might want the highlight anyway. 
+        }
+        
+        // Remove selection from all rows
+        document.querySelectorAll('.product-row').forEach(row => {
+            row.classList.remove('selected-row-highlight', 'bg-red-50/50', 'border-l-4', 'border-auraa-red');
+        });
+        
+        const row = document.getElementById(`product-row-${pid}`);
+        if (row) {
+            row.classList.add('selected-row-highlight', 'bg-red-50/50', 'border-l-4', 'border-auraa-red');
+        }
+    }
+
+    // Products Page Specific UI Hooks (called from global cart_scripts.html)
+    function updatePageSpecificUI(pid, item) {
+        const input = document.getElementById(`qty-${pid}`);
+        if (input) {
+            input.value = item.qty;
+            const totalLabel = document.getElementById(`total-${pid}`);
+            if (totalLabel) totalLabel.innerText = `₹${(item.price * item.qty).toFixed(2)}`;
+            
+            const removeBtn = document.getElementById(`remove-btn-${pid}`);
+            if (removeBtn) {
+                if (item.qty > 0) removeBtn.classList.remove('hidden');
+                else removeBtn.classList.add('hidden');
+            }
+        }
+    }
+
+    function updatePageSummaryUI(totals) {
+        if (summaryNetTotal) summaryNetTotal.innerText = `₹${totals.totalNet.toFixed(2)}`;
+        if (summaryDiscountTotal) summaryDiscountTotal.innerText = `₹${totals.totalDiscount.toFixed(2)}`;
+        if (summarySubTotal) summarySubTotal.innerText = `₹${totals.initialSubTotal.toFixed(2)}`;
+
+        const promoDisplay = document.getElementById('promo-discount-display');
+        if (promoDisplay) {
+            promoDisplay.innerText = `- ₹ ${totals.promoDiscount.toFixed(2)}`;
+            
+            // Update Promo Label
+            const promoLabelSpan = document.querySelector('#promo-section button span');
+            if (promoLabelSpan) {
+                if (totals.promoCode) {
+                    promoLabelSpan.innerText = `Promo (${totals.promoCode}) (${((totals.promoDiscount/(totals.initialSubTotal || 1))*100).toFixed(1)}%)`;
+                    promoLabelSpan.classList.add('text-auraa-red');
+                } else {
+                    promoLabelSpan.innerText = "Have Promotion Code?";
+                    promoLabelSpan.classList.remove('text-auraa-red');
+                }
+            }
+        }
+        
+        const packing = totals.subTotal * 0.03;
+        const exactOverall = totals.subTotal + packing;
+        const roundedOverall = Math.round(exactOverall);
+        const roundOff = roundedOverall - exactOverall;
+
+        if (summaryPacking) summaryPacking.innerText = `₹${packing.toFixed(2)}`;
+        if (summaryRoundOff) summaryRoundOff.innerText = `₹${roundOff.toFixed(2)}`;
+        if (summaryOverall) summaryOverall.innerText = `₹${roundedOverall.toFixed(2)}`;
+    }
+
+    // Page-specific Table Calculation
+    function calculateTotal(productId) {
+        selectProductRow(productId);
+        const input = document.getElementById(`qty-${productId}`);
+        const totalLabel = document.getElementById(`total-${productId}`);
+        const row = document.getElementById(`product-row-${productId}`);
+        if (!row) return;
+
+        let qty = parseInt(input.value) || 0;
+        if (qty < 0) {
+            qty = 0;
+            input.value = 0;
+            showModal('Invalid Quantity', 'Quantity cannot be negative.', 'warning');
+        }
+
+        const price = parseFloat(row.querySelector('.text-auraa-red').innerText.replace('₹', ''));
+        totalLabel.innerText = `₹${(price * qty).toFixed(2)}`;
+        
+        const removeBtn = document.getElementById(`remove-btn-${productId}`);
+        if (removeBtn) {
+            if (qty > 0) removeBtn.classList.remove('hidden');
+            else removeBtn.classList.add('hidden');
+        }
+
+        syncCartWithDB(productId, qty);
+    }
+
+    function updateQty(productId, delta) {
+        const input = document.getElementById(`qty-${productId}`);
+        if (!input) return;
+        let val = parseInt(input.value) || 0;
+        val = Math.max(0, val + delta);
+        input.value = val;
+        calculateTotal(productId);
+    }
+
+    async function syncCartWithDB(productId, qty) {
+        if (!authStatus) {
+            const input = document.getElementById(`qty-${productId}`);
+            if (input) input.value = 0;
+            showModal('Login Required', 'Please login to add items to your cart.', 'info', 'Login', () => {
+                window.location.href = "{% url 'login' %}";
+            });
+            return;
+        }
+
+        if (qty === 0) {
+            if (cart[productId]) removeFromCart(productId);
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('product_id', productId);
+        formData.append('quantity', qty);
+
+        try {
+            const res = await fetch("{% url 'api_cart_add' %}", {
+                method: 'POST',
+                body: formData,
+                headers: { 'X-CSRFToken': '{{ csrf_token }}' }
+            });
+            const data = await res.json();
+            if (data.status === 'success') {
+                await fetchCart();
+                renderCartSidebar();
+            }
+        } catch (err) { console.error("Sync error", err); }
+    }
+
+    // Promo Code Logic
+    window.currentPromoPer = 0;
+    function showPromoInput() {
+        document.getElementById('promo-input-container').classList.toggle('hidden');
+    }
+
+    async function applyPromoCode() {
+        const code = document.getElementById('promo-code-input').value.trim();
+        if (!code) return;
+        const formData = new FormData();
+        formData.append('code', code);
+        try {
+            const res = await fetch("{% url 'api_coupon_verify' %}", {
+                method: 'POST',
+                body: formData,
+                headers: { 'X-CSRFToken': '{{ csrf_token }}' }
+            });
+            const data = await res.json();
+            if (data.status === 'success') {
+                window.currentPromoPer = data.discount_per;
+                window.currentPromoCode = data.promo_code;
+                updateUI();
+                const promoLabelCheck = document.querySelector('#promo-section span');
+                if (promoLabelCheck) {
+                    promoLabelCheck.innerText = `Promo (${window.currentPromoCode}) (${window.currentPromoPer}%)`;
+                    // promoLabelCheck.parentElement.classList.add('bg-auraa-red/10', 'p-2', 'rounded-lg');
+                }
+                document.getElementById('promo-input-container').classList.add('hidden');
+            } else {
+                showModal('Invalid Code', data.message, 'error');
+            }
+        } catch (err) { console.error(err); }
+    }
+
+    function handlePlaceOrder() {
+        if (!authStatus) {
+            showModal('Login Required', 'Please login to place an order.', 'info', 'Login', () => {
+                window.location.href = "{% url 'login' %}";
+            });
+            return;
+        }
+        const overall = parseFloat(summaryOverall.innerText.replace('₹', '').trim()) || 0;
+        const MIN_ORDER = 3000;
+        if (overall < MIN_ORDER) {
+            const diff = MIN_ORDER - overall;
+            showModal('Minimum Order Required', `The minimum order for your location is ₹${MIN_ORDER.toFixed(2)}. You need ₹${diff.toFixed(2)} more to place the order.`, 'warning');
+            return;
+        }
+        window.location.href = "{% url 'checkout' %}";
+    }
+
+    function toggleMobileSidebar() {
+        document.getElementById('mobile-sidebar').classList.toggle('hidden');
+    }
+
+    function toggleClearSearch() {
+        const input = document.getElementById('search-input');
+        const btn = document.getElementById('clear-search');
+        if (input.value.length > 0) btn.classList.remove('hidden');
+        else btn.classList.add('hidden');
+    }
+
+    function clearSearch() {
+        const input = document.getElementById('search-input');
+        input.value = '';
+        input.closest('form').submit();
+    }
+
+    function updateSort(val) {
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.set('sort', val);
+        window.location.search = urlParams.toString();
+    }
+
+    function toggleCategory(categoryId) {
+        const body = document.getElementById(categoryId);
+        const icon = document.getElementById('icon-' + categoryId);
+        if (body.classList.contains('hidden')) {
+            body.classList.remove('hidden');
+            icon.classList.remove('-rotate-90');
+        } else {
+            body.classList.add('hidden');
+            icon.classList.add('-rotate-90');
+        }
+    }
+
+    // DOM References (summary only if exists)
+    const summaryNetTotal = document.getElementById('summary-net-total');
+    const summaryDiscountTotal = document.getElementById('summary-discount-total');
+    const summarySubTotal = document.getElementById('summary-sub-total');
+    const summaryRoundOff = document.getElementById('summary-round-off');
+    const summaryPacking = document.getElementById('summary-packing');
+    const summaryOverall = document.getElementById('summary-overall');
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+        fetchCart();
+    });
+</script>
+{% endblock %}

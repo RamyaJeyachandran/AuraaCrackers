@@ -1,0 +1,160 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Auraa Crackers | Premium Firecrackers from Sivakasi{% endblock %}</title>
+    
+    <!-- Meta Tags -->
+    <meta name="description" content="{% block meta_description %}Experience the magic of Auraa Crackers. With over 12 years of excellence in Sivakasi, we provide high-quality, safe, and vibrant firecrackers.{% endblock %}">
+    <meta name="keywords" content="firecrackers, fireworks, Sivakasi, Auraa Crackers, Diwali crackers, wholesale crackers">
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+    
+    <!-- Tailwind CSS (Using CDN for pixel perfection of classes) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        auraa: {
+                            red: '#f5071d',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', 'sans-serif'],
+                    },
+                    keyframes: {
+                        floatIn: {
+                            '0%': { opacity: '0', transform: 'translateX(-40px)' },
+                            '100%': { opacity: '1', transform: 'translateX(0)' },
+                        },
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(40px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        fadeInScale: {
+                            '0%': { opacity: '0', transform: 'scale(0.95)' },
+                            '100%': { opacity: '1', transform: 'scale(1)' },
+                        },
+                        pulseSlow: {
+                            '0%, 100%': { transform: 'scale(1.1) rotate(0deg)' },
+                            '50%': { transform: 'scale(1.15) rotate(1deg)' },
+                        }
+                    },
+                    animation: {
+                        'float-in': 'floatIn 1.5s ease-out forwards',
+                        'fade-in-up': 'fadeInUp 1s ease-out forwards',
+                        'fade-in-scale': 'fadeInScale 0.8s ease-out forwards',
+                        'pulse-slow': 'pulseSlow 10s ease-in-out infinite',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- GSAP for advanced animations (Premium requirement) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <style>
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        [v-cloak] { display: none; }
+        /* Custom scrollbar to match modern UI */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #f5071d; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #d40619; }
+
+        /* General touch target improvements for mobile */
+        @media (max-width: 768px) {
+            button, a, input, select { min-height: 44px; min-width: 44px; }
+            .prose { font-size: 1rem !important; }
+            h1 { word-break: break-word; }
+            [data-lucide] { stroke: currentColor; stroke-width: 2.5; }
+        }
+    </style>
+
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="min-h-screen flex flex-col bg-white selection:bg-auraa-red selection:text-white">
+    
+    {% if user.is_authenticated and user.role and user.role.name == 'Admin' or user.role.name == 'Super Admin' %}
+        {% include 'includes/admin_navbar.html' %}
+    {% else %}
+        {% include 'includes/navbar.html' %}
+    {% endif %}
+
+    <main class="flex-grow {% if user.is_authenticated and user.role.name in 'Admin,Super Admin' %}pt-28 lg:pt-36{% elif request.resolver_match.url_name == 'login' %}pt-20 lg:pt-28{% else %}pt-32 lg:pt-40{% endif %}">
+        {% block content %}{% endblock %}
+    </main>
+
+    {% include 'includes/footer.html' %}
+    
+    {% include 'includes/cart_sidebar.html' %}
+    {% include 'includes/global_modals.html' %}
+
+    <!-- Persistent Floating Buy Product Button -->
+    {% with url_name=request.resolver_match.url_name %}
+    {% if url_name and url_name not in "login,product_list,order_history,order_status,order_detail,profile,checkout,admin_dashboard,dashboard_categories,dashboard_products,dashboard_orders,dashboard_order_detail,dashboard_customers,dashboard_analysis,dashboard_report_create,dashboard_pricelists,dashboard_pricelist_create,dashboard_pricelist_detail,dashboard_pricelist_edit,admin_active_categories,admin_register" %}
+    <div class="fixed bottom-8 right-6 sm:top-[30%] sm:right-0 sm:bottom-auto z-[99999] pointer-events-none sm:pointer-events-auto">
+        <a href="{% url 'product_list' %}" class="relative inline-flex flex-col items-center pointer-events-auto group">
+            <!-- 3D Effect Layer (Bronze/Dark Gold Depth) -->
+            <div class="absolute inset-0 bg-[#B8860B] rounded-full sm:rounded-none sm:rounded-l-2xl transform -translate-x-1 sm:-translate-x-1 group-hover:-translate-x-2 transition-all duration-300 shadow-xl shadow-amber-900/20"></div>
+            
+            <!-- Button Body (Solaris Gold Gradient) -->
+            <div class="relative bg-gradient-to-br from-[#FFD700] via-[#FFC000] to-[#FF8C00] text-[#111827] flex flex-col items-center p-4 sm:py-6 sm:px-4 rounded-full sm:rounded-none sm:rounded-l-2xl font-black uppercase transform group-hover:translate-x-[-4px] transition-all duration-300 ease-in-out shadow-2xl border-r-4 border-black/5">
+                
+                <!-- Shopping Icon -->
+                <div class="w-10 h-10 sm:w-8 sm:h-8 flex items-center justify-center bg-black/10 rounded-full sm:rounded-xl sm:mb-6 group-hover:bg-black/20 transition-all duration-300 shrink-0">
+                    <i data-lucide="shopping-bag" class="w-6 h-6 sm:w-5 sm:h-5 text-[#111827] group-hover:scale-110 transition-transform"></i>
+                </div>
+                
+                <!-- Vertically Stacked Letters (Hidden on Mobile) -->
+                <div class="hidden sm:flex flex-col items-center space-y-1.5 pb-2">
+                    <span class="text-[13px] tracking-tighter leading-none font-black">B</span>
+                    <span class="text-[13px] tracking-tighter leading-none font-black">U</span>
+                    <span class="text-[13px] tracking-tighter leading-none font-black">Y</span>
+                    <div class="h-3"></div>
+                    <span class="text-[13px] tracking-tighter leading-none font-black opacity-90">P</span>
+                    <span class="text-[13px] tracking-tighter leading-none font-black opacity-90">R</span>
+                    <span class="text-[13px] tracking-tighter leading-none font-black opacity-90">O</span>
+                    <span class="text-[13px] tracking-tighter leading-none font-black opacity-90">D</span>
+                    <span class="text-[13px] tracking-tighter leading-none font-black opacity-90">U</span>
+                    <span class="text-[13px] tracking-tighter leading-none font-black opacity-90">C</span>
+                    <span class="text-[13px] tracking-tighter leading-none font-black opacity-90">T</span>
+                </div>
+                
+                <!-- High-End Shine Animation -->
+                <div class="absolute inset-0 w-full h-full rounded-full sm:rounded-none sm:rounded-l-2xl overflow-hidden pointer-events-none">
+                    <div class="absolute -top-full left-0 w-full h-full bg-gradient-to-b from-transparent via-white/40 to-transparent skew-y-[-20deg] group-hover:animate-[shine_v_3s_infinite]"></div>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <style>
+        @keyframes shine_v {
+            0% { top: -100%; }
+            20% { top: 100%; }
+            100% { top: 100%; }
+        }
+    </style>
+    {% endif %}
+    {% endwith %}
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+    
+    {% include 'includes/cart_scripts.html' %}
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

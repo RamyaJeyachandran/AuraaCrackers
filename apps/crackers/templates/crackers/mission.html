@@ -1,0 +1,170 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Our Mission | Auraa Profile - Auraa Crackers{% endblock %}
+
+{% block content %}
+<div class="bg-white min-h-screen">
+    <!-- Dynamic Header -->
+    <section class="relative pt-32 pb-32 overflow-hidden bg-gray-900">
+        <!-- Purposeful Background -->
+        <div class="absolute inset-0 z-0">
+            <img src="{% static 'images/mission_hero_bg.png' %}" class="w-full h-full object-cover" alt="">
+            <div class="absolute inset-0 bg-black/70 backdrop-blur-[1px]"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-black/20"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 text-center relative z-10">
+            <div class="inline-block px-6 py-2 bg-blue-600 rounded-full shadow-2xl shadow-blue-600/40 transform rotate-1 mb-10">
+                <span class="text-[10px] font-black text-white uppercase tracking-[0.4em]">Brand Mission</span>
+            </div>
+            <h1 class="text-6xl md:text-9xl font-black text-white uppercase tracking-tighter leading-none mb-8">
+                The <span class="text-auraa-red">Auraa</span> <br />
+                Purpose
+            </h1>
+            <div class="mt-8 inline-flex items-center space-x-3 bg-white/10 backdrop-blur-md border border-white/20 px-8 py-4 rounded-2xl animate-float-in opacity-0">
+                <p class="text-white text-lg md:text-xl font-bold italic tracking-wide">
+                    "Igniting Celebrations, Strengthening Traditions"
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission Core -->
+    <section class="py-24 relative overflow-hidden">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+                
+                <!-- Mission Image/Visual Side -->
+                <div class="relative group">
+                    <div class="absolute -inset-4 bg-auraa-red rounded-[4rem] opacity-5 group-hover:opacity-10 transition-opacity blur-2xl"></div>
+                    <div class="relative bg-gray-50 rounded-[3.5rem] p-12 overflow-hidden border border-gray-100 shadow-2xl">
+                        <div class="space-y-10">
+                            <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-lg transform -rotate-2 hover:rotate-0 transition-transform duration-500">
+                                <i data-lucide="target" class="w-12 h-12 text-blue-600 mb-6"></i>
+                                <p class="text-xl font-black text-gray-900 italic">"Our mission is not just to sell fireworks — but to build lasting trust."</p>
+                            </div>
+                            <div class="bg-auraa-red p-10 rounded-[2.5rem] shadow-2xl shadow-auraa-red/20 transform rotate-3 hover:rotate-0 transition-transform duration-500">
+                                <p class="text-white text-2xl font-black leading-tight">Deliver products that families can trust with total confidence.</p>
+                            </div>
+                        </div>
+                        <!-- Watermark -->
+                        <div class="absolute -bottom-10 -right-10 opacity-5">
+                            <img src="{% static 'images/logo.png' %}" class="w-64 h-64 object-contain brightness-0" alt="">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Text Side -->
+                <div class="space-y-12">
+                    <div class="inline-block px-4 py-1.5 bg-auraa-red text-white font-black uppercase tracking-[0.3em] text-[10px] rounded-lg">Our Mission</div>
+                    
+                    <h2 class="text-5xl md:text-7xl font-black text-gray-900 tracking-tighter uppercase leading-none">
+                        Igniting <br />
+                        <span class="text-auraa-red underline decoration-8 decoration-auraa-red/10 underline-offset-[10px]">Joyful</span> Moments
+                    </h2>
+
+                    <div class="space-y-8 prose prose-2xl prose-gray font-medium leading-relaxed text-gray-600">
+                        <p>
+                            At <strong class="text-gray-900">Auraa Crackers</strong>, our mission is to bring joy to every celebration by providing high-quality fireworks that combine safety, reliability, and excitement.
+                        </p>
+                        <p>
+                            We are committed to delivering products that families can trust, ensuring every festival moment is filled with happiness and confidence.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Strategy Blocks -->
+    <section class="py-24 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-20 space-y-4">
+                <h3 class="text-4xl font-black text-gray-900 uppercase tracking-tighter">Through Integrity & Innovation</h3>
+                <p class="text-gray-500 font-bold max-w-xl mx-auto uppercase tracking-widest text-[10px]">How we achieve our purpose everyday</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="bg-white p-12 rounded-[3.5rem] shadow-xl border border-gray-100 group hover:border-blue-600/20 transition-all hover:-translate-y-2">
+                    <div class="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+                        <i data-lucide="shield-check" class="w-8 h-8"></i>
+                    </div>
+                    <h4 class="text-xl font-black text-gray-900 uppercase tracking-tight mb-4">Responsible Practices</h4>
+                    <p class="text-gray-500 font-bold leading-relaxed text-sm">Maintaining the highest standards of safety and integrity in every product we create.</p>
+                </div>
+                <!-- Card 2 -->
+                <div class="bg-white p-12 rounded-[3.5rem] shadow-xl border border-gray-100 group hover:border-auraa-red/20 transition-all hover:-translate-y-2">
+                    <div class="w-16 h-16 bg-red-50 text-auraa-red rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+                        <i data-lucide="zap" class="w-8 h-8"></i>
+                    </div>
+                    <h4 class="text-xl font-black text-gray-900 uppercase tracking-tight mb-4">Transparent Values</h4>
+                    <p class="text-gray-500 font-bold leading-relaxed text-sm">Transparent business values that ensure long-term trust and reliable partnerships.</p>
+                </div>
+                <!-- Card 3 -->
+                <div class="bg-white p-12 rounded-[3.5rem] shadow-xl border border-gray-100 group hover:border-emerald-600/20 transition-all hover:-translate-y-2">
+                    <div class="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+                        <i data-lucide="award" class="w-8 h-8"></i>
+                    </div>
+                    <h4 class="text-xl font-black text-gray-900 uppercase tracking-tight mb-4">Continuous Innovation</h4>
+                    <p class="text-gray-500 font-bold leading-relaxed text-sm">Striving to create memorable experiences through smarter, safer celebrate experiences.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Essence Highlight -->
+    <section class="py-24 relative perspective-container">
+        <div class="max-w-5xl mx-auto px-4">
+            <div class="bg-gray-900 rounded-[4rem] p-12 md:p-24 text-center relative overflow-hidden group shadow-[0_50px_100px_-20px_rgba(0,0,0,0.3)]">
+                <div class="relative z-10 space-y-12">
+                    <div class="inline-flex items-center space-x-3 bg-auraa-red px-6 py-2 rounded-full transform -rotate-1">
+                        <i data-lucide="flame" class="w-4 h-4 text-white"></i>
+                        <span class="text-[10px] font-black text-white uppercase tracking-[0.3em]">The Auraa Mission</span>
+                    </div>
+                    
+                    <p class="text-3xl md:text-6xl font-black text-white leading-none tracking-tighter uppercase grayscale group-hover:grayscale-0 transition-all duration-700">
+                        Mission is not just to sell fireworks — but to <span class="text-auraa-red italic">ignite</span> celebrations and consolidate <span class="underline decoration-auraa-red decoration-4 underline-offset-8">traditions.</span>
+                    </p>
+
+                    <p class="text-white/40 font-black italic text-xl uppercase tracking-widest">
+                        Trust with every customer we serve.
+                    </p>
+                </div>
+
+                <!-- 3D Logo Element -->
+                <style>
+                    @keyframes floatMission {
+                        0%, 100% { transform: translateY(0) rotate(-12deg); }
+                        50% { transform: translateY(-20px) rotate(-15deg) scale(1.05); }
+                    }
+                    .animate-mission-3d {
+                        animation: floatMission 8s ease-in-out infinite;
+                    }
+                </style>
+                <div class="absolute -bottom-20 -right-20 opacity-10 animate-mission-3d pointer-events-none">
+                    <img src="{% static 'images/logo.png' %}" class="w-96 h-96 object-contain brightness-0 invert" alt="">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Brand Final Quote -->
+    <section class="py-24 text-center">
+        <div class="max-w-3xl mx-auto px-4 space-y-10">
+            <div class="w-24 h-24 mx-auto rounded-3xl overflow-hidden shadow-2xl bg-white p-2">
+                <img src="{% static 'images/logo.png' %}" class="w-full h-full object-cover object-top scale-[1.3]" alt="">
+            </div>
+            <p class="text-3xl font-black text-gray-900 tracking-tighter uppercase italic leading-none">
+                "Happiness is the Goal, <br />
+                <span class="text-auraa-red">Trust is the Foundation."</span>
+            </p>
+            <div class="flex flex-wrap justify-center gap-6">
+                <a href="{% url 'product_list' %}" class="px-10 py-5 bg-auraa-red text-white rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-gray-900 transition-all shadow-xl shadow-auraa-red/20">Our Collection</a>
+                <a href="{% url 'terms' %}" class="px-10 py-5 bg-white text-gray-900 border border-gray-200 rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-gray-50 transition-all">Corporate Profile</a>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

@@ -1,0 +1,334 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Create New Pricelist | Auraa Admin{% endblock %}
+
+{% block content %}
+<div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+    <!-- Header -->
+    <div class="mb-12 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 no-print">
+        <div>
+            <h1 class="text-4xl font-black text-gray-900 tracking-tight uppercase mb-2">Create New <span class="text-auraa-red">Pricelist</span></h1>
+            <p class="text-gray-500 font-bold uppercase tracking-widest text-[10px]">Configure your custom price list</p>
+        </div>
+        <div class="flex items-center space-x-3">
+            <button onclick="savePricelist()" class="px-8 py-4 bg-auraa-red text-white rounded-2xl text-[11px] font-black uppercase tracking-[0.2em] hover:bg-red-600 transition-all flex items-center space-x-3 shadow-xl shadow-auraa-red/20 border-b-4 border-red-800 active:translate-y-[2px] active:border-b-0">
+                <i data-lucide="save" class="w-4 h-4"></i>
+                <span>Save Pricelist</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Pricelist Info -->
+    <div class="mb-12 grid grid-cols-1 md:grid-cols-2 gap-8 bg-white p-10 rounded-[3rem] border border-gray-100 shadow-2xl relative overflow-hidden group">
+        <div class="absolute inset-0 bg-gradient-to-br from-gray-50/50 to-transparent pointer-events-none"></div>
+        <div class="relative z-10 space-y-2">
+            <label class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 px-1">Pricelist Name <span class="text-auraa-red">*</span></label>
+            <input type="text" id="pricelist-name" placeholder="e.g., Regional Distributor List - Chennai" 
+                   class="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl text-sm font-bold text-gray-900 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-auraa-red/20 focus:bg-white transition-all shadow-inner">
+        </div>
+        <div class="relative z-10 space-y-2">
+            <label class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 px-1">Description</label>
+            <textarea id="pricelist-desc" placeholder="Brief details about this pricelist..." rows="1" 
+                      class="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl text-sm font-bold text-gray-900 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-auraa-red/20 focus:bg-white transition-all shadow-inner"></textarea>
+        </div>
+    </div>
+
+    <!-- Products Selection -->
+    <div class="bg-white rounded-[3rem] border border-gray-100 shadow-2xl overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse table-auto">
+                <thead class="bg-gray-900 text-white">
+                    <tr class="border-b border-gray-800">
+                        <th class="py-6 px-4 text-center"></th>
+                        <th class="py-6 px-4 text-[11px] font-black uppercase tracking-widest text-white">Code</th>
+                        <th class="py-6 px-4 text-[11px] font-black uppercase tracking-widest text-white">Item Name</th>
+                        <th class="py-6 px-4 text-[11px] font-black uppercase tracking-widest text-white">Content</th>
+                        <th class="py-6 px-4 text-[11px] font-black uppercase tracking-widest text-white text-right">Purchase Rate</th>
+                        <th class="py-6 px-4 text-[11px] font-black uppercase tracking-widest text-white text-center">PR (%)</th>
+                        <th class="py-6 px-4 text-[11px] font-black uppercase tracking-widest text-white text-right">Selling Price</th>
+                        <th class="py-6 px-4 text-[11px] font-black uppercase tracking-widest text-white text-center">Cust SP (%)</th>
+                        <th class="py-6 px-4 text-[11px] font-black uppercase tracking-widest text-white text-right">Shown Value</th>
+                        <th class="py-6 px-4 text-[11px] font-black uppercase tracking-widest text-white text-center">Disc (%)</th>
+                        <th class="py-6 px-4 text-[11px] font-black uppercase tracking-widest text-white text-right">Sales Cost</th>
+                    </tr>
+                </thead>
+                {% for category in categories %}
+                    {% if category.products.exists %}
+                    <tbody class="group transition-all">
+                        <tr class="bg-auraa-red shadow-lg transition-colors border-t border-white/10">
+                            <td class="py-4 px-4 text-center">
+                                <input type="checkbox" onchange="toggleBulkInputs(this, 'bulk-cat-{{ category.id }}', 'cat-group-{{ category.id }}')" 
+                                       class="cat-checkbox w-5 h-5 rounded border-2 border-white text-white focus:ring-white bg-transparent cursor-pointer">
+                            </td>
+                            <td colspan="10" class="py-4 px-4 cursor-pointer" onclick="toggleDashboardCategory('cat-group-{{ category.id }}')">
+                                <div class="flex justify-between items-center">
+                                    <div class="flex items-center space-x-3">
+                                        <i data-lucide="chevron-down" id="icon-cat-group-{{ category.id }}" class="w-5 h-5 text-white transition-transform duration-300"></i>
+                                        <h2 class="text-xs font-black uppercase tracking-[0.3em] text-white">{{ category.name }}</h2>
+                                    </div>
+                                    <span class="text-[11px] font-black text-white bg-white/20 px-4 py-1.5 rounded-full border border-white/20">{{ category.products.count }} Products</span>
+                                </div>
+                            </td>
+                        </tr>
+                        <!-- Category Bulk Action Row -->
+                        <tr id="bulk-cat-{{ category.id }}" class="bulk-cat-row hidden bg-red-800/20 border-b border-auraa-red/10 animate-fade-in no-print">
+                            <td colspan="5"></td>
+                            <td class="py-4 px-4">
+                                <div class="flex flex-col items-center space-y-1">
+                                    <span class="text-[8px] font-black text-auraa-red uppercase tracking-widest">Bulk PR%</span>
+                                    <input type="number" step="1" placeholder="All" class="w-16 px-2 py-1.5 bg-white border border-red-100 rounded-lg text-[11px] font-black text-center text-red-600 focus:outline-none focus:ring-2 focus:ring-auraa-red/50 bulk-pr-pct" oninput="applyBulkToCategory('{{ category.id }}', 'pr-pct', this.value)">
+                                </div>
+                            </td>
+                            <td></td>
+                            <td class="py-4 px-4">
+                                <div class="flex flex-col items-center space-y-1">
+                                    <span class="text-[8px] font-black text-auraa-red uppercase tracking-widest">Bulk Cust%</span>
+                                    <input type="number" step="1" placeholder="All" class="w-16 px-2 py-1.5 bg-white border border-red-100 rounded-lg text-[11px] font-black text-center text-red-600 focus:outline-none focus:ring-2 focus:ring-auraa-red/50 bulk-cust-pct" oninput="applyBulkToCategory('{{ category.id }}', 'cust-sp-pct', this.value)">
+                                </div>
+                            </td>
+                            <td></td>
+                            <td class="py-4 px-4">
+                                <div class="flex flex-col items-center space-y-1">
+                                    <span class="text-[8px] font-black text-auraa-red uppercase tracking-widest">Bulk Disc%</span>
+                                    <input type="number" step="1" placeholder="All" class="w-16 px-2 py-1.5 bg-white border border-red-100 rounded-lg text-[11px] font-black text-center text-red-600 focus:outline-none focus:ring-2 focus:ring-auraa-red/50 bulk-disc-pct" oninput="applyBulkToCategory('{{ category.id }}', 'disc-pct', this.value)">
+                                </div>
+                            </td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                    <tbody id="cat-group-{{ category.id }}" class="divide-y divide-gray-50 last:border-b last:border-gray-100">
+                        {% for product in category.products.all %}
+                        <tr class="hover:bg-gray-50/50 transition-colors group product-row" data-product-id="{{ product.id }}">
+                            <td class="py-4 px-4 text-center">
+                                <input type="checkbox" name="selected_products" value="{{ product.id }}" 
+                                       class="item-checkbox w-5 h-5 rounded border-2 border-red-500 text-red-500 focus:ring-red-500 bg-transparent cursor-pointer">
+                            </td>
+                            <td class="py-4 px-4">
+                                <span class="text-sm font-black text-gray-900 uppercase">{{ product.code|default:"-" }}</span>
+                            </td>
+                            <td class="py-4 px-4">
+                                <p class="text-sm font-bold text-gray-900 uppercase tracking-tight">{{ product.name }}</p>
+                            </td>
+                            <td class="py-4 px-4">
+                                <span class="text-xs font-bold text-gray-400 uppercase">{{ product.content|default:"-" }}</span>
+                            </td>
+                            <td class="py-4 px-4 text-right">
+                                <span class="text-sm font-black text-gray-900 purchase-rate">₹ {{ product.purchase_rate|default:"0.00" }}</span>
+                                <input type="hidden" class="raw-purchase-rate" value="{{ product.purchase_rate|default:'0' }}">
+                            </td>
+                            <td class="py-4 px-4">
+                                <input type="number" step="1" value="0" min="0" class="w-16 px-2 py-1.5 bg-gray-50 border border-gray-100 rounded-lg text-xs font-black text-center text-gray-900 focus:outline-none focus:ring-2 focus:ring-auraa-red/20 pr-pct" oninput="calculateRow(this.closest('tr'))">
+                            </td>
+                            <td class="py-4 px-4 text-right">
+                                <span class="text-sm font-black text-auraa-red selling-price">₹ 0.00</span>
+                            </td>
+                            <td class="py-4 px-4">
+                                <input type="number" step="1" value="0" min="0" class="w-16 px-2 py-1.5 bg-gray-50 border border-gray-100 rounded-lg text-xs font-black text-center text-gray-900 focus:outline-none focus:ring-2 focus:ring-auraa-red/20 cust-sp-pct" oninput="calculateRow(this.closest('tr'))">
+                            </td>
+                            <td class="py-4 px-4 text-right">
+                                <span class="text-sm font-black text-gray-900 shown-value">₹ 0.00</span>
+                            </td>
+                            <td class="py-4 px-4">
+                                <input type="number" step="1" value="0" min="0" class="w-16 px-2 py-1.5 bg-gray-50 border border-gray-100 rounded-lg text-xs font-black text-center text-gray-900 focus:outline-none focus:ring-2 focus:ring-auraa-red/20 disc-pct" oninput="calculateRow(this.closest('tr'))">
+                            </td>
+                            <td class="py-4 px-4 text-right">
+                                <span class="text-sm font-black text-gray-900 sales-cost">₹ 0.00</span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    {% endif %}
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+function toggleDashboardCategory(id) {
+    const el = document.getElementById(id);
+    const icon = document.getElementById('icon-' + id);
+    if (el.classList.contains('hidden')) {
+        el.classList.remove('hidden');
+        icon.classList.remove('-rotate-90');
+    } else {
+        el.classList.add('hidden');
+        icon.classList.add('-rotate-90');
+    }
+}
+
+function toggleBulkInputs(checkbox, bulkRowId, productsBodyId) {
+    const bulkRow = document.getElementById(bulkRowId);
+    const productsBody = document.getElementById(productsBodyId);
+    const itemCheckboxes = productsBody.querySelectorAll('.item-checkbox');
+
+    if (checkbox.checked) {
+        bulkRow.classList.remove('hidden');
+        // Select all items in category
+        itemCheckboxes.forEach(cb => cb.checked = true);
+    } else {
+        bulkRow.classList.add('hidden');
+        // Unselect all items in category
+        itemCheckboxes.forEach(cb => cb.checked = false);
+    }
+}
+
+function applyBulkToCategory(categoryId, targetClass, value) {
+    const productsBody = document.getElementById('cat-group-' + categoryId);
+    const rows = productsBody.querySelectorAll('.product-row');
+    
+    rows.forEach(row => {
+        const checkbox = row.querySelector('.item-checkbox');
+        if (checkbox.checked) {
+            const input = row.querySelector('.' + targetClass);
+            if (input) {
+                input.value = value;
+                calculateRow(row);
+            }
+        }
+    });
+}
+
+
+function calculateRow(row) {
+    const purchaseRate = parseFloat(row.querySelector('.raw-purchase-rate').value) || 0;
+    const prPct = parseFloat(row.querySelector('.pr-pct').value) || 0;
+    const custSpPct = parseFloat(row.querySelector('.cust-sp-pct').value) || 0;
+    const discPct = parseFloat(row.querySelector('.disc-pct').value) || 0;
+
+    // Validate: no negative percentages
+    if (prPct < 0) {
+        showModal('Invalid Value', 'PR (%) cannot be negative. Please enter 0 or a positive value.', 'error');
+        row.querySelector('.pr-pct').value = 0;
+        return;
+    }
+    if (custSpPct < 0) {
+        showModal('Invalid Value', 'Cust SP (%) cannot be negative. Please enter 0 or a positive value.', 'error');
+        row.querySelector('.cust-sp-pct').value = 0;
+        return;
+    }
+    if (discPct < 0) {
+        showModal('Invalid Value', 'Disc (%) cannot be negative. Please enter 0 or a positive value.', 'error');
+        row.querySelector('.disc-pct').value = 0;
+        return;
+    }
+
+    const sellingPrice = purchaseRate + (purchaseRate * prPct / 100);
+    const shownValue = sellingPrice + (sellingPrice * custSpPct / 100);
+    const salesCost = shownValue - (shownValue * discPct / 100);
+
+    row.querySelector('.selling-price').innerText = '₹ ' + sellingPrice.toFixed(2);
+    row.querySelector('.shown-value').innerText = '₹ ' + shownValue.toFixed(2);
+    row.querySelector('.sales-cost').innerText = '₹ ' + salesCost.toFixed(2);
+}
+
+// Initial calculation for all rows
+document.querySelectorAll('.product-row').forEach(row => calculateRow(row));
+
+function savePricelist() {
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    const name = document.getElementById('pricelist-name').value;
+    const desc = document.getElementById('pricelist-desc').value;
+    
+    if (!name) {
+        showModal('Error', 'Please enter a pricelist name', 'error');
+        return;
+    }
+
+    const allRows = Array.from(document.querySelectorAll('.product-row'));
+    
+    const items = allRows.map(row => {
+        const sellingPriceStr = row.querySelector('.selling-price').innerText.replace('₹ ', '').replace(',', '');
+        const shownValueStr = row.querySelector('.shown-value').innerText.replace('₹ ', '').replace(',', '');
+        const salesCostStr = row.querySelector('.sales-cost').innerText.replace('₹ ', '').replace(',', '');
+        
+        return {
+            product_id: row.getAttribute('data-product-id'),
+            purchase_rate: parseFloat(row.querySelector('.raw-purchase-rate').value) || 0,
+            purchase_rate_inc: parseFloat(row.querySelector('.pr-pct').value) || 0,
+            selling_price: parseFloat(sellingPriceStr) || 0,
+            customer_sp: parseFloat(row.querySelector('.cust-sp-pct').value) || 0,
+            shown_values: parseFloat(shownValueStr) || 0,
+            shown_value_disc: parseFloat(row.querySelector('.disc-pct').value) || 0,
+            sales_cost: parseFloat(salesCostStr) || 0
+        };
+    });
+
+    const data = {
+        name: name,
+        description: desc,
+        items: items
+    };
+
+    const saveBtn = document.querySelector('button[onclick="savePricelist()"]');
+    const originalBtnContent = saveBtn.innerHTML;
+    saveBtn.disabled = true;
+    saveBtn.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i><span>Saving...</span>';
+    lucide.createIcons();
+
+    fetch('/api/pricelist/save/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify(data)
+    })
+    .then(async response => {
+        const result = await response.json();
+        if (response.ok) {
+            showModal('Success', result.message || 'Pricelist saved successfully!', 'success');
+            // Reset the page
+            document.getElementById('pricelist-name').value = '';
+            document.getElementById('pricelist-desc').value = '';
+            document.getElementById('pricelist-desc').value = '';
+            document.querySelectorAll('.cat-checkbox').forEach(cb => cb.checked = false);
+            document.querySelectorAll('.item-checkbox').forEach(cb => cb.checked = false);
+            document.querySelectorAll('.bulk-cat-row').forEach(row => row.classList.add('hidden'));
+            document.querySelectorAll('input[type="number"]').forEach(input => {
+                input.value = 0;
+            });
+            document.querySelectorAll('.product-row').forEach(row => calculateRow(row));
+            
+        } else {
+            showModal('Error', result.message || 'An error occurred while saving the pricelist.', 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showModal('Error', 'A system error occurred. Please try again.', 'error');
+    })
+    .finally(() => {
+        saveBtn.disabled = false;
+        saveBtn.innerHTML = originalBtnContent;
+        lucide.createIcons();
+    });
+}
+</script>
+
+<style>
+    /* Custom Red Border for Checkbox */
+    .item-checkbox {
+        border-color: #EF4444 !important;
+        border-width: 2px !important;
+    }
+    .item-checkbox:focus {
+        border-color: #EF4444 !important;
+    }
+</style>
+{% endblock %}

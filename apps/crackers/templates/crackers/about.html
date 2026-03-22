@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About Us | Auraa Crackers - 22+ Years of Pyrotechnic Excellence{% endblock %}
+
+{% block content %}
+<div class="pb-20 bg-auraa-red min-h-screen overflow-hidden text-white">
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-32 px-4 overflow-hidden">
+        <!-- Story Background -->
+        <div class="absolute inset-0 z-0">
+            <img src="{% static 'images/about_hero_bg.png' %}" class="w-full h-full object-cover" alt="">
+            <div class="absolute inset-0 bg-auraa-red/80 mix-blend-multiply"></div>
+            <div class="absolute inset-0 bg-gradient-to-b from-auraa-red via-transparent to-auraa-red"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto text-center relative z-10">
+            <div class="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-md border border-white/20 text-white px-4 py-1.5 rounded-full mb-8 font-black text-xs uppercase tracking-[0.2em]">
+                <i data-lucide="award" class="w-3.5 h-3.5"></i>
+                <span>Established Legacy</span>
+            </div>
+            <h1 class="text-6xl md:text-9xl font-black text-white mb-8 uppercase tracking-tighter leading-[0.85]">
+                22+ Years of <br />
+                <span class="text-gray-900">Pure Joy</span>
+            </h1>
+            <p class="text-white/70 max-w-2xl mx-auto text-xl font-medium leading-relaxed">
+                We are the leading supplier of crackers & fancy crackers items, lighting up celebrations with quality and safety.
+            </p>
+        </div>
+    </section>
+
+    <!-- Why Choose Auraa -->
+    <section class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 space-y-4">
+                <h2 class="text-xs font-black text-white uppercase tracking-[0.3em] opacity-60">Our Foundation</h2>
+                <h3 class="text-4xl md:text-5xl font-black text-white uppercase tracking-tight">Why Choose Auraa?</h3>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Colorful -->
+                <div class="p-10 rounded-[3rem] border-4 transition-all bg-white shadow-2xl border-orange-200 text-center group cursor-pointer hover:scale-95">
+                    <div class="w-24 h-24 rounded-full flex items-center justify-center mb-8 mx-auto shadow-lg group-hover:rotate-12 transition-transform relative bg-gradient-to-br from-orange-400 to-yellow-400 text-white">
+                        <i data-lucide="palette" class="absolute w-8 h-8 opacity-20"></i>
+                        <span class="text-4xl relative z-10">🎨</span>
+                    </div>
+                    <h4 class="text-2xl font-black text-gray-900 uppercase tracking-tight mb-4">Colourful</h4>
+                    <p class="text-gray-500 font-bold leading-relaxed">Our Crackers produce more colour and less smoke.</p>
+                </div>
+                <!-- Satisfaction -->
+                <div class="p-10 rounded-[3rem] border-4 transition-all bg-white shadow-2xl border-pink-200 text-center group cursor-pointer hover:scale-95">
+                    <div class="w-24 h-24 rounded-full flex items-center justify-center mb-8 mx-auto shadow-lg group-hover:rotate-12 transition-transform relative bg-gradient-to-br from-pink-400 to-rose-400 text-white">
+                        <i data-lucide="heart" class="absolute w-8 h-8 opacity-20"></i>
+                        <span class="text-4xl relative z-10">😊</span>
+                    </div>
+                    <h4 class="text-2xl font-black text-gray-900 uppercase tracking-tight mb-4">Satisfaction</h4>
+                    <p class="text-gray-500 font-bold leading-relaxed">We Guarantee you that your full hearted pure satisfaction.</p>
+                </div>
+                <!-- Attractive -->
+                <div class="p-10 rounded-[3rem] border-4 transition-all bg-white shadow-2xl border-purple-200 text-center group cursor-pointer hover:scale-95">
+                    <div class="w-24 h-24 rounded-full flex items-center justify-center mb-8 mx-auto shadow-lg group-hover:rotate-12 transition-transform relative bg-white border border-purple-50 overflow-hidden">
+                        <img src="{% static 'images/logo.png' %}" class="w-full h-full object-cover object-top scale-[1.3] opacity-60 group-hover:opacity-100 transition-opacity" alt="Auraa Logo">
+                    </div>
+                    <h4 class="text-2xl font-black text-gray-900 uppercase tracking-tight mb-4">Attractive</h4>
+                    <p class="text-gray-500 font-bold leading-relaxed">Secure and innovative packaging of Crackers.</p>
+                </div>
+                <!-- Manufacturing -->
+                <div class="p-10 rounded-[3rem] border-4 transition-all bg-white shadow-2xl border-blue-200 text-center group cursor-pointer hover:scale-95">
+                    <div class="w-24 h-24 rounded-full flex items-center justify-center mb-8 mx-auto shadow-lg group-hover:rotate-12 transition-transform relative bg-gradient-to-br from-blue-400 to-cyan-400 text-white">
+                        <i data-lucide="factory" class="absolute w-8 h-8 opacity-20"></i>
+                        <span class="text-4xl relative z-10">🏭</span>
+                    </div>
+                    <h4 class="text-2xl font-black text-gray-900 uppercase tracking-tight mb-4">Manufacturing</h4>
+                    <p class="text-gray-500 font-bold leading-relaxed">It is made from the finest raw materials.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Story Section -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+            <div class="relative">
+                <div class="aspect-[4/5] rounded-[4rem] overflow-hidden shadow-2xl relative border-8 border-white/10">
+                    <img src="https://picsum.photos/seed/showroom/800/1000" alt="Our Showroom" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                    <div class="absolute bottom-12 left-12 right-12 text-white">
+                        <div class="text-sm font-black uppercase tracking-widest mb-2 opacity-80">Sivakasi, Tamil Nadu</div>
+                        <h3 class="text-3xl font-black uppercase tracking-tight">Our Mega Fireworks Showroom</h3>
+                    </div>
+                </div>
+                <div class="absolute -top-10 -right-10 bg-white p-8 rounded-[2.5rem] shadow-2xl border border-gray-100 hidden md:block animate-bounce">
+                    <div class="text-4xl font-black text-auraa-red">12+</div>
+                    <div class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Years Industry<br />Experience</div>
+                </div>
+            </div>
+
+            <div class="space-y-10">
+                <div class="space-y-4">
+                    <h2 class="text-xs font-black text-white uppercase tracking-[0.3em] opacity-60">The Auraa Story</h2>
+                    <h3 class="text-4xl md:text-5xl font-black text-white uppercase tracking-tight leading-none">
+                        Welcoming You to a <br />
+                        <span class="text-gray-900">World of Sparkles</span>
+                    </h3>
+                </div>
+                <div class="space-y-6 text-lg text-white/80 font-medium leading-relaxed">
+                    <p>
+                        The Auraa Crackers have immense pleasure in welcoming you to visit our mega fireworks showroom located in Sivakasi, where you can directly place your valuable orders and fulfill all your crackers requirements at one stop.
+                    </p>
+                    <p>
+                        We are in the cracker's industry for past 22+ years. It's our pride in supplying our esteemed customers with the best quality crackers at the lowest market prices.
+                    </p>
+                </div>
+                <div class="pt-6 flex flex-wrap gap-4">
+                    <a href="/products" class="bg-gray-900 text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-white hover:text-gray-900 transition-all shadow-xl">
+                        View our Products
+                    </a>
+                    <a href="tel:+916381426206" class="bg-white/10 border-2 border-white/20 text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-white hover:text-gray-900 transition-all">
+                        Call Us: +91 63814 26206
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bank Details Section -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+        {% include 'includes/bank_details.html' %}
+    </section>
+
+</div>
+
+<script>
+    function copyToClipboard(text) {
+        navigator.clipboard.writeText(text).then(() => {
+            alert('Copied to clipboard: ' + text);
+        });
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,228 @@
+<script>
+    // Global Cart Store
+    let cart = {}; // product_id -> quantity
+    const authStatus = document.getElementById('auth-status') ? document.getElementById('auth-status').innerText === 'true' : false;
+
+    // Sidebar DOM elements
+    const cartSidebar = document.getElementById('cart-sidebar');
+    const cartBackdrop = document.getElementById('cart-backdrop');
+    const cartItemsContainer = document.getElementById('cart-items-container');
+    const cartCountHeader = document.getElementById('header-cart-count');
+    const cartCountMobile = document.getElementById('header-cart-count-mobile');
+
+    // Sidebar Summary elements
+    const sidebarNetTotal = document.getElementById('cart-net-total');
+    const sidebarDiscountTotal = document.getElementById('cart-discount-total');
+    const sidebarSubTotal = document.getElementById('cart-sub-total');
+    const sidebarOverallTotal = document.getElementById('cart-overall-total');
+
+    function toggleCartSidebar() {
+        if (!cartSidebar) return;
+        if (cartSidebar.classList.contains('translate-x-full')) {
+            cartSidebar.classList.remove('translate-x-full');
+            cartBackdrop.classList.remove('hidden');
+            setTimeout(() => cartBackdrop.classList.remove('opacity-0'), 10);
+            renderCartSidebar();
+        } else {
+            cartSidebar.classList.add('translate-x-full');
+            cartBackdrop.classList.add('opacity-0');
+            setTimeout(() => cartBackdrop.classList.add('hidden'), 500);
+        }
+    }
+
+    async function fetchCart() {
+        if (!authStatus) return;
+        try {
+            const res = await fetch("{% url 'api_cart_list' %}");
+            const data = await res.json();
+            if (data.status === 'success') {
+                cart = {};
+                data.items.forEach(item => {
+                    cart[item.product_id] = {
+                        qty: item.quantity,
+                        name: item.name,
+                        price: item.price,
+                        original_price: item.original_price,
+                        image: item.image
+                    };
+                });
+                
+                // Persist Promo from session
+                if (data.promo_per) window.currentPromoPer = data.promo_per;
+                if (data.promo_code) window.currentPromoCode = data.promo_code;
+                
+                updateUI();
+            }
+        } catch (err) { console.error("Failed to fetch cart", err); }
+    }
+
+    async function removeFromCart(productId) {
+        if (!authStatus) return;
+        
+        const overlay = document.createElement('div');
+        overlay.className = "fixed inset-0 bg-transparent z-[100] flex items-center justify-center";
+        overlay.innerHTML = `<div class="w-12 h-12 border-4 border-auraa-red border-t-transparent rounded-full animate-spin"></div>`;
+        document.body.appendChild(overlay);
+
+        const formData = new FormData();
+        formData.append('product_id', productId);
+
+        try {
+            const res = await fetch("{% url 'api_cart_remove' %}", {
+                method: 'POST',
+                body: formData,
+                headers: { 'X-CSRFToken': '{{ csrf_token }}' }
+            });
+            const data = await res.json();
+            if (document.body.contains(overlay)) document.body.removeChild(overlay);
+
+            if (data.status === 'success') {
+                delete cart[productId];
+                await fetchCart();
+                renderCartSidebar();
+                // If on products page, update the input
+                const input = document.getElementById(`qty-${productId}`);
+                if (input) {
+                    input.value = 0;
+                    const totalLabel = document.getElementById(`total-${productId}`);
+                    if (totalLabel) totalLabel.innerText = '₹0.00';
+                    const removeBtn = document.getElementById(`remove-btn-${productId}`);
+                    if (removeBtn) removeBtn.classList.add('hidden');
+                }
+            }
+        } catch (err) {
+            if (document.body.contains(overlay)) document.body.removeChild(overlay);
+            if (typeof showModal === 'function') showModal('Error', 'Failed to remove item', 'error');
+        }
+    }
+
+    function updateUI() {
+        let itemsCount = 0;
+        let totalNet = 0;
+        let totalDiscount = 0;
+
+        // Apply global cart state to matching page elements
+        Object.keys(cart).forEach(pid => {
+            const item = cart[pid];
+            itemsCount += item.qty;
+            
+            const itemNet = (item.original_price || item.price) * item.qty;
+            const itemDiscount = ((item.original_price || item.price) - item.price) * item.qty;
+            totalNet += itemNet;
+            totalDiscount += itemDiscount;
+
+            // Page specific updates (e.g. Products Page)
+            if (typeof updatePageSpecificUI === 'function') {
+                updatePageSpecificUI(pid, item);
+            }
+        });
+
+        const initialSubTotal = totalNet - totalDiscount;
+        // Handle promo if exists on page
+        const currentPromoPer = window.currentPromoPer || 0;
+        const promoDiscount = initialSubTotal * (currentPromoPer / 100);
+        const subTotal = initialSubTotal - promoDiscount;
+
+        // Global Header Updates
+        console.log("Updating UI. Count:", itemsCount);
+        if (cartCountHeader) cartCountHeader.innerText = itemsCount;
+        if (cartCountMobile) cartCountMobile.innerText = itemsCount;
+
+        // Sidebar Summary Updates
+        const packing = subTotal * 0.03;
+        const overall = subTotal + packing;
+
+        if (sidebarNetTotal) sidebarNetTotal.innerText = `₹${totalNet.toFixed(2)}`;
+        if (sidebarDiscountTotal) sidebarDiscountTotal.innerText = `₹${totalDiscount.toFixed(2)}`;
+        if (sidebarSubTotal) sidebarSubTotal.innerText = `₹${subTotal.toFixed(2)}`;
+        if (sidebarOverallTotal) sidebarOverallTotal.innerText = `₹${overall.toFixed(2)}`;
+
+        // Page specific summary updates
+        if (typeof updatePageSummaryUI === 'function') {
+            updatePageSummaryUI({
+                totalNet, totalDiscount, subTotal, initialSubTotal, promoDiscount,
+                promoCode: window.currentPromoCode
+            });
+        }
+    }
+
+    function renderCartSidebar() {
+        if (!cartItemsContainer) return;
+        cartItemsContainer.innerHTML = '';
+        const pids = Object.keys(cart);
+
+        if (pids.length === 0) {
+            cartItemsContainer.innerHTML = `
+                <div class="flex flex-col items-center justify-center h-64 text-center space-y-4">
+                    <div class="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center text-gray-300">
+                        <i data-lucide="shopping-bag" class="w-8 h-8"></i>
+                    </div>
+                    <div>
+                        <p class="font-black uppercase tracking-widest text-gray-400 text-[10px]">Your cart is empty</p>
+                        <button onclick="toggleCartSidebar()" class="mt-4 text-auraa-red text-xs font-black uppercase tracking-tight hover:underline">Start Shopping</button>
+                    </div>
+                </div>`;
+            updateUI(); 
+            lucide.createIcons();
+            return;
+        }
+
+        pids.forEach((pid, index) => {
+            const item = cart[pid];
+            const div = document.createElement('div');
+            div.className = "flex items-center space-x-4 p-4 bg-gray-50 rounded-2xl border border-gray-100 group/item relative";
+            div.innerHTML = `
+                <span class="absolute -top-2 -left-2 w-6 h-6 bg-gray-900 text-white text-[10px] font-black rounded-lg flex items-center justify-center shadow-lg border border-white/20 z-10">
+                    ${index + 1}
+                </span>
+                <div class="w-16 h-16 bg-white rounded-xl border border-gray-100 flex-shrink-0 overflow-hidden">
+                    ${item.image ? `<img src="${item.image}" class="w-full h-full object-cover">` : `<div class="w-full h-full flex items-center justify-center text-gray-200"><i data-lucide="package" class="w-6 h-6"></i></div>`}
+                </div>
+                <div class="flex-grow min-w-0">
+                    <h4 class="text-[11px] font-black text-gray-900 truncate uppercase tracking-tight">${item.name}</h4>
+                    <div class="mt-2 flex items-center justify-between">
+                        <span class="px-2.5 py-1 bg-auraa-red/10 text-auraa-red text-[10px] font-bold rounded-md border border-auraa-red/10 flex items-center space-x-1">
+                            <span>${item.qty}</span><span class="opacity-50">x</span><span>₹${item.price.toFixed(2)}</span>
+                        </span>
+                        <span class="text-[11px] font-black text-gray-900">₹${(item.qty * item.price).toFixed(2)}</span>
+                    </div>
+                </div>
+                <button onclick="removeFromCart('${pid}')" class="p-2.5 text-gray-400 hover:text-auraa-red hover:bg-red-50 rounded-xl transition-all"><i data-lucide="trash-2" class="w-4.5 h-4.5"></i></button>
+            `;
+            cartItemsContainer.appendChild(div);
+        });
+        lucide.createIcons();
+    }
+
+    function handleSidebarCheckout() {
+        if (!authStatus) {
+            if (typeof showModal === 'function') {
+                showModal('Login Required', 'Please login to place an order.', 'info', 'Login', () => {
+                    window.location.href = "{% url 'login' %}";
+                });
+            } else {
+                window.location.href = "{% url 'login' %}";
+            }
+            return;
+        }
+
+        const overallText = sidebarOverallTotal ? sidebarOverallTotal.innerText.replace('₹', '').trim() : "0";
+        const overall = parseFloat(overallText) || 0;
+        const MIN_ORDER = 3000;
+
+        if (overall < MIN_ORDER) {
+            const diff = MIN_ORDER - overall;
+            if (typeof showModal === 'function') {
+                showModal('Minimum Order Required', `The minimum order for your location is ₹${MIN_ORDER.toFixed(2)}. You need ₹${diff.toFixed(2)} more to place the order.`, 'warning');
+            } else {
+                alert(`Minimum order ₹${MIN_ORDER} required. You need ₹${diff.toFixed(2)} more.`);
+            }
+            return;
+        }
+        window.location.href = "{% url 'checkout' %}";
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        fetchCart();
+    });
+</script>

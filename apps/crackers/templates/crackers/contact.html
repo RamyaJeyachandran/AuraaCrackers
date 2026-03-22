@@ -1,0 +1,295 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Contact Us | Auraa Crackers - Official Support & Bank Details{% endblock %}
+
+{% block extra_head %}
+<!-- GSAP for advanced animations -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+<style>
+    :root {
+        --auraa-red: #f5071d;
+        --glass: rgba(255, 255, 255, 0.08);
+        --glass-border: rgba(255, 255, 255, 0.15);
+    }
+
+    body {
+        background-color: white;
+        color: #111827;
+        overflow-x: hidden;
+    }
+
+    .perspective-container {
+        perspective: 2500px;
+        transform-style: preserve-3d;
+    }
+
+    .float-section {
+        background-color: var(--auraa-red);
+        border-radius: 4rem;
+        margin: 2.5rem 1.5rem;
+        box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.3);
+        position: relative;
+        overflow: hidden;
+        transform-style: preserve-3d;
+    }
+
+    .glass-card {
+        background: var(--glass);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--glass-border);
+        border-radius: 2.5rem;
+        padding: 3rem;
+        transform-style: preserve-3d;
+        transition: transform 0.3s ease-out, background 0.3s ease;
+    }
+
+    .glass-card:hover {
+        background: rgba(255, 255, 255, 0.12);
+        transform: translateY(-5px) translateZ(20px);
+    }
+
+    .scene-3d {
+        transform-style: preserve-3d;
+        will-change: transform;
+    }
+
+    /* 3D Floating Icons */
+    .float-3d {
+        animation: floatingAction 6s ease-in-out infinite;
+    }
+
+    @keyframes floatingAction {
+        0%, 100% { transform: translateY(0) rotate(0deg); }
+        50% { transform: translateY(-20px) rotate(5deg); }
+    }
+
+    /* Progressive Scroll Bar */
+    .scroll-progress-line {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 4px;
+        background: var(--auraa-red);
+        z-index: 10000;
+        width: 0%;
+        transition: width 0.1s ease-out;
+    }
+
+    /* Override Header for 3D stacking */
+    #main-nav {
+        background: white !important;
+        z-index: 9999 !important;
+        border-bottom: 1px solid rgba(0,0,0,0.05) !important;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="scroll-progress-line" id="progress-bar"></div>
+
+<div class="perspective-container">
+    <!-- Interactive Cinematic Hero -->
+    <section class="min-h-screen flex items-center justify-center float-section bg-auraa-red">
+        <!-- Parallax Background Elements -->
+        <div class="absolute inset-0 z-0">
+            <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_rgba(255,255,255,0.15)_0%,_transparent_70%)] opacity-40"></div>
+            <div id="hero-grains" class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 brightness-200 pointer-events-none"></div>
+            <!-- Floating Symbols -->
+            <div class="absolute top-[20%] left-[10%] text-white/5 text-9xl animate-pulse font-black">@</div>
+            <div class="absolute bottom-[20%] right-[10%] text-white/5 text-[15rem] animate-bounce font-black">#</div>
+        </div>
+
+        <div class="container mx-auto px-6 relative z-10 text-center scene-3d">
+            <div class="inline-flex items-center space-x-4 bg-white/10 backdrop-blur-xl border border-white/20 px-8 py-3 rounded-full mb-12 fade-up">
+                <i data-lucide="headphones" class="w-4 h-4 text-white"></i>
+                <span class="text-[12px] font-black uppercase tracking-[0.5em] text-white">Premium Support</span>
+            </div>
+            
+            <h1 class="text-5xl md:text-7xl lg:text-[10rem] font-black uppercase tracking-tighter leading-[0.85] mb-12 mix-blend-overlay text-white fade-up">
+                Get In <br /> <span class="italic underline decoration-white/20 underline-offset-[10px]">Touch</span>
+            </h1>
+
+            <div class="max-w-3xl mx-auto bg-white rounded-[2.5rem] py-10 px-12 shadow-2xl shadow-black/20 fade-up">
+                <p class="text-gray-900 text-xl md:text-2xl font-black leading-relaxed">
+                    We're here to help you light up your celebrations. Reach out through any of our official channels below.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Channels Matrix -->
+    <div class="space-y-40 pb-40">
+        
+        <!-- Support Trio -->
+        <section class="relative py-24 float-section bg-auraa-red group">
+            <div class="container mx-auto px-6 lg:px-20 grid md:grid-cols-3 gap-10">
+                <!-- Voice Support -->
+                <div class="glass-card hover-lift space-y-8 fade-up group/card">
+                    <div class="w-20 h-20 bg-white/10 rounded-[2rem] flex items-center justify-center mb-6 group-hover/card:rotate-12 transition-transform">
+                        <i data-lucide="phone" class="text-white w-10 h-10"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-white/50 text-[10px] font-black uppercase tracking-[0.3em] mb-4">Voice Support</h3>
+                        <div class="space-y-4">
+                            <a href="tel:+916381426206" class="block text-2xl md:text-3xl font-black text-white hover:translate-x-2 transition-transform">+91 63814 26206</a>
+                            <a href="tel:+919080560340" class="block text-2xl md:text-3xl font-black text-white hover:translate-x-2 transition-transform">+91 90805 60340</a>
+                            <a href="tel:+919677570276" class="block text-2xl md:text-3xl font-black text-white hover:translate-x-2 transition-transform">+91 96775 70276</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Email Inquiry -->
+                <div class="glass-card hover-lift space-y-8 fade-up group/card">
+                    <div class="w-20 h-20 bg-white/10 rounded-[2rem] flex items-center justify-center mb-6 group-hover/card:rotate-12 transition-transform">
+                        <i data-lucide="mail" class="text-white w-10 h-10"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-white/50 text-[10px] font-black uppercase tracking-[0.3em] mb-4">Email Inquiry</h3>
+                        <a href="mailto:info@auraacrackers.com" class="block text-2xl lg:text-3xl font-black text-white hover:translate-x-2 transition-transform break-all">info@auraacrackers.com</a>
+                    </div>
+                </div>
+
+                <!-- Our Base -->
+                <div class="glass-card hover-lift space-y-8 fade-up group/card">
+                    <div class="w-20 h-20 bg-white/10 rounded-[2rem] flex items-center justify-center mb-6 group-hover/card:rotate-12 transition-transform">
+                        <i data-lucide="map-pin" class="text-white w-10 h-10"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-white/50 text-[10px] font-black uppercase tracking-[0.3em] mb-4">Our Base</h3>
+                        <p class="text-2xl font-bold text-white leading-tight">
+                            Sivakasi Vembakottai Main Road, <br />
+                            Pernaikenpatti, Sivakasi.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bank Details Block -->
+        <section class="relative py-24 float-section bg-auraa-red">
+            <div class="container mx-auto px-6 lg:px-20 fade-up">
+                <div class="glass-card shadow-none border-none p-0 overflow-hidden">
+                    {% include 'includes/bank_details.html' %}
+                </div>
+            </div>
+            <!-- Floating Coin 3D Placeholder -->
+            <div class="absolute -bottom-10 -right-10 text-[12rem] opacity-10 float-3d pointer-events-none">💰</div>
+        </section>
+
+        <!-- Interactive Hub Map -->
+        <section class="relative py-24 float-section bg-auraa-red">
+            <div class="container mx-auto px-6 lg:px-20 grid lg:grid-cols-[1.3fr,0.7fr] gap-16 items-center">
+                <div class="fade-up order-2 lg:order-1">
+                    <div class="bg-white/10 p-4 rounded-[4rem] backdrop-blur-3xl border border-white/20 shadow-2xl relative group overflow-hidden h-[600px]">
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3934.332345678901!2d77.79123456789012!3d9.456789012345678!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b06cee123456789%3A0x1234567890abcdef!2sAuraa%20Crackers!5e0!3m2!1sen!2sin!4v1710000000000!5m2!1sen!2sin"
+                            width="100%"
+                            height="100%"
+                            style="border: 0"
+                            allowfullscreen
+                            loading="lazy"
+                            class="rounded-[3.5rem] grayscale group-hover:grayscale-0 transition-all duration-1000"
+                        ></iframe>
+                    </div>
+                </div>
+                <div class="order-1 lg:order-2 space-y-12 fade-up">
+                    <div class="w-20 h-1 bg-white shadow-[0_0_20px_rgba(255,255,255,0.5)]"></div>
+                    <h2 class="text-6xl md:text-8xl font-black text-white uppercase tracking-tighter leading-none">Global <br/> <span class="text-white/70">Connect</span></h2>
+                    <p class="text-xl text-white/60 font-medium leading-relaxed">
+                        Visit our official headquarters in Sivakasi to experience the heritage of quality and the pulse of firework innovation.
+                    </p>
+                    <div class="flex items-center space-x-6">
+                         <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-auraa-red shadow-xl float-3d">
+                             <i data-lucide="map" class="w-8 h-8"></i>
+                         </div>
+                         <div class="text-white font-black uppercase tracking-widest text-xs">Direct Office Landmark</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        gsap.registerPlugin(ScrollTrigger);
+
+        const isMobile = window.innerWidth < 768;
+
+        // 1. Scroll Progress
+        window.addEventListener('scroll', () => {
+            const h = document.documentElement, b = document.body;
+            const percent = (h.scrollTop || b.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+            const bar = document.getElementById('progress-bar');
+            if(bar) bar.style.width = percent + '%';
+        });
+
+        // 2. 3D Tilt for Glass Cards
+        if (!isMobile) {
+            document.querySelectorAll('.glass-card').forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const rotateX = (y - centerY) / 20;
+                    const rotateY = (centerX - x) / 20;
+
+                    gsap.to(card, {
+                        rotateX: rotateX,
+                        rotateY: rotateY,
+                        scale: 1.05,
+                        duration: 0.5,
+                        ease: "power2.out"
+                    });
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    gsap.to(card, {
+                        rotateX: 0,
+                        rotateY: 0,
+                        scale: 1,
+                        duration: 1,
+                        ease: "elastic.out(1, 0.3)"
+                    });
+                });
+            });
+        }
+
+        // 3. Sequential Entrances
+        gsap.utils.toArray('.fade-up').forEach((elem) => {
+            gsap.from(elem, {
+                opacity: 0,
+                y: 80,
+                rotateX: -5,
+                duration: 1.5,
+                ease: "power4.out",
+                scrollTrigger: {
+                    trigger: elem,
+                    start: "top 90%",
+                    toggleActions: "play none none none"
+                }
+            });
+        });
+
+        // 4. Parallax Title
+        gsap.to("h1", {
+            yPercent: -20,
+            ease: "none",
+            scrollTrigger: {
+                trigger: "h1",
+                start: "top center",
+                end: "bottom top",
+                scrub: true
+            }
+        });
+    });
+</script>
+{% endblock %}

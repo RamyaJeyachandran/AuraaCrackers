@@ -1,0 +1,62 @@
+{% load static %}
+{% if request.resolver_match.url_name != 'login' and '/admin/' not in request.path and '/dashboard/' not in request.path %}
+<div class="bg-gradient-to-b from-[#f5071d] to-[#d4061a] py-4 hidden lg:block border-t border-white/20 border-b border-black/30 shadow-[0_15px_35px_-15px_rgba(0,0,0,0.4)] relative z-[60]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center">
+            <!-- Logo Section with 3D Pop -->
+            <a href="{% url 'home' %}" class="flex items-center group transition-all duration-300">
+                <div class="h-12 w-12 md:h-14 md:w-14 rounded-full overflow-hidden border-4 border-white/30 shadow-[0_8px_16px_-4px_rgba(0,0,0,0.5)] bg-white transition-transform transform group-hover:scale-110 group-hover:rotate-6">
+                    <img src="{% static 'images/logo.png' %}" alt="Auraa Crackers" class="w-full h-full object-cover object-top scale-[1.3]">
+                </div>
+            </a>
+
+            <!-- Contact Blocks with 3D Card Effect -->
+            <div class="flex items-center space-x-4">
+                <!-- Order Confirm -->
+                <div class="flex items-center space-x-3 bg-black/10 backdrop-blur-md px-4 py-3 rounded-2xl border border-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.1),0_4px_6px_rgba(0,0,0,0.2)] hover:translate-y-[-2px] hover:shadow-xl hover:bg-black/20 transition-all duration-300 group">
+                    <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-auraa-red shadow-[0_4px_8px_rgba(0,0,0,0.3)] transform transition-transform group-hover:rotate-12">
+                        <i data-lucide="phone" class="w-5 h-5"></i>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[9px] font-black uppercase tracking-[0.2em] text-white/50 leading-none mb-1.5">Order Confirm</span>
+                        <a href="tel:+916381426206" class="text-xs font-extrabold text-white leading-none tracking-tight drop-shadow-md">+91 63814 26206</a>
+                    </div>
+                </div>
+
+                <!-- Payment Confirm -->
+                <div class="flex items-center space-x-3 bg-black/10 backdrop-blur-md px-4 py-3 rounded-2xl border border-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.1),0_4px_6px_rgba(0,0,0,0.2)] hover:translate-y-[-2px] hover:shadow-xl hover:bg-black/20 transition-all duration-300 group">
+                    <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-auraa-red shadow-[0_4px_8px_rgba(0,0,0,0.3)] transform transition-transform group-hover:rotate-12">
+                        <i data-lucide="credit-card" class="w-5 h-5"></i>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[9px] font-black uppercase tracking-[0.2em] text-white/50 leading-none mb-1.5">Payment Confirm</span>
+                        <a href="tel:+919080560340" class="text-xs font-extrabold text-white leading-none tracking-tight drop-shadow-md">+91 90805 60340</a>
+                    </div>
+                </div>
+
+                <!-- Customer Support -->
+                <div class="flex items-center space-x-3 bg-black/10 backdrop-blur-md px-4 py-3 rounded-2xl border border-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.1),0_4px_6px_rgba(0,0,0,0.2)] hover:translate-y-[-2px] hover:shadow-xl hover:bg-black/20 transition-all duration-300 group">
+                    <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-auraa-red shadow-[0_4px_8px_rgba(0,0,0,0.3)] transform transition-transform group-hover:rotate-12">
+                        <i data-lucide="headphones" class="w-5 h-5"></i>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[9px] font-black uppercase tracking-[0.2em] text-white/50 leading-none mb-1.5">Customer Support</span>
+                        <a href="tel:+919677570276" class="text-xs font-extrabold text-white leading-none tracking-tight drop-shadow-md">+91 96775 70276</a>
+                    </div>
+                </div>
+
+                <!-- Dispatch Details -->
+                <div class="flex items-center space-x-3 bg-black/10 backdrop-blur-md px-4 py-3 rounded-2xl border border-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.1),0_4px_6px_rgba(0,0,0,0.2)] hover:translate-y-[-2px] hover:shadow-xl hover:bg-black/20 transition-all duration-300 group">
+                    <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-auraa-red shadow-[0_4px_8px_rgba(0,0,0,0.3)] transform transition-transform group-hover:rotate-12">
+                        <i data-lucide="truck" class="w-5 h-5"></i>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[9px] font-black uppercase tracking-[0.2em] text-white/50 leading-none mb-1.5">Dispatch Details</span>
+                        <a href="tel:+919677570276" class="text-xs font-extrabold text-white leading-none tracking-tight drop-shadow-md">+91 96775 70276</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}

@@ -1,0 +1,400 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Founder's Story | Auraa Crackers{% endblock %}
+
+{% block extra_head %}
+<!-- GSAP for advanced animations -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+<style>
+    .story-section {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .reveal-mask {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .reveal-mask::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #f5071d;
+        transform: scaleX(1);
+        transform-origin: left;
+        transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1);
+        z-index: 2;
+    }
+
+    .reveal-mask.active::after {
+        transform: scaleX(0);
+    }
+
+    .parallax-img {
+        will-change: transform;
+    }
+
+    .curtain {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #000;
+        z-index: 100;
+        transform: translateY(0);
+        pointer-events: none;
+    }
+
+    .progress-wrap {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: rgba(245, 7, 29, 0.1);
+        z-index: 1000;
+    }
+
+    .progress-bar {
+        height: 100%;
+        background: #f5071d;
+        width: 0%;
+        transition: width 0.1s;
+    }
+
+    .fade-up {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+
+    .stagger-item {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    .quote-card {
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(245, 7, 29, 0.1);
+    }
+
+    /* Floating Firework Sparkles */
+    .sparkle {
+        position: absolute;
+        pointer-events: none;
+        background: radial-gradient(circle, #fff, transparent);
+        border-radius: 50%;
+        filter: blur(1px);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Curtain Transition on Load -->
+<div id="initial-curtain" class="curtain"></div>
+
+<!-- Progress Bar -->
+<div class="progress-wrap">
+    <div id="scroll-progress" class="progress-bar"></div>
+</div>
+
+<!-- Section 1: Introduction & Memory -->
+<section class="story-section bg-slate-50 relative overflow-hidden">
+    <div class="absolute inset-0 opacity-10">
+        <div class="absolute top-20 left-10 w-64 h-64 bg-auraa-red rounded-full blur-[120px] animate-pulse"></div>
+        <div class="absolute bottom-20 right-10 w-96 h-96 bg-orange-400 rounded-full blur-[150px] animate-pulse" style="animation-delay: 2s;"></div>
+    </div>
+
+    <div class="container mx-auto px-6 lg:px-20 grid lg:grid-cols-2 gap-16 items-center">
+        <div class="order-2 lg:order-1">
+            <h2 class="text-auraa-red font-black uppercase tracking-[0.3em] text-sm mb-6 fade-up">The Beginning</h2>
+            <h1 class="text-5xl lg:text-7xl font-black text-slate-900 leading-tight mb-8 fade-up">
+                Born from a <span class="text-auraa-red">Memory</span> and a simple Dream.
+            </h1>
+            <div class="space-y-6 text-lg text-slate-600 leading-relaxed fade-up" style="transition-delay: 200ms;">
+                <p>
+                    As a child, I was always excited about Diwali and fireworks. Like every kid, I eagerly waited for the festival season, imagining the joy of lighting crackers and celebrating with friends and family.
+                </p>
+                <p>
+                    Firecrackers were not just products for me — they were moments of happiness, laughter, and celebration.
+                </p>
+            </div>
+        </div>
+        <div class="order-1 lg:order-2">
+            <div class="reveal-mask rounded-3xl overflow-hidden shadow-2xl transition-all duration-300 hover:scale-[1.02] bg-white p-4">
+                <img src="{% static 'images/founder/childhood.png' %}" alt="Childhood Memory" class="w-full h-auto object-cover parallax-img rounded-2xl shadow-inner-lg">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Section 2: The Challenge -->
+<section class="story-section bg-white">
+    <div class="container mx-auto px-6 lg:px-20">
+        <div class="max-w-4xl mx-auto text-center space-y-12">
+            <h2 class="text-4xl lg:text-6xl font-black text-slate-900 leading-tight fade-up">
+                A Silence in the <span class="text-auraa-red">Celebration</span>.
+            </h2>
+            <div class="space-y-8 text-xl text-slate-600 leading-relaxed stagger-group">
+                <p class="stagger-item">
+                    However, due to financial challenges during my childhood, buying crackers was not always possible.
+                </p>
+                <p class="stagger-item">
+                    Many times, I had to watch others enjoy the celebration while quietly wishing I could experience the same excitement.
+                </p>
+                <div class="w-20 h-1 bg-auraa-red mx-auto stagger-item"></div>
+                <p class="text-2xl font-bold text-slate-800 stagger-item italic">
+                    "Those moments left a deep impression on me. They taught me how meaningful even a small spark of celebration can be in a child’s life."
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Section 3: The Mission -->
+<section class="story-section bg-slate-900 text-white overflow-hidden">
+    <!-- Animated background sparkles -->
+    <div id="sparkle-container-mission" class="absolute inset-0 z-0"></div>
+
+    <div class="container mx-auto px-6 lg:px-20 grid lg:grid-cols-2 gap-16 items-center relative z-10">
+        <div class="reveal-mask rounded-3xl overflow-hidden shadow-2xl bg-gradient-to-br from-auraa-red/10 to-blue-600/10 min-h-[400px] flex items-center justify-center p-12 border border-white/10 backdrop-blur-3xl group">
+            <div class="glass-object-3d animate-spin-slow">
+                <div class="w-32 h-32 bg-auraa-red rounded-full blur-2xl opacity-20 absolute -inset-10"></div>
+                <div class="relative z-10 text-9xl transform-gpu rotate-12 group-hover:rotate-0 transition-transform duration-1000">🚀</div>
+                <div class="absolute inset-0 border-t-2 border-auraa-red/30 rounded-full animate-ping"></div>
+                <!-- 3D Abstract Glow -->
+                <div class="absolute inset-[-50%] bg-gradient-to-tr from-auraa-red/20 via-transparent to-blue-600/20 blur-[100px] opacity-40 group-hover:opacity-60 transition-opacity"></div>
+            </div>
+        </div>
+        <div class="space-y-8">
+            <h2 class="text-auraa-red font-black uppercase tracking-[0.3em] text-sm fade-up">The Mission</h2>
+            <h3 class="text-4xl lg:text-6xl font-black leading-tight fade-up">
+                A Mission to bring <span class="text-auraa-red">Joy</span>.
+            </h3>
+            <div class="space-y-6 text-lg text-slate-300 leading-relaxed fade-up">
+                <p>
+                    Years later, when the opportunity came to build a business in Sivakasi — the heart of India’s fireworks industry, I saw it as more than just a business opportunity.
+                </p>
+                <p>
+                    It became a mission to bring joy to more families and children. That is why Auraa Crackers focuses strongly on affordability and customer happiness.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Section 4: Success & Belief -->
+<section class="story-section bg-slate-50">
+    <div class="container mx-auto px-6 lg:px-20 grid lg:grid-cols-2 gap-16 items-center">
+        <div class="space-y-8 order-2 lg:order-1">
+            <h2 class="text-4xl lg:text-6xl font-black text-slate-900 leading-tight fade-up">
+                Every child <span class="text-auraa-red">deserves</span> the joy.
+            </h2>
+            <div class="space-y-6 text-lg text-slate-600 leading-relaxed stagger-group">
+                <p class="stagger-item">
+                    The goal was never just to sell fireworks, but to make celebrations more accessible so that more families can enjoy the festive spirit without financial burden.
+                </p>
+                <p class="stagger-item">
+                    For us, money is only a byproduct. The true success of Auraa Crackers lies in the smiles of children, the excitement of families, and the memories created during festivals.
+                </p>
+                <div class="p-8 quote-card rounded-3xl mt-10 stagger-item">
+                    <p class="text-3xl font-black text-slate-900">
+                        Today, Auraa Crackers stands on a simple belief: <span class="text-auraa-red underline decoration-4">Every child deserves the joy of celebration.</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="order-1 lg:order-2">
+            <div class="reveal-mask rounded-3xl overflow-hidden shadow-2xl relative group bg-gradient-to-tr from-orange-400/5 to-yellow-400/5 min-h-[400px] flex items-center justify-center border border-white/10">
+                <div class="sparkle-3d-ball relative">
+                    <div class="w-48 h-48 bg-auraa-red rounded-full opacity-10 blur-3xl scale-125 group-hover:scale-150 transition-transform duration-1000"></div>
+                    <div class="absolute inset-0 flex items-center justify-center text-8xl transform hover:scale-125 transition-transform duration-500">✨</div>
+                    <!-- Orbiting Orbs -->
+                    <div class="absolute w-8 h-8 bg-orange-400 rounded-full blur-md opacity-40 animate-bounce" style="top: 0; left: 0;"></div>
+                    <div class="absolute w-6 h-6 bg-yellow-400 rounded-full blur-sm opacity-50 animate-pulse" style="bottom: 10px; right: 20px;"></div>
+                </div>
+                <div class="absolute inset-0 bg-gradient-to-t from-auraa-red/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Section 5: Founder Quote -->
+<section class="story-section bg-white border-t border-slate-100">
+    <div class="container mx-auto px-6 lg:px-20">
+        <div class="max-w-5xl mx-auto">
+            <div class="relative py-20 px-8 lg:px-20 text-center quote-card rounded-[4rem] border-auraa-red/5 shadow-2xl overflow-hidden">
+                <!-- Large Quote Mark Background -->
+                <span class="absolute top-10 left-10 text-[20rem] font-serif text-auraa-red/5 leading-none select-none">"</span>
+                
+                <div class="relative z-10 space-y-12">
+                    <h2 class="text-auraa-red font-black uppercase tracking-[0.5em] text-sm fade-up">Founder's Quote</h2>
+                    <p class="text-3xl lg:text-5xl font-black text-slate-800 italic leading-tight fade-up">
+                        "As a child, I once wished I could celebrate more during Diwali. Today, Auraa Crackers exists to make sure more children can experience that same joy."
+                    </p>
+                    <div class="space-y-2 fade-up">
+                        <h4 class="text-2xl font-black text-slate-900">Thanga Prabu N</h4>
+                        <p class="text-auraa-red font-black uppercase tracking-widest text-xs">Founder – Auraa Crackers</p>
+                    </div>
+                    
+                    <div class="pt-10 flex justify-center fade-up">
+                        <a href="{% url 'product_list' %}" class="bg-[#f5071d] text-white px-10 py-5 rounded-full flex items-center space-x-3 hover:bg-gray-900 transition-all shadow-xl hover:shadow-gray-900/20 group uppercase font-black tracking-widest text-sm">
+                            <span>Browse Our Collection</span>
+                            <i data-lucide="sparkles" class="w-5 h-5 group-hover:rotate-12 transition-transform"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <span class="absolute bottom-10 right-10 text-[20rem] font-serif text-auraa-red/5 leading-none select-none rotate-180">"</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        gsap.registerPlugin(ScrollTrigger);
+
+        // 1. Initial Curtain Reveal
+        gsap.to("#initial-curtain", {
+            y: "-100%",
+            duration: 1.2,
+            ease: "expo.inOut",
+            delay: 0.5
+        });
+
+        // 2. Scroll Progress Bar
+        window.addEventListener('scroll', () => {
+            const h = document.documentElement, 
+                  b = document.body,
+                  st = 'scrollTop',
+                  sh = 'scrollHeight';
+            const percent = (h[st] || b[st]) / ((h[sh] || b[sh]) - h.clientHeight) * 100;
+            document.getElementById('scroll-progress').style.width = percent + '%';
+        });
+
+        // 3. Fade In & Slide Up Animations
+        gsap.utils.toArray('.fade-up').forEach((elem) => {
+            gsap.fromTo(elem, 
+                { opacity: 0, y: 50 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    duration: 1,
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: elem,
+                        start: "top 85%",
+                        toggleActions: "play none none none"
+                    }
+                }
+            );
+        });
+
+        // 4. Staggered Entrance
+        gsap.utils.toArray('.stagger-group').forEach((group) => {
+            const items = group.querySelectorAll('.stagger-item');
+            gsap.fromTo(items, 
+                { opacity: 0, y: 30 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.8,
+                    stagger: 0.2,
+                    ease: "power2.out",
+                    scrollTrigger: {
+                        trigger: group,
+                        start: "top 80%",
+                    }
+                }
+            );
+        });
+
+        // 5. Image Mask Reveal
+        gsap.utils.toArray('.reveal-mask').forEach((mask) => {
+            ScrollTrigger.create({
+                trigger: mask,
+                start: "top 75%",
+                onEnter: () => mask.classList.add('active'),
+                once: true
+            });
+            
+            // Mask animation for image appearance
+            gsap.from(mask.querySelector('img'), {
+                scale: 1.3,
+                duration: 2,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: mask,
+                    start: "top 75%",
+                }
+            });
+        });
+
+        // 6. Parallax Effect for images
+        gsap.utils.toArray('.parallax-img').forEach((img) => {
+            gsap.to(img, {
+                yPercent: 15,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: img,
+                    scrub: true
+                }
+            });
+        });
+
+        // 7. Firework Sparkles Animation
+        function createSparkle(containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            const sparkle = document.createElement('div');
+            sparkle.classList.add('sparkle');
+            
+            const size = Math.random() * 4 + 2;
+            const x = Math.random() * 100;
+            const y = Math.random() * 100;
+            const duration = Math.random() * 3 + 2;
+            
+            sparkle.style.width = `${size}px`;
+            sparkle.style.height = `${size}px`;
+            sparkle.style.left = `${x}%`;
+            sparkle.style.top = `${y}%`;
+            sparkle.style.opacity = Math.random();
+            
+            container.appendChild(sparkle);
+            
+            gsap.to(sparkle, {
+                y: `-=${Math.random() * 100 + 50}`,
+                x: `+=${(Math.random() - 0.5) * 50}`,
+                opacity: 0,
+                scale: 0,
+                duration: duration,
+                ease: "power1.out",
+                onComplete: () => {
+                    sparkle.remove();
+                    createSparkle(containerId);
+                }
+            });
+        }
+
+        for (let i = 0; i < 30; i++) {
+            setTimeout(() => createSparkle('sparkle-container-mission'), i * 100);
+        }
+    });
+</script>
+{% endblock %}

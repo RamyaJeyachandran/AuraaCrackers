@@ -1,0 +1,430 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Customer Testimonials | Auraa Crackers{% endblock %}
+
+{% block extra_head %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+<style>
+    /* Testimonials Carousel Styles */
+    .testimonial-carousel-container {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+        padding: 4rem 0;
+    }
+
+    .text-110px {
+        font-size: 110px;
+    }
+
+    .testimonial-track {
+        display: flex;
+        transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        will-change: transform;
+    }
+
+    .testimonial-slide {
+        flex: 0 0 100%;
+        min-width: 100%;
+        padding: 0 1rem;
+        opacity: 0.4;
+        scale: 0.9;
+        transition: all 0.6s ease;
+    }
+
+    .testimonial-slide.active {
+        opacity: 1;
+        scale: 1;
+    }
+
+    @media (min-width: 768px) {
+        .testimonial-slide {
+            flex: 0 0 100%;
+            min-width: 100%;
+        }
+    }
+
+    @media (min-width: 1024px) {
+        .testimonial-slide {
+            flex: 0 0 50%;
+            min-width: 50%;
+        }
+    }
+
+    .glass-testimonial-card {
+        background: rgba(25, 25, 25, 0.4);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 3rem;
+        padding: 4rem;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 40px 100px -20px rgba(0,0,0,0.4);
+    }
+
+    .glass-testimonial-card::after {
+        content: '"';
+        position: absolute;
+        top: 2rem;
+        right: 3rem;
+        font-size: 10rem;
+        font-family: serif;
+        color: rgba(245, 7, 29, 0.1);
+        line-height: 1;
+    }
+
+    .carousel-dot {
+        width: 10px;
+        height: 10px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .carousel-dot.active {
+        width: 40px;
+        background: #f5071d;
+        border-radius: 5px;
+    }
+
+    /* Video section styles */
+    .video-placeholder {
+        aspect-ratio: 16/9;
+        background: #000;
+        border-radius: 4rem;
+        overflow: hidden;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(255,255,255,0.05);
+        box-shadow: 0 50px 100px -30px rgba(0,0,0,0.8);
+    }
+    
+    .video-glow {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at 50% 50%, rgba(245, 7, 29, 0.2), transparent 70%);
+        pointer-events: none;
+    }
+
+    .hero-glow {
+        position: absolute;
+        width: 1000px;
+        height: 1000px;
+        background: radial-gradient(circle, rgba(245, 7, 29, 0.08) 0%, transparent 70%);
+        top: -500px;
+        left: -500px;
+        pointer-events: none;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<style>
+    .page-fade-in {
+        animation: fadeIn 1s ease-out forwards;
+        opacity: 0;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+<div class="bg-auraa-red min-h-screen text-white overflow-hidden selection:bg-gray-950 selection:text-white page-fade-in">
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 px-6">
+        <div class="hero-glow"></div>
+        <div class="max-w-7xl mx-auto text-center space-y-8">
+            <div class="inline-flex items-center space-x-3 bg-black/20 backdrop-blur-xl border border-white/10 px-6 py-2 rounded-full">
+                <i data-lucide="heart" class="text-white w-4 h-4 fill-current"></i>
+                <span class="text-[10px] font-black text-white uppercase tracking-[0.3em]">Customer Love</span>
+            </div>
+            <h1 class="text-7xl md:text-[110px] font-black text-white leading-[0.9] uppercase tracking-tighter">
+                Real <span class="text-gray-900">Voices</span> <br />
+                Real <span class="italic underline decoration-white/20 underline-offset-[10px]">Joy</span>
+            </h1>
+            <p class="text-xl text-white/60 font-medium max-w-2xl mx-auto leading-relaxed">
+                Celebrating life's brightest moments with families across the nation. Read what our valued community has to say about their Auraa experience.
+            </p>
+        </div>
+    </section>
+
+    <!-- Large Featured Carousel -->
+    <section class="pb-32 px-6">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="testimonial-carousel-container group/carousel">
+                <div class="testimonial-track" id="testimonial-track">
+                    <!-- Slide 1 -->
+                    <div class="testimonial-slide active">
+                        <div class="glass-testimonial-card">
+                            <div class="space-y-8">
+                                <div class="flex items-center space-x-1 text-auraa-red">
+                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
+                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
+                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
+                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
+                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
+                                </div>
+                                <p class="text-2xl md:text-3xl text-white font-medium leading-[1.4] italic tracking-tight">
+                                    "The quality of Auraa Crackers is unmatched. Every single piece was vibrant and safe. My family truly enjoyed the celebration! Looking forward to many more Diwali with Auraa."
+                                </p>
+                            </div>
+                            <div class="flex items-center space-x-6 pt-12 mt-12 border-t border-white/5">
+                                <div class="w-20 h-20 rounded-[2rem] overflow-hidden border-2 border-auraa-red/30 shadow-2xl">
+                                    <img src="{% static 'brain/36046f55-9242-495c-9f56-389798283782/testimonial_user_1_1774032295532.png' %}" class="w-full h-full object-cover" alt="User">
+                                </div>
+                                <div>
+                                    <h4 class="text-xl font-black text-white uppercase tracking-wider">Rajesh Kumar</h4>
+                                    <p class="text-xs font-bold text-auraa-red uppercase tracking-widest mt-1">Verified Customer from Chennai</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 2 -->
+                    <div class="testimonial-slide">
+                        <div class="glass-testimonial-card">
+                            <div class="space-y-8">
+                                <div class="flex items-center space-x-1 text-auraa-red">
+                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
+                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
+                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
+                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
+                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
+                                </div>
+                                <p class="text-2xl md:text-3xl text-white font-medium leading-[1.4] italic tracking-tight">
+                                    "Amazing varieties! The 2025 collection has some really unique items. Customer support was very helpful with my inquiry and guided me through the submission process."
+                                </p>
+                            </div>
+                            <div class="flex items-center space-x-6 pt-12 mt-12 border-t border-white/5">
+                                <div class="w-20 h-20 rounded-[2rem] overflow-hidden border-2 border-auraa-red/30 shadow-2xl">
+                                    <img src="{% static 'brain/36046f55-9242-495c-9f56-389798283782/testimonial_user_2_1774032313638.png' %}" class="w-full h-full object-cover" alt="User">
+                                </div>
+                                <div>
+                                    <h4 class="text-xl font-black text-white uppercase tracking-wider">Priya Sharma</h4>
+                                    <p class="text-xs font-bold text-auraa-red uppercase tracking-widest mt-1">Premium Gold Member</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 3 -->
+                    <div class="testimonial-slide">
+                        <div class="glass-testimonial-card">
+                            <div class="space-y-8">
+                                <div class="flex items-center space-x-1 text-auraa-red">
+                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
+                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
+                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
+                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
+                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
+                                </div>
+                                <p class="text-2xl md:text-3xl text-white font-medium leading-[1.4] italic tracking-tight">
+                                    "Safety is my primary concern for my kids. Auraa's products are reliable and clearly labeled. The sparkles were a huge hit! Highly recommended for families."
+                                </p>
+                            </div>
+                            <div class="flex items-center space-x-6 pt-12 mt-12 border-t border-white/5">
+                                <div class="w-20 h-20 rounded-[2rem] overflow-hidden border-2 border-auraa-red/30 shadow-2xl">
+                                    <img src="{% static 'brain/36046f55-9242-495c-9f56-389798283782/testimonial_user_3_1774032333418.png' %}" class="w-full h-full object-cover" alt="User">
+                                </div>
+                                <div>
+                                    <h4 class="text-xl font-black text-white uppercase tracking-wider">Anil Verma</h4>
+                                    <p class="text-xs font-bold text-auraa-red uppercase tracking-widest mt-1">Happy Parent</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation Controls -->
+                <button onclick="prevSlide()" class="absolute left-4 top-1/2 -translate-y-1/2 w-20 h-20 bg-white shadow-2xl rounded-full flex items-center justify-center text-black hover:bg-auraa-red hover:text-white transition-all z-20 md:flex hidden">
+                    <i data-lucide="chevron-left" class="w-8 h-8"></i>
+                </button>
+                <button onclick="nextSlide()" class="absolute right-4 top-1/2 -translate-y-1/2 w-20 h-20 bg-white shadow-2xl rounded-full flex items-center justify-center text-black hover:bg-auraa-red hover:text-white transition-all z-20 md:flex hidden">
+                    <i data-lucide="chevron-right" class="w-8 h-8"></i>
+                </button>
+
+                <!-- Dots Indicators -->
+                <div class="flex justify-center space-x-4 mt-16" id="carousel-dots">
+                    <!-- Dots will be generated via JS -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Video Stories Section -->
+    <section class="py-40 bg-auraa-red border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-end gap-12 mb-32">
+                <div class="space-y-6">
+                    <h2 class="text-xs font-black text-white uppercase tracking-[0.5em]">Experience the Auraa</h2>
+                    <h3 class="text-5xl md:text-7xl font-black text-white uppercase tracking-tighter">Video Stories</h3>
+                </div>
+                <div class="max-w-md">
+                    <div class="bg-black/10 backdrop-blur-sm border-l-4 border-white/30 p-8 rounded-2xl">
+                        <p class="text-xl text-white font-bold leading-relaxed">
+                            Watch our community light up the sky. Real smiles caught on camera during India's biggest celebrations.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-20">
+                <div class="group cursor-pointer">
+                    <div class="video-placeholder group-hover:scale-[1.02] transition-transform duration-700">
+                        <div class="video-glow"></div>
+                        <div class="relative z-10 flex flex-col items-center space-y-6">
+                            <div class="w-32 h-32 bg-white rounded-full flex items-center justify-center shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)] group-hover:scale-110 transition-transform">
+                                <i data-lucide="play" class="w-12 h-12 text-gray-950 fill-current"></i>
+                            </div>
+                            <div class="text-center">
+                                <span class="text-[12px] font-black uppercase tracking-widest text-white/40 block mb-2">Premiere</span>
+                                <span class="text-2xl font-black uppercase tracking-tight text-white group-hover:text-auraa-red transition-colors">Diwali Grand Finale 2024</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="group cursor-pointer">
+                    <div class="video-placeholder group-hover:scale-[1.02] transition-transform duration-700">
+                        <div class="video-glow"></div>
+                        <div class="relative z-10 flex flex-col items-center space-y-6">
+                            <div class="w-32 h-32 bg-white rounded-full flex items-center justify-center shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)] group-hover:scale-110 transition-transform">
+                                <i data-lucide="play" class="w-12 h-12 text-gray-950 fill-current"></i>
+                            </div>
+                            <div class="text-center">
+                                <span class="text-[12px] font-black uppercase tracking-widest text-white/40 block mb-2">Highlights</span>
+                                <span class="text-2xl font-black uppercase tracking-tight text-white group-hover:text-auraa-red transition-colors">Family Gathering In Hubli</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Feedback CTA -->
+    <section class="py-40 relative">
+        <div class="max-w-4xl mx-auto px-6 text-center space-y-12 bg-gradient-to-br from-auraa-red via-[#d40619] to-black/30 border border-white/10 p-20 rounded-[5rem] relative overflow-hidden shadow-[0_50px_100px_-20px_rgba(0,0,0,0.4)]">
+            <div class="absolute inset-0 bg-white/5 blur-3xl rounded-full"></div>
+            <div class="relative z-10 space-y-6">
+                <h3 class="text-4xl md:text-6xl font-black text-white uppercase tracking-tighter">Share Your Story</h3>
+                <p class="text-xl text-white/80 leading-relaxed max-w-xl mx-auto font-medium">
+                    Loved our products? We'd love to hear from you. Your feedback helps us illuminate more lives with safety and quality.
+                </p>
+                <div class="pt-8">
+                    <a href="{% url 'contact' %}" class="inline-flex items-center space-x-4 bg-white text-gray-950 px-12 py-6 rounded-full font-black uppercase tracking-widest text-sm hover:scale-105 active:scale-95 transition-all shadow-2xl">
+                        <span>Submit Feedback</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        lucide.createIcons();
+
+        // Carousel Logic
+        const track = document.getElementById('testimonial-track');
+        const slides = Array.from(track.children);
+        const dotsContainer = document.getElementById('carousel-dots');
+        let currentIdx = 0;
+        let autoScrollInterval;
+
+        function getSlidesPerView() {
+            if (window.innerWidth >= 1024) return 2;
+            return 1;
+        }
+
+        function setupDots() {
+            dotsContainer.innerHTML = '';
+            const perView = getSlidesPerView();
+            const count = slides.length - (perView - 1);
+            for (let i = 0; i < count; i++) {
+                const dot = document.createElement('div');
+                dot.className = `carousel-dot ${i === 0 ? 'active' : ''}`;
+                dot.onclick = () => goToSlide(i);
+                dotsContainer.appendChild(dot);
+            }
+        }
+
+        function updateCarousel() {
+            const perView = getSlidesPerView();
+            const slideWidth = 100 / perView;
+            track.style.transform = `translateX(-${currentIdx * slideWidth}%)`;
+
+            slides.forEach((slide, i) => {
+                slide.classList.remove('active');
+                if (i >= currentIdx && i < currentIdx + perView) {
+                    slide.classList.add('active');
+                }
+            });
+
+            const dots = Array.from(dotsContainer.children);
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === currentIdx);
+            });
+        }
+
+        window.nextSlide = function() {
+            const perView = getSlidesPerView();
+            const maxIdx = slides.length - perView;
+            currentIdx = (currentIdx + 1) % (maxIdx + 1);
+            updateCarousel();
+        }
+
+        window.prevSlide = function() {
+            const perView = getSlidesPerView();
+            const maxIdx = slides.length - perView;
+            currentIdx = (currentIdx - 1 + (maxIdx + 1)) % (maxIdx + 1);
+            updateCarousel();
+        }
+
+        function goToSlide(idx) {
+            currentIdx = idx;
+            updateCarousel();
+            resetAutoScroll();
+        }
+
+        function startAutoScroll() {
+            autoScrollInterval = setInterval(nextSlide, 6000);
+        }
+
+        function resetAutoScroll() {
+            clearInterval(autoScrollInterval);
+            startAutoScroll();
+        }
+
+        setupDots();
+        updateCarousel();
+        startAutoScroll();
+
+        window.addEventListener('resize', () => {
+            setupDots();
+            updateCarousel();
+        });
+
+        // Hover pause
+        track.parentElement.addEventListener('mouseenter', () => clearInterval(autoScrollInterval));
+        track.parentElement.addEventListener('mouseleave', startAutoScroll);
+    });
+</script>
+{% endblock %}

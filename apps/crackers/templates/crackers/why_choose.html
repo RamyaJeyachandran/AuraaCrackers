@@ -1,0 +1,476 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Why Choose Auraa | The Auraa Advantage - Premium Sivakasi Fireworks{% endblock %}
+
+{% block extra_head %}
+<!-- GSAP & Core Animation Libraries -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
+
+<style>
+    :root {
+        --auraa-red: #f5071d;
+        --deep-dark: #f5071d; /* Changed to Red Base */
+        --glass-white: rgba(255, 255, 255, 1);
+        --glass-border: rgba(0, 0, 0, 0.05);
+    }
+
+    /* Force Auraa Red background for this page */
+    body.bg-white {
+        background-color: var(--auraa-red) !important;
+        color: white !important;
+        overflow-x: hidden;
+    }
+
+    /* Fix header visibility on white background - high specificity */
+    #main-nav, #main-nav.bg-white {
+        background-color: #ffffff !important;
+    }
+    #main-nav a, #main-nav button {
+        color: #1a1a1a !important;
+    }
+    #main-nav a:hover, #main-nav button:hover {
+        color: var(--auraa-red) !important;
+    }
+    .header-username {
+        color: white !important;
+    }
+
+    /* 3D Kinetic Section */
+    .immersive-section {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        position: relative;
+        perspective: 2000px;
+        padding: 100px 0;
+    }
+
+    /* Deep Parallax Background */
+    .parallax-bg {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        overflow: hidden;
+    }
+
+    .parallax-bg img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.15;
+        scale: 1.1;
+    }
+
+    /* White Card Engine */
+    .kinetic-card {
+        background: white;
+        color: #1a1a1a;
+        border: 1px solid var(--glass-border);
+        border-radius: 4rem;
+        padding: 4rem;
+        position: relative;
+        transform-style: preserve-3d;
+        transition: transform 0.5s ease-out;
+        box-shadow: 0 40px 100px -30px rgba(0, 0, 0, 0.2);
+    }
+
+    .kinetic-card:hover {
+        border-color: rgba(245, 7, 29, 0.3);
+    }
+
+    .kinetic-card::after {
+        content: '';
+        position: absolute;
+        inset: -1px;
+        background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent 40%, rgba(255,255,255,0.05));
+        border-radius: inherit;
+        z-index: -1;
+        pointer-events: none;
+    }
+
+    /* 3D Scene Layering */
+    .layer-depth-1 { transform: translateZ(20px); }
+    .layer-depth-2 { transform: translateZ(50px); }
+    .layer-depth-3 { transform: translateZ(80px); }
+
+    /* Animated 3D Objects */
+    .floating-scene {
+        position: relative;
+        transform-style: preserve-3d;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 400px;
+    }
+
+    .asset-3d {
+        filter: drop-shadow(0 0 50px rgba(245, 7, 29, 0.2));
+        transition: transform 0.5s cubic-bezier(0.2, 1, 0.2, 1);
+        pointer-events: none;
+    }
+
+    /* Scroll Navigation */
+    .scroll-indicator {
+        position: fixed;
+        left: 40px;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .scroll-nav-item {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        cursor: pointer;
+        position: relative;
+        transition: all 0.4s cubic-bezier(0.77, 0, 0.175, 1);
+    }
+
+    .scroll-nav-item::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 30px;
+        top: 50%;
+        transform: translateY(-50%);
+        opacity: 0;
+        white-space: nowrap;
+        font-size: 10px;
+        text-transform: uppercase;
+        font-weight: 900;
+        letter-spacing: 2px;
+        pointer-events: none;
+        transition: opacity 0.3sEase;
+    }
+
+    .scroll-nav-item:hover::before, .scroll-nav-item.active::before {
+        opacity: 1;
+    }
+
+    .scroll-nav-item.active {
+        background: white;
+        transform: scale(1.5);
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+    }
+
+    /* Glow Effects */
+    .auraa-glow-red {
+        box-shadow: 0 0 80px rgba(245, 7, 29, 0.15);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Section Navigation -->
+<div class="scroll-indicator hidden lg:flex">
+    <div class="scroll-nav-item active" data-section="hero" data-label="Introduction"></div>
+    <div class="scroll-nav-item" data-section="customer" data-label="Customer First"></div>
+    <div class="scroll-nav-item" data-section="safety" data-label="Zero Compromise"></div>
+    <div class="scroll-nav-item" data-section="trust" data-label="Absolute Trust"></div>
+    <div class="scroll-nav-item" data-section="practices" data-label="Responsibility"></div>
+    <div class="scroll-nav-item" data-section="innovation" data-label="Future Vision"></div>
+</div>
+
+<!-- Hero Section: Immersive Portal -->
+<section id="hero" class="immersive-section overflow-hidden">
+    <!-- Cinematic background image with overlay - now rounded -->
+    <div class="absolute inset-x-6 top-10 bottom-10 z-0 overflow-hidden rounded-[4rem] bg-auraa-red font-black">
+        <img src="{% static 'images/why_choose/hero_bg.png' %}" class="w-full h-full object-cover opacity-60 scale-105" alt="3D Background">
+        <div class="absolute inset-0 bg-gradient-to-t from-auraa-red via-auraa-red/40 to-transparent"></div>
+        <div id="header-sparkles" class="absolute inset-0 opacity-40"></div>
+    </div>
+    
+    <div class="container mx-auto px-6 relative z-10 text-center">
+        <div class="mb-12 opacity-0 fade-up">
+            <span class="inline-block px-8 py-3 bg-white/10 border border-white/20 rounded-full text-[10px] font-black uppercase tracking-[0.5em] text-white backdrop-blur-md">The Auraa Advantage</span>
+        </div>
+        
+        <h1 class="text-7xl md:text-[10rem] font-black uppercase tracking-tighter leading-[0.85] mb-12 mix-blend-plus-lighter opacity-0 fade-up">
+            Why <br /> <span class="text-auraa-red italic drop-shadow-[0_0_30px_rgba(245,7,29,0.3)]">Choose</span> <br /> Auraa?
+        </h1>
+
+        <div class="max-w-4xl mx-auto kinetic-card layer-depth-1 opacity-0 fade-up" style="transform: translateY(50px);">
+            <p class="text-gray-600 text-2xl md:text-3xl font-light leading-relaxed">
+                Beyond manufacturing, we create <span class="text-gray-900 font-bold">Immersive Celebrations</span>. Discover why thousands of families trust us for their most precious moments.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Section 1: Customer Focused -->
+<section id="customer" class="immersive-section">
+    <div class="container mx-auto px-6 lg:px-20 grid lg:grid-cols-2 gap-24 items-center">
+        <div class="order-2 lg:order-1 space-y-12">
+            <div class="kinetic-card layer-depth-2">
+                <div class="w-20 h-1 bg-auraa-red mb-10 auraa-glow-red"></div>
+                <h2 class="text-5xl lg:text-7xl font-black tracking-tighter uppercase leading-none mb-8">Customer <br/><span class="text-gray-400">Focused</span></h2>
+                <p class="text-xl text-gray-500 font-medium leading-relaxed mb-10">
+                    We place our customers at the center of our 3D ecosystem, ensuring every purchase delivers unmatched satisfaction and happiness.
+                </p>
+                <div class="bg-gray-50 p-10 rounded-3xl border border-gray-100 italic text-2xl text-gray-700 layer-depth-1">
+                    "Your celebration is our canvas; your happiness, our greatest digital masterpiece."
+                </div>
+            </div>
+        </div>
+        <div class="order-1 lg:order-2 floating-scene">
+            <div class="absolute w-[500px] h-[500px] bg-auraa-red/5 rounded-full blur-[120px] animate-pulse"></div>
+            <img src="{% static 'images/why_choose/customer.png' %}" class="asset-3d max-w-full h-auto layer-depth-3 rounded-[4rem] border border-white/10" alt="Customer Focused 3D">
+        </div>
+    </div>
+</section>
+
+<!-- Section 2: Safety First -->
+<section id="safety" class="immersive-section bg-white/5">
+    <div class="container mx-auto px-6 lg:px-20 grid lg:grid-cols-2 gap-24 items-center">
+        <div class="order-1 floating-scene">
+            <div class="absolute w-[500px] h-[500px] bg-orange-500/5 rounded-full blur-[120px]"></div>
+            <img src="{% static 'images/why_choose/safety.png' %}" class="asset-3d max-w-full h-auto layer-depth-3 rounded-[4rem]" alt="Safety First 3D">
+        </div>
+        <div class="order-2 space-y-12">
+            <div class="kinetic-card layer-depth-2">
+                <div class="w-20 h-1 bg-orange-500 mb-10 shadow-[0_0_20px_rgba(249,115,22,0.5)]"></div>
+                <h2 class="text-4xl lg:text-5xl font-black tracking-tighter uppercase leading-none mb-8">Safety <br/><span class="text-gray-400">Uncompromised</span></h2>
+                <p class="text-xl text-gray-500 font-medium leading-relaxed mb-10">
+                    Safety isn't just a standard; it's our core architecture. We ensure every product meets rigorous global safety metrics.
+                </p>
+                <div class="grid grid-cols-1 gap-6">
+                    <div class="flex items-center space-x-6 p-6 bg-gray-50 border border-gray-100 rounded-3xl layer-depth-1 transition-all hover:bg-gray-100">
+                        <div class="w-12 h-12 rounded-2xl bg-orange-500/20 flex items-center justify-center text-orange-500">
+                            <i data-lucide="shield-check"></i>
+                        </div>
+                        <span class="font-black uppercase tracking-widest text-xs text-gray-900">Dynamic Quality Control</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Section 3: Trusted & Transparent -->
+<section id="trust" class="immersive-section">
+    <div class="container mx-auto px-6 lg:px-20 grid lg:grid-cols-2 gap-24 items-center">
+        <div class="order-2 lg:order-1 space-y-12">
+            <div class="kinetic-card layer-depth-2">
+                <div class="w-20 h-1 bg-blue-500 mb-10 shadow-[0_0_20px_rgba(59,130,246,0.5)]"></div>
+                <h2 class="text-4xl lg:text-5xl font-black tracking-tighter uppercase leading-none mb-8">Absolute <br/><span class="text-gray-400">Transparency</span></h2>
+                <p class="text-xl text-gray-500 font-medium leading-relaxed mb-10">
+                    Trust is the air we breathe. We maintain total clarity in pricing, sourcing, and communication with our partners.
+                </p>
+                <div class="bg-blue-50 p-10 rounded-3xl border border-blue-100 italic text-2xl text-blue-900 layer-depth-1">
+                    "Clarity in vision, integrity in action. That is the Auraa promise."
+                </div>
+            </div>
+        </div>
+        <div class="order-1 lg:order-2 floating-scene">
+            <div class="absolute w-[500px] h-[500px] bg-blue-600/5 rounded-full blur-[120px]"></div>
+            <img src="{% static 'images/why_choose/trust.png' %}" class="asset-3d max-w-full h-auto layer-depth-3 rounded-[4rem]" alt="Trust 3D">
+        </div>
+    </div>
+</section>
+
+<!-- Section 4: Responsible Practices -->
+<section id="practices" class="immersive-section bg-white/5">
+    <div class="container mx-auto px-6 lg:px-20 grid lg:grid-cols-2 gap-24 items-center">
+        <div class="order-1 floating-scene">
+            <div class="absolute w-[500px] h-[500px] bg-emerald-500/5 rounded-full blur-[120px]"></div>
+            <img src="{% static 'images/why_choose/practices.png' %}" class="asset-3d max-w-full h-auto layer-depth-3 rounded-[4rem]" alt="Responsible 3D">
+        </div>
+        <div class="order-2 space-y-12">
+            <div class="kinetic-card layer-depth-2">
+                <div class="w-20 h-1 bg-emerald-500 mb-10 shadow-[0_0_20px_rgba(16,185,129,0.5)]"></div>
+                <h2 class="text-4xl lg:text-5xl font-black tracking-tighter uppercase leading-none mb-8">Green <br/><span class="text-gray-400">Responsibility</span></h2>
+                <p class="text-xl text-gray-500 font-medium leading-relaxed mb-10">
+                    We balance the thrill of the explosion with the peace of the environment through sustainable and ethical manufacturing.
+                </p>
+                <div class="flex flex-wrap gap-4">
+                    <span class="px-6 py-3 bg-emerald-50 border border-emerald-100 rounded-full text-[10px] font-black uppercase tracking-widest text-emerald-600">Ethical Sourcing</span>
+                    <span class="px-6 py-3 bg-gray-50 border border-gray-100 rounded-full text-[10px] font-black uppercase tracking-widest text-gray-500">Eco-Friendly Tech</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Section 5: Innovation -->
+<section id="innovation" class="immersive-section">
+    <div class="container mx-auto px-6 lg:px-20 grid lg:grid-cols-2 gap-24 items-center">
+        <div class="order-2 lg:order-1 space-y-12">
+            <div class="kinetic-card layer-depth-2">
+                <div class="w-20 h-1 bg-purple-500 mb-10 shadow-[0_0_20px_rgba(168,85,247,0.5)]"></div>
+                <h2 class="text-5xl lg:text-7xl font-black tracking-tighter uppercase leading-none mb-8">Future <br/><span class="text-gray-400">Innovation</span></h2>
+                <p class="text-xl text-gray-500 font-medium leading-relaxed mb-10">
+                    The bridge between tradition and the future. We reinvent the firework experience every single year.
+                </p>
+                <div class="p-8 bg-gray-50 border border-gray-100 rounded-[3rem] layer-depth-1">
+                    <p class="text-gray-700 font-medium">Continuously seeking smarter ways to ignite joy across the nation.</p>
+                </div>
+            </div>
+        </div>
+        <div class="order-1 lg:order-2 floating-scene">
+            <div class="absolute w-[500px] h-[500px] bg-purple-600/10 rounded-full blur-[150px]"></div>
+            <img src="{% static 'images/why_choose/innovation.png' %}" class="asset-3d max-w-full h-auto layer-depth-3 rounded-[4rem]" alt="Innovation 3D">
+        </div>
+    </div>
+</section>
+
+<!-- Final Call to Emotion -->
+<section class="py-40 bg-black text-center text-white relative overflow-hidden">
+    <div class="absolute bottom-0 right-0 w-[800px] h-[800px] bg-auraa-red opacity-10 blur-[200px]"></div>
+    <div class="container mx-auto px-6 relative z-10">
+        <h2 class="text-5xl md:text-8xl font-black uppercase tracking-tighter mb-16 fade-up">
+            Ready for a <br /> <span class="text-auraa-red italic">Smarter</span> Celebration?
+        </h2>
+        <div class="flex flex-wrap justify-center gap-8 fade-up">
+            <a href="{% url 'product_list' %}" class="bg-auraa-red text-white px-12 py-6 rounded-3xl flex items-center space-x-4 hover:bg-white hover:text-black transition-all group">
+                <span class="font-black uppercase tracking-[0.2em] text-sm">Experience the Collection</span>
+                <i data-lucide="sparkles" class="w-5 h-5 group-hover:rotate-12 transition-transform"></i>
+            </a>
+            <a href="{% url 'founder_story' %}" class="bg-white/5 border border-white/20 text-white px-12 py-6 rounded-3xl hover:bg-white hover:text-black transition-all">
+                <span class="font-black uppercase tracking-[0.2em] text-sm">Read Our Story</span>
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+
+        const isMobile = window.innerWidth < 1024;
+
+        // 1. Initial Entrances
+        gsap.to('.fade-up', {
+            opacity: 1,
+            y: 0,
+            duration: 1.5,
+            stagger: 0.2,
+            ease: "power4.out"
+        });
+
+        // 2. Immersive Scroll Navigation
+        const sections = document.querySelectorAll('section');
+        const navItems = document.querySelectorAll('.scroll-nav-item');
+
+        window.addEventListener('scroll', () => {
+            let current = "";
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (window.pageYOffset >= sectionTop - sectionHeight / 3) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('data-section') === current) {
+                    item.classList.add('active');
+                }
+            });
+        });
+
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const id = item.getAttribute('data-section');
+                gsap.to(window, { duration: 1.5, scrollTo: `#${id}`, ease: "power4.inOut" });
+            });
+        });
+
+        // 3. 3D Tilt & Mouse Tracking Engine
+        if (!isMobile) {
+            document.querySelectorAll('.immersive-section').forEach(section => {
+                const card = section.querySelector('.kinetic-card');
+                const asset = section.querySelector('.asset-3d');
+                const bg = section.querySelector('.parallax-bg');
+
+                section.addEventListener('mousemove', (e) => {
+                    const { clientX, clientY } = e;
+                    const { innerWidth, innerHeight } = window;
+
+                    // Background parallax
+                    if (bg) {
+                        gsap.to(bg, {
+                            x: (clientX - innerWidth / 2) / 20,
+                            y: (clientY - innerHeight / 2) / 20,
+                            duration: 1,
+                            ease: "power2.out"
+                        });
+                    }
+
+                    // Card & Asset Tilt
+                    if (card) {
+                        const rect = card.getBoundingClientRect();
+                        const cardX = clientX - rect.left - rect.width / 2;
+                        const cardY = clientY - rect.top - rect.height / 2;
+                        
+                        gsap.to(card, {
+                            rotateY: cardX / 30,
+                            rotateX: -cardY / 30,
+                            duration: 0.5,
+                            ease: "power2.out"
+                        });
+                    }
+
+                    if (asset) {
+                        const rect = asset.getBoundingClientRect();
+                        const ax = clientX - rect.left - rect.width / 2;
+                        const ay = clientY - rect.top - rect.height / 2;
+
+                        gsap.to(asset, {
+                            rotateY: ax / 15,
+                            rotateX: -ay / 15,
+                            z: 100,
+                            x: ax / 20,
+                            y: ay / 20,
+                            duration: 0.5,
+                            ease: "power2.out"
+                        });
+                    }
+                });
+
+                section.addEventListener('mouseleave', () => {
+                    if (card) gsap.to(card, { rotateX: 0, rotateY: 0, duration: 1, ease: "elastic.out(1, 0.5)" });
+                    if (asset) gsap.to(asset, { rotateX: 0, rotateY: 0, z: 0, x: 0, y: 0, duration: 1, ease: "elastic.out(1, 0.5)" });
+                    if (bg) gsap.to(bg, { x: 0, y: 0, duration: 1 });
+                });
+            });
+        }
+
+        // 4. Scroll-Triggered Parallax Depth
+        gsap.utils.toArray('.asset-3d').forEach(asset => {
+            gsap.to(asset, {
+                y: -100,
+                rotate: 5,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: asset,
+                    start: "top bottom",
+                    end: "bottom top",
+                    scrub: true
+                }
+            });
+        });
+
+        // 5. Automatic Floating Animation
+        gsap.utils.toArray('.asset-3d').forEach(asset => {
+            gsap.to(asset, {
+                y: "-=30",
+                duration: 2 + Math.random() * 2,
+                repeat: -1,
+                yoyo: true,
+                ease: "sine.inOut"
+            });
+        });
+    });
+</script>
+{% endblock %}

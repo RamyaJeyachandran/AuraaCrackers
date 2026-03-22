@@ -1,0 +1,389 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Auraa Promise | Auraa Profile - Auraa Crackers{% endblock %}
+
+{% block extra_head %}
+<!-- GSAP for advanced animations -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+<style>
+    .promise-card {
+        background: white;
+        border-radius: 4rem;
+        padding: 5rem;
+        box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.05);
+        border: 1px solid rgba(0, 0, 0, 0.03);
+        transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .promise-card:hover {
+        transform: translateY(-15px);
+        box-shadow: 0 60px 120px -20px rgba(0, 0, 0, 0.1);
+    }
+
+    .promise-number {
+        font-size: 12rem;
+        font-weight: 900;
+        line-height: 1;
+        position: absolute;
+        top: -2rem;
+        right: 2rem;
+        opacity: 0.03;
+        color: #f5071d;
+        pointer-events: none;
+    }
+
+    .placeholder-3d {
+        width: 100%;
+        height: 100%;
+        min-height: 500px;
+        background: radial-gradient(circle at 50% 50%, #f9fafb 0%, #f3f4f6 100%);
+        border-radius: 4rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        perspective: 1000px;
+    }
+
+    /* 3D Glass Object Styles */
+    .glass-object {
+        width: 200px;
+        height: 200px;
+        position: relative;
+        transform-style: preserve-3d;
+        animation: floatObject 8s ease-in-out infinite;
+    }
+
+    .glass-base {
+        position: absolute;
+        inset: 0;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        border-radius: 30%;
+        box-shadow: 
+            inset 0 0 40px rgba(255, 255, 255, 0.5),
+            0 20px 50px rgba(0, 0, 0, 0.1);
+        transform: translateZ(20px);
+    }
+
+    .glass-glow {
+        position: absolute;
+        inset: -20%;
+        background: radial-gradient(circle, var(--glow-color) 0%, transparent 70%);
+        filter: blur(30px);
+        opacity: 0.3;
+        animation: pulseGlow 4s ease-in-out infinite;
+    }
+
+    .glass-icon {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 5rem;
+        filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1));
+        transform: translateZ(50px);
+    }
+
+    @keyframes floatObject {
+        0%, 100% { transform: rotateY(0deg) translateY(0) rotateX(10deg); }
+        50% { transform: rotateY(15deg) translateY(-40px) rotateX(-10deg); }
+    }
+
+    @keyframes pulseGlow {
+        0%, 100% { transform: scale(1); opacity: 0.2; }
+        50% { transform: scale(1.2); opacity: 0.4; }
+    }
+
+    .progress-wrap {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 5px;
+        background: rgba(245, 7, 29, 0.1);
+        z-index: 1000;
+    }
+
+    .progress-bar {
+        height: 100%;
+        background: #f5071d;
+        width: 0%;
+    }
+
+    .fade-up {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+
+    .stagger-item {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Progress Bar -->
+<div class="progress-wrap">
+    <div id="scroll-progress" class="progress-bar"></div>
+</div>
+
+<!-- Premium Hero -->
+<section class="bg-auraa-red pt-16 pb-48 text-white text-center relative overflow-hidden">
+    <!-- Red & Gold Cinematic Background -->
+    <div class="absolute inset-0 z-0">
+        <img src="https://images.unsplash.com/photo-1533230392656-45e6579d708d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" alt="The Auraa Promise Background" class="w-full h-full object-cover opacity-30 scale-110 animate-[slow-zoom_40s_infinite_alternate] mix-blend-overlay">
+        <!-- Multi-layered Overlays for Text Focus -->
+        <div class="absolute inset-0 bg-gradient-to-t from-auraa-red via-transparent to-auraa-red/80"></div>
+    </div>
+
+    <!-- Decorative Glow Layers -->
+    <div class="absolute top-[-25%] right-[-15%] w-[800px] h-[800px] bg-white/10 blur-[180px] rounded-full animate-pulse-slow opacity-60"></div>
+    <div class="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] bg-black/5 blur-[150px] rounded-full animate-pulse-slow delay-1000"></div>
+
+    <div class="container mx-auto px-6 relative z-10">
+        <div class="inline-flex items-center space-x-3 bg-white/10 backdrop-blur-3xl border border-white/20 px-8 py-3 rounded-full mb-12 fade-up">
+            <i data-lucide="award" class="w-4 h-4 text-white"></i>
+            <span class="text-[10px] font-black uppercase tracking-[0.6em] text-white">Quality You Can Trust Since Day One</span>
+        </div>
+        <h1 class="text-7xl md:text-[150px] font-black uppercase tracking-tighter leading-[0.8] mb-14 fade-up">
+            The Auraa <br><span class="text-white italic underline underline-offset-[25px] decoration-white/30">Promise</span>
+        </h1>
+        <p class="text-white/90 max-w-2xl mx-auto text-2xl font-medium leading-relaxed fade-up">
+            A relentless dedication to safety, transparency, and high-performance quality that fuels every festive moment.
+        </p>
+    </div>
+
+    <style>
+        @keyframes slow-zoom {
+            0% { transform: scale(1.1); }
+            100% { transform: scale(1.25); }
+        }
+    </style>
+</section>
+
+<!-- Commitments List -->
+<div class="bg-slate-50 py-32 space-y-32">
+    <!-- 1. Affordable Celebrations -->
+    <section class="container mx-auto px-6 lg:px-20">
+        <div class="promise-card grid lg:grid-cols-2 gap-20 items-center">
+            <span class="promise-number">01</span>
+            <div class="space-y-8 order-2 lg:order-1">
+                <h2 class="text-5xl lg:text-6xl font-black text-gray-900 tracking-tighter uppercase leading-none fade-up">Affordable <br><span class="text-auraa-red">Celebrations</span></h2>
+                <p class="text-xl text-gray-500 font-medium leading-relaxed fade-up">
+                    We believe every family deserves to celebrate festivals with happiness. That is why we strive to offer fireworks at fair and affordable prices.
+                </p>
+                <div class="pt-6 fade-up">
+                    <div class="flex items-center space-x-4 text-gray-900 font-black uppercase tracking-widest text-xs">
+                        <span class="w-12 h-1 bg-auraa-red"></span>
+                        <span>FAIR PRICING FOR ALL</span>
+                    </div>
+                </div>
+            </div>
+            <div class="order-1 lg:order-2">
+                <div class="rounded-[3rem] overflow-hidden shadow-2xl bg-white p-4">
+                    <img src="{% static 'images/promise/affordable.png' %}" alt="Affordable" class="w-full h-auto transform hover:scale-105 transition-transform duration-1000 object-cover rounded-[2.5rem]">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. Honest and Transparent Business -->
+    <section class="container mx-auto px-6 lg:px-20">
+        <div class="promise-card grid lg:grid-cols-2 gap-20 items-center">
+            <span class="promise-number">02</span>
+            <div class="order-1">
+                <div class="rounded-[3rem] overflow-hidden shadow-2xl bg-white p-4">
+                    <img src="{% static 'images/promise/honest.png' %}" alt="Transparency" class="w-full h-auto transform hover:scale-105 transition-transform duration-1000 object-cover rounded-[2.5rem]">
+                </div>
+            </div>
+            <div class="space-y-8 order-2">
+                <h2 class="text-5xl lg:text-6xl font-black text-gray-900 tracking-tighter uppercase leading-none fade-up">Honest & <br><span class="text-blue-600">Transparent</span></h2>
+                <p class="text-xl text-gray-500 font-medium leading-relaxed fade-up">
+                    We conduct our business with clear communication and honesty, ensuring customers always feel confident when they choose Auraa Crackers.
+                </p>
+                <div class="pt-6 fade-up">
+                    <div class="flex items-center space-x-4 text-blue-600 font-black uppercase tracking-widest text-xs">
+                        <span class="w-12 h-1 bg-blue-600"></span>
+                        <span>TRUST WITHOUT COMPROMISE</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Quality You Can Trust -->
+    <section class="container mx-auto px-6 lg:px-20">
+        <div class="promise-card grid lg:grid-cols-2 gap-20 items-center">
+            <span class="promise-number">03</span>
+            <div class="space-y-8 order-2 lg:order-1">
+                <h2 class="text-5xl lg:text-6xl font-black text-gray-900 tracking-tighter uppercase leading-none fade-up">Quality <br><span class="text-amber-500">You Can Trust</span></h2>
+                <p class="text-xl text-gray-500 font-medium leading-relaxed fade-up">
+                    We carefully select and provide fireworks that deliver reliable performance and satisfying celebration experiences.
+                </p>
+                <div class="pt-6 fade-up">
+                    <div class="flex items-center space-x-4 text-amber-500 font-black uppercase tracking-widest text-xs">
+                        <span class="w-12 h-1 bg-amber-500"></span>
+                        <span>RELIABILITY FIRST</span>
+                    </div>
+                </div>
+            </div>
+            <div class="order-1 lg:order-2">
+                <div class="placeholder-3d">
+                    <div class="glass-glow" style="--glow-color: #f59e0b;"></div>
+                    <div class="glass-object">
+                        <div class="glass-base" style="border-radius: 50%;"></div>
+                        <div class="glass-icon">⭐</div>
+                        <!-- Decorative rings -->
+                        <div class="absolute inset-[-20%] border-2 border-amber-500/20 rounded-full animate-spin-slow"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Safety First -->
+    <section class="container mx-auto px-6 lg:px-20">
+        <div class="promise-card grid lg:grid-cols-2 gap-20 items-center">
+            <span class="promise-number">04</span>
+            <div class="order-1">
+                <div class="placeholder-3d">
+                    <div class="glass-glow" style="--glow-color: #10b981;"></div>
+                    <div class="glass-object">
+                        <div class="glass-base" style="clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);"></div>
+                        <div class="glass-icon">🛡️</div>
+                    </div>
+                </div>
+            </div>
+            <div class="space-y-8 order-2">
+                <h2 class="text-5xl lg:text-6xl font-black text-gray-900 tracking-tighter uppercase leading-none fade-up">Safety <br><span class="text-emerald-500">First</span></h2>
+                <p class="text-xl text-gray-500 font-medium leading-relaxed fade-up">
+                    Safety is always our priority. We ensure our products follow proper safety standards so families can celebrate with peace of mind.
+                </p>
+                <div class="pt-6 fade-up">
+                    <div class="flex items-center space-x-4 text-emerald-500 font-black uppercase tracking-widest text-xs">
+                        <span class="w-12 h-1 bg-emerald-500"></span>
+                        <span>CELEBRATE WITH CONFIDENCE</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Customer Happiness -->
+    <section class="container mx-auto px-6 lg:px-20">
+        <div class="promise-card grid lg:grid-cols-2 gap-20 items-center">
+            <span class="promise-number">05</span>
+            <div class="space-y-8 order-2 lg:order-1">
+                <h2 class="text-5xl lg:text-6xl font-black text-gray-900 tracking-tighter uppercase leading-none fade-up">Customer <br><span class="text-auraa-red">Happiness</span></h2>
+                <p class="text-xl text-gray-500 font-medium leading-relaxed fade-up">
+                    Our greatest success is the happiness of our customers. We are committed to delivering products and service that create smiles and unforgettable memories.
+                </p>
+                <div class="pt-6 fade-up">
+                    <div class="flex items-center space-x-4 text-auraa-red font-black uppercase tracking-widest text-xs">
+                        <span class="w-12 h-1 bg-auraa-red"></span>
+                        <span>YOUR SMILE IS OUR SUCCESS</span>
+                    </div>
+                </div>
+            </div>
+            <div class="order-1 lg:order-2">
+                <div class="placeholder-3d">
+                    <div class="glass-glow" style="--glow-color: #f5071d;"></div>
+                    <div class="glass-object">
+                        <div class="glass-base" style="clip-path: path('M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z');"></div>
+                        <div class="glass-icon">❤️</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- Thoughts Section -->
+<section class="py-40 bg-white text-center">
+    <div class="container mx-auto px-6 max-w-4xl">
+        <div class="h-24 w-px bg-auraa-red mx-auto mb-16 fade-up"></div>
+        <blockquote class="text-4xl md:text-5xl font-black italic tracking-tight leading-tight mb-16 fade-up">
+            “A celebration becomes meaningful when the joy is shared by everyone.”
+        </blockquote>
+        <div class="flex justify-center space-x-12 fade-up">
+            <div class="text-center">
+                <p class="text-4xl font-black text-gray-900">100%</p>
+                <p class="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">Authentic</p>
+            </div>
+            <div class="text-center">
+                <p class="text-4xl font-black text-gray-900">5k+</p>
+                <p class="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">Happy Families</p>
+            </div>
+            <div class="text-center">
+                <p class="text-4xl font-black text-gray-900">QC</p>
+                <p class="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">Passed</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Final Call -->
+<section class="py-32 bg-gray-900 relative overflow-hidden">
+    <div class="container mx-auto px-6 text-center relative z-10">
+        <h2 class="text-4xl md:text-6xl font-black text-white uppercase tracking-tighter mb-12 fade-up">
+            A promise we keep <br><span class="text-auraa-red">Every Season.</span>
+        </h2>
+        <div class="fade-up">
+            <a href="{% url 'founder_story' %}" class="inline-flex items-center space-x-4 bg-white text-gray-900 px-12 py-5 rounded-full font-black uppercase tracking-widest text-sm hover:bg-auraa-red hover:text-white transition-all">
+                <span>Our Founder's Vision</span>
+                <i data-lucide="book-open" class="w-5 h-5"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Scroll Progress
+        window.addEventListener('scroll', () => {
+            const h = document.documentElement, 
+                  b = document.body,
+                  st = 'scrollTop',
+                  sh = 'scrollHeight';
+            const percent = (h[st] || b[st]) / ((h[sh] || b[sh]) - h.clientHeight) * 100;
+            document.getElementById('scroll-progress').style.width = percent + '%';
+        });
+
+        // Animations
+        gsap.utils.toArray('.fade-up').forEach((elem) => {
+            gsap.fromTo(elem, 
+                { opacity: 0, y: 50 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    duration: 1.2,
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: elem,
+                        start: "top 85%",
+                        toggleActions: "play none none none"
+                    }
+                }
+            );
+        });
+
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+    });
+</script>
+{% endblock %}

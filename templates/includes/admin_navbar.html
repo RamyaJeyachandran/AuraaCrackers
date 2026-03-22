@@ -1,0 +1,79 @@
+{% load static %}
+<header class="fixed top-0 w-full z-50">
+    <!-- Admin Warning/Mode Bar -->
+    <div class="bg-gray-900 border-b border-white/5 py-2.5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center text-[9px] font-black uppercase tracking-[0.2em] text-auraa-red">
+            <div class="flex items-center space-x-3">
+                <i data-lucide="shield-check" class="w-3.5 h-3.5 animate-pulse"></i>
+                <span class="text-white">Auraa Admin Control Center</span>
+            </div>
+            <div class="flex items-center space-x-6 text-gray-500">
+                <span>Session Active: {{ request.user.username }}</span>
+                <span class="text-gray-700">|</span>
+                <span id="admin-time" class="text-white/60"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Admin Navigation -->
+    <nav id="admin-nav" class="w-full bg-auraa-red py-4 border-b border-white/10 shadow-xl">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center">
+                <!-- Branding (Now standardized with Topbar above) -->
+                <a href="{% url 'home' %}" class="flex items-center space-x-3 group">
+                    <div class="h-12 w-12 bg-white rounded-xl shadow-sm group-hover:bg-gray-50 flex items-center justify-center overflow-hidden transition-all">
+                        <img src="{% static 'images/logo.png' %}" alt="Auraa" class="h-full w-full object-contain p-1 transform group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="h-8 w-px bg-white/20"></div>
+                    <span class="text-[12px] font-black uppercase tracking-[0.3em] text-white">ADMIN</span>
+                </a>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-2">
+                    <a href="{% url 'admin_dashboard' %}" class="text-[10px] font-black uppercase tracking-widest transition-all flex items-center space-x-2 px-4 py-2 rounded-xl {% if request.path == '/admin/dashboard/' %}text-auraa-red bg-white shadow-lg{% else %}text-white hover:text-white hover:bg-white/10{% endif %}">
+                        <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    
+                    <div class="h-4 w-[1px] bg-white/20 mx-2"></div>
+
+                    <a href="{% url 'admin_active_categories' %}" class="text-[10px] font-black uppercase tracking-widest transition-all px-4 py-2 rounded-xl {% if request.resolver_match.url_name == 'admin_active_categories' %}text-auraa-red bg-white shadow-lg{% else %}text-white hover:text-white hover:bg-white/10{% endif %}">Category</a>
+                    <a href="{% url 'dashboard_products' %}" class="text-[10px] font-black uppercase tracking-widest transition-all px-4 py-2 rounded-xl {% if request.resolver_match.url_name == 'dashboard_products' %}text-auraa-red bg-white shadow-lg{% else %}text-white hover:text-white hover:bg-white/10{% endif %}">Product</a>
+                    <a href="{% url 'dashboard_orders' %}" class="text-[10px] font-black uppercase tracking-widest transition-all px-4 py-2 rounded-xl {% if 'order' in request.resolver_match.url_name and 'dashboard' in request.resolver_match.url_name %}text-auraa-red bg-white shadow-lg{% else %}text-white hover:text-white hover:bg-white/10{% endif %}">Orders</a>
+                    <a href="{% url 'dashboard_customers' %}" class="text-[10px] font-black uppercase tracking-widest transition-all px-4 py-2 rounded-xl {% if request.resolver_match.url_name == 'dashboard_customers' %}text-auraa-red bg-white shadow-lg{% else %}text-white hover:text-white hover:bg-white/10{% endif %}">Customers</a>
+                    <a href="{% url 'dashboard_pricelists' %}" class="text-[10px] font-black uppercase tracking-widest transition-all px-4 py-2 rounded-xl {% if 'pricelist' in request.resolver_match.url_name %}text-auraa-red bg-white shadow-lg{% else %}text-white hover:text-white hover:bg-white/10{% endif %}">Price List</a>
+                    <a href="{% url 'dashboard_coupons' %}" class="text-[10px] font-black uppercase tracking-widest transition-all px-4 py-2 rounded-xl {% if 'coupon' in request.resolver_match.url_name %}text-auraa-red bg-white shadow-lg{% else %}text-white hover:text-white hover:bg-white/10{% endif %}">Coupons</a>
+
+
+                </div>
+
+                <!-- Profile & Logout -->
+                <div class="flex items-center space-x-6">
+                    <a href="{% url 'profile' %}" class="flex items-center space-x-3 px-5 py-2.5 rounded-2xl border border-white/20 hover:opacity-90 transition-all group" style="background: linear-gradient(135deg, #c0000f 0%, #f5071d 50%, #ff3344 100%);">
+                        <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-auraa-red text-[11px] font-black shadow-lg">
+                            {{ request.user.username|slice:":1"|upper }}
+                        </div>
+                        <span class="text-[10px] font-black uppercase tracking-widest text-white">{{ request.user.username }}</span>
+                    </a>
+                    
+                    <a href="{% url 'logout' %}" class="p-3 bg-white/10 text-white rounded-xl hover:bg-white hover:text-auraa-red transition-all transform active:scale-90 shadow-sm" title="Safely Logout">
+                        <i data-lucide="log-out" class="w-4.5 h-4.5"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<script>
+    // Admin Time Logic
+    function updateAdminTime() {
+        const timeEl = document.getElementById('admin-time');
+        if (timeEl) {
+            const now = new Date();
+            timeEl.innerText = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        }
+    }
+    setInterval(updateAdminTime, 1000);
+    updateAdminTime();
+</script>

@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Create Custom Report | Auraa Admin{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+    <!-- Header -->
+    <div class="mb-12">
+        <h1 class="text-4xl font-black text-gray-900 tracking-tight uppercase mb-2">Create <span class="text-auraa-red">Reports</span></h1>
+        <p class="text-gray-500 font-bold uppercase tracking-widest text-[10px]">Generate custom business intelligence reports</p>
+    </div>
+
+    <!-- Report Creation Card -->
+    <div class="bg-white p-12 rounded-[3.5rem] border border-gray-100 shadow-xl relative overflow-hidden group max-w-4xl">
+        <div class="absolute -top-20 -right-20 w-80 h-80 bg-auraa-red/5 rounded-full blur-[100px] group-hover:bg-auraa-red/10 transition-all duration-1000"></div>
+        <div class="relative z-10">
+            <h3 class="text-[11px] font-black uppercase tracking-[0.3em] text-gray-400 mb-12">Custom Report Generator</h3>
+            
+            <form action="#" method="GET" class="space-y-10">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                    <!-- Report Type -->
+                    <div class="space-y-3">
+                        <label class="text-[10px] font-black uppercase tracking-widest text-gray-400 block ml-4">Report Type</label>
+                        <select name="type" class="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl text-sm font-bold text-gray-900 appearance-none focus:outline-none focus:ring-2 focus:ring-auraa-red/20 transition-all">
+                            <option value="sales">Sales Analysis Report</option>
+                            <option value="inventory">Inventory Summary</option>
+                            <option value="customer">Customer Activity</option>
+                            <option value="revenue">Revenue & Profit Loss</option>
+                        </select>
+                    </div>
+
+                    <!-- Date Range Shortcut -->
+                    <div class="space-y-3">
+                        <label class="text-[10px] font-black uppercase tracking-widest text-gray-400 block ml-4">Time Horizon</label>
+                        <select name="horizon" class="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl text-sm font-bold text-gray-900 appearance-none focus:outline-none focus:ring-2 focus:ring-auraa-red/20 transition-all">
+                            <option value="7">Last 7 Days</option>
+                            <option value="30">Last 30 Days</option>
+                            <option value="90">Last Quarter</option>
+                            <option value="365">Last Year</option>
+                            <option value="custom">Custom Range</option>
+                        </select>
+                    </div>
+
+                    <!-- From Date -->
+                    <div class="space-y-3">
+                        <label class="text-[10px] font-black uppercase tracking-widest text-gray-400 block ml-4">Starting Date</label>
+                        <input type="date" name="from_date" class="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl text-sm font-bold text-gray-900 focus:outline-none focus:ring-2 focus:ring-auraa-red/20 transition-all">
+                    </div>
+
+                    <!-- To Date -->
+                    <div class="space-y-3">
+                        <label class="text-[10px] font-black uppercase tracking-widest text-gray-400 block ml-4">Ending Date</label>
+                        <input type="date" name="to_date" class="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl text-sm font-bold text-gray-900 focus:outline-none focus:ring-2 focus:ring-auraa-red/20 transition-all">
+                    </div>
+                </div>
+
+                <!-- Export Options -->
+                <div class="space-y-4">
+                    <label class="text-[10px] font-black uppercase tracking-widest text-gray-400 block ml-4">Export Format</label>
+                    <div class="flex space-x-4">
+                        <div class="flex-1 p-6 bg-gray-50 rounded-3xl border-2 border-transparent hover:border-auraa-red hover:bg-red-50 cursor-pointer transition-all group/opt">
+                            <i data-lucide="file-text" class="w-6 h-6 mb-3 text-gray-400 group-hover/opt:text-auraa-red"></i>
+                            <p class="text-[10px] font-black uppercase tracking-widest text-gray-900 mb-1">Spreadsheet</p>
+                            <p class="text-[9px] font-bold text-gray-400">Microsoft Excel (.xlsx)</p>
+                        </div>
+                        <div class="flex-1 p-6 bg-gray-50 rounded-3xl border-2 border-transparent hover:border-auraa-red hover:bg-red-50 cursor-pointer transition-all group/opt">
+                            <i data-lucide="file-archive" class="w-6 h-6 mb-3 text-gray-400 group-hover/opt:text-auraa-red"></i>
+                            <p class="text-[10px] font-black uppercase tracking-widest text-gray-900 mb-1">Archival PDF</p>
+                            <p class="text-[9px] font-bold text-gray-400">High Resolution Print</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-6">
+                    <button type="button" onclick="showGlobalErrorModal('Export feature is being prepared. Real data will be linked shortly.')" 
+                            class="w-full bg-auraa-red text-white py-6 rounded-3xl text-sm font-black uppercase tracking-[0.2em] shadow-2xl shadow-auraa-red/30 hover:-translate-y-1 hover:shadow-auraa-red/40 transition-all flex items-center justify-center space-x-3">
+                        <i data-lucide="download-cloud" class="w-5 h-5"></i>
+                        <span>Generate & Export Report</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,23 @@
+# .gitignore
+venv/
+.env
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.db.sqlite3
+.DS_Store
+media/
+staticfiles/
+scripts/backups/
+db_migration_guide.md
+task.md
+implementation_plan.md
+execute_db_ops.py
+test_confirmed_pass.py
+test_db_conn.py
+test_login_api.py
+output.txt
+product.sql
+products.sql
+setup_tables.sql

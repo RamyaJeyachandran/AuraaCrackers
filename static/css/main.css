@@ -1,0 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+/* Tailwind CSS is handled via CDN in base.html for now to ensure pixel-perfection without complex build step */
+/* This file contains custom overrides and global styles from the original project */
+
+html {
+    scroll-behavior: smooth;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+}

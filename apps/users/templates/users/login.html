@@ -1,0 +1,480 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Login & Join | Auraa Crackers{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center px-4 py-20 relative overflow-hidden bg-[#fafafa]">
+    <!-- Animated Background Elements -->
+    <div class="absolute inset-0 z-0 pointer-events-none">
+        <div class="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] bg-auraa-red/5 rounded-full blur-[120px] animate-pulse-slow"></div>
+        <div class="absolute bottom-[-20%] right-[-10%] w-[800px] h-[800px] bg-auraa-red/5 rounded-full blur-[150px] animate-pulse-slow" style="animation-delay: 2s;"></div>
+        
+        <!-- Floating 3D Symbols -->
+        <div class="absolute top-[15%] left-[5%] text-auraa-red/10 text-9xl font-black rotate-12 float-3d opacity-20">★</div>
+        <div class="absolute bottom-[20%] right-[8%] text-auraa-red/10 text-[15rem] font-black -rotate-12 float-3d opacity-20">⚓</div>
+    </div>
+
+    <!-- Page Transition Overlay -->
+    <div id="page-transition" class="fixed inset-0 bg-white z-[9999] transition-transform duration-1000 origin-bottom"></div>
+
+    <div class="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 bg-white/70 backdrop-blur-3xl rounded-[4rem] shadow-[0_32px_128px_-16px_rgba(0,0,0,0.1)] overflow-hidden border border-white/50 relative z-10 auth-card">
+        <!-- Form Side -->
+        <div class="p-6 md:p-16 space-y-12 relative flex flex-col justify-center">
+            <!-- Loading Overlay -->
+            <div id="loading-overlay" class="hidden absolute inset-0 bg-transparent z-50 flex flex-col items-center justify-center space-y-4">
+                <div class="w-12 h-12 border-4 border-auraa-red border-t-transparent rounded-full animate-spin"></div>
+                <p class="text-xs font-black uppercase tracking-widest text-gray-900">Processing...</p>
+            </div>
+
+            <div class="space-y-4 animate-on-load">
+                <h1 id="auth-title" class="text-5xl font-black text-gray-900 uppercase tracking-tighter leading-none">
+                    Welcome Back
+                </h1>
+                <div class="w-12 h-1.5 bg-auraa-red rounded-full"></div>
+                <p id="auth-desc" class="text-gray-500 text-lg font-medium leading-relaxed">
+                    Please enter your mobile number and password to login.
+                </p>
+            </div>
+
+            <!-- Login Form -->
+            <form id="login-form" class="space-y-6">
+                {% csrf_token %}
+                <div class="space-y-2">
+                    <label class="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Mobile No</label>
+                    <div class="relative">
+                        <i data-lucide="phone" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-[18px] h-[18px]"></i>
+                        <input required type="tel" name="mobile" placeholder="9876543210" maxlength="10" 
+                               class="w-full pl-12 pr-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-auraa-red/20 focus:border-auraa-red transition-all">
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <div class="flex justify-between items-center px-1">
+                        <label class="text-[10px] font-black uppercase tracking-widest text-gray-400">Password</label>
+                        <button type="button" onclick="showForgotPassword()" class="text-[9px] font-black uppercase tracking-widest text-auraa-red hover:underline">Forgot?</button>
+                    </div>
+                    <div class="relative">
+                        <i data-lucide="lock" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-[18px] h-[18px]"></i>
+                        <input required type="password" name="password" placeholder="••••••••" 
+                               class="w-full pl-12 pr-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-auraa-red/20 focus:border-auraa-red transition-all">
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full bg-auraa-red text-white py-5 rounded-2xl font-black uppercase tracking-widest text-sm flex items-center justify-center space-x-3 hover:bg-gray-900 transition-all shadow-xl shadow-auraa-red/20 active:scale-[0.98]">
+                    <span>Login</span>
+                    <i data-lucide="arrow-right" class="w-4.5 h-4.5"></i>
+                </button>
+            </form>
+
+            <!-- Forgot Password Form -->
+            <form id="forgot-form" class="hidden space-y-6">
+                {% csrf_token %}
+                <div class="space-y-4">
+                    <p class="text-xs text-gray-500 font-medium">Enter your registered mobile number below. We will verify your account and help you reset your password.</p>
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Mobile No</label>
+                        <div class="relative">
+                            <i data-lucide="phone" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-[18px] h-[18px]"></i>
+                            <input required type="tel" name="mobile" placeholder="9876543210" maxlength="10" 
+                                   class="w-full pl-12 pr-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-auraa-red/20 focus:border-auraa-red transition-all">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    <button type="submit" class="w-full bg-auraa-red text-white py-5 rounded-2xl font-black uppercase tracking-widest text-sm flex items-center justify-center space-x-3 hover:bg-gray-900 transition-all shadow-xl shadow-auraa-red/20">
+                        <span>Reset Password</span>
+                        <i data-lucide="key" class="w-4.5 h-4.5"></i>
+                    </button>
+                    <button type="button" onclick="showLogin()" class="w-full py-4 text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 hover:text-auraa-red transition-all">Back to Login</button>
+                </div>
+            </form>
+
+            <!-- Signup Form (Hidden by default) -->
+            <form id="signup-form" class="hidden space-y-5">
+                {% csrf_token %}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Full Name *</label>
+                        <div class="relative">
+                            <i data-lucide="user" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-[18px] h-[18px]"></i>
+                            <input required type="text" name="full_name" placeholder="John Doe" class="w-full pl-12 pr-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-auraa-red/20 focus:border-auraa-red transition-all">
+                        </div>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">User Name *</label>
+                        <div class="relative">
+                            <i data-lucide="at-sign" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-[18px] h-[18px]"></i>
+                            <input required type="text" name="username" placeholder="ramya" class="w-full pl-12 pr-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-auraa-red/20 focus:border-auraa-red transition-all">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Mobile No *</label>
+                        <input required type="tel" name="mobile" placeholder="9876543210" maxlength="10" class="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-auraa-red/20 focus:border-auraa-red transition-all">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Email ID</label>
+                        <input type="email" name="email" placeholder="john@example.com" class="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-auraa-red/20 focus:border-auraa-red transition-all">
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Password *</label>
+                        <input required type="password" name="password" placeholder="••••••••" class="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-auraa-red/20 focus:border-auraa-red transition-all">
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Address</label>
+                    <textarea name="address" rows="2" placeholder="Street name, Area..." class="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-auraa-red/20 focus:border-auraa-red transition-all"></textarea>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">State</label>
+                        <select id="signup-state" name="state_id" required class="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-auraa-red/20 focus:border-auraa-red transition-all">
+                            <option value="">Select State</option>
+                        </select>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">City</label>
+                        <select id="signup-city" name="city_id" required class="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-auraa-red/20 focus:border-auraa-red transition-all">
+                            <option value="">Select City</option>
+                        </select>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-1">Pincode</label>
+                        <input type="text" name="pincode" placeholder="626123" class="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-auraa-red/20 focus:border-auraa-red transition-all">
+                    </div>
+                </div>
+                <input type="hidden" name="country_id" value="1">
+
+                <button type="submit" class="w-full bg-auraa-red text-white py-5 rounded-2xl font-black uppercase tracking-widest text-sm flex items-center justify-center space-x-3 hover:bg-gray-900 transition-all shadow-xl shadow-auraa-red/20">
+                    <span>Create Account</span>
+                    <i data-lucide="user-plus" class="w-4.5 h-4.5"></i>
+                </button>
+            </form>
+
+            <p class="text-center text-sm text-gray-500 font-medium">
+                <span id="toggle-text">Don't have an account?</span>
+                <button onclick="toggleAuth()" class="text-auraa-red font-black hover:underline uppercase tracking-tight text-xs ml-1">
+                    <span id="toggle-btn-text">Sign Up Free</span>
+                </button>
+            </p>
+        </div>
+
+        <!-- Image Side (Parallax) -->
+        <div class="hidden lg:block relative bg-gray-950 group overflow-hidden">
+            <div class="absolute inset-0 opacity-60 scale-110 group-hover:scale-100 transition-transform duration-[3s] ease-out parallax-bg">
+                <img src="https://images.unsplash.com/photo-1533230392656-45e6579d708d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Auth Background" class="w-full h-full object-cover grayscale brightness-75">
+            </div>
+            
+            <!-- Gradient Overlay -->
+            <div class="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-950/20 to-transparent"></div>
+            
+            <div class="relative h-full flex flex-col justify-end p-24 text-white space-y-10 z-10 animate-on-load">
+                <div class="space-y-4">
+                    <div class="inline-block px-4 py-1.5 bg-auraa-red text-[10px] font-black uppercase tracking-[0.3em] rounded-full">New Collection 2025</div>
+                    <h2 class="text-6xl font-black uppercase tracking-tighter leading-[0.85]">
+                        Light up <br />
+                        <span class="text-auraa-red italic underline decoration-white/10 underline-offset-8">Your Joy</span>
+                    </h2>
+                </div>
+                <p class="text-gray-400 text-xl font-medium leading-relaxed max-w-sm">
+                    Experience the brilliance of Sivakasi's finest crackers with Auraa. Secure, fast, and reliable.
+                </p>
+                
+                <div class="flex items-center space-x-4 pt-10">
+                    <div class="px-6 py-3 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 text-[10px] font-black uppercase tracking-widest text-white/60">Official Partner</div>
+                    <div class="px-6 py-3 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 text-[10px] font-black uppercase tracking-widest text-white/60">22+ Years</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .float-3d {
+        animation: floatIcon 8s ease-in-out infinite;
+    }
+    @keyframes floatIcon {
+        0%, 100% { transform: translateY(0) rotate(12deg); }
+        50% { transform: translateY(-30px) rotate(15deg); }
+    }
+    
+    .animate-pulse-slow {
+        animation: pulseSlow 10s ease-in-out infinite;
+    }
+    @keyframes pulseSlow {
+        0%, 100% { opacity: 0.3; transform: scale(1); }
+        50% { opacity: 0.6; transform: scale(1.2); }
+    }
+    
+    #loading-overlay {
+        backdrop-filter: blur(8px);
+    }
+    
+    #page-transition {
+        pointer-events: none;
+    }
+</style>
+
+<script>
+    const loginForm = document.getElementById('login-form');
+    const signupForm = document.getElementById('signup-form');
+    const forgotForm = document.getElementById('forgot-form');
+    const loading = document.getElementById('loading-overlay');
+    const title = document.getElementById('auth-title');
+    const subtitle = document.getElementById('auth-desc');
+    const toggleText = document.getElementById('toggle-text');
+    const toggleBtnText = document.getElementById('toggle-btn-text');
+
+    // Sequential Entrance Animations with GSAP
+    document.addEventListener('DOMContentLoaded', () => {
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Page Entrance
+        gsap.to("#page-transition", {
+            yPercent: -100,
+            duration: 1.2,
+            ease: "power4.inOut",
+            delay: 0.2
+        });
+
+        // Form Side Stagger
+        gsap.from(".animate-on-load", {
+            opacity: 0,
+            y: 30,
+            duration: 1,
+            stagger: 0.2,
+            ease: "power3.out",
+            delay: 0.8
+        });
+
+        // Input Stagger
+        gsap.from("form > div", {
+            opacity: 0,
+            x: -20,
+            duration: 0.8,
+            stagger: 0.1,
+            ease: "power2.out",
+            delay: 1.2
+        });
+
+        // Card Entrance
+        gsap.from(".auth-card", {
+            opacity: 0,
+            scale: 0.95,
+            duration: 1.5,
+            ease: "expo.out",
+            delay: 0.5
+        });
+
+        // Parallax Effect on Background
+        document.addEventListener('mousemove', (e) => {
+            const x = (e.clientX - window.innerWidth / 2) / 50;
+            const y = (e.clientY - window.innerHeight / 2) / 50;
+            gsap.to(".parallax-bg", {
+                x: x,
+                y: y,
+                duration: 1,
+                ease: "power2.out"
+            });
+        });
+    });
+
+    let mode = 'login'; // login, signup, forgot
+
+    function toggleAuth() {
+        if (mode === 'login' || mode === 'forgot') {
+            showSignup();
+        } else {
+            showLogin();
+        }
+    }
+
+    function showLogin() {
+        mode = 'login';
+        loginForm.classList.remove('hidden');
+        signupForm.classList.add('hidden');
+        forgotForm.classList.add('hidden');
+        title.innerText = 'Welcome Back';
+        subtitle.innerText = 'Please enter your mobile number and password to login.';
+        toggleText.innerText = "Don't have an account?";
+        toggleBtnText.innerText = 'Sign Up Free';
+        lucide.createIcons();
+    }
+
+    function showSignup() {
+        mode = 'signup';
+        loginForm.classList.add('hidden');
+        signupForm.classList.remove('hidden');
+        forgotForm.classList.add('hidden');
+        title.innerText = 'Join Auraa';
+        subtitle.innerText = 'Create an account to track orders and save favorites.';
+        toggleText.innerText = 'Already a member?';
+        toggleBtnText.innerText = 'Login Now';
+        lucide.createIcons();
+    }
+
+    function showForgotPassword() {
+        mode = 'forgot';
+        loginForm.classList.add('hidden');
+        signupForm.classList.add('hidden');
+        forgotForm.classList.remove('hidden');
+        title.innerText = 'Forgot Password';
+        subtitle.innerText = 'Recover your security access';
+        toggleText.innerText = "Remembered it?";
+        toggleBtnText.innerText = 'Login Now';
+        lucide.createIcons();
+    }
+
+    // Handle Forgot Password
+    forgotForm.onsubmit = async (e) => {
+        e.preventDefault();
+        loading.classList.remove('hidden');
+        const formData = new URLSearchParams(new FormData(forgotForm));
+        
+        try {
+            const resp = await fetch("/api/forgot-password/", {
+                method: 'POST',
+                body: formData
+            });
+            const text = await resp.text();
+            let data;
+            try {
+                data = JSON.parse(text);
+            } catch (e) {
+                loading.classList.add('hidden');
+                console.error("Parse Error:", e, "Text:", text);
+                showModal('Server Error', 'The server returned an unexpected response. Please contact support.', 'error');
+                return;
+            }
+            
+            loading.classList.add('hidden');
+            
+            if (data.status === 'success') {
+                showModal('Success', data.message, 'success');
+                showLogin();
+            } else {
+                showModal('Attention', data.message || 'Verification failed.', 'error');
+            }
+        } catch (err) {
+            loading.classList.add('hidden');
+            console.error("Fetch Error:", err);
+            showModal('Network Error', 'The recovery request could not be completed. Please try again or contact support.', 'error');
+        }
+    };
+
+    // Handle Signup
+    signupForm.onsubmit = async (e) => {
+        e.preventDefault();
+        loading.classList.remove('hidden');
+        
+        const formData = new FormData(e.target);
+        
+        try {
+            const resp = await fetch("{% url 'api_signup' %}", {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                }
+            });
+            const data = await resp.json();
+            loading.classList.add('hidden');
+
+            if (data.status === 'success') {
+                showModal('Great Job!', data.message, 'success', 'Login', () => {
+                    if (!isLogin) toggleAuth(); // Ensure we switch to login
+                });
+                signupForm.reset();
+            } else {
+                showModal('Oops!', data.message, 'error');
+            }
+        } catch (err) {
+            loading.classList.add('hidden');
+            showModal('Error', 'Something went wrong. Please try again.', 'error');
+        }
+    };
+
+    // Handle Login
+    loginForm.onsubmit = async (e) => {
+        e.preventDefault();
+        loading.classList.remove('hidden');
+        
+        const formData = new FormData(e.target);
+        
+        try {
+            const resp = await fetch("{% url 'api_login' %}", {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                }
+            });
+            const data = await resp.json();
+            loading.classList.add('hidden');
+
+            if (data.status === 'success') {
+                window.location.href = data.redirect;
+            } else {
+                showModal('Auth Failed', data.message, 'error');
+            }
+        } catch (err) {
+            loading.classList.add('hidden');
+            showModal('Error', 'Something went wrong. Please try again.', 'error');
+        }
+    };
+
+    // Handle States & Cities
+    const stateSelect = document.getElementById('signup-state');
+    const citySelect = document.getElementById('signup-city');
+
+    async function loadStates() {
+        try {
+            const resp = await fetch("{% url 'api_states' %}?country_id=1");
+            const data = await resp.json();
+            if (data.status === 'success') {
+                stateSelect.innerHTML = '<option value="">Select State</option>';
+                data.states.forEach(state => {
+                    const opt = document.createElement('option');
+                    opt.value = state.id;
+                    opt.textContent = state.name;
+                    stateSelect.appendChild(opt);
+                });
+            }
+        } catch (err) {
+            console.error('Failed to load states:', err);
+        }
+    }
+
+    stateSelect.onchange = async () => {
+        const stateId = stateSelect.value;
+        citySelect.innerHTML = '<option value="">Select City</option>';
+        if (!stateId) return;
+
+        try {
+            const resp = await fetch(`{% url 'api_cities' %}?state_id=${stateId}`);
+            const data = await resp.json();
+            if (data.status === 'success') {
+                data.cities.forEach(city => {
+                    const opt = document.createElement('option');
+                    opt.value = city.id;
+                    opt.textContent = city.name;
+                    citySelect.appendChild(opt);
+                });
+            }
+        } catch (err) {
+            console.error('Failed to load cities:', err);
+        }
+    };
+
+    // Load initial data
+    loadStates();
+</script>
+{% endblock %}

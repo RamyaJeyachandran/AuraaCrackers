@@ -1,0 +1,58 @@
+<!-- Global Notification Modal -->
+<div id="auth-modal" class="hidden fixed inset-0 z-[200] flex items-center justify-center p-4">
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-md" onclick="closeAuthModal()"></div>
+    <div class="relative bg-white rounded-[2rem] p-10 max-w-sm w-full shadow-2xl text-center space-y-6">
+        <div id="modal-icon-container" class="w-20 h-20 mx-auto rounded-full flex items-center justify-center transition-transform hover:scale-110 duration-500">
+            <i id="modal-icon" data-lucide="check-circle" class="w-10 h-10"></i>
+        </div>
+        <div class="space-y-2">
+            <h3 id="modal-title" class="text-xl font-black text-gray-900 uppercase tracking-tight">Success!</h3>
+            <p id="modal-message" class="text-gray-500 text-sm font-medium leading-relaxed"></p>
+        </div>
+        <button id="modal-btn" onclick="closeAuthModal()" class="w-full bg-gray-900 text-white py-4 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-auraa-red transition-all shadow-lg active:scale-95">
+            OK
+        </button>
+    </div>
+</div>
+
+<script>
+    function showModal(title, message, type = 'success', btnText = 'OK', callback = null) {
+        const modal = document.getElementById('auth-modal');
+        const iconContainer = document.getElementById('modal-icon-container');
+        const icon = document.getElementById('modal-icon');
+        const titleEl = document.getElementById('modal-title');
+        const messageEl = document.getElementById('modal-message');
+        const btn = document.getElementById('modal-btn');
+
+        titleEl.innerText = title;
+        messageEl.innerText = message;
+        btn.innerText = btnText;
+
+        if (type === 'success') {
+            iconContainer.className = "w-20 h-20 mx-auto rounded-full bg-green-50 text-green-500 flex items-center justify-center";
+            icon.setAttribute('data-lucide', 'check-circle');
+        } else if (type === 'error') {
+            iconContainer.className = "w-20 h-20 mx-auto rounded-full bg-red-50 text-red-500 flex items-center justify-center";
+            icon.setAttribute('data-lucide', 'alert-circle');
+        } else if (type === 'warning') {
+            iconContainer.className = "w-20 h-20 mx-auto rounded-full bg-orange-50 text-orange-500 flex items-center justify-center";
+            icon.setAttribute('data-lucide', 'alert-triangle');
+        } else {
+            iconContainer.className = "w-20 h-20 mx-auto rounded-full bg-blue-50 text-blue-500 flex items-center justify-center";
+            icon.setAttribute('data-lucide', 'info');
+        }
+
+        // Handle custom callback
+        btn.onclick = () => {
+            closeAuthModal();
+            if (callback) callback();
+        };
+
+        modal.classList.remove('hidden');
+        lucide.createIcons();
+    }
+
+    function closeAuthModal() {
+        document.getElementById('auth-modal').classList.add('hidden');
+    }
+</script>

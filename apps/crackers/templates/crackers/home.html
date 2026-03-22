@@ -1,0 +1,747 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Auraa Crackers | Premium Firecrackers from Sivakasi - 22+ Years of Quality{% endblock %}
+
+{% block extra_head %}
+<!-- GSAP for 3D interactions -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+<style>
+    /* Testimonials Carousel Styles */
+    .testimonial-carousel-container {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+        padding: 4rem 0;
+    }
+
+    .testimonial-track {
+        display: flex;
+        transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        will-change: transform;
+    }
+
+    .testimonial-slide {
+        flex: 0 0 100%;
+        min-width: 100%;
+        padding: 0 1rem;
+        opacity: 0.4;
+        scale: 0.9;
+        transition: all 0.6s ease;
+    }
+
+    .testimonial-slide.active {
+        opacity: 1;
+        scale: 1;
+    }
+
+    @media (min-width: 768px) {
+        .testimonial-slide {
+            flex: 0 0 50%;
+            min-width: 50%;
+        }
+    }
+
+    @media (min-width: 1024px) {
+        .testimonial-slide {
+            flex: 0 0 33.333%;
+            min-width: 33.333%;
+        }
+    }
+
+    .glass-testimonial-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 3rem;
+        padding: 3rem;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Restored Support Section Styles */
+    .perspective-container-support {
+        perspective: 2000px;
+        transform-style: preserve-3d;
+    }
+
+    .support-float-block {
+        background-color: #f5071d;
+        border-radius: 4rem;
+        box-shadow: 0 50px 100px -20px rgba(0,0,0,0.4);
+        position: relative;
+        overflow: hidden;
+        transform-style: preserve-3d;
+    }
+
+    .glass-support-card {
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 2.5rem;
+        padding: 3rem;
+        transition: transform 0.3s ease-out, background 0.3s ease;
+        transform-style: preserve-3d;
+    }
+
+    .glass-support-card:hover {
+        background: rgba(255, 255, 255, 0.12);
+        transform: translateY(-10px) translateZ(30px);
+    }
+
+    .float-3d-icon {
+        animation: floatIcon 6s ease-in-out infinite;
+    }
+
+    @keyframes floatIcon {
+        0%, 100% { transform: translateY(0) rotate(0deg); }
+        50% { transform: translateY(-15px) rotate(5deg); }
+    }
+
+    .glass-testimonial-card::after {
+        content: '"';
+        position: absolute;
+        top: 2rem;
+        right: 3rem;
+        font-size: 8rem;
+        font-family: serif;
+        color: rgba(255, 255, 255, 0.05);
+        line-height: 1;
+    }
+
+    .carousel-dot {
+        width: 8px;
+        height: 8px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .carousel-dot.active {
+        width: 32px;
+        background: #fff;
+        border-radius: 4px;
+    }
+
+    /* Video section styles */
+    .video-placeholder {
+        aspect-ratio: 16/9;
+        background: #111;
+        border-radius: 3rem;
+        overflow: hidden;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .video-glow {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at 50% 50%, rgba(245, 7, 29, 0.15), transparent 70%);
+        pointer-events: none;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="bg-auraa-red min-h-screen overflow-hidden text-white">
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center pt-20 overflow-hidden">
+        <!-- Hero content will now sit on the background color of the parent div -->
+
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-8">
+                    <div class="inline-flex items-center space-x-3 bg-white/10 backdrop-blur-xl border border-white/20 px-6 py-2 rounded-full animate-hero">
+                        <i data-lucide="award" class="text-white w-4 h-4"></i>
+                        <span class="text-[10px] font-black text-white uppercase tracking-[0.3em]">22+ Years of Excellence</span>
+                    </div>
+                    
+                    <h1 class="text-5xl md:text-7xl lg:text-[120px] font-black text-white leading-[0.85] uppercase tracking-tighter animate-hero">
+                        Light Up <br />
+                        <span class="text-gray-900">Your Joy</span>
+                    </h1>
+                    
+                    <p class="text-xl text-white/80 font-medium max-w-lg leading-relaxed animate-hero">
+                        We take immense pride in delivering the highest quality crackers that exceed your expectations. Safe, vibrant, and unforgettable.
+                    </p>
+
+                    <div class="flex flex-wrap gap-6 pt-4">
+                        <a href="/products" class="bg-gray-900 text-white px-10 py-5 rounded-[2rem] font-black uppercase tracking-widest text-sm hover:bg-white hover:text-gray-900 transition-all shadow-2xl flex items-center space-x-3 group">
+                            <span>Explore Products</span>
+                            <i data-lucide="arrow-right" class="w-[18px] h-[18px] group-hover:translate-x-2 transition-transform"></i>
+                        </a>
+                        <a href="https://auraacrackers.com/images/download/Auraa_2025.pdf" target="_blank" rel="noopener noreferrer" class="bg-white/10 backdrop-blur-md border-2 border-white/20 text-white px-10 py-5 rounded-[2rem] font-black uppercase tracking-widest text-sm hover:bg-white/20 transition-all flex items-center space-x-3">
+                            <i data-lucide="download" class="w-[18px] h-[18px]"></i>
+                            <span>2025 Pricelist</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="relative hidden lg:block">
+                    <div class="aspect-square rounded-[5rem] overflow-hidden shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] border-[16px] border-white/10 relative group">
+                        <img src="https://picsum.photos/seed/firework-hero/1000/1000" alt="Auraa Fireworks" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                        <div class="absolute bottom-12 left-12 right-12">
+                            <div class="text-white font-black text-4xl uppercase tracking-tighter leading-none">
+                                Premium <br> Sivakasi Quality
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Decorative floating elements -->
+                    <div class="absolute -top-10 -right-10 w-32 h-32 bg-white rounded-full flex items-center justify-center shadow-2xl border-4 border-auraa-red animate-bounce overflow-hidden">
+                        <img src="{% static 'images/logo.png' %}" class="w-full h-full object-cover object-top scale-[1.3]" alt="Auraa Logo">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Exclusive Products Bento Grid -->
+    <section class="py-32 px-4 bg-auraa-red">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
+                <div class="space-y-4">
+                    <h2 class="text-xs font-black text-white uppercase tracking-[0.4em] opacity-60">The Collection</h2>
+                    <h3 class="text-4xl md:text-5xl lg:text-7xl font-black text-white uppercase tracking-tighter">Exclusive Products</h3>
+                </div>
+                <a href="/products" class="group flex items-center space-x-4 bg-white text-auraa-red px-8 py-4 rounded-2xl font-black uppercase text-xs tracking-widest shadow-xl hover:bg-gray-900 hover:text-white transition-all">
+                    <span>View All Categories</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-2 transition-transform"></i>
+                </a>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 category-grid">
+                {% for cat in categories %}
+                <div onclick="window.location.href='/products?category={{ cat.name|urlencode }}'" class="relative rounded-[3rem] overflow-hidden group cursor-pointer shadow-2xl min-h-[240px] col-span-1 row-span-1 {% if forloop.counter0|add:2|divisibleby:3 %}md:col-span-2{% endif %} hover:-translate-y-2 hover:scale-[1.02] transition-all duration-300 category-card">
+                    <img src="{% if cat.image %}{{ cat.image }}{% else %}https://picsum.photos/seed/{{ cat.name|urlencode }}/600/600{% endif %}" alt="{{ cat.name }}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                    <div class="absolute inset-0 opacity-40 group-hover:opacity-60 transition-opacity bg-{{ cat.color|default:'orange-500' }}"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                    
+                    <div class="relative z-10 h-full p-8 flex flex-col justify-end">
+                        <h4 class="text-2xl font-black text-white uppercase tracking-tight">{{ cat.name }}</h4>
+                        <div class="flex items-center space-x-2 text-white/60 text-[10px] font-black uppercase tracking-widest mt-2 group-hover:text-white transition-colors">
+                            <span>Explore</span>
+                            <i data-lucide="arrow-right" class="w-3 h-3"></i>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-span-full py-20 flex flex-col items-center justify-center space-y-4">
+                    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
+                    <p class="text-white/60 font-medium">Loading categories...</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust & Compliance Section -->
+    <section class="py-32 bg-white rounded-[5rem] mx-4 shadow-2xl relative overflow-hidden text-gray-900 mb-20">
+        <div class="max-w-7xl mx-auto px-8 md:px-16">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+                <div class="space-y-10">
+                    <div class="space-y-4">
+                        <div class="inline-flex items-center space-x-3 text-auraa-red">
+                            <i data-lucide="shield" class="w-6 h-6"></i>
+                            <span class="text-xs font-black uppercase tracking-[0.3em]">Legal & Compliance</span>
+                        </div>
+                        <h3 class="text-4xl md:text-6xl font-black text-gray-900 uppercase tracking-tighter leading-none">
+                            Safety First, <br />
+                            <span class="text-auraa-red">Joy Always</span>
+                        </h3>
+                    </div>
+                    
+                    <div class="space-y-6 text-lg text-gray-600 font-medium leading-relaxed">
+                        <p>
+                            As per 2018 Supreme Court order, online sale of firecrackers are not permitted! We value our customers and at the same time, respect jurisdiction.
+                        </p>
+                        <p class="bg-red-50 p-6 rounded-3xl border border-red-100 text-auraa-red font-bold">
+                            We request you to add your products to the cart and submit the enquiry. We will contact you within 24 hrs to confirm the order through WhatsApp or phone call.
+                        </p>
+                        <div class="flex items-center space-x-4 pt-4">
+                            <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center text-gray-900 font-black text-xs">LIC</div>
+                            <div class="text-sm font-black text-gray-400 uppercase tracking-widest">License No. 526/2023</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div class="p-8 bg-gray-50 rounded-[2.5rem] border border-gray-100 hover:border-auraa-red/20 transition-all group">
+                        <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-auraa-red shadow-sm mb-6 group-hover:scale-110 transition-transform">
+                            <i data-lucide="shield-check" class="w-6 h-6"></i>
+                        </div>
+                        <h4 class="text-lg font-black text-gray-900 uppercase tracking-tight mb-2">100% Legal</h4>
+                        <p class="text-xs text-gray-500 font-bold leading-relaxed">Following all statutory compliances.</p>
+                    </div>
+                    <div class="p-8 bg-gray-50 rounded-[2.5rem] border border-gray-100 hover:border-auraa-red/20 transition-all group">
+                        <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-auraa-red shadow-sm mb-6 group-hover:scale-110 transition-transform">
+                            <i data-lucide="truck" class="w-6 h-6"></i>
+                        </div>
+                        <h4 class="text-lg font-black text-gray-900 uppercase tracking-tight mb-2">Secure Transport</h4>
+                        <p class="text-xs text-gray-500 font-bold leading-relaxed">Registered and legal transport providers.</p>
+                    </div>
+                    <div class="p-8 bg-gray-50 rounded-[2.5rem] border border-gray-100 hover:border-auraa-red/20 transition-all group">
+                        <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-auraa-red shadow-sm mb-6 group-hover:scale-110 transition-transform">
+                            <i data-lucide="message-square" class="w-6 h-6"></i>
+                        </div>
+                        <h4 class="text-lg font-black text-gray-900 uppercase tracking-tight mb-2">Direct Support</h4>
+                        <p class="text-xs text-gray-500 font-bold leading-relaxed">Order confirmation via WhatsApp/Call.</p>
+                    </div>
+                    <div class="p-8 bg-gray-50 rounded-[2.5rem] border border-gray-100 hover:border-auraa-red/20 transition-all group">
+                        <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-auraa-red shadow-sm mb-6 group-hover:scale-110 transition-transform">
+                            <i data-lucide="shopping-bag" class="w-6 h-6"></i>
+                        </div>
+                        <h4 class="text-lg font-black text-gray-900 uppercase tracking-tight mb-2">Enquiry System</h4>
+                        <p class="text-xs text-gray-500 font-bold leading-relaxed">Safe and compliant ordering process.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Support Cluster Section - 3D Reimagined -->
+    <div class="py-24 bg-white px-6">
+        <section class="support-float-block py-32 relative z-20 text-white perspective-container-support">
+            <!-- 3D Background Layers -->
+            <div class="absolute inset-0 z-0">
+                <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_rgba(255,255,255,0.1)_0%,_transparent_70%)] opacity-30"></div>
+                <!-- Orbiting Support Symbols -->
+                <div class="absolute top-[10%] left-[5%] text-white/5 text-[10rem] font-black rotate-12 float-3d-icon">?</div>
+                <div class="absolute bottom-[10%] right-[5%] text-white/5 text-[15rem] font-black -rotate-6 float-3d-icon">!</div>
+            </div>
+
+            <div class="max-w-7xl mx-auto px-6 text-center space-y-20 relative z-10 transition-all duration-1000">
+                <div class="space-y-6 support-header-3d">
+                    <div class="inline-block px-8 py-3 bg-white/10 backdrop-blur-md rounded-full shadow-lg border border-white/20 transform -rotate-1">
+                        <h2 class="text-[12px] font-black text-white uppercase tracking-[0.5em]">24/7 Assistance</h2>
+                    </div>
+                    <h3 class="text-6xl md:text-8xl font-black text-white uppercase tracking-tighter leading-none mix-blend-overlay">
+                        Our Support <br /> <span class="italic underline decoration-white/20 underline-offset-[10px]">Team</span>
+                    </h3>
+                    <p class="text-white/70 font-medium max-w-2xl mx-auto text-xl">
+                        Connect with our dedicated experts to illuminate your celebration journey.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <!-- Order Confirm Card -->
+                    <a href="tel:+916381426206" class="glass-support-card flex flex-col items-center space-y-6 group fade-up-support" style="background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.2);">
+                        <div class="w-20 h-20 rounded-[1.5rem] bg-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-auraa-red transition-all duration-300 shadow-xl">
+                            <i data-lucide="shopping-bag" class="w-10 h-10"></i>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="text-[10px] font-black text-white/50 uppercase tracking-[0.3em]">Order Confirm</div>
+                            <div class="text-2xl font-black text-white group-hover:scale-110 transition-transform">+91 63814 26206</div>
+                        </div>
+                        <span class="text-[10px] font-black uppercase tracking-widest text-white/60 bg-white/10 px-6 py-2 rounded-full group-hover:bg-white group-hover:text-auraa-red transition-all">Direct Call</span>
+                    </a>
+
+                    <!-- Payment Confirm Card - Secure Blue -->
+                    <a href="tel:+919080560340" class="glass-support-card flex flex-col items-center space-y-6 group fade-up-support" style="background: rgba(59, 130, 246, 0.15); border-color: rgba(59, 130, 246, 0.3);">
+                        <div class="w-20 h-20 rounded-[1.5rem] bg-blue-500/20 flex items-center justify-center group-hover:bg-blue-500 group-hover:text-white transition-all duration-300 shadow-xl">
+                            <i data-lucide="credit-card" class="w-10 h-10 text-blue-300 group-hover:text-white"></i>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="text-[10px] font-black text-blue-200/50 uppercase tracking-[0.3em]">Payment Confirm</div>
+                            <div class="text-2xl font-black text-white group-hover:scale-110 transition-transform">+91 90805 60340</div>
+                        </div>
+                        <span class="text-[10px] font-black uppercase tracking-widest text-blue-200/60 bg-blue-500/20 px-6 py-2 rounded-full group-hover:bg-blue-500 group-hover:text-white transition-all">Finance Desk</span>
+                    </a>
+
+                    <!-- Direct Support Card - Help Green -->
+                    <a href="tel:+919677570276" class="glass-support-card flex flex-col items-center space-y-6 group fade-up-support" style="background: rgba(16, 185, 129, 0.15); border-color: rgba(16, 185, 129, 0.3);">
+                        <div class="w-20 h-20 rounded-[1.5rem] bg-emerald-500/20 flex items-center justify-center group-hover:bg-emerald-500 group-hover:text-white transition-all duration-300 shadow-xl">
+                            <i data-lucide="headphones" class="w-10 h-10 text-emerald-300 group-hover:text-white"></i>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="text-[10px] font-black text-emerald-200/50 uppercase tracking-[0.3em]">Direct Support</div>
+                            <div class="text-2xl font-black text-white group-hover:scale-110 transition-transform">+91 96775 70276</div>
+                        </div>
+                        <span class="text-[10px] font-black uppercase tracking-widest text-emerald-200/60 bg-emerald-500/20 px-6 py-2 rounded-full group-hover:bg-emerald-500 group-hover:text-white transition-all">Expert Help</span>
+                    </a>
+
+                    <!-- Dispatch Hub Card - Logistics Amber -->
+                    <a href="tel:+919677570276" class="glass-support-card flex flex-col items-center space-y-6 group fade-up-support" style="background: rgba(245, 158, 11, 0.15); border-color: rgba(245, 158, 11, 0.3);">
+                        <div class="w-20 h-20 rounded-[1.5rem] bg-amber-500/20 flex items-center justify-center group-hover:bg-amber-500 group-hover:text-white transition-all duration-300 shadow-xl">
+                            <i data-lucide="truck" class="w-10 h-10 text-amber-300 group-hover:text-white"></i>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="text-[10px] font-black text-amber-200/50 uppercase tracking-[0.3em]">Dispatch Hub</div>
+                            <div class="text-2xl font-black text-white group-hover:scale-110 transition-transform">+91 96775 70276</div>
+                        </div>
+                        <span class="text-[10px] font-black uppercase tracking-widest text-amber-200/60 bg-amber-500/20 px-6 py-2 rounded-full group-hover:bg-amber-500 group-hover:text-white transition-all">Tracking</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+    <!-- Testimonials & Video Section -->
+    <section class="py-32 bg-gray-950 relative overflow-hidden">
+        <!-- Background Accents -->
+        <div class="absolute top-0 right-0 w-[800px] h-[800px] bg-auraa-red/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2"></div>
+        <div class="absolute bottom-0 left-0 w-[600px] h-[600px] bg-auraa-red/5 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2"></div>
+
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="text-center space-y-4 mb-20">
+                <h2 class="text-xs font-black text-auraa-red uppercase tracking-[0.5em]">Happy Customers</h2>
+                <h3 class="text-5xl md:text-7xl font-black text-white uppercase tracking-tighter">What They Say</h3>
+            </div>
+
+            <!-- Carousel Component -->
+            <div class="testimonial-carousel-container group/carousel">
+                <div class="testimonial-track" id="testimonial-track">
+                    <!-- Slide 1 -->
+                    <div class="testimonial-slide active">
+                        <div class="glass-testimonial-card">
+                            <div class="space-y-6">
+                                <div class="flex items-center space-x-1 text-auraa-red">
+                                    <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                </div>
+                                <p class="text-lg text-white/80 font-medium leading-relaxed italic">
+                                    "The quality of Auraa Crackers is unmatched. Every single piece was vibrant and safe. My family truly enjoyed the celebration!"
+                                </p>
+                            </div>
+                            <div class="flex items-center space-x-4 pt-8 mt-auto border-t border-white/10">
+                                <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-auraa-red/30">
+                                    <img src="{% static 'brain/36046f55-9242-495c-9f56-389798283782/testimonial_user_1_1774032295532.png' %}" class="w-full h-full object-cover" alt="User">
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-black text-white uppercase tracking-wider">Rajesh Kumar</h4>
+                                    <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Verified Customer</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 2 -->
+                    <div class="testimonial-slide">
+                        <div class="glass-testimonial-card">
+                            <div class="space-y-6">
+                                <div class="flex items-center space-x-1 text-auraa-red">
+                                    <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                </div>
+                                <p class="text-lg text-white/80 font-medium leading-relaxed italic">
+                                    "Amazing varieties! The 2025 collection has some really unique items. Customer support was very helpful with my enquiry."
+                                </p>
+                            </div>
+                            <div class="flex items-center space-x-4 pt-8 mt-auto border-t border-white/10">
+                                <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-auraa-red/30">
+                                    <img src="{% static 'brain/36046f55-9242-495c-9f56-389798283782/testimonial_user_2_1774032313638.png' %}" class="w-full h-full object-cover" alt="User">
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-black text-white uppercase tracking-wider">Priya Sharma</h4>
+                                    <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Gold Member</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 3 -->
+                    <div class="testimonial-slide">
+                        <div class="glass-testimonial-card">
+                            <div class="space-y-6">
+                                <div class="flex items-center space-x-1 text-auraa-red">
+                                    <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                </div>
+                                <p class="text-lg text-white/80 font-medium leading-relaxed italic">
+                                    "The pricing is very competitive for the quality they provide. Safe and easy to use. Definitely my go-to place every Diwali."
+                                </p>
+                            </div>
+                            <div class="flex items-center space-x-4 pt-8 mt-auto border-t border-white/10">
+                                <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-auraa-red/30">
+                                    <img src="{% static 'brain/36046f55-9242-495c-9f56-389798283782/testimonial_user_3_1774032333418.png' %}" class="w-full h-full object-cover" alt="User">
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-black text-white uppercase tracking-wider">Anil Verma</h4>
+                                    <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Happy Parent</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation Controls -->
+                <button onclick="prevSlide()" class="absolute left-4 top-1/2 -translate-y-1/2 w-14 h-14 bg-white/10 backdrop-blur-xl border border-white/20 rounded-full flex items-center justify-center text-white opacity-0 group-hover/carousel:opacity-100 transition-all hover:bg-auraa-red hover:border-auraa-red z-20">
+                    <i data-lucide="chevron-left" class="w-6 h-6"></i>
+                </button>
+                <button onclick="nextSlide()" class="absolute right-4 top-1/2 -translate-y-1/2 w-14 h-14 bg-white/10 backdrop-blur-xl border border-white/20 rounded-full flex items-center justify-center text-white opacity-0 group-hover/carousel:opacity-100 transition-all hover:bg-auraa-red hover:border-auraa-red z-20">
+                    <i data-lucide="chevron-right" class="w-6 h-6"></i>
+                </button>
+
+                <!-- Dots Indicators -->
+                <div class="flex justify-center space-x-3 mt-12" id="carousel-dots">
+                    <!-- Dots will be generated via JS -->
+                </div>
+            </div>
+
+            <!-- Video Testimonials (Placeholder) -->
+            <div class="mt-40 space-y-16">
+                <div class="flex flex-col md:flex-row justify-between items-end gap-8">
+                    <div class="space-y-4">
+                        <h2 class="text-xs font-black text-auraa-red uppercase tracking-[0.4em]">Visual Stories</h2>
+                        <h3 class="text-4xl md:text-5xl font-black text-white uppercase tracking-tighter">Video Testimonials</h3>
+                    </div>
+                    <p class="text-gray-400 font-medium max-w-sm">Watch our community celebrate with Auraa. Real moments, real joy.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                    <div class="video-placeholder group cursor-pointer">
+                        <div class="video-glow"></div>
+                        <div class="relative z-10 flex flex-col items-center space-y-4">
+                            <div class="w-20 h-20 bg-auraa-red rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform">
+                                <i data-lucide="play" class="w-8 h-8 text-white fill-current"></i>
+                            </div>
+                            <span class="text-[10px] font-black uppercase tracking-widest text-white/40">Coming Soon</span>
+                        </div>
+                        <div class="absolute bottom-10 left-10">
+                            <h4 class="text-lg font-black text-white uppercase mb-1">Grand Celebration 2024</h4>
+                            <p class="text-[10px] font-bold text-auraa-red uppercase tracking-widest">Chennai Hub</p>
+                        </div>
+                    </div>
+
+                    <div class="video-placeholder group cursor-pointer">
+                        <div class="video-glow"></div>
+                        <div class="relative z-10 flex flex-col items-center space-y-4">
+                            <div class="w-20 h-20 bg-auraa-red rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform">
+                                <i data-lucide="play" class="w-8 h-8 text-white fill-current"></i>
+                            </div>
+                            <span class="text-[10px] font-black uppercase tracking-widest text-white/40">Coming Soon</span>
+                        </div>
+                        <div class="absolute bottom-10 left-10">
+                            <h4 class="text-lg font-black text-white uppercase mb-1">Diwali Family Moments</h4>
+                            <p class="text-[10px] font-bold text-auraa-red uppercase tracking-widest">Sivakasi Direct</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="py-32 text-center relative overflow-hidden bg-auraa-red text-white">
+        <div class="max-w-4xl mx-auto px-4 space-y-12 relative z-10">
+            <div class="space-y-6">
+                <h2 class="text-5xl md:text-8xl font-black text-white uppercase tracking-tighter leading-none">
+                    Celebrate with <br />
+                    <span class="text-gray-900 underline decoration-white/20 underline-offset-8">The Auraa</span>
+                </h2>
+                <p class="text-xl text-white/70 font-medium max-w-2xl mx-auto leading-relaxed">
+                    Join thousands of happy families who trust us for their celebrations. Quality, safety, and joy delivered.
+                </p>
+            </div>
+            
+            <div class="flex flex-wrap justify-center gap-6">
+                <a href="/products" class="bg-white text-auraa-red px-12 py-6 rounded-[2.5rem] font-black uppercase tracking-widest text-sm hover:bg-gray-900 hover:text-white transition-all shadow-2xl">
+                    Start Your Enquiry
+                </a>
+            </div>
+        </div>
+
+        <!-- Background Sparkle Elements -->
+        <div class="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
+            <img src="{% static 'images/logo.png' %}" class="absolute top-1/4 left-1/4 animate-pulse w-[100px] h-[100px] object-contain brightness-0 invert" alt="">
+            <img src="{% static 'images/logo.png' %}" class="absolute bottom-1/4 right-1/4 animate-pulse w-[150px] h-[150px] object-contain brightness-0 invert" alt="">
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        gsap.registerPlugin(ScrollTrigger);
+
+        const isMobile = window.innerWidth < 768;
+
+        // Hero Entrance
+        gsap.from(".animate-hero", {
+            autoAlpha: 0,
+            y: 50,
+            duration: 1.2,
+            ease: "power3.out",
+            stagger: 0.2
+        });
+
+        // Category Cards Entrance (Disabled temporarily to fix visibility)
+        /*
+        gsap.from(".category-card", {
+            autoAlpha: 0,
+            y: 60,
+            duration: 1,
+            stagger: 0.1,
+            ease: "power2.out",
+            scrollTrigger: {
+                trigger: ".category-grid",
+                start: "top bottom-=100",
+                toggleActions: "play none none none"
+            }
+        });
+        */
+
+        // 3D Tilt for Support Cards
+        if (!isMobile) {
+            document.querySelectorAll('.glass-support-card').forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const rotateX = (y - centerY) / 15;
+                    const rotateY = (centerX - x) / 15;
+
+                    gsap.to(card, {
+                        rotateX: rotateX,
+                        rotateY: rotateY,
+                        scale: 1.05,
+                        duration: 0.5,
+                        ease: "power2.out"
+                    });
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    gsap.to(card, {
+                        rotateX: 0,
+                        rotateY: 0,
+                        scale: 1,
+                        duration: 1,
+                        ease: "elastic.out(1, 0.3)"
+                    });
+                });
+            });
+        }
+
+        // Sequential Support Entrances
+        gsap.from(".fade-up-support", {
+            opacity: 0,
+            y: 50,
+            stagger: 0.2,
+            duration: 1.5,
+            ease: "power4.out",
+            scrollTrigger: {
+                trigger: ".support-float-block",
+                start: "top 70%"
+            }
+        });
+
+        // Parallax Header
+        gsap.to(".support-header-3d", {
+            y: -50,
+            scrollTrigger: {
+                trigger: ".support-header-3d",
+                scrub: true
+            }
+        });
+
+        // Testimonial Carousel Logic
+        const track = document.getElementById('testimonial-track');
+        const slides = Array.from(track.children);
+        const dotsContainer = document.getElementById('carousel-dots');
+        let currentIdx = 0;
+        let autoScrollInterval;
+
+        function getSlidesPerView() {
+            if (window.innerWidth >= 1024) return 3;
+            if (window.innerWidth >= 768) return 2;
+            return 1;
+        }
+
+        function setupDots() {
+            dotsContainer.innerHTML = '';
+            const count = slides.length - (getSlidesPerView() - 1);
+            for (let i = 0; i < count; i++) {
+                const dot = document.createElement('div');
+                dot.className = `carousel-dot ${i === 0 ? 'active' : ''}`;
+                dot.onclick = () => goToSlide(i);
+                dotsContainer.appendChild(dot);
+            }
+        }
+
+        function updateCarousel() {
+            const perView = getSlidesPerView();
+            const slideWidth = 100 / perView;
+            track.style.transform = `translateX(-${currentIdx * slideWidth}%)`;
+
+            // Update active states
+            slides.forEach((slide, i) => {
+                slide.classList.remove('active');
+                if (i >= currentIdx && i < currentIdx + perView) {
+                    slide.classList.add('active');
+                }
+            });
+
+            // Update dots
+            const dots = Array.from(dotsContainer.children);
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === currentIdx);
+            });
+        }
+
+        window.nextSlide = function() {
+            const perView = getSlidesPerView();
+            currentIdx = (currentIdx + 1) % (slides.length - (perView - 1));
+            updateCarousel();
+        }
+
+        window.prevSlide = function() {
+            const perView = getSlidesPerView();
+            const maxIdx = slides.length - perView;
+            currentIdx = (currentIdx - 1 + (maxIdx + 1)) % (maxIdx + 1);
+            updateCarousel();
+        }
+
+        function goToSlide(idx) {
+            currentIdx = idx;
+            updateCarousel();
+            resetAutoScroll();
+        }
+
+        function startAutoScroll() {
+            autoScrollInterval = setInterval(nextSlide, 5000);
+        }
+
+        function resetAutoScroll() {
+            clearInterval(autoScrollInterval);
+            startAutoScroll();
+        }
+
+        // Initialize Carousel
+        setupDots();
+        updateCarousel();
+        startAutoScroll();
+
+        // Pause on hover
+        track.parentElement.addEventListener('mouseenter', () => clearInterval(autoScrollInterval));
+        track.parentElement.addEventListener('mouseleave', startAutoScroll);
+
+        // Handle Resize
+        window.addEventListener('resize', () => {
+            setupDots();
+            updateCarousel();
+        });
+    });
+</script>
+{% endblock %}

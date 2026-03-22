@@ -1,0 +1,45 @@
+<div id="hover-zoom-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4">
+    <div class="absolute inset-0 bg-black/90 backdrop-blur-md" onclick="hideZoom()"></div>
+    <div class="relative max-w-4xl w-full aspect-square md:aspect-video bg-black rounded-3xl overflow-hidden shadow-2xl transition-all scale-95 opacity-0 duration-300" id="zoom-container">
+        <button onclick="hideZoom()" class="absolute top-6 right-6 z-10 p-3 bg-white/10 hover:bg-white/20 backdrop-blur-md rounded-full text-white transition-all">
+            <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+        <img id="zoom-img-content" src="" alt="Zoom" class="w-full h-full object-contain">
+        <div class="absolute bottom-0 inset-x-0 p-8 bg-gradient-to-t from-black/80 to-transparent">
+            <h3 id="zoom-title" class="text-2xl font-black text-white uppercase tracking-tight">Product Name</h3>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showZoom(img, title) {
+        const modal = document.getElementById('hover-zoom-modal');
+        const container = document.getElementById('zoom-container');
+        const imgContent = document.getElementById('zoom-img-content');
+        const titleContent = document.getElementById('zoom-title');
+
+        imgContent.src = img;
+        titleContent.innerText = title;
+        modal.classList.remove('hidden');
+        
+        // Trigger animation
+        setTimeout(() => {
+            container.classList.remove('scale-95', 'opacity-0');
+            container.classList.add('scale-100', 'opacity-100');
+        }, 10);
+        
+        if (window.lucide) lucide.createIcons();
+    }
+
+    function hideZoom() {
+        const modal = document.getElementById('hover-zoom-modal');
+        const container = document.getElementById('zoom-container');
+        
+        container.classList.add('scale-95', 'opacity-0');
+        container.classList.remove('scale-100', 'opacity-100');
+        
+        setTimeout(() => {
+            modal.classList.add('hidden');
+        }, 300);
+    }
+</script>

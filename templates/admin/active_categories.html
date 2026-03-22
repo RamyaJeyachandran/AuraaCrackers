@@ -1,0 +1,180 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Category | Auraa Admin{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+    <!-- Header -->
+    <style>
+        @media print {
+            .no-print, header, nav, footer, .sidebar, .admin-navbar, #admin-nav, .controls-section { display: none !important; }
+            .print-only { display: block !important; }
+            body { background: white !important; padding: 0 !important; margin: 0 !important; }
+            .max-w-7xl { max-width: 100% !important; width: 100% !important; border: none !important; box-shadow: none !important; }
+            table { width: 100% !important; border-collapse: collapse !important; }
+            th, td { border: 1px solid #eee !important; padding: 12px !important; }
+            .rounded-\[2\.5rem\], .rounded-2xl { border-radius: 0 !important; }
+            img { display: none !important; }
+        }
+    </style>
+
+    <div class="mb-12 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 no-print">
+        <div>
+            <h1 class="text-4xl font-black text-gray-900 tracking-tight uppercase mb-2">Manage <span class="text-auraa-red">Category</span></h1>
+            <p class="text-gray-500 font-bold uppercase tracking-widest text-[10px]">Management of all active product categories</p>
+        </div>
+        <div class="flex items-center space-x-3">
+            <div class="px-5 py-2.5 bg-auraa-red rounded-full shadow-lg shadow-auraa-red/30 flex items-center space-x-2 border border-red-500/30">
+                <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
+                <span class="text-[10px] font-black text-white uppercase tracking-widest">Total: {{ categories.count }}</span>
+            </div>
+            <button onclick="window.print()" class="px-5 py-2.5 bg-gray-900 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-black transition-all flex items-center space-x-2 shadow-lg shadow-gray-200">
+                <i data-lucide="printer" class="w-3.5 h-3.5"></i>
+                <span>Print</span>
+            </button>
+            <button onclick="exportTableToCSV('categories-report.csv')" class="px-5 py-2.5 bg-gray-900 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-black transition-all flex items-center space-x-2 shadow-lg shadow-gray-200">
+                <i data-lucide="download" class="w-3.5 h-3.5"></i>
+                <span>Export Excel</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Print Only Header -->
+    <div class="hidden print-only p-12 text-center border-b-2 border-gray-900 mb-10">
+        <h1 class="text-3xl font-black uppercase tracking-widest text-gray-900">Auraa Crackers | Category Inventory Report</h1>
+        <p class="text-[11px] font-black uppercase tracking-[0.3em] text-gray-500 mt-4">Generated on {% now "F d, Y H:i" %}</p>
+    </div>
+
+    <!-- Controls -->
+    <div class="mb-8 bg-auraa-red p-6 rounded-[2.5rem] shadow-xl relative group no-print">
+        <div class="absolute inset-0 overflow-hidden rounded-[2.5rem] pointer-events-none">
+            <div class="absolute -top-24 -right-24 w-48 h-48 bg-white/10 rounded-full blur-[60px] group-hover:bg-white/20 transition-all duration-1000"></div>
+        </div>
+        <div class="relative z-10 w-full">
+            <form method="GET" class="relative w-full max-w-2xl flex items-center">
+                <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 text-white w-[18px] h-[18px]"></i>
+                <input type="text" name="q" id="search-input" placeholder="Search categories..." value="{{ search_query|default:'' }}" 
+                       class="w-full pl-12 pr-12 py-3.5 bg-white/10 border border-white/20 rounded-2xl text-sm font-bold text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-white/40 transition-all"
+                       oninput="toggleClearSearchBtn()">
+                <button type="button" id="clear-search-btn" onclick="clearSearch()" class="absolute right-4 top-1/2 -translate-y-1/2 text-white hover:text-white transition-colors {% if not search_query %}hidden{% endif %}">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Categories Table -->
+    <div class="bg-white rounded-[2.5rem] border border-gray-100 shadow-xl overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead class="bg-gray-900 text-white">
+                    <tr class="border-b border-gray-800">
+                        <th class="py-6 px-8 text-[10px] font-black uppercase tracking-widest text-white/90">Category</th>
+                        <th class="py-6 px-8 text-[10px] font-black uppercase tracking-widest text-white/90 text-center">Product Count</th>
+                        <th class="py-6 px-8 text-[10px] font-black uppercase tracking-widest text-white/90">Status</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-50">
+                    {% for category in categories %}
+                    <tr class="hover:bg-gray-50/50 transition-colors group">
+                        <td class="py-6 px-8">
+                            <div class="flex items-center space-x-4">
+                                {% if category.image %}
+                                    <div class="w-12 h-12 rounded-2xl overflow-hidden border border-gray-100 shadow-sm">
+                                        <img src="{{ category.image }}" alt="{{ category.name }}" class="w-full h-full object-cover">
+                                    </div>
+                                {% else %}
+                                    <div class="w-12 h-12 bg-gray-100 rounded-2xl flex items-center justify-center text-gray-400">
+                                        <i data-lucide="tag" class="w-5 h-5"></i>
+                                    </div>
+                                {% endif %}
+                                <div>
+                                    <p class="text-sm font-black text-gray-900 uppercase tracking-tight">{{ category.name }}</p>
+                                    <p class="text-[9px] font-bold text-gray-400 uppercase tracking-widest">{{ category.description|default:"No description" }}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="py-6 px-8 text-center">
+                            <a href="{% url 'dashboard_products' %}#category-{{ category.id }}" class="inline-block px-4 py-1.5 bg-auraa-red text-white hover:bg-gray-900 transition-all transform hover:-translate-y-0.5 shadow-md text-[11px] font-black uppercase tracking-widest rounded-xl">
+                                {{ category.products.count }}
+                            </a>
+                        </td>
+                        <td class="py-6 px-8">
+                            {% if category.is_active %}
+                            <span class="flex items-center space-x-2 px-3 py-1 bg-green-50 text-green-600 border border-green-100 text-[9px] font-black uppercase tracking-widest rounded-full w-fit">
+                                <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                                <span>Active</span>
+                            </span>
+                            {% else %}
+                            <span class="flex items-center space-x-2 px-3 py-1 bg-red-50 text-red-600 border border-red-100 text-[9px] font-black uppercase tracking-widest rounded-full w-fit">
+                                <span class="w-1.5 h-1.5 rounded-full bg-red-500"></span>
+                                <span>Inactive</span>
+                            </span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="3" class="py-32 text-center">
+                            <div class="flex flex-col items-center">
+                                <div class="w-20 h-20 bg-gray-50 rounded-[2rem] flex items-center justify-center text-gray-200 mb-6">
+                                    <i data-lucide="layers" class="w-10 h-10"></i>
+                                </div>
+                                <h3 class="text-lg font-black text-gray-900 uppercase tracking-widest mb-2">No Categories</h3>
+                                <p class="text-xs font-bold text-gray-400 uppercase tracking-widest">No categories match your search criteria.</p>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    // CSV Export Logic
+    function downloadCSV(csv, filename) {
+        let csvFile;
+        let downloadLink;
+        csvFile = new Blob([csv], { type: "text/csv" });
+        downloadLink = document.createElement("a");
+        downloadLink.download = filename;
+        downloadLink.href = window.URL.createObjectURL(csvFile);
+        downloadLink.style.display = "none";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+    }
+
+    function exportTableToCSV(filename) {
+        let csv = [];
+        const rows = document.querySelectorAll("table tr");
+        for (let i = 0; i < rows.length; i++) {
+            let row = [], cols = rows[i].querySelectorAll("td, th");
+            for (let j = 0; j < cols.length; j++) {
+                let text = cols[j].innerText.replace(/\n/g, " ").trim();
+                row.push('"' + text + '"');
+            }
+            if (row.length > 0) csv.push(row.join(","));
+        }
+        downloadCSV(csv.join("\n"), filename);
+    }
+
+    // Search Clear Logic
+    function toggleClearSearchBtn() {
+        const input = document.getElementById('search-input');
+        const btn = document.getElementById('clear-search-btn');
+        if (input.value.length > 0) {
+            btn.classList.remove('hidden');
+        } else {
+            btn.classList.add('hidden');
+        }
+    }
+
+    function clearSearch() {
+        document.getElementById('search-input').value = '';
+        document.getElementById('search-input').closest('form').submit();
+    }
+</script>
+{% endblock %}

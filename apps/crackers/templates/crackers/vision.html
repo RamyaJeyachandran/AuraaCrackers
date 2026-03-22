@@ -1,0 +1,361 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Our Vision | Auraa Profile - Auraa Crackers{% endblock %}
+
+{% block extra_head %}
+<!-- GSAP for advanced animations -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+<style>
+    :root {
+        --auraa-red: #f5071d;
+        --deep-red: #8b0000;
+        --glass: rgba(255, 255, 255, 0.05);
+        --glass-border: rgba(255, 255, 255, 0.15);
+    }
+
+    body {
+        background-color: white;
+        color: #111827;
+        overflow-x: hidden;
+    }
+
+    .perspective-container {
+        perspective: 2000px;
+        transform-style: preserve-3d;
+    }
+
+    .glass-card {
+        background: var(--glass);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border: 1px solid var(--glass-border);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        border-radius: 3rem;
+        padding: 3.5rem;
+        transform-style: preserve-3d;
+        transition: transform 0.3s ease-out;
+    }
+
+    .glass-card:hover {
+        border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .parallax-layer {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+    }
+
+    /* 3D Floating Elements */
+    .float-3d {
+        animation: floatImg 8s ease-in-out infinite;
+        transform-style: preserve-3d;
+    }
+
+    @keyframes floatImg {
+        0%, 100% { transform: translateZ(20px) translateY(0) rotate(0deg); }
+        50% { transform: translateZ(80px) translateY(-30px) rotate(3deg); }
+    }
+
+    .scene-3d {
+        transform-style: preserve-3d;
+        will-change: transform;
+    }
+
+    /* Modern Scroll Progress */
+    .progress-wrap {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: rgba(255, 255, 255, 0.05);
+        z-index: 1000;
+    }
+
+    .progress-bar {
+        height: 100%;
+        background: white;
+        width: 0%;
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+    }
+
+    /* Abstract Shapes */
+    .shape-3d {
+        position: absolute;
+        opacity: 0.1;
+        border: 2px solid white;
+        border-radius: 50%;
+    }
+
+    /* Header Fix for 3D Stacking */
+    #main-nav {
+        z-index: 9999 !important;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Progress Bar -->
+<div class="progress-wrap">
+    <div id="scroll-progress" class="progress-bar"></div>
+</div>
+
+<div class="perspective-container">
+    <!-- Immersive Cinematic Hero -->
+    <section class="min-h-screen flex items-center justify-center relative overflow-hidden bg-auraa-red my-10 rounded-[3rem] mx-6 shadow-2xl">
+        <!-- Parallax Background Layers -->
+        <div class="absolute inset-0 z-0">
+            <div class="absolute inset-0 bg-white/5 opacity-30"></div>
+            <div id="hero-particles" class="absolute inset-0"></div>
+            <!-- Grainy Overlay -->
+            <div class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 pointer-events-none brightness-200"></div>
+        </div>
+
+        <div class="container mx-auto px-6 relative z-10 text-center scene-3d">
+            <div class="inline-block px-10 py-3 bg-white/10 border border-white/20 rounded-full mb-12 backdrop-blur-md fade-up">
+                <span class="text-[12px] font-black uppercase tracking-[0.6em] text-white">Corporate Vision</span>
+            </div>
+            
+            <h1 class="text-6xl md:text-9xl font-black uppercase tracking-tighter leading-[0.9] mb-16 mix-blend-overlay text-white fade-up transition-all duration-700 hover:scale-[1.05]">
+                Auraa <br /> <span class="italic underline decoration-white/20 underline-offset-[10px]">Vision</span>
+            </h1>
+
+            <div class="max-w-4xl mx-auto glass-card float-3d fade-up">
+                <p class="text-white text-2xl md:text-3xl font-black italic tracking-wide leading-tight">
+                    "Because Every Child Deserves the Joy of Celebration"
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content Sections Matrix -->
+    <div class="space-y-40 pb-40">
+        
+        <!-- Main Vision Statement Section -->
+        <section class="relative py-24 bg-auraa-red rounded-[4rem] mx-6 shadow-2xl">
+            <div class="container mx-auto px-6 lg:px-20 grid lg:grid-cols-2 gap-20 items-center">
+                <div class="order-2 lg:order-1 scene-3d">
+                    <div class="glass-card space-y-10 hover-lift fade-up transition-all duration-500 hover:bg-white/10">
+                        <div class="w-20 h-1 bg-white shadow-[0_0_20px_rgba(255,255,255,0.5)]"></div>
+                        <h2 class="text-5xl lg:text-7xl font-black tracking-tighter uppercase leading-none text-white">Our <br/><span class="text-white/70">Dream</span></h2>
+                        <div class="space-y-6 text-xl text-white/60 font-medium leading-relaxed">
+                            <p>At <strong class="text-white">Auraa Crackers</strong>, we strive to become India’s most trusted fireworks brand, bringing safe, joyful, and responsible celebrations to every home.</p>
+                            <p>We aspire to set higher standards in the fireworks industry through customer delight, safety, and innovation.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="order-1 lg:order-2 flex justify-center">
+                    <div class="relative w-[500px] h-[500px] flex items-center justify-center scene-3d fade-up">
+                        <div class="absolute inset-0 bg-white/5 rounded-full blur-[120px] animate-pulse"></div>
+                        <div class="text-[15rem] relative z-10 filter drop-shadow-[0_20px_60px_rgba(255,255,255,0.2)] float-3d">🌟</div>
+                        <!-- Orbiting Rings -->
+                        <div class="absolute w-full h-full border border-white/10 rounded-full animate-spin" style="animation-duration: 15s;"></div>
+                        <div class="absolute w-[80%] h-[80%] border-t-2 border-white/20 rounded-full animate-reverse-spin" style="animation-duration: 20s;"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quotes Matrix -->
+        <section class="relative py-24 bg-auraa-red rounded-[4rem] mx-6 shadow-2xl">
+            <div class="container mx-auto px-6">
+                <div class="max-w-4xl mx-auto glass-card text-center space-y-10 hover-lift fade-up">
+                    <div class="flex justify-center mb-6">
+                        <div class="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center">
+                            <i data-lucide="quote" class="text-white w-8 h-8"></i>
+                        </div>
+                    </div>
+                    <p class="text-4xl md:text-5xl font-black text-white leading-tight italic">
+                        “When joy becomes the purpose, profit naturally becomes the byproduct.”
+                    </p>
+                    <div class="w-40 h-1 bg-white mx-auto opacity-20"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pillars Grid -->
+        <section class="relative py-24 bg-auraa-red rounded-[4rem] mx-6 shadow-2xl px-6">
+            <div class="container mx-auto grid md:grid-cols-2 gap-12">
+                <div class="glass-card hover-lift space-y-8 fade-up">
+                    <div class="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center mb-6">
+                        <i data-lucide="heart" class="text-white w-8 h-8"></i>
+                    </div>
+                    <h3 class="text-4xl font-black text-white uppercase tracking-tighter">Honoring Tradition</h3>
+                    <p class="text-white/60 text-lg leading-relaxed">By continuously improving our products and practices to align with timeless heritage.</p>
+                </div>
+
+                <div class="glass-card hover-lift space-y-8 fade-up">
+                    <div class="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center mb-6">
+                        <i data-lucide="sparkles" class="text-white w-8 h-8"></i>
+                    </div>
+                    <h3 class="text-4xl font-black text-white uppercase tracking-tighter">Joy Associative</h3>
+                    <p class="text-white/60 text-lg leading-relaxed">Aiming to make Auraa a name associated with happiness and reliability across India.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Final Vision Core -->
+        <section class="relative py-24 bg-auraa-red rounded-[4rem] mx-6 shadow-2xl">
+            <div class="container mx-auto px-6">
+                <div class="bg-white p-20 lg:p-32 rounded-[5rem] text-auraa-red text-center relative overflow-hidden group hover:scale-[1.02] transition-transform duration-1000 fade-up">
+                    <div class="relative z-10 space-y-10">
+                        <span class="inline-block px-10 py-3 bg-auraa-red text-white font-black uppercase tracking-[0.4em] text-[12px] rounded-full">The Essence</span>
+                        <h2 class="text-5xl md:text-7xl font-black tracking-tighter leading-none mix-blend-multiply transition-all duration-500">
+                            Lighting up every celebration with <span class="italic underline decoration-auraa-red/20 underline-offset-8">Trust</span> & <span class="italic">Safety</span>.
+                        </h2>
+                    </div>
+                    <!-- Watermark Logo -->
+                    <div class="absolute -bottom-20 -right-20 opacity-5 group-hover:opacity-10 transition-opacity">
+                        <img src="{% static 'images/logo.png' %}" class="w-[30rem] h-[30rem] object-contain rotate-12" alt="">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Legacy Call to Action -->
+        <section class="relative py-24 bg-auraa-red rounded-[4rem] mx-6 shadow-2xl text-center pb-20">
+            <div class="container mx-auto px-6 space-y-16 scene-3d">
+                <div class="relative inline-block w-48 h-48 mx-auto float-3d mb-10">
+                    <div class="absolute inset-0 bg-white/10 rounded-full blur-[50px] animate-pulse"></div>
+                    <img src="{% static 'images/logo.png' %}" class="relative z-10 w-full h-full object-contain filter drop-shadow-[0_20px_50px_rgba(255,255,255,0.4)]" alt="">
+                </div>
+                
+                <h3 class="text-4xl md:text-7xl font-black text-white tracking-tighter uppercase leading-none fade-up transition-transform duration-500 hover:scale-[1.02]">
+                    Because Joy is a <br /> <span class="italic underline decoration-white/20 underline-offset-[16px]">Shared Legacy</span>.
+                </h3>
+
+                <div class="flex flex-wrap justify-center gap-8 pt-10 fade-up">
+                    <a href="{% url 'product_list' %}" class="bg-white text-auraa-red px-16 py-7 rounded-3xl font-black uppercase tracking-widest text-sm hover:bg-auraa-red hover:text-white border-2 border-white transition-all shadow-2xl shadow-black/20 group">
+                        <span>Explore Our Pride</span>
+                        <i data-lucide="arrow-right" class="inline-block ml-3 group-hover:translate-x-2 transition-transform"></i>
+                    </a>
+                    <a href="{% url 'contact' %}" class="bg-transparent border-2 border-white/30 text-white px-16 py-7 rounded-3xl font-black uppercase tracking-widest text-sm hover:bg-white/10 transition-all">
+                        Partner with Us
+                    </a>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        gsap.registerPlugin(ScrollTrigger);
+
+        const isMobile = window.innerWidth < 768;
+
+        // 1. Scroll Progress
+        window.addEventListener('scroll', () => {
+            const h = document.documentElement, b = document.body;
+            const percent = (h.scrollTop || b.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+            document.getElementById('scroll-progress').style.width = percent + '%';
+        });
+
+        // 2. 3D Tilt for Glass Cards
+        if (!isMobile) {
+            document.querySelectorAll('.glass-card').forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const rotateX = (y - centerY) / 25;
+                    const rotateY = (centerX - x) / 25;
+
+                    gsap.to(card, {
+                        rotateX: rotateX,
+                        rotateY: rotateY,
+                        scale: 1.02,
+                        duration: 0.5,
+                        ease: "power2.out"
+                    });
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    gsap.to(card, {
+                        rotateX: 0,
+                        rotateY: 0,
+                        scale: 1,
+                        duration: 1,
+                        ease: "elastic.out(1, 0.3)"
+                    });
+                });
+            });
+        }
+
+        // 3. Sequential Entrance Animations
+        gsap.utils.toArray('.fade-up').forEach((elem) => {
+            gsap.from(elem, {
+                opacity: 0,
+                y: 100,
+                rotateX: -10,
+                duration: 1.5,
+                ease: "power4.out",
+                scrollTrigger: {
+                    trigger: elem,
+                    start: "top 90%",
+                    toggleActions: "play none none none"
+                }
+            });
+        });
+
+        // 4. Parallax Title depth
+        gsap.to("h1", {
+            yPercent: -30,
+            ease: "none",
+            scrollTrigger: {
+                trigger: "h1",
+                start: "top center",
+                end: "bottom top",
+                scrub: true
+            }
+        });
+
+        // 5. Hero Particle System
+        function createHeroParticle() {
+            const container = document.getElementById('hero-particles');
+            if (!container) return;
+            
+            const p = document.createElement('div');
+            p.style.cssText = `
+                position: absolute;
+                background: white;
+                border-radius: 50%;
+                pointer-events: none;
+                filter: blur(1px);
+            `;
+            
+            const size = Math.random() * 4 + 1;
+            const x = Math.random() * 100;
+            const y = Math.random() * 100;
+            
+            p.style.width = p.style.height = `${size}px`;
+            p.style.left = `${x}%`;
+            p.style.top = `${y}%`;
+            p.style.opacity = Math.random() * 0.3;
+            
+            container.appendChild(p);
+            
+            gsap.to(p, {
+                z: Math.random() * 800,
+                y: "-=200",
+                opacity: 0,
+                duration: Math.random() * 8 + 6,
+                repeat: -1,
+                ease: "none"
+            });
+        }
+
+        for (let i = 0; i < 60; i++) createHeroParticle();
+    });
+</script>
+{% endblock %}

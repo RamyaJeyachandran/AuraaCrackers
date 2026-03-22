@@ -1,0 +1,502 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Auraa Manifesto | Auraa Profile - Auraa Crackers{% endblock %}
+
+{% block extra_head %}
+<!-- GSAP for advanced animations -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+<style>
+    /* Refactored Manifesto Carousel */
+    .belief-card {
+        flex: 0 0 85vw;
+        max-width: 800px;
+        min-height: 500px;
+        background: white;
+        border-radius: 4rem;
+        padding: 5rem;
+        scroll-snap-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 40px 100px -20px rgba(0,0,0,0.03);
+        border: 1px solid rgba(0,0,0,0.05);
+        transition: transform 0.6s cubic-bezier(0.2, 0, 0, 1), opacity 0.6s ease;
+    }
+    @media (min-width: 1024px) {
+        .belief-card { flex: 0 0 60vw; }
+    }
+    .belief-card:not(.active) {
+        opacity: 0.4;
+        transform: scale(0.9) translateY(20px);
+    }
+    .belief-tag {
+        font-size: 9px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.5em;
+        color: #f5071d;
+        margin-bottom: 2.5rem;
+        display: block;
+    }
+    .belief-text {
+        font-size: clamp(1.2rem, 3.5vw, 1.8rem);
+        font-weight: 700;
+        line-height: 1.4;
+        text-transform: uppercase;
+        letter-spacing: -0.01em;
+        color: #1a1a1a;
+    }
+    .belief-text b { color: #f5071d; }
+    
+    .belief-point {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 2rem;
+    }
+    .belief-bullet {
+        width: 24px;
+        height: 24px;
+        background: #f5071d;
+        border-radius: 50%;
+        margin-top: 4px;
+        margin-right: 18px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 8px;
+        font-weight: 900;
+    }
+    .card-num-shadow {
+        position: absolute;
+        bottom: -2rem;
+        right: -1rem;
+        font-size: 15rem;
+        font-weight: 900;
+        line-height: 1;
+        opacity: 0.03;
+        color: #f5071d;
+        pointer-events: none;
+    }
+    .scrollbar-hide::-webkit-scrollbar { display: none; }
+    .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+    .principle-item {
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        padding: 4rem 0;
+        display: grid;
+        grid-template-columns: 80px 1fr 300px;
+        gap: 2rem;
+        align-items: center;
+        opacity: 0;
+        transform: translateY(40px);
+    }
+
+    .principle-num {
+        font-size: 1.5rem;
+        font-weight: 900;
+        color: #f5071d;
+    }
+
+    .principle-title {
+        font-size: 3rem;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: -0.02em;
+        color: #1a1a1a;
+    }
+
+    .principle-desc {
+        color: #666;
+        font-size: 1.125rem;
+        line-height: 1.6;
+    }
+
+    .belief-carousel-container {
+        padding: 5vh 0;
+    }
+
+    .glass-box {
+        background: rgba(255, 255, 255, 0.02);
+        backdrop-filter: blur(30px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 4rem;
+        padding: 6rem;
+    }
+
+    .scroll-indicator {
+        position: fixed;
+        bottom: 40px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 100;
+        opacity: 0.5;
+    }
+
+    .mouse {
+        width: 30px;
+        height: 50px;
+        border: 2px solid white;
+        border-radius: 20px;
+        position: relative;
+    }
+
+    .mouse::after {
+        content: '';
+        width: 4px;
+        height: 8px;
+        background: white;
+        position: absolute;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 2px;
+        animation: scrollMouse 2s infinite;
+    }
+
+    @keyframes scrollMouse {
+        0% { opacity: 1; top: 10px; }
+        100% { opacity: 0; top: 30px; }
+    }
+
+    /* Abstract backgrounds */
+    .abstract-shape {
+        position: absolute;
+        filter: blur(100px);
+        z-index: -1;
+        opacity: 0.2;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- Hero / Intro -->
+<section class="bg-gray-900 pt-16 pb-32 text-white relative overflow-hidden min-h-[90vh] flex items-center">
+    <!-- Cinematic Background -->
+    <div class="absolute inset-0 z-0">
+        <img src="https://images.unsplash.com/photo-1542662512-58e1785501d5?ivlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80" alt="Manifesto Hero" class="w-full h-full object-cover opacity-50 scale-110 animate-[pulse_15s_infinite]">
+        <div class="absolute inset-0 bg-gradient-to-b from-gray-900/60 via-gray-900/40 to-[#fffcf7]"></div>
+        <div class="absolute inset-0 bg-auraa-red/5 mix-blend-color"></div>
+    </div>
+
+    <div class="container mx-auto px-6 text-center relative z-10">
+        <div class="inline-block px-8 py-3 bg-auraa-red rounded-full mb-12 shadow-2xl shadow-auraa-red/30 fade-up">
+            <span class="text-[10px] font-black uppercase tracking-[0.6em] text-white">The Auraa Manifesto</span>
+        </div>
+        <h1 class="text-7xl md:text-[140px] font-black uppercase tracking-tighter leading-[0.85] mb-12 fade-up">
+            Our Shared <br /> <span class="text-auraa-red italic underline underline-offset-[20px] decoration-white/20">Truth</span>
+        </h1>
+        <div class="max-w-2xl mx-auto space-y-6 fade-up">
+            <p class="text-2xl font-medium text-white/80 leading-relaxed">
+                From the heart of Sivakasi, we carry forward a tradition of celebration while building a future of responsible joy.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- The Manifesto Slideshow -->
+<section class="bg-[#fffcf7] py-40 overflow-hidden relative">
+    <!-- Navigation Arrows -->
+    <div class="absolute top-1/2 left-4 md:left-12 z-20 -translate-y-1/2">
+        <button onclick="scrollCarousel(-1)" class="w-16 h-16 rounded-full bg-white shadow-2xl flex items-center justify-center text-gray-900 hover:bg-auraa-red hover:text-white transition-all transform hover:scale-110 active:scale-95 border border-gray-100">
+            <i data-lucide="chevron-left" class="w-6 h-6"></i>
+        </button>
+    </div>
+    <div class="absolute top-1/2 right-4 md:right-12 z-20 -translate-y-1/2">
+        <button onclick="scrollCarousel(1)" class="w-16 h-16 rounded-full bg-white shadow-2xl flex items-center justify-center text-gray-900 hover:bg-auraa-red hover:text-white transition-all transform hover:scale-110 active:scale-95 border border-gray-100">
+            <i data-lucide="chevron-right" class="w-6 h-6"></i>
+        </button>
+    </div>
+
+    <div class="container mx-auto px-6">
+        <div id="belief-carousel" class="flex space-x-12 overflow-x-auto pb-20 snap-x snap-mandatory scrollbar-hide scroll-smooth">
+            <!-- Belief 01: Rose Tint -->
+            <div class="belief-card snap-center active border-b-8 border-rose-100/50" data-index="0" style="background: white;">
+                <span class="belief-tag">Belief 01 — Essence</span>
+                <div class="belief-text">
+                    <div class="belief-point">
+                        <div class="belief-bullet" style="background: #f43f5e;">1</div>
+                        <div>At Auraa Crackers, we believe <b>celebrations are more than fireworks.</b></div>
+                    </div>
+                    <div class="belief-point">
+                        <div class="belief-bullet" style="background: #f43f5e;">2</div>
+                        <div>They are moments of joy, togetherness, and memories children remember for a lifetime.</div>
+                    </div>
+                </div>
+                <span class="card-num-shadow" style="color: #f43f5e;">01</span>
+                <div class="absolute -bottom-10 -right-10 w-60 h-60 bg-rose-500/5 rounded-full blur-3xl"></div>
+            </div>
+            <!-- Belief 02: Sky Tint -->
+            <div class="belief-card snap-center border-b-8 border-blue-50/50" data-index="1" style="background: white;">
+                <span class="belief-tag" style="color: #3b82f6;">Belief 02 — Inclusion</span>
+                <div class="belief-text">
+                    <div class="belief-point">
+                        <div class="belief-bullet" style="background: #3b82f6;">3</div>
+                        <div>We believe <b>every child deserves the excitement</b> of lighting a sparkler.</div>
+                    </div>
+                    <div class="belief-point">
+                        <div class="belief-bullet" style="background: #3b82f6;">4</div>
+                        <div>Every family deserves happiness. Every celebration should be affordable and safe.</div>
+                    </div>
+                </div>
+                <span class="card-num-shadow" style="color: #3b82f6;">02</span>
+                <div class="absolute -bottom-10 -right-10 w-60 h-60 bg-blue-500/5 rounded-full blur-3xl"></div>
+            </div>
+            <!-- Belief 03: Gold Tint -->
+            <div class="belief-card snap-center border-b-8 border-amber-50/50" data-index="2" style="background: white;">
+                <span class="belief-tag" style="color: #f59e0b;">Belief 03 — Integrity</span>
+                <div class="belief-text">
+                    <div class="belief-point">
+                        <div class="belief-bullet" style="background: #f59e0b;">5</div>
+                        <div>We believe <b>trust must guide every transaction.</b></div>
+                    </div>
+                    <div class="belief-point">
+                        <div class="belief-bullet" style="background: #f59e0b;">6</div>
+                        <div>Responsibility must guide every action. Innovation must guide every step forward.</div>
+                    </div>
+                </div>
+                <span class="card-num-shadow" style="color: #f59e0b;">03</span>
+                <div class="absolute -bottom-10 -right-10 w-60 h-60 bg-amber-500/5 rounded-full blur-3xl"></div>
+            </div>
+        </div>
+        
+        <!-- Navigation / Progress Footer -->
+        <div class="flex items-center justify-between max-w-[800px] mx-auto mt-8">
+            <div class="flex space-x-3" id="carousel-dots">
+                <div class="dot w-12 h-2 bg-auraa-red rounded-full transition-all duration-500" data-index="0"></div>
+                <div class="dot w-4 h-2 bg-gray-300 rounded-full transition-all duration-500" data-index="1"></div>
+                <div class="dot w-4 h-2 bg-gray-300 rounded-full transition-all duration-500" data-index="2"></div>
+            </div>
+            <p class="text-[10px] font-black uppercase tracking-widest text-gray-400">Discover Our Core Truths</p>
+        </div>
+    </div>
+</section>
+
+<!-- The Principles -->
+<section class="bg-white py-40">
+    <div class="container mx-auto px-6">
+        <div class="text-center mb-32">
+            <h2 class="text-6xl md:text-8xl font-black uppercase tracking-tighter mb-8 fade-up">The Auraa <br><span class="text-auraa-red italic">Principles</span></h2>
+            <p class="text-gray-500 max-w-2xl mx-auto text-xl font-medium fade-up">
+                Our actions are guided by simple principles that shape how we serve customers and build our brand.
+            </p>
+        </div>
+
+        <div class="max-w-6xl mx-auto">
+            <!-- Principle 1 -->
+            <div class="principle-item">
+                <span class="principle-num">01</span>
+                <h3 class="principle-title">Joy Comes First</h3>
+                <p class="principle-desc">Every product we sell should bring happiness and excitement to families and children during celebrations.</p>
+            </div>
+
+            <!-- Principle 2 -->
+            <div class="principle-item">
+                <span class="principle-num">02</span>
+                <h3 class="principle-title">Customer Before Profit</h3>
+                <p class="principle-desc">For us, customer joy and satisfaction come before profit. When customers are happy, success naturally follows.</p>
+            </div>
+
+            <!-- Principle 3 -->
+            <div class="principle-item">
+                <span class="principle-num">03</span>
+                <h3 class="principle-title">Honest Business Always</h3>
+                <p class="principle-desc">We believe in trust, transparency, and fair pricing in every interaction with customers and partners.</p>
+            </div>
+
+            <!-- Principle 4 -->
+            <div class="principle-item">
+                <span class="principle-num">04</span>
+                <h3 class="principle-title">Celebrate Responsibly</h3>
+                <p class="principle-desc">We carry the responsibility to ensure that celebrations are safe, respectful, and mindful of people and society.</p>
+            </div>
+
+            <!-- Principle 5 -->
+            <div class="principle-item">
+                <span class="principle-num">05</span>
+                <h3 class="principle-title">Improve Every Season</h3>
+                <p class="principle-desc">Every festival season is an opportunity to learn, innovate, and serve customers better than before.</p>
+            </div>
+
+            <!-- Principle 6 -->
+            <div class="principle-item">
+                <span class="principle-num">06</span>
+                <h3 class="principle-title">Deliver with Pride</h3>
+                <p class="principle-desc">Every Auraa order must reach customers in clean, premium white wrapper packaging with a tag, reflecting our pride.</p>
+            </div>
+
+            <!-- Principle 7 -->
+            <div class="principle-item">
+                <span class="principle-num">07</span>
+                <h3 class="principle-title">Spread the Spirit</h3>
+                <p class="principle-desc">Our purpose is not just selling fireworks — it is spreading the joy of festivals to more homes and more children.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Quote / Final Thought -->
+<section class="py-60 bg-black text-white text-center relative overflow-hidden">
+    <div class="container mx-auto px-6 relative z-10">
+        <div class="inline-block px-8 py-2 bg-auraa-red rounded-full mb-12 fade-up">
+            <span class="text-[10px] font-black uppercase tracking-[0.5em]">The Final Truth</span>
+        </div>
+        <blockquote class="text-4xl md:text-7xl font-black italic tracking-tighter leading-none mb-20 fade-up">
+            “When celebrations reach every home, happiness becomes the true success of a business.”
+        </blockquote>
+        <div class="h-px w-32 bg-auraa-red mx-auto mb-20 fade-up"></div>
+        <p class="text-2xl font-black uppercase tracking-widest text-white/40 fade-up">Every celebration deserves a spark of joy.</p>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="py-32 bg-white text-center border-t border-gray-100">
+    <div class="container mx-auto px-6">
+        <h2 class="text-4xl md:text-6xl font-black uppercase tracking-tighter mb-12 fade-up">
+            Join the <span class="text-auraa-red italic">Tradition</span>.
+        </h2>
+        <div class="flex flex-wrap justify-center gap-6 fade-up">
+            <a href="{% url 'product_list' %}" class="bg-auraa-red text-white px-10 py-5 rounded-full font-black uppercase tracking-widest text-sm hover:shadow-2xl shadow-auraa-red/20 transition-all">Shop Auraa</a>
+            <a href="{% url 'why_choose' %}" class="bg-gray-100 text-gray-900 px-10 py-5 rounded-full font-black uppercase tracking-widest text-sm hover:bg-gray-200 transition-all">Why Choose Us</a>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Intial Hero Animations
+        gsap.to(".fade-up", {
+            opacity: 1,
+            y: 0,
+            duration: 1.5,
+            stagger: 0.3,
+            ease: "power4.out"
+        });
+
+        // Slideshow Navigation Function
+        window.scrollCarousel = function(direction) {
+            const carousel = document.getElementById('belief-carousel');
+            if (carousel) {
+                const cardWidth = carousel.querySelector('.belief-card').offsetWidth + 48; // card width + gap
+                carousel.scrollBy({ left: direction * cardWidth, behavior: 'smooth' });
+            }
+        };
+
+        // Refactored Manifesto Carousel Logic
+        const carousel = document.getElementById('belief-carousel');
+        const cards = document.querySelectorAll('.belief-card');
+        const dots = document.querySelectorAll('#carousel-dots .dot');
+
+        if (carousel) {
+            const updateCarousel = () => {
+                const scrollLeft = carousel.scrollLeft;
+                const carouselWidth = carousel.offsetWidth;
+                
+                cards.forEach((card, i) => {
+                    const cardOffset = card.offsetLeft - carousel.offsetLeft;
+                    const cardCenter = cardOffset + card.offsetWidth / 2;
+                    const carouselCenter = scrollLeft + carouselWidth / 2;
+                    
+                    if (Math.abs(cardCenter - carouselCenter) < card.offsetWidth / 3) {
+                        card.classList.add('active');
+                        if (dots[i]) {
+                            dots[i].classList.add('bg-auraa-red', 'w-12');
+                            dots[i].classList.remove('bg-gray-300', 'w-4');
+                        }
+                    } else {
+                        card.classList.remove('active');
+                        if (dots[i]) {
+                            dots[i].classList.remove('bg-auraa-red', 'w-12');
+                            dots[i].classList.add('bg-gray-300', 'w-4');
+                        }
+                    }
+                });
+            };
+
+            carousel.addEventListener('scroll', updateCarousel);
+            
+            // Horizontal Scroll Support for Desktop
+            carousel.addEventListener('wheel', (evt) => {
+                if (Math.abs(evt.deltaY) > Math.abs(evt.deltaX)) {
+                    evt.preventDefault();
+                    carousel.scrollLeft += evt.deltaY;
+                }
+            }, { passive: false });
+
+            // Initial and resize update
+            window.addEventListener('resize', updateCarousel);
+            setTimeout(updateCarousel, 100);
+
+            // AUTO-SCROLL LOGIC
+            let autoScrollInterval;
+            let isPaused = false;
+
+            const startAutoScroll = () => {
+                autoScrollInterval = setInterval(() => {
+                    if (!isPaused) {
+                        const cardWidth = carousel.querySelector('.belief-card').offsetWidth + 48;
+                        const nextScrollPos = carousel.scrollLeft + cardWidth;
+                        if (nextScrollPos >= (carousel.scrollWidth - carousel.offsetWidth)) {
+                            carousel.scrollTo({ left: 0, behavior: 'smooth' });
+                        } else {
+                            carousel.scrollBy({ left: cardWidth, behavior: 'smooth' });
+                        }
+                    }
+                }, 5000);
+            };
+
+            carousel.addEventListener('mouseenter', () => isPaused = true);
+            carousel.addEventListener('mouseleave', () => isPaused = false);
+            carousel.addEventListener('touchstart', () => isPaused = true, { passive: true });
+            carousel.addEventListener('touchend', () => isPaused = false, { passive: true });
+
+            startAutoScroll();
+        }
+
+        // Principle Items
+        gsap.utils.toArray('.principle-item').forEach((item) => {
+            gsap.to(item, {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                scrollTrigger: {
+                    trigger: item,
+                    start: "top 85%",
+                    toggleActions: "play none none none"
+                }
+            });
+        });
+
+        // Universal Fade Up
+        gsap.utils.toArray('.fade-up').forEach((elem) => {
+            if (elem.getBoundingClientRect().top > window.innerHeight) {
+                gsap.fromTo(elem, 
+                    { opacity: 0, y: 50 },
+                    {
+                        opacity: 1,
+                        y: 0,
+                        duration: 1,
+                        scrollTrigger: {
+                            trigger: elem,
+                            start: "top 85%",
+                            toggleActions: "play none none none"
+                        }
+                    }
+                );
+            }
+        });
+    });
+</script>
+{% endblock %}

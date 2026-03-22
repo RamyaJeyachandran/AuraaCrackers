@@ -107,7 +107,9 @@ services:
     restart: always
 
   nginx:
-    build: ./nginx
+    build:
+      context: .
+      dockerfile: nginx/Dockerfile
     ports:
       - "8080:80"
     volumes:

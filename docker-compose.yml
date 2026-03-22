@@ -32,9 +32,6 @@ services:
 
   web:
     build: .
-    command: python manage.py runserver 0.0.0.0:8000
-    volumes:
-      - .:/app
     environment:
       - DEBUG=True
       - DB_NAME=${DB_NAME:-auraacrackers}
@@ -57,8 +54,6 @@ services:
   celery_worker:
     build: .
     command: celery -A config worker --loglevel=info --concurrency=4
-    volumes:
-      - .:/app
     environment:
       - DB_NAME=${DB_NAME:-auraacrackers}
       - DB_USER=${DB_USER:-auraauser}
@@ -78,8 +73,6 @@ services:
   celery_beat:
     build: .
     command: celery -A config beat --loglevel=info
-    volumes:
-      - .:/app
     environment:
       - DB_NAME=${DB_NAME:-auraacrackers}
       - DB_USER=${DB_USER:-auraauser}
@@ -99,8 +92,6 @@ services:
   flower:
     build: .
     command: celery -A config flower --port=5555
-    volumes:
-      - .:/app
     ports:
       - "5555:5555"
     environment:

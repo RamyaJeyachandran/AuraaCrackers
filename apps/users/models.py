@@ -5,13 +5,13 @@ from django.conf import settings
 class Role(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True, db_column='descr')
-    company_id = models.IntegerField(null=True, blank=True, db_column='companyId', default=settings.COMPANY_ID)
-    branch_id = models.IntegerField(null=True, blank=True, db_column='branchId', default=settings.BRANCH_ID)
-    is_active = models.BooleanField(default=True, db_column='isActive')
-    created_by = models.IntegerField(null=True, blank=True, db_column='createdBy', default=settings.ADMIN_USER_ID)
-    created_at = models.DateTimeField(auto_now_add=True, db_column='createdDt')
-    updated_at = models.DateTimeField(auto_now=True, db_column='updatedDt')
-    updated_by = models.IntegerField(null=True, blank=True, db_column='updatedBy')
+    company_id = models.IntegerField(null=True, blank=True, db_column='companyid', default=settings.COMPANY_ID)
+    branch_id = models.IntegerField(null=True, blank=True, db_column='branchid', default=settings.BRANCH_ID)
+    is_active = models.BooleanField(default=True, db_column='isactive')
+    created_by = models.IntegerField(null=True, blank=True, db_column='createdby', default=settings.ADMIN_USER_ID)
+    created_at = models.DateTimeField(auto_now_add=True, db_column='createddt')
+    updated_at = models.DateTimeField(auto_now=True, db_column='updateddt')
+    updated_by = models.IntegerField(null=True, blank=True, db_column='updatedby')
 
     class Meta:
         db_table = 'tbl_role'
@@ -39,25 +39,25 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser):
     # Explicitly map fields to match the legacy database columns
     password = models.CharField(max_length=128, db_column='password')
-    username = models.CharField(max_length=150, unique=True, db_column='userName') # Maps to tbl_users.userName
-    full_name = models.CharField(max_length=255, db_column='fullName')
-    email = models.EmailField(unique=True, db_column='emailId', null=True, blank=True)
-    phone_number = models.CharField(max_length=15, unique=True, db_column='mobileNo')
+    username = models.CharField(max_length=150, unique=True, db_column='username') # Maps to tbl_users.userName
+    full_name = models.CharField(max_length=255, db_column='fullname')
+    email = models.EmailField(unique=True, db_column='emailid', null=True, blank=True)
+    phone_number = models.CharField(max_length=15, unique=True, db_column='mobileno')
     
-    role = models.ForeignKey(Role, on_delete=models.SET_NULL, null=True, blank=True, db_column='roleId')
-    online_customer = models.ForeignKey('crackers.Customer', on_delete=models.SET_NULL, null=True, blank=True, db_column='onlineCustomerId', related_name='users')
+    role = models.ForeignKey(Role, on_delete=models.SET_NULL, null=True, blank=True, db_column='roleid')
+    online_customer = models.ForeignKey('crackers.Customer', on_delete=models.SET_NULL, null=True, blank=True, db_column='onlinecustomerid', related_name='users')
     
-    is_active = models.BooleanField(default=True, db_column='isActive')
-    last_login = models.DateTimeField(null=True, blank=True, db_column='lastLogin')
+    is_active = models.BooleanField(default=True, db_column='isactive')
+    last_login = models.DateTimeField(null=True, blank=True, db_column='lastlogin')
     
-    company_id = models.IntegerField(null=True, blank=True, db_column='companyId', default=settings.COMPANY_ID)
-    branch_id = models.IntegerField(null=True, blank=True, db_column='branchId', default=settings.BRANCH_ID)
-    password_reset_token = models.CharField(max_length=255, null=True, blank=True, db_column='passwordResetToken')
+    company_id = models.IntegerField(null=True, blank=True, db_column='companyid', default=settings.COMPANY_ID)
+    branch_id = models.IntegerField(null=True, blank=True, db_column='branchid', default=settings.BRANCH_ID)
+    password_reset_token = models.CharField(max_length=255, null=True, blank=True, db_column='passwordresettoken')
     
-    created_by = models.IntegerField(null=True, blank=True, db_column='createdBy', default=settings.ADMIN_USER_ID)
-    created_at = models.DateTimeField(auto_now_add=True, db_column='createdDt')
-    updated_at = models.DateTimeField(auto_now=True, db_column='updatedDt')
-    updated_by = models.IntegerField(null=True, blank=True, db_column='updatedBy')
+    created_by = models.IntegerField(null=True, blank=True, db_column='createdby', default=settings.ADMIN_USER_ID)
+    created_at = models.DateTimeField(auto_now_add=True, db_column='createddt')
+    updated_at = models.DateTimeField(auto_now=True, db_column='updateddt')
+    updated_by = models.IntegerField(null=True, blank=True, db_column='updatedby')
     
     # Non-DB specific properties
     @property

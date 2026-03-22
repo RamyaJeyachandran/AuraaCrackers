@@ -32,6 +32,9 @@ services:
 
   web:
     build: .
+    volumes:
+      - .:/app
+    command: sh -c "python manage.py collectstatic --noinput && python manage.py runserver 0.0.0.0:8000"
     environment:
       - DEBUG=True
       - PYTHONPATH=/app
@@ -54,6 +57,8 @@ services:
 
   celery_worker:
     build: .
+    volumes:
+      - .:/app
     command: sh -c "celery -A config.celery worker --loglevel=info --concurrency=4"
     environment:
       - PYTHONPATH=/app
@@ -74,6 +79,8 @@ services:
 
   celery_beat:
     build: .
+    volumes:
+      - .:/app
     command: sh -c "celery -A config.celery beat --loglevel=info"
     environment:
       - PYTHONPATH=/app
@@ -113,7 +120,7 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - ./static:/var/www/static
+      - ./staticfiles:/var/www/static
       - ./media:/var/www/media
     depends_on:
       - web

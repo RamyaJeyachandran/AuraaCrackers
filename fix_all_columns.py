@@ -7,6 +7,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings.base')
 django.setup()
 
 def fix_schema():
+    # Tables and their intended CamelCase columns
     schema_fix = {
         "tbl_category": ["categoryName", "categoryImage", "sortNo", "companyId", "branchId", "isActive", "createdBy", "createdDt", "updatedDt", "updatedBy"],
         "tbl_items": ["categoryId", "itemCode", "itemName", "itemType", "unitId", "isSales", "saleRate", "saleDesc", "purchaseRate", "mrp", "taxId", "accountId", "minOrdQty", "discountPer", "freeQty", "locationId", "openingQty", "sortNo", "itemImage", "companyId", "branchId", "isActive", "createdBy", "createdDt", "updatedDt", "isDisabled", "updatedBy"],
@@ -33,19 +34,44 @@ def fix_schema():
     try:
         with connection.cursor() as cur:
             for table, columns in schema_fix.items():
-                for cam_col in columns:
-                    low_col = cam_col.lower()
-                    if low_col == cam_col: continue
+                print(f"Checking {table}...")
+                
+                # Fetch actual current columns in the database
+                cur.execute(f"SELECT column_name FROM information_schema.columns WHERE table_name = '{table}'")
+                actual_columns = [row[0] for row in cur.fetchall()]
+                if not actual_columns: continue
+                
+                for target_col in columns:
+                    # If target column already exists exactly, skip
+                    if target_col in actual_columns: continue
                     
-                    # Check if lowercase exists and camelcase doesn't
-                    cur.execute(f"SELECT count(*) FROM information_schema.columns WHERE table_name = '{table}' AND column_name = '{low_col}'")
-                    if cur.fetchone()[0] > 0:
-                        cur.execute(f"SELECT count(*) FROM information_schema.columns WHERE table_name = '{table}' AND column_name = '{cam_col}'")
+                    found_source = None
+                    
+                    # Case 1: Case-insensitive match (e.g. itemimage -> itemImage)
+                    for actual_col in actual_columns:
+                        if actual_col.lower() == target_col.lower():
+                            found_source = actual_col
+                            break
+                    
+                    # Case 2: Special mapping for 'image' -> 'itemImage' specifically for tbl_items
+                    if not found_source and table == "tbl_items" and target_col == "itemImage":
+                        if "image" in actual_columns:
+                            found_source = "image"
+                    
+                    # Case 3: Special mapping for 'category' -> 'categoryName'
+                    if not found_source and table == "tbl_category" and target_col == "categoryName":
+                        if "name" in actual_columns:
+                            found_source = "name"
+                            
+                    # Perform rename if source found
+                    if found_source:
+                        print(f"  - Renaming {table}.{found_source} to {target_col}")
+                        # Check again to avoid double-renaming errors if script is run multiple times
+                        cur.execute(f"SELECT count(*) FROM information_schema.columns WHERE table_name = '{table}' AND column_name = '{target_col}'")
                         if cur.fetchone()[0] == 0:
-                            print(f"Renaming {table}.{low_col} to {cam_col}")
-                            cur.execute(f'ALTER TABLE {table} RENAME COLUMN {low_col} TO "{cam_col}";')
+                            cur.execute(f'ALTER TABLE {table} RENAME COLUMN "{found_source}" TO "{target_col}";')
 
-        print("Schema fix completed successfully using Django connection.")
+        print("\nSchema fix completed successfully.")
     except Exception as e:
         print(f"Failed to fix schema: {e}")
 

@@ -1,4 +1,4 @@
--- tbl_items Data Migration Script
+-- tbl_items Data Migration Script (Fixed Booleans)
 SET session_replication_role = 'replica';
 
 TRUNCATE TABLE public.tbl_items CASCADE;
@@ -313,6 +313,7 @@ INSERT INTO public.tbl_items ("id", "categoryId", "itemCode", "itemName", "itemI
 INSERT INTO public.tbl_items ("id", "categoryId", "itemCode", "itemName", "itemImage", "itemType", "unitId", "isSales", "saleRate", "saleDesc", "purchaseRate", "mrp", "taxId", "accountId", "minOrdQty", "discountPer", "discount", "freeQty", "locationId", "openingQty", "sortNo", "isDisabled", "companyId", "branchId", "isActive", "createdBy", "createdDt", "updatedDt", "updatedBy") VALUES (305, 51, '140', '16 SHOT MULTI COLOUR (SPLASH)', '/static/images/products/noimage.jpg', 'G', NULL, 1, 250.00, NULL, 500.00, 500.00, NULL, NULL, 0.000, 0.00, 0.00, 0.000, NULL, 0.000, 0, 0, 1, 1, false, 1, '2026-03-20T18:21:51.631513+00:00', '2026-03-22T18:02:24.397081+00:00', NULL);
 INSERT INTO public.tbl_items ("id", "categoryId", "itemCode", "itemName", "itemImage", "itemType", "unitId", "isSales", "saleRate", "saleDesc", "purchaseRate", "mrp", "taxId", "accountId", "minOrdQty", "discountPer", "discount", "freeQty", "locationId", "openingQty", "sortNo", "isDisabled", "companyId", "branchId", "isActive", "createdBy", "createdDt", "updatedDt", "updatedBy") VALUES (45, 38, '60', '2 3/4\" KURUVI CRACKERS', '/static/images/products/img_86979105818_09_2025.jpg', 'G', NULL, 1, 7.00, NULL, 14.00, 14.00, NULL, NULL, 0.000, 0.00, 0.00, 0.000, NULL, 0.000, 0, 0, 1, 1, false, 1, '2026-03-20T18:21:51.631513+00:00', '2026-03-22T18:02:24.415307+00:00', NULL);
 
-SELECT pg_catalog.setval('public.tbl_items_id_seq', (SELECT MAX(id) FROM public.tbl_items), true);
+-- Reset Identity Sequence
+SELECT setval(pg_get_serial_sequence('public.tbl_items', 'id'), coalesce(max(id), 1), false) FROM public.tbl_items;
 
 SET session_replication_role = 'origin';

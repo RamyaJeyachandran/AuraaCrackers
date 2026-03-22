@@ -54,7 +54,7 @@ services:
 
   celery_worker:
     build: .
-    command: celery -A config worker --loglevel=info --concurrency=4
+    command: sh -c "celery -A config.celery worker --loglevel=info --concurrency=4"
     environment:
       - PYTHONPATH=/app
       - DB_NAME=${DB_NAME:-auraacrackers}
@@ -74,7 +74,7 @@ services:
 
   celery_beat:
     build: .
-    command: celery -A config beat --loglevel=info
+    command: sh -c "celery -A config.celery beat --loglevel=info"
     environment:
       - PYTHONPATH=/app
       - DB_NAME=${DB_NAME:-auraacrackers}
@@ -94,7 +94,7 @@ services:
 
   flower:
     build: .
-    command: celery -A config flower --port=5555
+    command: sh -c "celery -A config.celery flower --port=5555"
     ports:
       - "5555:5555"
     environment:

@@ -34,7 +34,7 @@ class ProductListView(ListView):
     model = Product
     template_name = 'crackers/products.html'
     context_object_name = 'products'
-    paginate_by = 40
+
 
     def get_queryset(self):
         queryset = super().get_queryset().filter(is_active=True).select_related('category')

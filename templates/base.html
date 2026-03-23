@@ -90,7 +90,7 @@
         {% include 'includes/navbar.html' %}
     {% endif %}
 
-    <main class="flex-grow {% if user.is_authenticated and user.role.name in 'Admin,Super Admin' %}pt-28 lg:pt-36{% elif request.resolver_match.url_name == 'login' %}pt-20 lg:pt-28{% else %}pt-32 lg:pt-40{% endif %}">
+    <main class="flex-grow {% if user.is_authenticated and user.role.name in 'Admin,Super Admin' %}pt-28 lg:pt-36{% elif request.resolver_match.url_name == 'login' %}pt-0{% else %}pt-32 lg:pt-40{% endif %}">
         {% block content %}{% endblock %}
     </main>
 

@@ -236,8 +236,8 @@
 
     <!-- Neumorphic Floating Buy Products Button -->
     {% with url_name=request.resolver_match.url_name %}
-    {% if url_name and url_name not in "login,product_list,order_history,order_status,order_detail,profile,checkout,admin_dashboard,dashboard_categories,dashboard_products,dashboard_orders,dashboard_order_detail,dashboard_customers,dashboard_analysis,dashboard_report_create,dashboard_pricelists,dashboard_pricelist_create,dashboard_pricelist_detail,dashboard_pricelist_edit,admin_active_categories,admin_register" %}
-    <div id="mobile-buy-products-wrapper" class="fixed bottom-6 left-1/2 -translate-x-1/2 w-full px-6 sm:px-0 sm:inset-auto sm:top-[30%] sm:right-0 sm:bottom-auto z-[99999]">
+    {% if not url_name or url_name not in "login,product_list,order_history,order_status,order_detail,profile,checkout,admin_dashboard,dashboard_categories,dashboard_products,dashboard_orders,dashboard_order_detail,dashboard_customers,dashboard_analysis,dashboard_report_create,dashboard_pricelists,dashboard_pricelist_create,dashboard_pricelist_detail,dashboard_pricelist_edit,admin_active_categories,admin_register" %}
+    <div id="mobile-buy-products-wrapper" class="fixed bottom-6 left-1/2 -translate-x-1/2 w-full px-6 sm:px-0 sm:inset-auto sm:left-auto sm:top-[30%] sm:right-0 sm:translate-x-0 sm:w-auto z-[99999]">
         <a href="{% url 'product_list' %}" class="relative flex sm:inline-flex flex-col items-center group">
             
             <!-- Mobile Pill (Icon + Text) & Desktop Sidebar Body -->

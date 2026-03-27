@@ -10,6 +10,8 @@ from django.db.models import Sum
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.conf import settings
+import logging
+logger = logging.getLogger(__name__)
 
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
@@ -36,6 +38,7 @@ class SignupAPIView(View):
             user = AuthService.register_customer(data=request.POST)
 
             # Auto login the user
+            user.backend = 'apps.users.backends.MobileBackend'
             login(request, user)
             
             # Determine redirect
@@ -51,6 +54,7 @@ class SignupAPIView(View):
                 'redirect': next_url
             })
         except Exception as e:
+            logger.error(f"Signup exception: {str(e)}")
             return JsonResponse({
                 'status': 'error', 
                 'message': 'Registration failed. Our support team is available if this persists.'
@@ -143,6 +147,7 @@ class ProfileUpdateAPIView(View):
                 }
             })
         except Exception as e:
+            logger.error(f"Profile update exception: {str(e)}")
             return JsonResponse({
                 'status': 'error', 
                 'message': 'Update failed. Check your connection or contact support.'

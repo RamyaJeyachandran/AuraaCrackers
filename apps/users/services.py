@@ -33,7 +33,7 @@ class AuthService:
             with transaction.atomic():
                 # 1. Ensure Role exists
                 role, _ = Role.objects.get_or_create(
-                    name='Online Customers', 
+                    name='Online Customer', 
                     defaults={
                         'company_id': settings.COMPANY_ID, 
                         'branch_id': settings.BRANCH_ID

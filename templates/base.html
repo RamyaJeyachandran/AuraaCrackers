@@ -218,6 +218,7 @@
     {% block extra_head %}{% endblock %}
 </head>
 <body class="min-h-screen flex flex-col bg-white selection:bg-auraa-red selection:text-white overflow-x-hidden w-full">
+    <span id="auth-status" class="hidden">{% if user.is_authenticated %}true{% else %}false{% endif %}</span>
     
     {% if user.is_authenticated and user.role and user.role.name == 'Admin' or user.role.name == 'Super Admin' %}
         {% include 'includes/admin_navbar.html' %}

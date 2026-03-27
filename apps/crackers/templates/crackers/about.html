@@ -1,139 +1,501 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}About Us | Auraa Crackers - 22+ Years of Pyrotechnic Excellence{% endblock %}
+{% block title %}Auraa Profile | Hub of Pyrotechnic Excellence{% endblock %}
+
+{% block extra_head %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
+
+<style>
+    :root {
+        --auraa-red: #f5071d;
+        --auraa-navy: #0A325A;
+        --glass-bg: rgba(255, 255, 255, 0.7);
+        --glass-border: rgba(255, 255, 255, 0.4);
+    }
+
+    /* Abstract Background Animation */
+    .bg-mesh {
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        z-index: -1;
+        background-color: var(--auraa-red);
+        background-image: 
+            radial-gradient(at 0% 0%, rgba(255, 255, 255, 0.15) 0, transparent 50%), 
+            radial-gradient(at 100% 100%, rgba(0, 0, 0, 0.2) 0, transparent 50%),
+            radial-gradient(at 50% 50%, rgba(255, 255, 255, 0.05) 0, transparent 100%);
+    }
+
+    .particle-layer {
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        z-index: -1;
+        overflow: hidden;
+        pointer-events: none;
+    }
+
+    /* 2026 Glass Card Architecture */
+    .glass-card-3d {
+        background: var(--glass-bg);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--glass-border);
+        border-radius: 3.5rem;
+        position: relative;
+        transform-style: preserve-3d;
+        transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        box-shadow: 
+            0 20px 40px rgba(0, 0, 0, 0.03),
+            inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+    }
+
+    .glass-card-3d:hover {
+        transform: translateY(-15px);
+        box-shadow: 
+            0 40px 80px rgba(0, 0, 0, 0.08),
+            inset 0 0 0 1px rgba(245, 7, 29, 0.1);
+        background: rgba(255, 255, 255, 0.9);
+    }
+
+    /* 3D Icon Container */
+    .icon-container-3d {
+        width: 90px;
+        height: 90px;
+        border-radius: 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        transform: translateZ(40px);
+        transition: all 0.5s ease;
+        box-shadow: 0 15px 30px -5px rgba(0,0,0,0.1);
+        border: 1px solid rgba(255,255,255,0.8);
+    }
+
+    .icon-container-3d::after {
+        content: '';
+        position: absolute;
+        inset: -4px;
+        border-radius: inherit;
+        background: linear-gradient(135deg, var(--auraa-red), var(--auraa-navy));
+        opacity: 0;
+        transition: opacity 0.5s ease;
+        z-index: -1;
+        filter: blur(8px);
+    }
+
+    .glass-card-3d:hover .icon-container-3d {
+        transform: translateZ(60px) scale(1.1);
+    }
+
+    .glass-card-3d:hover .icon-container-3d::after {
+        opacity: 0.2;
+    }
+
+    /* Gradient Highlight Line */
+    .card-highlight {
+        position: absolute;
+        bottom: 0;
+        left: 15%;
+        right: 15%;
+        height: 4px;
+        background: linear-gradient(90deg, transparent, var(--auraa-red), transparent);
+        border-radius: 2px;
+        opacity: 0;
+        transform: scaleX(0);
+        transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .glass-card-3d:hover .card-highlight {
+        opacity: 1;
+        transform: scaleX(1);
+    }
+
+    /* Section Reveal Mask */
+    .reveal-mask {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+
+    /* Dark Mode Support Meta */
+    .dark-nav-text { color: var(--auraa-navy); }
+
+    .logo-3d-badge {
+        perspective: 1000px;
+    }
+
+    .logo-3d-inner {
+        transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        transform-style: preserve-3d;
+    }
+
+    .logo-3d-badge:hover .logo-3d-inner {
+        transform: rotateY(180deg) scale(1.1);
+    }
+
+    .logo-3d-img {
+        backface-visibility: hidden;
+        filter: drop-shadow(0 5px 15px rgba(0,0,0,0.2));
+    }
+
+    /* 3D UI Layering */
+    .perspective-1000 { perspective: 1000px; transform-style: preserve-3d; }
+    .transform-style-3d { transform-style: preserve-3d; }
+    .transform-z-\[-20\] { transform: translateZ(-20px); }
+    .transform-z-\[30\] { transform: translateZ(30px); }
+    .transform-z-\[40\] { transform: translateZ(40px); }
+    .transform-z-\[60\] { transform: translateZ(60px); }
+
+    @keyframes floatParticle {
+        0%, 100% { transform: translateY(0) translateX(0); }
+        50% { transform: translateY(-40px) translateX(20px); }
+    }
+</style>
+{% endblock %}
 
 {% block content %}
-<div class="pb-20 bg-auraa-red min-h-screen overflow-hidden text-white">
+<div class="bg-mesh"></div>
+<div class="particle-layer" id="particle-canvas"></div>
+
+<div class="pb-32 min-h-screen relative z-10">
     <!-- Hero Section -->
-    <section class="relative pt-32 pb-32 px-4 overflow-hidden">
-        <!-- Story Background -->
-        <div class="absolute inset-0 z-0">
-            <img src="{% static 'images/about_hero_bg.png' %}" class="w-full h-full object-cover" alt="">
-            <div class="absolute inset-0 bg-auraa-red/80 mix-blend-multiply"></div>
-            <div class="absolute inset-0 bg-gradient-to-b from-auraa-red via-transparent to-auraa-red"></div>
-        </div>
-
-        <div class="max-w-7xl mx-auto text-center relative z-10">
-            <div class="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-md border border-white/20 text-white px-4 py-1.5 rounded-full mb-8 font-black text-xs uppercase tracking-[0.2em]">
-                <i data-lucide="award" class="w-3.5 h-3.5"></i>
-                <span>Established Legacy</span>
+    <section class="relative pt-12 md:pt-16 pb-24 px-6 lg:px-20">
+        <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-20 items-start">
+            
+            <!-- Left Side: Immersive Shop Slideshow -->
+            <div class="order-2 lg:order-1 relative group reveal-mask">
+                <!-- Outer 3D Pill Frame (Inspired by Logo/Image 1) -->
+                <div class="relative w-full aspect-[4/3] p-4 lg:p-6 bg-white/5 backdrop-blur-3xl rounded-[4rem] border border-white/20 shadow-2xl overflow-hidden">
+                    
+                    <!-- Inner Track / Border Gap -->
+                    <div class="absolute inset-2 md:inset-4 border-2 border-white/10 rounded-[3.5rem] pointer-events-none z-10"></div>
+                    
+                    <!-- Content Container (Rounded Pill) -->
+                    <div class="relative w-full h-full rounded-[3rem] overflow-hidden shadow-inner-lg">
+                        <img src="{% static 'images/shop.png' %}" class="slideshow-img absolute inset-0 w-full h-full object-cover transition-opacity duration-1000" alt="Auraa Shop 1">
+                        <img src="{% static 'images/shop2.png' %}" class="slideshow-img absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-1000" alt="Auraa Shop 2">
+                        
+                        <div class="absolute inset-0 bg-gradient-to-t from-auraa-navy/40 to-transparent"></div>
+                    </div>
+                    
+                    <!-- Subtle Internal Glow -->
+                    <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none"></div>
+                </div>
+                
+                <!-- Floating Badge -->
+                <div class="absolute -bottom-8 -right-8 bg-white p-6 rounded-3xl shadow-2xl layer-depth-1 hidden lg:block z-20">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-12 h-12 bg-auraa-red rounded-xl flex items-center justify-center shadow-lg shadow-auraa-red/30">
+                            <i data-lucide="home" class="w-6 h-6 text-white"></i>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-black uppercase tracking-widest text-auraa-navy/50">Experience</p>
+                            <p class="text-sm font-bold text-auraa-navy">Visit Our Shop</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <h1 class="text-6xl md:text-9xl font-black text-white mb-8 uppercase tracking-tighter leading-[0.85]">
-                22+ Years of <br />
-                <span class="text-gray-900">Pure Joy</span>
-            </h1>
-            <p class="text-white/70 max-w-2xl mx-auto text-xl font-medium leading-relaxed">
-                We are the leading supplier of crackers & fancy crackers items, lighting up celebrations with quality and safety.
-            </p>
+
+            <!-- Right Side: Content -->
+            <div class="order-1 lg:order-2 text-center lg:text-left space-y-8">
+                <div class="relative w-40 h-40 md:w-48 md:h-48 flex items-center justify-center reveal-mask mx-auto lg:mx-0 perspective-1000" data-tilt-logo>
+                    <!-- Layer 1: Glass Foundation -->
+                    <div class="absolute inset-0 bg-white/5 backdrop-blur-xl rounded-[3rem] border border-white/20 shadow-2xl transform-z-[-20]"></div>
+                    
+                    <!-- Layer 2: Decorative Navy Orbit -->
+                    <div class="absolute -inset-4 border-2 border-dashed border-auraa-navy/20 rounded-[3.5rem] animate-[spin_20s_linear_infinite] scale-95 opacity-50"></div>
+                    
+                    <!-- Layer 3: Main Rounded Square Logo Card -->
+                    <div class="relative w-28 h-28 md:w-36 md:h-36 bg-white rounded-[2.5rem] shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] flex items-center justify-center p-0 transform-z-[30] group cursor-pointer overflow-hidden border-none outline-none">
+                        <!-- Dynamic Shine -->
+                        <div class="absolute inset-0 bg-gradient-to-tr from-transparent via-white/60 to-transparent -translate-x-[200%] group-hover:translate-x-[200%] transition-transform duration-1000 ease-in-out"></div>
+                        <img src="{% static 'images/logo.png' %}" class="w-full h-full object-cover border-none outline-none" alt="Auraa Logo">
+                    </div>
+
+                </div>
+
+                <h1 class="text-6xl md:text-8xl lg:text-[100px] font-black text-white uppercase tracking-tighter leading-[0.8] reveal-mask drop-shadow-2xl">
+                    Auraa <br /><span class="text-auraa-navy italic drop-shadow-[0_10px_30px_rgba(10,50,90,0.2)]">Profile</span>
+                </h1>
+                
+                <p class="text-white/90 max-w-2xl mx-auto lg:mx-0 text-xl font-medium leading-relaxed reveal-mask">
+                    Bridging over two decades of tradition with futuristic innovation, lighting up celebrations with total safety and unmatched joy.
+                </p>
+
+                <div class="flex flex-wrap justify-center lg:justify-start gap-4 reveal-mask">
+                    <div class="px-6 py-2 bg-auraa-navy border border-white/20 rounded-full backdrop-blur-md shadow-lg shadow-black/20">
+                        <p class="text-[10px] font-black text-white uppercase tracking-[0.3em]">23+ Years of Excellence</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
-    <!-- Why Choose Auraa -->
-    <section class="py-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16 space-y-4">
-                <h2 class="text-xs font-black text-white uppercase tracking-[0.3em] opacity-60">Our Foundation</h2>
-                <h3 class="text-4xl md:text-5xl font-black text-white uppercase tracking-tight">Why Choose Auraa?</h3>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <!-- Colorful -->
-                <div class="p-10 rounded-[3rem] border-4 transition-all bg-white shadow-2xl border-orange-200 text-center group cursor-pointer hover:scale-95">
-                    <div class="w-24 h-24 rounded-full flex items-center justify-center mb-8 mx-auto shadow-lg group-hover:rotate-12 transition-transform relative bg-gradient-to-br from-orange-400 to-yellow-400 text-white">
-                        <i data-lucide="palette" class="absolute w-8 h-8 opacity-20"></i>
-                        <span class="text-4xl relative z-10">🎨</span>
-                    </div>
-                    <h4 class="text-2xl font-black text-gray-900 uppercase tracking-tight mb-4">Colourful</h4>
-                    <p class="text-gray-500 font-bold leading-relaxed">Our Crackers produce more colour and less smoke.</p>
+    <!-- Immersive Grid -->
+    <section class="max-w-7xl mx-auto px-6 lg:px-12 -mt-10">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            
+            <!-- Card 1: Founder Story -->
+            <a id="founder" href="{% url 'founder_story' %}" class="glass-card-3d p-12 flex flex-col items-center text-center space-y-10 reveal-mask group relative overflow-hidden" data-tilt>
+                <div class="icon-container-3d bg-orange-500/10 text-orange-500">
+                    <i data-lucide="book-open" class="w-10 h-10 group-hover:rotate-12 transition-transform duration-500"></i>
                 </div>
-                <!-- Satisfaction -->
-                <div class="p-10 rounded-[3rem] border-4 transition-all bg-white shadow-2xl border-pink-200 text-center group cursor-pointer hover:scale-95">
-                    <div class="w-24 h-24 rounded-full flex items-center justify-center mb-8 mx-auto shadow-lg group-hover:rotate-12 transition-transform relative bg-gradient-to-br from-pink-400 to-rose-400 text-white">
-                        <i data-lucide="heart" class="absolute w-8 h-8 opacity-20"></i>
-                        <span class="text-4xl relative z-10">😊</span>
-                    </div>
-                    <h4 class="text-2xl font-black text-gray-900 uppercase tracking-tight mb-4">Satisfaction</h4>
-                    <p class="text-gray-500 font-bold leading-relaxed">We Guarantee you that your full hearted pure satisfaction.</p>
-                </div>
-                <!-- Attractive -->
-                <div class="p-10 rounded-[3rem] border-4 transition-all bg-white shadow-2xl border-purple-200 text-center group cursor-pointer hover:scale-95">
-                    <div class="w-24 h-24 rounded-full flex items-center justify-center mb-8 mx-auto shadow-lg group-hover:rotate-12 transition-transform relative bg-white border border-purple-50 overflow-hidden">
-                        <img src="{% static 'images/logo.png' %}" class="w-full h-full object-cover object-top scale-[1.3] opacity-60 group-hover:opacity-100 transition-opacity" alt="Auraa Logo">
-                    </div>
-                    <h4 class="text-2xl font-black text-gray-900 uppercase tracking-tight mb-4">Attractive</h4>
-                    <p class="text-gray-500 font-bold leading-relaxed">Secure and innovative packaging of Crackers.</p>
-                </div>
-                <!-- Manufacturing -->
-                <div class="p-10 rounded-[3rem] border-4 transition-all bg-white shadow-2xl border-blue-200 text-center group cursor-pointer hover:scale-95">
-                    <div class="w-24 h-24 rounded-full flex items-center justify-center mb-8 mx-auto shadow-lg group-hover:rotate-12 transition-transform relative bg-gradient-to-br from-blue-400 to-cyan-400 text-white">
-                        <i data-lucide="factory" class="absolute w-8 h-8 opacity-20"></i>
-                        <span class="text-4xl relative z-10">🏭</span>
-                    </div>
-                    <h4 class="text-2xl font-black text-gray-900 uppercase tracking-tight mb-4">Manufacturing</h4>
-                    <p class="text-gray-500 font-bold leading-relaxed">It is made from the finest raw materials.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- The Story Section -->
-    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-            <div class="relative">
-                <div class="aspect-[4/5] rounded-[4rem] overflow-hidden shadow-2xl relative border-8 border-white/10">
-                    <img src="https://picsum.photos/seed/showroom/800/1000" alt="Our Showroom" class="w-full h-full object-cover">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                    <div class="absolute bottom-12 left-12 right-12 text-white">
-                        <div class="text-sm font-black uppercase tracking-widest mb-2 opacity-80">Sivakasi, Tamil Nadu</div>
-                        <h3 class="text-3xl font-black uppercase tracking-tight">Our Mega Fireworks Showroom</h3>
-                    </div>
-                </div>
-                <div class="absolute -top-10 -right-10 bg-white p-8 rounded-[2.5rem] shadow-2xl border border-gray-100 hidden md:block animate-bounce">
-                    <div class="text-4xl font-black text-auraa-red">12+</div>
-                    <div class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Years Industry<br />Experience</div>
-                </div>
-            </div>
-
-            <div class="space-y-10">
                 <div class="space-y-4">
-                    <h2 class="text-xs font-black text-white uppercase tracking-[0.3em] opacity-60">The Auraa Story</h2>
-                    <h3 class="text-4xl md:text-5xl font-black text-white uppercase tracking-tight leading-none">
-                        Welcoming You to a <br />
-                        <span class="text-gray-900">World of Sparkles</span>
-                    </h3>
+                    <h3 class="text-2xl font-black uppercase tracking-tight text-auraa-navy">Founder Story</h3>
+                    <p class="text-sm font-bold text-auraa-navy/70 leading-relaxed px-4">The visionary journey that sparked our excellence in pyrotechnics.</p>
                 </div>
-                <div class="space-y-6 text-lg text-white/80 font-medium leading-relaxed">
-                    <p>
-                        The Auraa Crackers have immense pleasure in welcoming you to visit our mega fireworks showroom located in Sivakasi, where you can directly place your valuable orders and fulfill all your crackers requirements at one stop.
-                    </p>
-                    <p>
-                        We are in the cracker's industry for past 22+ years. It's our pride in supplying our esteemed customers with the best quality crackers at the lowest market prices.
-                    </p>
+                <div class="card-highlight"></div>
+            </a>
+
+            <!-- Card 2: Vision -->
+            <a id="vision" href="{% url 'vision' %}" class="glass-card-3d p-12 flex flex-col items-center text-center space-y-10 reveal-mask group relative overflow-hidden" data-tilt>
+                <div class="icon-container-3d bg-blue-500/10 text-blue-500">
+                    <i data-lucide="eye" class="w-10 h-10 group-hover:scale-110 transition-transform duration-500"></i>
                 </div>
-                <div class="pt-6 flex flex-wrap gap-4">
-                    <a href="/products" class="bg-gray-900 text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-white hover:text-gray-900 transition-all shadow-xl">
-                        View our Products
-                    </a>
-                    <a href="tel:+916381426206" class="bg-white/10 border-2 border-white/20 text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-white hover:text-gray-900 transition-all">
-                        Call Us: +91 63814 26206
-                    </a>
+                <div class="space-y-4">
+                    <h3 class="text-2xl font-black uppercase tracking-tight text-auraa-navy">Our Vision</h3>
+                    <p class="text-sm font-bold text-auraa-navy/70 leading-relaxed px-4">Pioneering the future of celebration through digital innovation.</p>
                 </div>
-            </div>
+                <div class="card-highlight" style="background: linear-gradient(90deg, transparent, #3b82f6, transparent);"></div>
+            </a>
+
+            <!-- Card 3: Mission -->
+            <a id="mission" href="{% url 'mission' %}" class="glass-card-3d p-12 flex flex-col items-center text-center space-y-10 reveal-mask group relative overflow-hidden" data-tilt>
+                <div class="icon-container-3d bg-red-500/10 text-auraa-red">
+                    <i data-lucide="target" class="w-10 h-10 group-hover:animate-bounce transition-transform duration-500"></i>
+                </div>
+                <div class="space-y-4">
+                    <h3 class="text-2xl font-black uppercase tracking-tight text-auraa-navy">Our Mission</h3>
+                    <p class="text-sm font-bold text-auraa-navy/70 leading-relaxed px-4">Spreading happiness and colors with total safety engineering.</p>
+                </div>
+                <div class="card-highlight"></div>
+            </a>
+
+            <!-- Card 4: Core Values -->
+            <a id="values" href="{% url 'core_values' %}" class="glass-card-3d p-12 flex flex-col items-center text-center space-y-10 reveal-mask group relative overflow-hidden" data-tilt>
+                <div class="icon-container-3d bg-emerald-500/10 text-emerald-500">
+                    <i data-lucide="shield-check" class="w-10 h-10 group-hover:scale-125 transition-transform duration-500"></i>
+                </div>
+                <div class="space-y-4">
+                    <h3 class="text-2xl font-black uppercase tracking-tight text-auraa-navy">Core Values</h3>
+                    <p class="text-sm font-bold text-auraa-navy/70 leading-relaxed px-4">Integrity, Quality, and customer delight at our absolute core.</p>
+                </div>
+                <div class="card-highlight" style="background: linear-gradient(90deg, transparent, #10b981, transparent);"></div>
+            </a>
+
+            <!-- Card 5: Why Choose Auraa -->
+            <a id="why" href="{% url 'why_choose' %}" class="glass-card-3d p-12 flex flex-col items-center text-center space-y-10 reveal-mask group relative overflow-hidden" data-tilt>
+                <div class="icon-container-3d bg-purple-500/10 text-purple-600">
+                    <i data-lucide="sparkles" class="w-10 h-10 group-hover:rotate-45 transition-transform duration-700"></i>
+                </div>
+                <div class="space-y-4">
+                    <h3 class="text-2xl font-black uppercase tracking-tight text-auraa-navy">Why Choose Us</h3>
+                    <p class="text-sm font-bold text-auraa-navy/70 leading-relaxed px-4">Discover why 22+ years of premium legacy makes us the leader.</p>
+                </div>
+                <div class="card-highlight" style="background: linear-gradient(90deg, transparent, #8b5cf6, transparent);"></div>
+            </a>
+
+            <!-- Card 6: Brand Philosophy -->
+            <a id="philosophy" href="{% url 'brand_philosophy' %}" class="glass-card-3d p-12 flex flex-col items-center text-center space-y-10 reveal-mask group relative overflow-hidden" data-tilt>
+                <div class="icon-container-3d bg-amber-500/10 text-amber-500">
+                    <i data-lucide="feather" class="w-10 h-10 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-500"></i>
+                </div>
+                <div class="space-y-4">
+                    <h3 class="text-2xl font-black uppercase tracking-tight text-auraa-navy">Philosophy</h3>
+                    <p class="text-sm font-bold text-auraa-navy/70 leading-relaxed px-4">The high-end art of crafting perfection in every spark.</p>
+                </div>
+                <div class="card-highlight" style="background: linear-gradient(90deg, transparent, #f59e0b, transparent);"></div>
+            </a>
+
+            <!-- Card 7: Auraa Promise -->
+            <a id="promise" href="{% url 'auraa_promise' %}" class="glass-card-3d p-12 flex flex-col items-center text-center space-y-10 reveal-mask group relative overflow-hidden" data-tilt>
+                <div class="icon-container-3d bg-pink-500/10 text-pink-500">
+                    <i data-lucide="award" class="w-10 h-10 group-hover:scale-110 group-hover:rotate-12 transition-transform duration-500"></i>
+                </div>
+                <div class="space-y-4">
+                    <h3 class="text-2xl font-black uppercase tracking-tight text-auraa-navy">The Promise</h3>
+                    <p class="text-sm font-bold text-auraa-navy/70 leading-relaxed px-4">Unwavering commitment to quality and safety excellence.</p>
+                </div>
+                <div class="card-highlight" style="background: linear-gradient(90deg, transparent, #ec4899, transparent);"></div>
+            </a>
+
+            <!-- Card 8: Auraa Manifesto -->
+            <a id="manifesto" href="{% url 'auraa_manifesto' %}" class="glass-card-3d p-12 flex flex-col items-center text-center space-y-10 reveal-mask group relative overflow-hidden" data-tilt>
+                <div class="icon-container-3d bg-indigo-500/10 text-indigo-500">
+                    <i data-lucide="scroll-text" class="w-10 h-10 group-hover:-translate-y-1 transition-transform duration-500"></i>
+                </div>
+                <div class="space-y-4">
+                    <h3 class="text-2xl font-black uppercase tracking-tight text-auraa-navy">The Manifesto</h3>
+                    <p class="text-sm font-bold text-auraa-navy/70 leading-relaxed px-4">Guiding principles that define our industry-leading legacy.</p>
+                </div>
+                <div class="card-highlight" style="background: linear-gradient(90deg, transparent, #6366f1, transparent);"></div>
+            </a>
+
+            <!-- Card 9: Testimonials -->
+            <a id="community" href="{% url 'testimonials' %}" class="glass-card-3d p-12 flex flex-col items-center text-center space-y-10 reveal-mask group relative overflow-hidden" data-tilt>
+                <div class="icon-container-3d bg-cyan-500/10 text-cyan-500">
+                    <i data-lucide="message-square-plus" class="w-10 h-10 group-hover:scale-110 transition-transform duration-500"></i>
+                </div>
+                <div class="space-y-4">
+                    <h3 class="text-2xl font-black uppercase tracking-tight text-auraa-navy">Community</h3>
+                    <p class="text-sm font-bold text-auraa-navy/70 leading-relaxed px-4">Real voices of happy families celebrating with Auraa.</p>
+                </div>
+                <div class="card-highlight" style="background: linear-gradient(90deg, transparent, #06b6d4, transparent);"></div>
+            </a>
         </div>
     </section>
 
-    <!-- Bank Details Section -->
-    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-        {% include 'includes/bank_details.html' %}
+    <!-- Bank Details Layer -->
+    <section class="max-w-7xl mx-auto px-6 lg:px-12 py-32 reveal-mask">
+        <div class="glass-card-3d p-1 border-white/40">
+            <div class="bg-white/40 backdrop-blur-3xl rounded-[3rem] p-4">
+                {% include 'includes/bank_details.html' %}
+            </div>
+        </div>
     </section>
-
 </div>
 
 <script>
-    function copyToClipboard(text) {
-        navigator.clipboard.writeText(text).then(() => {
-            alert('Copied to clipboard: ' + text);
+    document.addEventListener('DOMContentLoaded', function() {
+        gsap.registerPlugin(ScrollTrigger);
+
+        // 1. Particle System Enhancement
+        const particleCanvas = document.getElementById('particle-canvas');
+        for (let i = 0; i < 30; i++) {
+            const p = document.createElement('div');
+            p.className = 'absolute bg-auraa-red/5 rounded-full blur-2xl pointer-events-none';
+            const size = Math.random() * 300 + 100;
+            p.style.width = p.style.height = `${size}px`;
+            p.style.left = `${Math.random() * 100}%`;
+            p.style.top = `${Math.random() * 100}%`;
+            p.style.animation = `floatParticle ${Math.random() * 10 + 10}s infinite ease-in-out`;
+            p.style.animationDelay = `${Math.random() * 5}s`;
+            particleCanvas.appendChild(p);
+        }
+
+        // 2. Smooth Reveal Animations
+        gsap.utils.toArray('.reveal-mask').forEach((elem, i) => {
+            gsap.to(elem, {
+                opacity: 1,
+                y: 0,
+                duration: 1.2,
+                ease: "power4.out",
+                scrollTrigger: {
+                    trigger: elem,
+                    start: "top 85%",
+                    toggleActions: "play none none none"
+                },
+                delay: i * 0.05
+            });
         });
-    }
+
+        // 2.1 Slideshow Logic
+        const slides = document.querySelectorAll('.slideshow-img');
+        if (slides.length > 0) {
+            let currentSlide = 0;
+            setInterval(() => {
+                slides[currentSlide].classList.add('opacity-0');
+                currentSlide = (currentSlide + 1) % slides.length;
+                slides[currentSlide].classList.remove('opacity-0');
+            }, 4000);
+        }
+
+        // 3. 3D Tilt Interaction Engine
+        const cards = document.querySelectorAll('[data-tilt]');
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = (y - centerY) / 10;
+                const rotateY = (centerX - x) / 10;
+
+                gsap.to(card, {
+                    rotateX: rotateX,
+                    rotateY: rotateY,
+                    scale: 1.05,
+                    duration: 0.5,
+                    ease: "power2.out"
+                });
+            });
+
+            card.addEventListener('mouseleave', () => {
+                gsap.to(card, {
+                    rotateX: 0,
+                    rotateY: 0,
+                    scale: 1,
+                    duration: 1.2,
+                    ease: "elastic.out(1, 0.3)"
+                });
+            });
+        });
+
+        // 3.1 Logo Specific Multi-Layer Parallax
+        const logoScene = document.querySelector('[data-tilt-logo]');
+        if (logoScene) {
+            logoScene.addEventListener('mousemove', (e) => {
+                const rect = logoScene.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width - 0.5;
+                const y = (e.clientY - rect.top) / rect.height - 0.5;
+                
+                gsap.to(logoScene.querySelectorAll('.transform-z-\\[30\\]'), {
+                    x: x * 20,
+                    y: y * 20,
+                    rotateY: x * 30,
+                    rotateX: -y * 30,
+                    duration: 0.5
+                });
+                
+                gsap.to(logoScene.querySelector('.bg-white\\/5'), {
+                    x: x * 10,
+                    y: y * 10,
+                    duration: 0.5
+                });
+            });
+
+            logoScene.addEventListener('mouseleave', () => {
+                gsap.to(logoScene.querySelectorAll('.transform-z-\\[30\\], .bg-white\\/5'), {
+                    x: 0,
+                    y: 0,
+                    rotateX: 0,
+                    rotateY: 0,
+                    duration: 1.2,
+                    ease: "elastic.out(1, 0.3)"
+                });
+            });
+        }
+
+        // 4. Lucide Icons refresh
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+
+        // 5. Hash Scroll Handling
+        if (window.location.hash) {
+            const hash = window.location.hash;
+            const target = document.querySelector(hash);
+            if (target) {
+                gsap.registerPlugin(ScrollToPlugin);
+                setTimeout(() => {
+                    gsap.to(window, {
+                        duration: 1.5,
+                        scrollTo: { y: target, offsetY: 180 },
+                        ease: "power4.inOut"
+                    });
+                    // Highlight effect
+                    gsap.fromTo(target, 
+                        { scale: 1 }, 
+                        { scale: 1.05, duration: 0.5, yoyo: true, repeat: 1, ease: "power2.inOut" }
+                    );
+                }, 500);
+            }
+        }
+    });
 </script>
 {% endblock %}

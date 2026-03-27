@@ -1,173 +1,25 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Auraa Crackers | Premium Firecrackers from Sivakasi - 22+ Years of Quality{% endblock %}
+{% block title %}Auraa Crackers | Premium Firecrackers from Sivakasi - 23+ Years of Quality{% endblock %}
 
 {% block extra_head %}
-<!-- GSAP for 3D interactions -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-
-<style>
-    /* Testimonials Carousel Styles */
-    .testimonial-carousel-container {
-        position: relative;
-        width: 100%;
-        overflow: hidden;
-        padding: 4rem 0;
-    }
-
-    .testimonial-track {
-        display: flex;
-        transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-        will-change: transform;
-    }
-
-    .testimonial-slide {
-        flex: 0 0 100%;
-        min-width: 100%;
-        padding: 0 1rem;
-        opacity: 0.4;
-        scale: 0.9;
-        transition: all 0.6s ease;
-    }
-
-    .testimonial-slide.active {
-        opacity: 1;
-        scale: 1;
-    }
-
-    @media (min-width: 768px) {
-        .testimonial-slide {
-            flex: 0 0 50%;
-            min-width: 50%;
-        }
-    }
-
-    @media (min-width: 1024px) {
-        .testimonial-slide {
-            flex: 0 0 33.333%;
-            min-width: 33.333%;
-        }
-    }
-
-    .glass-testimonial-card {
-        background: rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(15px);
-        -webkit-backdrop-filter: blur(15px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 3rem;
-        padding: 3rem;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        position: relative;
-        overflow: hidden;
-    }
-
-    /* Restored Support Section Styles */
-    .perspective-container-support {
-        perspective: 2000px;
-        transform-style: preserve-3d;
-    }
-
-    .support-float-block {
-        background-color: #f5071d;
-        border-radius: 4rem;
-        box-shadow: 0 50px 100px -20px rgba(0,0,0,0.4);
-        position: relative;
-        overflow: hidden;
-        transform-style: preserve-3d;
-    }
-
-    .glass-support-card {
-        background: rgba(255, 255, 255, 0.08);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        border-radius: 2.5rem;
-        padding: 3rem;
-        transition: transform 0.3s ease-out, background 0.3s ease;
-        transform-style: preserve-3d;
-    }
-
-    .glass-support-card:hover {
-        background: rgba(255, 255, 255, 0.12);
-        transform: translateY(-10px) translateZ(30px);
-    }
-
-    .float-3d-icon {
-        animation: floatIcon 6s ease-in-out infinite;
-    }
-
-    @keyframes floatIcon {
-        0%, 100% { transform: translateY(0) rotate(0deg); }
-        50% { transform: translateY(-15px) rotate(5deg); }
-    }
-
-    .glass-testimonial-card::after {
-        content: '"';
-        position: absolute;
-        top: 2rem;
-        right: 3rem;
-        font-size: 8rem;
-        font-family: serif;
-        color: rgba(255, 255, 255, 0.05);
-        line-height: 1;
-    }
-
-    .carousel-dot {
-        width: 8px;
-        height: 8px;
-        background: rgba(255, 255, 255, 0.2);
-        border-radius: 50%;
-        transition: all 0.3s ease;
-        cursor: pointer;
-    }
-
-    .carousel-dot.active {
-        width: 32px;
-        background: #fff;
-        border-radius: 4px;
-    }
-
-    /* Video section styles */
-    .video-placeholder {
-        aspect-ratio: 16/9;
-        background: #111;
-        border-radius: 3rem;
-        overflow: hidden;
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border: 1px solid rgba(255,255,255,0.1);
-    }
-    
-    .video-glow {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        background: radial-gradient(circle at 50% 50%, rgba(245, 7, 29, 0.15), transparent 70%);
-        pointer-events: none;
-    }
-</style>
+<link rel="stylesheet" href="{% static 'css/home_modern.css' %}">
 {% endblock %}
 
 {% block content %}
 <div class="bg-auraa-red min-h-screen overflow-hidden text-white">
     <!-- Hero Section -->
-    <section class="relative min-h-screen flex items-center pt-20 overflow-hidden">
+    <section class="relative min-h-screen flex items-center pt-8 md:pt-32 overflow-hidden">
         <!-- Hero content will now sit on the background color of the parent div -->
 
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 <div class="space-y-8">
-                    <div class="inline-flex items-center space-x-3 bg-white/10 backdrop-blur-xl border border-white/20 px-6 py-2 rounded-full animate-hero">
+                    <div class="inline-flex items-center space-x-3 bg-[#0A325A] backdrop-blur-xl border border-white/20 px-6 py-2 rounded-full animate-hero">
                         <i data-lucide="award" class="text-white w-4 h-4"></i>
-                        <span class="text-[10px] font-black text-white uppercase tracking-[0.3em]">22+ Years of Excellence</span>
+                        <span class="text-[10px] font-black text-white uppercase tracking-[0.3em]">23+ Years of Excellence</span>
                     </div>
                     
                     <h1 class="text-5xl md:text-7xl lg:text-[120px] font-black text-white leading-[0.85] uppercase tracking-tighter animate-hero">
@@ -179,63 +31,101 @@
                         We take immense pride in delivering the highest quality crackers that exceed your expectations. Safe, vibrant, and unforgettable.
                     </p>
 
-                    <div class="flex flex-wrap gap-6 pt-4">
-                        <a href="/products" class="bg-gray-900 text-white px-10 py-5 rounded-[2rem] font-black uppercase tracking-widest text-sm hover:bg-white hover:text-gray-900 transition-all shadow-2xl flex items-center space-x-3 group">
-                            <span>Explore Products</span>
-                            <i data-lucide="arrow-right" class="w-[18px] h-[18px] group-hover:translate-x-2 transition-transform"></i>
-                        </a>
-                        <a href="https://auraacrackers.com/images/download/Auraa_2025.pdf" target="_blank" rel="noopener noreferrer" class="bg-white/10 backdrop-blur-md border-2 border-white/20 text-white px-10 py-5 rounded-[2rem] font-black uppercase tracking-widest text-sm hover:bg-white/20 transition-all flex items-center space-x-3">
-                            <i data-lucide="download" class="w-[18px] h-[18px]"></i>
-                            <span>2025 Pricelist</span>
-                        </a>
+                    <div class="flex flex-col md:flex-row items-center justify-center lg:justify-start gap-6 md:gap-10 pt-10">
+                        <div class="btn-3d-wrapper w-full md:w-auto flex justify-center">
+                            <a href="{% url 'product_list' %}" class="btn-3d-container btn-3d-glow-red group w-full max-w-[280px] md:w-auto">
+                                <span class="btn-3d-shadow"></span>
+                                <span class="btn-3d-edge btn-3d-edge-red"></span>
+                                <span class="btn-3d-front btn-3d-front-red space-x-3">
+                                    <span>Explore Products</span>
+                                    <i data-lucide="arrow-right" class="w-[18px] h-[18px] group-hover:translate-x-2 transition-transform"></i>
+                                </span>
+                            </a>
+                        </div>
+
+                        <div class="btn-3d-wrapper animate-jump w-full md:w-auto flex justify-center">
+                            <a href="https://auraacrackers.com/images/download/Auraa_2025.pdf" target="_blank" rel="noopener noreferrer" class="btn-3d-container btn-3d-glow-blue rounded-[1.25rem] w-full max-w-[280px] md:w-auto">
+                                <span class="btn-3d-shadow"></span>
+                                <span class="btn-3d-edge btn-3d-edge-blue"></span>
+                                <span class="btn-3d-front btn-3d-front-blue space-x-3">
+                                    <i data-lucide="download" class="w-[18px] h-[18px]"></i>
+                                    <span>2025 Pricelist</span>
+                                </span>
+                            </a>
+                        </div>
                     </div>
                 </div>
 
-                <div class="relative hidden lg:block">
-                    <div class="aspect-square rounded-[5rem] overflow-hidden shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] border-[16px] border-white/10 relative group">
-                        <img src="https://picsum.photos/seed/firework-hero/1000/1000" alt="Auraa Fireworks" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                        <div class="absolute bottom-12 left-12 right-12">
-                            <div class="text-white font-black text-4xl uppercase tracking-tighter leading-none">
-                                Premium <br> Sivakasi Quality
+                <div class="hero-image-perspective block mt-16 lg:mt-0 max-w-lg mx-auto lg:max-w-none">
+                    <div class="premium-image-box">
+                        <div class="premium-image-box-inner">
+                            <img src="{% static 'images/shop2.png' %}" alt="Auraa Fireworks" class="hero-image-main">
+                            <div class="premium-image-overlay"></div>
+                            
+                            <div class="hero-sliding-text">
+                                <div class="text-white font-black text-5xl uppercase tracking-tighter leading-none filter drop-shadow-2xl">
+                                    Premium <br> <span class="text-auraa-red">Sivakasi</span> Quality
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <!-- Decorative floating elements -->
-                    <div class="absolute -top-10 -right-10 w-32 h-32 bg-white rounded-full flex items-center justify-center shadow-2xl border-4 border-auraa-red animate-bounce overflow-hidden">
-                        <img src="{% static 'images/logo.png' %}" class="w-full h-full object-cover object-top scale-[1.3]" alt="Auraa Logo">
-                    </div>
+                    
+
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Exclusive Products Bento Grid -->
-    <section class="py-32 px-4 bg-auraa-red">
+    <section class="py-16 px-4 bg-auraa-red">
         <div class="max-w-7xl mx-auto">
             <div class="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
                 <div class="space-y-4">
                     <h2 class="text-xs font-black text-white uppercase tracking-[0.4em] opacity-60">The Collection</h2>
                     <h3 class="text-4xl md:text-5xl lg:text-7xl font-black text-white uppercase tracking-tighter">Exclusive Products</h3>
                 </div>
-                <a href="/products" class="group flex items-center space-x-4 bg-white text-auraa-red px-8 py-4 rounded-2xl font-black uppercase text-xs tracking-widest shadow-xl hover:bg-gray-900 hover:text-white transition-all">
-                    <span>View All Categories</span>
-                    <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-2 transition-transform"></i>
-                </a>
+                <div class="lg:block hidden">
+                    <div class="premium-view-all-wrapper">
+                        <a href="/products" class="premium-view-all-btn group">
+                            <span class="premium-view-all-shadow"></span>
+                            <span class="premium-view-all-edge"></span>
+                            <span class="premium-view-all-front">
+                                <span class="text-xs font-black uppercase tracking-widest">View All Categories</span>
+                                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+                <!-- Fallback for Mobile (Non-magnetic but still 3D) -->
+                <div class="lg:hidden flex justify-center w-full">
+                    <div class="premium-view-all-wrapper">
+                        <a href="/products" class="premium-view-all-btn group">
+                            <span class="premium-view-all-shadow"></span>
+                            <span class="premium-view-all-edge"></span>
+                            <span class="premium-view-all-front">
+                                <span class="text-xs font-black uppercase tracking-widest">View All Categories</span>
+                                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                            </span>
+                        </a>
+                    </div>
+                </div>
             </div>
 
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 category-grid">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 category-grid">
                 {% for cat in categories %}
-                <div onclick="window.location.href='/products?category={{ cat.name|urlencode }}'" class="relative rounded-[3rem] overflow-hidden group cursor-pointer shadow-2xl min-h-[240px] col-span-1 row-span-1 {% if forloop.counter0|add:2|divisibleby:3 %}md:col-span-2{% endif %} hover:-translate-y-2 hover:scale-[1.02] transition-all duration-300 category-card">
-                    <img src="{% if cat.image %}{{ cat.image }}{% else %}https://picsum.photos/seed/{{ cat.name|urlencode }}/600/600{% endif %}" alt="{{ cat.name }}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-                    <div class="absolute inset-0 opacity-40 group-hover:opacity-60 transition-opacity bg-{{ cat.color|default:'orange-500' }}"></div>
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-                    
-                    <div class="relative z-10 h-full p-8 flex flex-col justify-end">
-                        <h4 class="text-2xl font-black text-white uppercase tracking-tight">{{ cat.name }}</h4>
-                        <div class="flex items-center space-x-2 text-white/60 text-[10px] font-black uppercase tracking-widest mt-2 group-hover:text-white transition-colors">
-                            <span>Explore</span>
-                            <i data-lucide="arrow-right" class="w-3 h-3"></i>
+                <div class="category-card-wrapper {% if forloop.counter0|add:2|divisibleby:3 %}md:col-span-2{% endif %}">
+                    <div onclick="window.location.href='/products?category={{ cat.name|urlencode }}'" class="category-card-premium">
+                        <div class="category-card-image-wrap">
+                            <img src="{% if cat.image %}{{ cat.image }}{% else %}https://picsum.photos/seed/{{ cat.name|urlencode }}/600/600{% endif %}" alt="{{ cat.name }}" class="category-card-image-modern">
+                        </div>
+                        <div class="category-card-overlay-modern"></div>
+                        
+                        <div class="category-card-content-wrap">
+                            <h4 class="category-card-title-modern">{{ cat.name }}</h4>
+                            <div class="category-card-explore-modern">
+                                <span>Explore</span>
+                                <i data-lucide="arrow-right" class="w-3 h-3"></i>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -249,8 +139,110 @@
         </div>
     </section>
 
+    <style>
+        .advantage-section {
+            border-radius: 4rem 2rem 6rem 3rem;
+            clip-path: none;
+        }
+        @media (min-width: 1024px) {
+            .advantage-section {
+                border-radius: 10rem 3rem 15rem 5rem;
+                clip-path: polygon(10% 0, 100% 0, 100% 90%, 90% 100%, 0 100%, 0 10%);
+            }
+        }
+    </style>
+
+
+    <!-- Core Values Section -->
+    <section class="py-16 px-6 bg-auraa-red relative overflow-hidden">
+        <!-- Floating Ambient Glows (Subtler) -->
+        <div class="absolute top-1/4 left-0 w-[600px] h-[600px] bg-white/10 rounded-full blur-[180px] animate-pulse"></div>
+        <div class="absolute bottom-1/4 right-0 w-[600px] h-[600px] bg-black/10 rounded-full blur-[200px] animate-pulse" style="animation-delay: 2s;"></div>
+
+        <div class="max-w-7xl mx-auto relative group/main">
+            <!-- Layered Offset Background Panel (Decorative) -->
+            <div class="absolute -top-6 -left-6 w-full h-full bg-black/10 border border-white/5 shadow-2xl rounded-[10rem_3rem_0_0] pointer-events-none transition-transform duration-1000 group-hover/main:-translate-x-2 group-hover/main:-translate-y-2" 
+                 style="clip-path: polygon(0 0, 100% 0, 100% 85%, 85% 100%, 0 100%);"></div>
+
+            <!-- The 2026 Asymmetric Floating Panel -->
+            <div class="relative bg-[#0A325A]/90 backdrop-blur-3xl border border-white/10 p-12 md:p-24 shadow-[0_80px_150px_-30px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.1)] overflow-hidden transition-all duration-700 hover:shadow-[0_100px_180px_-40px_rgba(0,0,0,0.7)]"
+                 style="border-radius: 10rem 3rem 0 3rem; clip-path: polygon(0 0, 100% 0, 100% 85%, 85% 100%, 0 100%);">
+                
+                <!-- Internal Glow Accents -->
+                <div class="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-[100px] pointer-events-none"></div>
+
+                <!-- Section Header Internal -->
+                <div class="text-center space-y-6 mb-24 relative z-10">
+                    <div class="inline-flex items-center space-x-3 bg-white text-auraa-red px-8 py-3 rounded-full mb-4 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
+                        <i data-lucide="award" class="w-5 h-5"></i>
+                        <span class="text-[12px] font-black uppercase tracking-[0.4em]">Our Foundation</span>
+                    </div>
+                    <h3 class="text-4xl md:text-5xl lg:text-6xl font-black text-white uppercase tracking-tighter leading-none mb-12 drop-shadow-2xl">
+                        Our <span class="text-auraa-red italic selection:bg-white selection:text-auraa-red">Core Values</span>
+                    </h3>
+                    <p class="text-white/40 max-w-3xl mx-auto text-lg md:text-2xl font-medium leading-relaxed italic border-t border-white/5 pt-8 underline decoration-auraa-red underline-offset-8">
+                        "Guided by principles, defined by a legacy of excellence and trust."
+                    </p>
+                </div>
+
+                <!-- Grid of Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 relative z-10">
+                    <!-- Customer Delight -->
+                    <div class="group p-10 rounded-[3.5rem_1.5rem_4rem_2rem] bg-auraa-red border border-white/20 hover:bg-auraa-red/90 hover:border-white/40 transition-all duration-700 hover:-translate-y-4 flex flex-col items-center text-center shadow-[0_20px_50px_rgba(245,7,29,0.3)] hover:shadow-[0_40px_80px_rgba(245,7,29,0.5)]">
+                        <div class="w-20 h-20 bg-white text-auraa-red rounded-[1.8rem] flex items-center justify-center mb-8 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-2xl">
+                            <i data-lucide="heart" class="w-10 h-10"></i>
+                        </div>
+                        <h4 class="text-lg font-black text-white uppercase tracking-tight mb-4 group-hover:scale-105 transition-transform">Customer Delight</h4>
+                        <p class="text-white/90 text-[10px] font-black leading-relaxed uppercase tracking-widest">Joyful experiences and dependable products.</p>
+                    </div>
+
+                    <!-- Trust & Transparency -->
+                    <div class="group p-10 rounded-[1.5rem_3.5rem_2rem_4rem] bg-auraa-red border border-white/20 hover:bg-auraa-red/90 hover:border-white/40 transition-all duration-700 hover:-translate-y-4 flex flex-col items-center text-center shadow-[0_20px_50px_rgba(245,7,29,0.3)] hover:shadow-[0_40px_80px_rgba(245,7,29,0.5)]">
+                        <div class="w-20 h-20 bg-white text-blue-500 rounded-[1.8rem] flex items-center justify-center mb-8 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-2xl">
+                            <i data-lucide="shield-check" class="w-10 h-10"></i>
+                        </div>
+                        <h4 class="text-lg font-black text-white uppercase tracking-tight mb-4 group-hover:scale-105 transition-transform">Trust & Transparency</h4>
+                        <p class="text-white/90 text-[10px] font-black leading-relaxed uppercase tracking-widest">Honesty and ethical business practices.</p>
+                    </div>
+
+                    <!-- Responsibility -->
+                    <div class="group p-10 rounded-[3.5rem_1.5rem_4rem_2rem] bg-auraa-red border border-white/20 hover:bg-auraa-red/90 hover:border-white/40 transition-all duration-700 hover:-translate-y-4 flex flex-col items-center text-center shadow-[0_20px_50px_rgba(245,7,29,0.3)] hover:shadow-[0_40px_80px_rgba(245,7,29,0.5)]">
+                        <div class="w-20 h-20 bg-white text-emerald-500 rounded-[1.8rem] flex items-center justify-center mb-8 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-2xl">
+                            <i data-lucide="globe" class="w-10 h-10"></i>
+                        </div>
+                        <h4 class="text-lg font-black text-white uppercase tracking-tight mb-4 group-hover:scale-105 transition-transform">Responsibility</h4>
+                        <p class="text-white/90 text-[10px] font-black leading-relaxed uppercase tracking-widest">Accountability for our actions & society.</p>
+                    </div>
+
+                    <!-- Innovation -->
+                    <div class="group p-10 rounded-[1.5rem_3.5rem_2rem_4rem] bg-auraa-red border border-white/20 hover:bg-auraa-red/90 hover:border-white/40 transition-all duration-700 hover:-translate-y-4 flex flex-col items-center text-center shadow-[0_20px_50px_rgba(245,7,29,0.3)] hover:shadow-[0_40px_80px_rgba(245,7,29,0.5)]">
+                        <div class="w-20 h-20 bg-white text-purple-500 rounded-[1.8rem] flex items-center justify-center mb-8 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-2xl">
+                            <i data-lucide="zap" class="w-10 h-10"></i>
+                        </div>
+                        <h4 class="text-lg font-black text-white uppercase tracking-tight mb-4 group-hover:scale-105 transition-transform">Innovation</h4>
+                        <p class="text-white/90 text-[10px] font-black leading-relaxed uppercase tracking-widest">Smarter ways to serve and better products.</p>
+                    </div>
+
+                    <!-- Safety & Security -->
+                    <div class="group p-10 rounded-[3.5rem_1.5rem_4rem_2rem] bg-auraa-red border border-white/20 hover:bg-auraa-red/90 hover:border-white/40 transition-all duration-700 hover:-translate-y-4 flex flex-col items-center text-center shadow-[0_20px_50px_rgba(245,7,29,0.3)] hover:shadow-[0_40px_80px_rgba(245,7,29,0.5)]">
+                        <div class="w-20 h-20 bg-white text-amber-500 rounded-[1.8rem] flex items-center justify-center mb-8 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-2xl">
+                            <i data-lucide="shield" class="w-10 h-10"></i>
+                        </div>
+                        <h4 class="text-lg font-black text-white uppercase tracking-tight mb-4 group-hover:scale-105 transition-transform">Safety & Security</h4>
+                        <p class="text-white/90 text-[10px] font-black leading-relaxed uppercase tracking-widest">Strict quality and safety standards.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+
+
     <!-- Trust & Compliance Section -->
-    <section class="py-32 bg-white rounded-[5rem] mx-4 shadow-2xl relative overflow-hidden text-gray-900 mb-20">
+    <section class="py-20 bg-white rounded-[5rem] mx-4 shadow-2xl relative overflow-hidden text-gray-900 mb-12">
         <div class="max-w-7xl mx-auto px-8 md:px-16">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
                 <div class="space-y-10">
@@ -313,92 +305,118 @@
         </div>
     </section>
 
-    <!-- Support Cluster Section - 3D Reimagined -->
-    <div class="py-24 bg-white px-6">
-        <section class="support-float-block py-32 relative z-20 text-white perspective-container-support">
-            <!-- 3D Background Layers -->
-            <div class="absolute inset-0 z-0">
-                <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_rgba(255,255,255,0.1)_0%,_transparent_70%)] opacity-30"></div>
-                <!-- Orbiting Support Symbols -->
-                <div class="absolute top-[10%] left-[5%] text-white/5 text-[10rem] font-black rotate-12 float-3d-icon">?</div>
-                <div class="absolute bottom-[10%] right-[5%] text-white/5 text-[15rem] font-black -rotate-6 float-3d-icon">!</div>
-            </div>
+    <!-- Support Cluster Section - 2026 Asymmetric Redesign -->
+    <div class="py-16 bg-white px-6">
+        <div class="max-w-7xl mx-auto relative group/support">
+            <!-- Layered Offset Background (Atmospheric Glow) -->
+            <div class="absolute -inset-8 bg-auraa-red/[0.03] border border-auraa-red/5 rounded-[12rem_4rem_10rem_6rem] rotate-1 scale-105 pointer-events-none group-hover/support:rotate-0 group-hover/support:scale-100 transition-all duration-[1.5s]"></div>
 
-            <div class="max-w-7xl mx-auto px-6 text-center space-y-20 relative z-10 transition-all duration-1000">
-                <div class="space-y-6 support-header-3d">
-                    <div class="inline-block px-8 py-3 bg-white/10 backdrop-blur-md rounded-full shadow-lg border border-white/20 transform -rotate-1">
-                        <h2 class="text-[12px] font-black text-white uppercase tracking-[0.5em]">24/7 Assistance</h2>
+            <section class="relative bg-[#0A325A] p-16 md:p-32 shadow-[0_100px_150px_-40px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.1)] overflow-hidden transition-all duration-1000 group-hover/support:shadow-[0_120px_180px_-50px_rgba(0,0,0,0.6)] group-hover/support:-translate-y-4"
+                     style="border-radius: 12rem 4rem 10rem 6rem; clip-path: polygon(0 0, 100% 5%, 100% 100%, 8% 95%);">
+                
+                <!-- Inner 3D Background Decorative Layers -->
+                <div class="absolute inset-0 z-0">
+                    <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,_rgba(245,7,29,0.1)_0%,_transparent_70%)] opacity-30"></div>
+                    <!-- Orbiting Support Symbols -->
+                    <div class="absolute top-[10%] left-[5%] text-white/[0.03] text-[10rem] font-black rotate-12">?</div>
+                    <div class="absolute bottom-[10%] right-[5%] text-white/[0.03] text-[15rem] font-black -rotate-6">!</div>
+                </div>
+
+                <div class="relative z-10 text-center space-y-20">
+                    <div class="space-y-6">
+                        <div class="inline-block px-8 py-3 bg-white/10 backdrop-blur-md rounded-full shadow-lg border border-white/20">
+                            <h2 class="text-[12px] font-black text-white uppercase tracking-[0.5em]">24/7 Assistance</h2>
+                        </div>
+                        <h3 class="text-6xl md:text-8xl font-black text-white uppercase tracking-tighter leading-none">
+                            Our Support <span class="text-auraa-red italic underline decoration-white/20 underline-offset-[10px]">Team</span>
+                        </h3>
+                        <p class="text-white/70 font-medium max-w-2xl mx-auto text-xl">
+                            Connect with our dedicated experts to illuminate your celebration journey.
+                        </p>
                     </div>
-                    <h3 class="text-6xl md:text-8xl font-black text-white uppercase tracking-tighter leading-none mix-blend-overlay">
-                        Our Support <br /> <span class="italic underline decoration-white/20 underline-offset-[10px]">Team</span>
-                    </h3>
-                    <p class="text-white/70 font-medium max-w-2xl mx-auto text-xl">
-                        Connect with our dedicated experts to illuminate your celebration journey.
-                    </p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 items-stretch">
+                        <!-- Payment Confirm Card -->
+                        <a href="tel:+919080560340" class="glass-support-card p-10 rounded-[3rem_1rem_3.5rem_1.5rem] bg-auraa-red border border-white/10 flex flex-col items-center justify-center text-center space-y-6 group/card transition-all duration-500 hover:scale-110 shadow-3xl">
+                            <div class="w-16 h-16 rounded-2xl bg-white flex items-center justify-center text-auraa-red transition-all duration-300">
+                                <i data-lucide="credit-card" class="w-8 h-8"></i>
+                            </div>
+                            <div class="space-y-2">
+                                <div class="text-[10px] font-black text-white/50 uppercase tracking-[0.3em] group-hover/card:text-white">Payment Confirm</div>
+                                <div class="text-lg whitespace-nowrap font-black text-white">+91 90805 60340</div>
+                            </div>
+                            <span class="text-[9px] font-black uppercase tracking-widest text-white/40 bg-white/10 px-6 py-2 rounded-full group-hover/card:bg-white group-hover/card:text-auraa-red transition-all">Finance Desk</span>
+                        </a>
+
+                        <!-- Dispatch Hub Card -->
+                        <a href="tel:+919677570276" class="glass-support-card p-10 rounded-[1rem_3rem_1.5rem_3.5rem] bg-auraa-red border border-white/10 flex flex-col items-center justify-center text-center space-y-6 group/card transition-all duration-500 hover:scale-110 shadow-3xl">
+                            <div class="w-16 h-16 rounded-2xl bg-white flex items-center justify-center text-auraa-red transition-all duration-300">
+                                <i data-lucide="truck" class="w-8 h-8"></i>
+                            </div>
+                            <div class="space-y-2">
+                                <div class="text-[10px] font-black text-white/50 uppercase tracking-[0.3em] group-hover/card:text-white">Dispatch Details</div>
+                                <div class="text-lg whitespace-nowrap font-black text-white">+91 96775 70276</div>
+                            </div>
+                            <span class="text-[9px] font-black uppercase tracking-widest text-white/40 bg-white/10 px-6 py-2 rounded-full group-hover/card:bg-white group-hover/card:text-auraa-red transition-all">Tracking</span>
+                        </a>
+
+                        <!-- Order Confirm Card -->
+                        <a href="tel:+916381426206" class="glass-support-card p-10 rounded-[3rem_1rem_3.5rem_1.5rem] bg-auraa-red border border-white/10 flex flex-col items-center justify-center text-center space-y-6 group/card transition-all duration-500 hover:scale-110 shadow-3xl">
+                            <div class="w-16 h-16 rounded-2xl bg-white flex items-center justify-center text-auraa-red transition-all duration-300">
+                                <i data-lucide="shopping-bag" class="w-8 h-8"></i>
+                            </div>
+                            <div class="space-y-2">
+                                <div class="text-[10px] font-black text-white/50 uppercase tracking-[0.3em] group-hover/card:text-white">Order Confirm</div>
+                                <div class="text-lg whitespace-nowrap font-black text-white">+91 63814 26206</div>
+                            </div>
+                            <span class="text-[9px] font-black uppercase tracking-widest text-white/40 bg-white/10 px-6 py-2 rounded-full group-hover/card:bg-white group-hover/card:text-auraa-red transition-all">Direct Call</span>
+                        </a>
+
+                        <!-- Direct Support Card -->
+                        <a href="tel:+919489435625" class="glass-support-card p-10 rounded-[1rem_3rem_1.5rem_3.5rem] bg-auraa-red border border-white/10 flex flex-col items-center justify-center text-center space-y-6 group/card transition-all duration-500 hover:scale-110 shadow-3xl">
+                            <div class="w-16 h-16 rounded-2xl bg-white flex items-center justify-center text-auraa-red transition-all duration-300">
+                                <i data-lucide="headphones" class="w-8 h-8"></i>
+                            </div>
+                            <div class="space-y-2">
+                                <div class="text-[10px] font-black text-white/50 uppercase tracking-[0.3em] group-hover/card:text-white">Customer Support</div>
+                                <div class="text-lg whitespace-nowrap font-black text-white">+91 94894 35625</div>
+                            </div>
+                            <span class="text-[9px] font-black uppercase tracking-widest text-white/40 bg-white/10 px-6 py-2 rounded-full group-hover/card:bg-white group-hover/card:text-auraa-red transition-all">Expert Help</span>
+                        </a>
+                    </div>
                 </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    <!-- Order Confirm Card -->
-                    <a href="tel:+916381426206" class="glass-support-card flex flex-col items-center space-y-6 group fade-up-support" style="background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.2);">
-                        <div class="w-20 h-20 rounded-[1.5rem] bg-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-auraa-red transition-all duration-300 shadow-xl">
-                            <i data-lucide="shopping-bag" class="w-10 h-10"></i>
-                        </div>
-                        <div class="space-y-2">
-                            <div class="text-[10px] font-black text-white/50 uppercase tracking-[0.3em]">Order Confirm</div>
-                            <div class="text-2xl font-black text-white group-hover:scale-110 transition-transform">+91 63814 26206</div>
-                        </div>
-                        <span class="text-[10px] font-black uppercase tracking-widest text-white/60 bg-white/10 px-6 py-2 rounded-full group-hover:bg-white group-hover:text-auraa-red transition-all">Direct Call</span>
-                    </a>
-
-                    <!-- Payment Confirm Card - Secure Blue -->
-                    <a href="tel:+919080560340" class="glass-support-card flex flex-col items-center space-y-6 group fade-up-support" style="background: rgba(59, 130, 246, 0.15); border-color: rgba(59, 130, 246, 0.3);">
-                        <div class="w-20 h-20 rounded-[1.5rem] bg-blue-500/20 flex items-center justify-center group-hover:bg-blue-500 group-hover:text-white transition-all duration-300 shadow-xl">
-                            <i data-lucide="credit-card" class="w-10 h-10 text-blue-300 group-hover:text-white"></i>
-                        </div>
-                        <div class="space-y-2">
-                            <div class="text-[10px] font-black text-blue-200/50 uppercase tracking-[0.3em]">Payment Confirm</div>
-                            <div class="text-2xl font-black text-white group-hover:scale-110 transition-transform">+91 90805 60340</div>
-                        </div>
-                        <span class="text-[10px] font-black uppercase tracking-widest text-blue-200/60 bg-blue-500/20 px-6 py-2 rounded-full group-hover:bg-blue-500 group-hover:text-white transition-all">Finance Desk</span>
-                    </a>
-
-                    <!-- Direct Support Card - Help Green -->
-                    <a href="tel:+919677570276" class="glass-support-card flex flex-col items-center space-y-6 group fade-up-support" style="background: rgba(16, 185, 129, 0.15); border-color: rgba(16, 185, 129, 0.3);">
-                        <div class="w-20 h-20 rounded-[1.5rem] bg-emerald-500/20 flex items-center justify-center group-hover:bg-emerald-500 group-hover:text-white transition-all duration-300 shadow-xl">
-                            <i data-lucide="headphones" class="w-10 h-10 text-emerald-300 group-hover:text-white"></i>
-                        </div>
-                        <div class="space-y-2">
-                            <div class="text-[10px] font-black text-emerald-200/50 uppercase tracking-[0.3em]">Direct Support</div>
-                            <div class="text-2xl font-black text-white group-hover:scale-110 transition-transform">+91 96775 70276</div>
-                        </div>
-                        <span class="text-[10px] font-black uppercase tracking-widest text-emerald-200/60 bg-emerald-500/20 px-6 py-2 rounded-full group-hover:bg-emerald-500 group-hover:text-white transition-all">Expert Help</span>
-                    </a>
-
-                    <!-- Dispatch Hub Card - Logistics Amber -->
-                    <a href="tel:+919677570276" class="glass-support-card flex flex-col items-center space-y-6 group fade-up-support" style="background: rgba(245, 158, 11, 0.15); border-color: rgba(245, 158, 11, 0.3);">
-                        <div class="w-20 h-20 rounded-[1.5rem] bg-amber-500/20 flex items-center justify-center group-hover:bg-amber-500 group-hover:text-white transition-all duration-300 shadow-xl">
-                            <i data-lucide="truck" class="w-10 h-10 text-amber-300 group-hover:text-white"></i>
-                        </div>
-                        <div class="space-y-2">
-                            <div class="text-[10px] font-black text-amber-200/50 uppercase tracking-[0.3em]">Dispatch Hub</div>
-                            <div class="text-2xl font-black text-white group-hover:scale-110 transition-transform">+91 96775 70276</div>
-                        </div>
-                        <span class="text-[10px] font-black uppercase tracking-widest text-amber-200/60 bg-amber-500/20 px-6 py-2 rounded-full group-hover:bg-amber-500 group-hover:text-white transition-all">Tracking</span>
-                    </a>
-                </div>
-            </div>
-        </section>
+            </section>
+        </div>
+    </div>
     <!-- Testimonials & Video Section -->
-    <section class="py-32 bg-gray-950 relative overflow-hidden">
-        <!-- Background Accents -->
-        <div class="absolute top-0 right-0 w-[800px] h-[800px] bg-auraa-red/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2"></div>
-        <div class="absolute bottom-0 left-0 w-[600px] h-[600px] bg-auraa-red/5 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2"></div>
+    <section class="py-24 px-6 bg-white relative overflow-hidden">
+        <!-- Floating Red Orbs for Atmospheric Depth (Softened for White Background) -->
+        <div class="absolute top-1/4 -right-24 w-[800px] h-[800px] bg-auraa-red/5 rounded-full blur-[180px] animate-pulse"></div>
+        <div class="absolute bottom-1/4 -left-24 w-[600px] h-[600px] bg-blue-600/5 rounded-full blur-[200px] animate-pulse" style="animation-delay: 3s;"></div>
 
-        <div class="max-w-7xl mx-auto px-6 relative z-10">
-            <div class="text-center space-y-4 mb-20">
-                <h2 class="text-xs font-black text-auraa-red uppercase tracking-[0.5em]">Happy Customers</h2>
-                <h3 class="text-5xl md:text-7xl font-black text-white uppercase tracking-tighter">What They Say</h3>
-            </div>
+        <div class="max-w-7xl mx-auto relative group/testimonials">
+            <!-- Layered Offset Background (Atmospheric Glow - Darkened for White BG) -->
+            <div class="absolute -inset-10 bg-[#0A325A]/[0.05] border border-gray-100 rounded-[15rem_5rem_12rem_8rem] -rotate-2 scale-105 pointer-events-none group-hover/testimonials:rotate-0 group-hover/testimonials:scale-100 transition-all duration-[2000ms]"></div>
+            
+            <!-- The 2026 Asymmetric Organic Container - Inverted to Dark Navy for Visibility on White -->
+            <div class="relative bg-[#0A325A]/95 backdrop-blur-3xl border border-white/10 p-16 md:p-32 shadow-[0_120px_180px_-40px_rgba(0,0,0,0.4),inset_0_1px_1px_rgba(255,255,255,0.05)] overflow-hidden transition-all duration-1000 group-hover/testimonials:shadow-[0_150px_220px_-50px_rgba(0,0,0,0.5)]"
+                 style="border-radius: 15rem 4rem 10rem 6rem; clip-path: polygon(0 0, 100% 2%, 100% 100%, 5% 98%);">
+                
+                <!-- Inner Decorative Accents -->
+                <div class="absolute top-0 right-0 w-full h-full bg-[radial-gradient(circle_at_100%_0%,_rgba(245,7,29,0.1)_0%,_transparent_50%)] pointer-events-none"></div>
+
+                <div class="text-center space-y-8 mb-24 relative z-10">
+                    <div class="inline-flex items-center space-x-3 bg-white text-auraa-red px-10 py-4 rounded-full border border-gray-200 shadow-2xl">
+                        <div class="w-2 h-2 bg-auraa-red rounded-full animate-ping"></div>
+                        <h2 class="text-[12px] font-black uppercase tracking-[0.6em]">Happy Customers</h2>
+                    </div>
+                    
+                    <h3 class="text-6xl md:text-8xl lg:text-9xl font-black text-white uppercase tracking-tighter leading-none">
+                        What <span class="text-auraa-red italic selection:bg-white selection:text-auraa-red drop-shadow-[0_0_50px_rgba(245,7,29,0.3)]">They</span> Say
+                    </h3>
+                    
+                    <div class="w-24 h-1 bg-gradient-to-r from-transparent via-auraa-red to-transparent mx-auto opacity-50"></div>
+                </div>
 
             <!-- Carousel Component -->
             <div class="testimonial-carousel-container group/carousel">
@@ -420,11 +438,11 @@
                             </div>
                             <div class="flex items-center space-x-4 pt-8 mt-auto border-t border-white/10">
                                 <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-auraa-red/30">
-                                    <img src="{% static 'brain/36046f55-9242-495c-9f56-389798283782/testimonial_user_1_1774032295532.png' %}" class="w-full h-full object-cover" alt="User">
+                                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Rajesh" class="w-full h-full object-cover" alt="User">
                                 </div>
                                 <div>
                                     <h4 class="text-sm font-black text-white uppercase tracking-wider">Rajesh Kumar</h4>
-                                    <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Verified Customer</p>
+                                    <p class="text-[10px] font-bold text-white/50 uppercase tracking-widest">Verified Customer</p>
                                 </div>
                             </div>
                         </div>
@@ -447,11 +465,11 @@
                             </div>
                             <div class="flex items-center space-x-4 pt-8 mt-auto border-t border-white/10">
                                 <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-auraa-red/30">
-                                    <img src="{% static 'brain/36046f55-9242-495c-9f56-389798283782/testimonial_user_2_1774032313638.png' %}" class="w-full h-full object-cover" alt="User">
+                                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Priya" class="w-full h-full object-cover" alt="User">
                                 </div>
                                 <div>
                                     <h4 class="text-sm font-black text-white uppercase tracking-wider">Priya Sharma</h4>
-                                    <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Gold Member</p>
+                                    <p class="text-[10px] font-bold text-white/50 uppercase tracking-widest">Gold Member</p>
                                 </div>
                             </div>
                         </div>
@@ -474,11 +492,11 @@
                             </div>
                             <div class="flex items-center space-x-4 pt-8 mt-auto border-t border-white/10">
                                 <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-auraa-red/30">
-                                    <img src="{% static 'brain/36046f55-9242-495c-9f56-389798283782/testimonial_user_3_1774032333418.png' %}" class="w-full h-full object-cover" alt="User">
+                                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Anil" class="w-full h-full object-cover" alt="User">
                                 </div>
                                 <div>
                                     <h4 class="text-sm font-black text-white uppercase tracking-wider">Anil Verma</h4>
-                                    <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Happy Parent</p>
+                                    <p class="text-[10px] font-bold text-white/50 uppercase tracking-widest">Happy Parent</p>
                                 </div>
                             </div>
                         </div>
@@ -506,7 +524,10 @@
                         <h2 class="text-xs font-black text-auraa-red uppercase tracking-[0.4em]">Visual Stories</h2>
                         <h3 class="text-4xl md:text-5xl font-black text-white uppercase tracking-tighter">Video Testimonials</h3>
                     </div>
-                    <p class="text-gray-400 font-medium max-w-sm">Watch our community celebrate with Auraa. Real moments, real joy.</p>
+                    <p class="bg-white text-auraa-red px-6 py-4 rounded-2xl font-bold max-w-sm shadow-xl border border-red-100 flex items-center space-x-3">
+                        <i data-lucide="check-circle" class="w-5 h-5 flex-shrink-0"></i>
+                        <span>Watch our community celebrate with Auraa. Real moments, real joy.</span>
+                    </p>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
@@ -541,207 +562,138 @@
             </div>
         </div>
     </section>
-    <section class="py-32 text-center relative overflow-hidden bg-auraa-red text-white">
-        <div class="max-w-4xl mx-auto px-4 space-y-12 relative z-10">
-            <div class="space-y-6">
-                <h2 class="text-5xl md:text-8xl font-black text-white uppercase tracking-tighter leading-none">
-                    Celebrate with <br />
-                    <span class="text-gray-900 underline decoration-white/20 underline-offset-8">The Auraa</span>
-                </h2>
-                <p class="text-xl text-white/70 font-medium max-w-2xl mx-auto leading-relaxed">
-                    Join thousands of happy families who trust us for their celebrations. Quality, safety, and joy delivered.
-                </p>
-            </div>
-            
-            <div class="flex flex-wrap justify-center gap-6">
-                <a href="/products" class="bg-white text-auraa-red px-12 py-6 rounded-[2.5rem] font-black uppercase tracking-widest text-sm hover:bg-gray-900 hover:text-white transition-all shadow-2xl">
-                    Start Your Enquiry
-                </a>
-            </div>
-        </div>
+    <!-- Celebrate with The Auraa - 2026 Premium Redesign -->
+    <div class="py-16 bg-white px-6">
+        <div class="max-w-6xl mx-auto relative group/cta">
+            <!-- Layered Offset Background (Atmospheric Glow) -->
+            <div class="absolute -inset-6 bg-[#0A325A]/[0.05] border border-gray-100 rounded-[4rem_15rem_3rem_12rem] -rotate-1 scale-105 pointer-events-none group-hover/cta:rotate-0 transition-all duration-[1s]"></div>
 
-        <!-- Background Sparkle Elements -->
-        <div class="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
-            <img src="{% static 'images/logo.png' %}" class="absolute top-1/4 left-1/4 animate-pulse w-[100px] h-[100px] object-contain brightness-0 invert" alt="">
-            <img src="{% static 'images/logo.png' %}" class="absolute bottom-1/4 right-1/4 animate-pulse w-[150px] h-[150px] object-contain brightness-0 invert" alt="">
+            <section class="relative bg-auraa-red py-32 text-center text-white shadow-[0_80px_150px_-30px_rgba(245,7,29,0.4)] overflow-hidden transition-all duration-700 group-hover:-translate-y-4 group-hover:shadow-[0_100px_180px_-40px_rgba(245,7,29,0.5)]"
+                     style="border-radius: 4rem 15rem 3rem 12rem; clip-path: polygon(0 4%, 95% 0, 100% 100%, 0 92%);">
+                
+                <!-- Inner 3D Glow Effects -->
+                <div class="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_0%_0%,_rgba(255,255,255,0.15)_0%,_transparent_50%)] pointer-events-none"></div>
+
+                <div class="max-w-4xl mx-auto px-8 space-y-12 relative z-10">
+                    <div class="space-y-6">
+                        <h2 class="text-5xl md:text-8xl font-black text-white uppercase tracking-tighter leading-none">
+                            Celebrate with <br />
+                            <span class="text-gray-900 selection:bg-white selection:text-auraa-red underline decoration-white/20 underline-offset-8">The Auraa</span>
+                        </h2>
+                        <p class="text-xl text-white/80 font-medium max-w-2xl mx-auto leading-relaxed">
+                            Join thousands of happy families who trust us for their celebrations. Quality, safety, and joy delivered.
+                        </p>
+                    </div>
+                    
+                    <div class="flex flex-wrap justify-center gap-6">
+                        <a href="/products" class="bg-white text-auraa-red px-14 py-6 rounded-[2.5rem] font-black uppercase tracking-widest text-sm hover:bg-gray-900 hover:text-white transition-all shadow-3xl hover:shadow-[0_20px_40px_rgba(0,0,0,0.3)] hover:-translate-y-2">
+                            Start Your Enquiry
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Background Sparkle Logos -->
+                <div class="absolute top-0 left-0 w-full h-full opacity-5 pointer-events-none select-none">
+                    <img src="{% static 'images/logo.png' %}" class="absolute top-1/4 left-1/4 w-[120px] h-[120px] object-contain brightness-0 invert rotate-12" alt="">
+                    <img src="{% static 'images/logo.png' %}" class="absolute bottom-1/4 right-1/4 w-[180px] h-[180px] object-contain brightness-0 invert -rotate-12" alt="">
+                </div>
+            </section>
         </div>
-    </section>
+    </div>
+
+    <!-- The Auraa Advantage Section (Why Choose Auraa) -->
+    <div class="py-16 bg-white px-6">
+        <div class="max-w-7xl mx-auto relative group/advantage">
+            <!-- Layered Offset Background -->
+            <div class="absolute -inset-10 bg-auraa-red/[0.03] border border-auraa-red/5 rounded-[10rem_3rem_15rem_5rem] rotate-2 scale-105 pointer-events-none group-hover/advantage:rotate-0 transition-all duration-[2s]"></div>
+
+            <section class="relative bg-[#0A325A] px-8 py-16 md:p-32 shadow-[0_120px_180px_-40px_rgba(0,0,0,0.8)] overflow-hidden transition-all duration-1000 group-hover/advantage:shadow-[0_150px_220px_-50px_rgba(0,0,0,0.9)] advantage-section">
+                
+                <!-- Atmospheric Background Elements -->
+                <div class="absolute inset-0 z-0">
+                    <div class="absolute top-0 right-0 w-[600px] h-[600px] bg-auraa-red/10 rounded-full blur-[150px]"></div>
+                    <div class="absolute bottom-0 left-0 w-[600px] h-[600px] bg-blue-500/5 rounded-full blur-[150px]"></div>
+                </div>
+
+                <div class="relative z-10 space-y-24">
+                    <div class="text-center space-y-8">
+                        <div class="inline-flex items-center space-x-3 bg-white text-auraa-red px-10 py-4 rounded-full shadow-2xl">
+                            <i data-lucide="sparkles" class="w-4 h-4 animate-spin-slow"></i>
+                            <span class="text-[12px] font-black uppercase tracking-[0.6em]">The Auraa Advantage</span>
+                        </div>
+                        <h3 class="text-4xl md:text-5xl lg:text-6xl font-black text-white uppercase tracking-tighter leading-none mb-12 drop-shadow-2xl">
+                            Why <span class="text-auraa-red italic underline decoration-white/10 underline-offset-8">Choose Auraa?</span>
+                        </h3>
+                    </div>
+
+                    <!-- Advantage Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+                        <!-- Customer Focused -->
+                        <div class="group/card relative p-8 sm:p-10 bg-auraa-red border border-white/10 rounded-[3rem_1rem_4rem_1.5rem] transition-all duration-500 hover:-translate-y-4 hover:shadow-3xl">
+                            <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mb-8 text-auraa-red transition-all">
+                                <i data-lucide="users" class="w-8 h-8"></i>
+                            </div>
+                            <h4 class="text-xl sm:text-2xl font-black text-white uppercase tracking-tight mb-4">Customer <br/> Focused</h4>
+                            <p class="text-white/80 text-sm leading-relaxed">
+                                Placing customers at the center of our ecosystem, ensuring unmatched satisfaction in every celebration.
+                            </p>
+                        </div>
+
+                        <!-- Safety First -->
+                        <div class="group/card relative p-8 sm:p-10 bg-auraa-red border border-white/10 rounded-[1rem_3rem_1.5rem_4rem] transition-all duration-500 hover:-translate-y-4 hover:shadow-3xl">
+                            <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mb-8 text-auraa-red transition-all">
+                                <i data-lucide="shield-check" class="w-8 h-8"></i>
+                            </div>
+                            <h4 class="text-xl sm:text-2xl font-black text-white uppercase tracking-tight mb-4">Safety <br/> Uncompromised</h4>
+                            <p class="text-white/80 text-sm leading-relaxed">
+                                Our core architecture is built on safety. We ensure every product meets rigorous global safety metrics.
+                            </p>
+                        </div>
+
+                        <!-- Absolute Trust -->
+                        <div class="group/card relative p-8 sm:p-10 bg-auraa-red border border-white/10 rounded-[4rem_1.5rem_3rem_1rem] transition-all duration-500 hover:-translate-y-4 hover:shadow-3xl">
+                            <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mb-8 text-auraa-red transition-all">
+                                <i data-lucide="eye" class="w-8 h-8"></i>
+                            </div>
+                            <h4 class="text-xl sm:text-2xl font-black text-white uppercase tracking-tight mb-4">Absolute <br/> Transparency</h4>
+                            <p class="text-white/80 text-sm leading-relaxed">
+                                Total clarity in pricing, sourcing, and communication. Honesty is the Auraa promise.
+                            </p>
+                        </div>
+
+                        <!-- Responsibility -->
+                        <div class="group/card relative p-8 sm:p-10 bg-auraa-red border border-white/10 rounded-[2rem_4rem_1rem_3rem] transition-all duration-500 hover:-translate-y-4 hover:shadow-3xl">
+                            <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mb-8 text-auraa-red transition-all">
+                                <i data-lucide="leaf" class="w-8 h-8"></i>
+                            </div>
+                            <h4 class="text-2xl font-black text-white uppercase tracking-tight mb-4">Green <br/> Responsibility</h4>
+                            <p class="text-white/80 text-sm leading-relaxed">
+                                Sustainable and ethical manufacturing. Balancing the thrill of joy with the peace of nature.
+                            </p>
+                        </div>
+
+                        <!-- Innovation -->
+                        <div class="group/card relative p-8 sm:p-10 bg-auraa-red border border-white/10 rounded-[3rem_1rem_4rem_1.5rem] transition-all duration-500 hover:-translate-y-4 hover:shadow-3xl lg:col-span-2">
+                            <div class="flex flex-col lg:flex-row lg:items-center lg:gap-12">
+                                <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mb-8 lg:mb-0 text-auraa-red transition-all flex-shrink-0">
+                                    <i data-lucide="sparkles" class="w-8 h-8"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-2xl font-black text-white uppercase tracking-tight mb-2">Future Innovation</h4>
+                                    <p class="text-white/80 text-sm leading-relaxed">
+                                        The bridge between tradition and the future. We reinvent the firework experience every single year with smarter ways to ignite joy.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
 </div>
 {% endblock %}
 
 {% block extra_js %}
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        gsap.registerPlugin(ScrollTrigger);
-
-        const isMobile = window.innerWidth < 768;
-
-        // Hero Entrance
-        gsap.from(".animate-hero", {
-            autoAlpha: 0,
-            y: 50,
-            duration: 1.2,
-            ease: "power3.out",
-            stagger: 0.2
-        });
-
-        // Category Cards Entrance (Disabled temporarily to fix visibility)
-        /*
-        gsap.from(".category-card", {
-            autoAlpha: 0,
-            y: 60,
-            duration: 1,
-            stagger: 0.1,
-            ease: "power2.out",
-            scrollTrigger: {
-                trigger: ".category-grid",
-                start: "top bottom-=100",
-                toggleActions: "play none none none"
-            }
-        });
-        */
-
-        // 3D Tilt for Support Cards
-        if (!isMobile) {
-            document.querySelectorAll('.glass-support-card').forEach(card => {
-                card.addEventListener('mousemove', (e) => {
-                    const rect = card.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-                    const centerX = rect.width / 2;
-                    const centerY = rect.height / 2;
-                    const rotateX = (y - centerY) / 15;
-                    const rotateY = (centerX - x) / 15;
-
-                    gsap.to(card, {
-                        rotateX: rotateX,
-                        rotateY: rotateY,
-                        scale: 1.05,
-                        duration: 0.5,
-                        ease: "power2.out"
-                    });
-                });
-
-                card.addEventListener('mouseleave', () => {
-                    gsap.to(card, {
-                        rotateX: 0,
-                        rotateY: 0,
-                        scale: 1,
-                        duration: 1,
-                        ease: "elastic.out(1, 0.3)"
-                    });
-                });
-            });
-        }
-
-        // Sequential Support Entrances
-        gsap.from(".fade-up-support", {
-            opacity: 0,
-            y: 50,
-            stagger: 0.2,
-            duration: 1.5,
-            ease: "power4.out",
-            scrollTrigger: {
-                trigger: ".support-float-block",
-                start: "top 70%"
-            }
-        });
-
-        // Parallax Header
-        gsap.to(".support-header-3d", {
-            y: -50,
-            scrollTrigger: {
-                trigger: ".support-header-3d",
-                scrub: true
-            }
-        });
-
-        // Testimonial Carousel Logic
-        const track = document.getElementById('testimonial-track');
-        const slides = Array.from(track.children);
-        const dotsContainer = document.getElementById('carousel-dots');
-        let currentIdx = 0;
-        let autoScrollInterval;
-
-        function getSlidesPerView() {
-            if (window.innerWidth >= 1024) return 3;
-            if (window.innerWidth >= 768) return 2;
-            return 1;
-        }
-
-        function setupDots() {
-            dotsContainer.innerHTML = '';
-            const count = slides.length - (getSlidesPerView() - 1);
-            for (let i = 0; i < count; i++) {
-                const dot = document.createElement('div');
-                dot.className = `carousel-dot ${i === 0 ? 'active' : ''}`;
-                dot.onclick = () => goToSlide(i);
-                dotsContainer.appendChild(dot);
-            }
-        }
-
-        function updateCarousel() {
-            const perView = getSlidesPerView();
-            const slideWidth = 100 / perView;
-            track.style.transform = `translateX(-${currentIdx * slideWidth}%)`;
-
-            // Update active states
-            slides.forEach((slide, i) => {
-                slide.classList.remove('active');
-                if (i >= currentIdx && i < currentIdx + perView) {
-                    slide.classList.add('active');
-                }
-            });
-
-            // Update dots
-            const dots = Array.from(dotsContainer.children);
-            dots.forEach((dot, i) => {
-                dot.classList.toggle('active', i === currentIdx);
-            });
-        }
-
-        window.nextSlide = function() {
-            const perView = getSlidesPerView();
-            currentIdx = (currentIdx + 1) % (slides.length - (perView - 1));
-            updateCarousel();
-        }
-
-        window.prevSlide = function() {
-            const perView = getSlidesPerView();
-            const maxIdx = slides.length - perView;
-            currentIdx = (currentIdx - 1 + (maxIdx + 1)) % (maxIdx + 1);
-            updateCarousel();
-        }
-
-        function goToSlide(idx) {
-            currentIdx = idx;
-            updateCarousel();
-            resetAutoScroll();
-        }
-
-        function startAutoScroll() {
-            autoScrollInterval = setInterval(nextSlide, 5000);
-        }
-
-        function resetAutoScroll() {
-            clearInterval(autoScrollInterval);
-            startAutoScroll();
-        }
-
-        // Initialize Carousel
-        setupDots();
-        updateCarousel();
-        startAutoScroll();
-
-        // Pause on hover
-        track.parentElement.addEventListener('mouseenter', () => clearInterval(autoScrollInterval));
-        track.parentElement.addEventListener('mouseleave', startAutoScroll);
-
-        // Handle Resize
-        window.addEventListener('resize', () => {
-            setupDots();
-            updateCarousel();
-        });
-    });
-</script>
+<script src="{% static 'js/home_modern.js' %}"></script>
 {% endblock %}

@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import TemplateView, ListView
 from .models import Category, Product, Cart, Coupon, Customer, CustomerAddress, OnlineSales, OnlineSalesItem, Country, State, City, SerialNo
-from django.db.models import Q, Sum, F
+from django.db.models import Q, Sum, F, Min, IntegerField, Value
+from django.db.models.functions import Length, Cast, Coalesce
 from django.http import JsonResponse
 from django.views import View
 from django.utils.decorators import method_decorator
@@ -14,6 +15,7 @@ from django.utils import timezone
 from django.contrib.auth import get_user_model
 import decimal
 from .tasks import send_order_success_emails_task, send_order_error_emails_task
+from .services import OrderService
 
 User = get_user_model()
 
@@ -38,7 +40,17 @@ class ProductListView(ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset().filter(is_active=True).select_related('category')
-        # ... existing filters ...
+        
+        # Cast code to integer for perfect numerical sorting (1, 2, 3... 10, 11)
+        # We use '0' as a safe default for any non-integer or empty codes
+        queryset = queryset.annotate(
+            code_int=Cast(Coalesce('code', Value('0')), output_field=IntegerField())
+        )
+        # Annotate each product with the lowest integer code in its category for grouping
+        queryset = queryset.annotate(
+            cat_min_code_int=Min(Cast(Coalesce('category__products__code', Value('0')), output_field=IntegerField()))
+        )
+
         category_name = self.request.GET.get('category')
         query = self.request.GET.get('q')
         sort = self.request.GET.get('sort', 'featured')
@@ -54,14 +66,14 @@ class ProductListView(ListView):
             )
 
         if sort == 'price-low':
-            queryset = queryset.order_by('category__order', 'category__name', 'sort_no', 'price')
+            queryset = queryset.order_by('cat_min_code_int', 'category__name', 'price', 'code_int')
         elif sort == 'price-high':
-            queryset = queryset.order_by('category__order', 'category__name', 'sort_no', '-price')
+            queryset = queryset.order_by('cat_min_code_int', 'category__name', '-price', 'code_int')
         elif sort == 'name':
-            queryset = queryset.order_by('category__order', 'category__name', 'sort_no', 'name')
+            queryset = queryset.order_by('cat_min_code_int', 'category__name', 'code_int')
         else:
-            # Default ordering to support grouping by category
-            queryset = queryset.order_by('category__order', 'category__name', 'sort_no', 'name')
+            # Default ordering: Group by category (based on lowest numerical code in category), then by code
+            queryset = queryset.order_by('cat_min_code_int', 'category__name', 'code_int')
         
         return queryset
 
@@ -217,15 +229,10 @@ class OrderProcessingView(LoginRequiredMixin, TemplateView):
             return redirect('product_list')
 
         # Amount check - prevent direct URL access to checkout if min order not met
-        total_price = sum(item.product.price * item.quantity for item in cart_items)
         promo_per = self.request.session.get('promo_per', 0)
-        promo_discount = total_price * (decimal.Decimal(promo_per) / 100)
-        sub_total = total_price - promo_discount
-        packing_charges = sub_total * decimal.Decimal('0.03')
-        grand_total_unrounded = sub_total + packing_charges
-        grand_total = grand_total_unrounded.quantize(decimal.Decimal('1'), rounding=decimal.ROUND_HALF_UP)
+        totals = OrderService.calculate_order_totals(cart_items, promo_per)
         
-        if grand_total < settings.MIN_ORDER_AMOUNT:
+        if totals['grand_total'] < settings.MIN_ORDER_AMOUNT:
             return redirect('product_list')
 
         return super().dispatch(request, *args, **kwargs)
@@ -237,30 +244,20 @@ class OrderProcessingView(LoginRequiredMixin, TemplateView):
         
         # Calculate totals
         total_net = sum(item.product.original_price * item.quantity if item.product.original_price else item.product.price * item.quantity for item in cart_items)
-        total_price = sum(item.product.price * item.quantity for item in cart_items)
-        total_discount = total_net - total_price
-        
-        # Apply promo if in session
         promo_per = self.request.session.get('promo_per', 0)
-        promo_discount = total_price * (decimal.Decimal(promo_per) / 100)
-        
-        sub_total = total_price - promo_discount
-        packing_charges = sub_total * decimal.Decimal('0.03')
-        grand_total_unrounded = sub_total + packing_charges
-        grand_total = grand_total_unrounded.quantize(decimal.Decimal('1'), rounding=decimal.ROUND_HALF_UP)
-        round_off = grand_total - grand_total_unrounded
+        totals = OrderService.calculate_order_totals(cart_items, promo_per)
         
         context['cart_items'] = cart_items
         context['total_net'] = total_net
-        context['total_discount'] = total_discount
+        context['total_discount'] = total_net - totals['total_price']
         context['promo_per'] = promo_per
         context['promo_code'] = self.request.session.get('promo_code', '')
-        context['promo_discount'] = promo_discount
-        context['initial_subtotal'] = total_price
-        context['sub_total'] = sub_total
-        context['packing_charges'] = packing_charges
-        context['round_off'] = round_off
-        context['grand_total'] = grand_total
+        context['promo_discount'] = totals['promo_discount']
+        context['initial_subtotal'] = totals['total_price']
+        context['sub_total'] = totals['sub_total']
+        context['packing_charges'] = totals['packing_charges']
+        context['round_off'] = totals['round_off']
+        context['grand_total'] = totals['grand_total']
         
         # Fetch addresses
         if hasattr(user, 'online_customer') and user.online_customer:
@@ -297,106 +294,41 @@ class AddressAddAPIView(LoginRequiredMixin, View):
 class PlaceOrderAPIView(LoginRequiredMixin, View):
     def post(self, request):
         user = request.user
-        if not user.online_customer:
-            return JsonResponse({'status': 'error', 'message': 'Customer profile not found.'}, status=400)
-            
         addr_id = request.POST.get('address_id')
-        addr = get_object_or_404(CustomerAddress, id=addr_id, customer=user.online_customer)
         
-        cart_items = Cart.objects.filter(user=user).select_related('product')
-        if not cart_items.exists():
-            return JsonResponse({'status': 'error', 'message': 'Cart is empty.'}, status=400)
-
-        # Min Order Check
-        total_price = sum(item.product.price * item.quantity for item in cart_items)
-        promo_per = request.session.get('promo_per', 0)
-        promo_discount = total_price * (decimal.Decimal(promo_per) / 100)
-        sub_total = total_price - promo_discount
-        packing_charges = sub_total * decimal.Decimal('0.03')
-        grand_total_unrounded = sub_total + packing_charges
-        grand_total = grand_total_unrounded.quantize(decimal.Decimal('1'), rounding=decimal.ROUND_HALF_UP)
-        round_off = grand_total - grand_total_unrounded
-        
-        if grand_total < settings.MIN_ORDER_AMOUNT:
-            diff = settings.MIN_ORDER_AMOUNT - grand_total
-            return JsonResponse({
-                'status': 'error', 
-                'message': f'Minimum order amount is ₹{settings.MIN_ORDER_AMOUNT}. You need ₹{diff} more.',
-                'min_order': settings.MIN_ORDER_AMOUNT,
-                'diff': float(diff)
-            }, status=400)
-
         try:
-            with transaction.atomic():
-                # Get Next Serial Number (from tbl_serialNo)
-                serial = SerialNo.objects.select_for_update().get(table_name='tbl_online_sales', is_active=True)
-                prefix = serial.prefix_no or ""
-                suffix = serial.suffix_no or ""
-                next_val = serial.next_no
-                
-                # Format sequence_no as 0001, 0002, 0003...
-                sequence_val = serial.sequence_no
-                sequence_str = str(sequence_val).zfill(4)
-                
-                # Formula: prefixNo + NextNo + sequenceNo + suffixNo (Example: SO + 2026 + 0001 = SO20260001)
-                trans_no = f"{prefix}{next_val}{sequence_str}{suffix}"
-                
-                # Update sequence_no for next order
-                serial.sequence_no += 1
-                serial.save()
-                
-                promo_per = request.session.get('promo_per', 0)
-                promo_code = request.session.get('promo_code', None)
-                
-                order = OnlineSales.objects.create(
-                    customer=user.online_customer,
-                    customer_address=addr,
-                    trans_no=trans_no,
-                    trans_dt=timezone.now(),
-                    status='Pending',
-                    promo_per=promo_per,
-                    promo_code=promo_code,
-                    discount=promo_discount,
-                    total_amt=total_price,
-                    round_amt=round_off,
-                    grand_amt=grand_total,
-                    is_active=True,
-                    created_by=user
-                )
-                
-                order_items = [
-                    OnlineSalesItem(
-                        online_sales=order,
-                        product=item.product,
-                        item_name=item.product.name,
-                        item_code=item.product.code,
-                        rate=item.product.price,
-                        mrp=item.product.original_price or item.product.price,
-                        qty=item.quantity,
-                        item_total=item.product.price * item.quantity,
-                        is_active=True,
-                        created_by=user
-                    ) for item in cart_items
-                ]
-                OnlineSalesItem.objects.bulk_create(order_items)
-                
-                # Clear Cart
-                cart_items.delete()
-                # Clear Session Promo
-                if 'promo_per' in request.session:
-                    del request.session['promo_per']
-                if 'promo_code' in request.session:
-                    del request.session['promo_code']
+            # Shift balance of logic to Service Layer
+            order = OrderService.process_order_checkout(
+                user=user,
+                address_id=addr_id,
+                session_data=request.session
+            )
+            
+            # Post-processing (Session Cleanup + Email Task)
+            for k in ['promo_per', 'promo_code']:
+                if k in request.session:
+                    del request.session[k]
 
-            # Success Email (Asynchronous)
             send_order_success_emails_task.delay(user.id, order.id)
             
-            return JsonResponse({'status': 'success', 'message': 'Our support team will contact you shortly.'})
+            return JsonResponse({
+                'status': 'success', 
+                'message': 'Our support team will contact you shortly.'
+            })
 
+        except ValueError as ve:
+            # Handle user-friendly errors (Min order not met, cart empty, etc.)
+            return JsonResponse({
+                'status': 'error', 
+                'message': str(ve)
+            }, status=400)
+            
         except Exception as e:
-            # Error Email (Asynchronous)
-            send_order_error_emails_task.delay(user.id, str(e))
-            return JsonResponse({'status': 'error', 'message': 'Failed to place order. Please try again later.'}, status=500)
+            # Generic error to hide internals
+            return JsonResponse({
+                'status': 'error', 
+                'message': 'Failed to place order. Our engineers have been notified.'
+            }, status=500)
 
 
 class OrderHistoryListView(LoginRequiredMixin, ListView):
@@ -486,7 +418,6 @@ class OrderEditView(LoginRequiredMixin, TemplateView):
 
         try:
             with transaction.atomic():
-                total_amt = decimal.Decimal('0.00')
                 for item in order.items.all():
                     qty_key = f"qty_{item.id}"
                     if qty_key in request.POST:
@@ -497,18 +428,9 @@ class OrderEditView(LoginRequiredMixin, TemplateView):
                             item.qty = new_qty
                             item.item_total = item.rate * new_qty
                             item.save()
-                            total_amt += item.item_total
                 
-                sub_total = total_amt - order.discount
-                packing = sub_total * decimal.Decimal('0.03')
-                grand_total_unrounded = sub_total + packing
-                grand_total = grand_total_unrounded.quantize(decimal.Decimal('1'), rounding=decimal.ROUND_HALF_UP)
-                round_off = grand_total - grand_total_unrounded
-
-                order.total_amt = total_amt
-                order.round_amt = round_off
-                order.grand_amt = grand_total
-                order.save()
+                # Use centralized service for re-calculation
+                OrderService.recalculate_existing_order(order)
                 
             return JsonResponse({'status': 'success', 'message': 'Order updated successfully.'})
         except Exception as e:

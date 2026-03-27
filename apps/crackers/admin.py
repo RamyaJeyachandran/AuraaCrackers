@@ -30,7 +30,7 @@ class CustomerAdmin(admin.ModelAdmin):
 
 @admin.register(CustomerAddress)
 class CustomerAddressAdmin(admin.ModelAdmin):
-    list_display = ('customer', 'address1', 'city', 'pincode', 'is_shipping_default', 'is_active')
+    list_display = ('customer', 'address1', 'city_name', 'pincode', 'is_shipping_default', 'is_active')
     search_fields = ('customer__name', 'address1', 'phone', 'email')
     list_filter = ('is_active', 'is_shipping_default')
 

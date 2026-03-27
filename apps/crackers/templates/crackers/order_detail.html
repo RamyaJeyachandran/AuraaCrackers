@@ -90,7 +90,7 @@
                             <p class="text-sm font-black uppercase tracking-tight leading-relaxed">{{ order.customer_address.address1 }}</p>
                             {% if order.customer_address.address2 %}<p class="text-xs font-bold text-gray-400">{{ order.customer_address.address2 }}</p>{% endif %}
                             <p class="text-xs font-bold text-gray-400 uppercase tracking-widest">
-                                {{ order.customer_address.city_id }}, {{ order.customer_address.state_id }} - {{ order.customer_address.zip_code }}
+                                {{ order.customer_address.city_name }}, {{ order.customer_address.state.name }} - {{ order.customer_address.pincode }}
                             </p>
                             <div class="pt-4 flex items-center space-x-3 text-xs font-black">
                                 <i data-lucide="phone" class="w-4 h-4 text-auraa-red"></i>

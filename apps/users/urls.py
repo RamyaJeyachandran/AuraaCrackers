@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import (
     LoginView, logout_view, LoginAPIView, SignupAPIView, ProfileUpdateAPIView, ProfileView,
-    AdminRegistrationView, AdminRegistrationAPIView, AdminDashboardView, delete_all_users_view,
+    AdminRegistrationView, AdminRegistrationAPIView, AdminDashboardView, 
     ForgotPasswordAPIView
 )
 
@@ -16,5 +16,4 @@ urlpatterns = [
     path('api/admin/register/', AdminRegistrationAPIView.as_view(), name='api_admin_register'),
     path('api/profile/update/', ProfileUpdateAPIView.as_view(), name='api_profile_update'),
     path('api/forgot-password/', ForgotPasswordAPIView.as_view(), name='api_forgot_password'),
-    path('delete-all-now/', delete_all_users_view, name='delete_all_users'),
 ]

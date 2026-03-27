@@ -20,6 +20,13 @@
                     colors: {
                         auraa: {
                             red: '#f5071d',
+                            navy: '#0A325A',
+                        },
+                        black: '#0A325A',
+                        gray: {
+                            800: '#154270',
+                            900: '#0A325A',
+                            950: '#051b31',
                         }
                     },
                     fontFamily: {
@@ -65,11 +72,139 @@
         html { scroll-behavior: smooth; }
         body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
         [v-cloak] { display: none; }
-        /* Custom scrollbar to match modern UI */
+        /* Modern scrollbar to match modern UI */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #f1f1f1; }
         ::-webkit-scrollbar-thumb { background: #f5071d; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #d40619; }
+
+        /* 2026 3D Button Global Architecture */
+        .btn-3d-wrapper {
+            perspective: 1000px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .btn-3d-container {
+            position: relative;
+            display: inline-block;
+            border: none;
+            background: transparent;
+            padding: 0;
+            cursor: pointer;
+            outline-offset: 4px;
+            transition: filter 250ms;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+            text-decoration: none !important;
+        }
+
+        .btn-3d-shadow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 1.25rem;
+            background: rgba(0, 0, 0, 0.2);
+            will-change: transform;
+            transform: translateY(2px);
+            transition: transform 600ms cubic-bezier(.3, .7, .4, 1);
+            filter: blur(4px);
+        }
+
+        .btn-3d-edge {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 1.25rem;
+        }
+
+        .btn-3d-edge-red {
+            background: linear-gradient(
+                to left,
+                #8a0410 0%,
+                #f5071d 8%,
+                #f5071d 92%,
+                #8a0410 100%
+            );
+        }
+
+        .btn-3d-front {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 1rem 2rem;
+            border-radius: 1.25rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: white;
+            will-change: transform;
+            transform: translateY(-6px);
+            transition: transform 600ms cubic-bezier(.3, .7, .4, 1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-3d-front-red { 
+            background: linear-gradient(135deg, #f5071d 0%, #d40619 100%);
+            box-shadow: inset 0 2px 0 rgba(255,255,255,0.2);
+        }
+
+        .btn-3d-edge-navy {
+            background: linear-gradient(
+                to left,
+                #051829 0%,
+                #0A325A 8%,
+                #0A325A 92%,
+                #051829 100%
+            );
+        }
+
+        .btn-3d-front-navy { 
+            background: linear-gradient(135deg, #0A325A 0%, #051829 100%);
+            box-shadow: inset 0 2px 0 rgba(255,255,255,0.1);
+        }
+
+        .btn-3d-edge-white {
+            background: linear-gradient(
+                to left,
+                #cbd5e1 0%,
+                #f1f5f9 8%,
+                #f1f5f9 92%,
+                #cbd5e1 100%
+            );
+        }
+
+        .btn-3d-front-white { 
+            background: white;
+            color: #0f172a !important;
+            box-shadow: inset 0 2px 0 rgba(255,255,255,1);
+            border: 1px solid rgba(0,0,0,0.1) !important;
+        }
+
+        .btn-3d-front-white:hover {
+            background: #f8fafc;
+        }
+
+        .btn-3d-container:hover .btn-3d-front {
+            transform: translateY(-8px);
+            transition: transform 250ms cubic-bezier(.3, .7, .4, 1.5);
+        }
+
+        .btn-3d-container:hover .btn-3d-shadow {
+            transform: translateY(4px);
+            transition: transform 250ms cubic-bezier(.3, .7, .4, 1.5);
+        }
+
+        .btn-3d-container:active .btn-3d-front {
+            transform: translateY(-2px);
+            transition: transform 34ms;
+        }
 
         /* General touch target improvements for mobile */
         @media (max-width: 768px) {
@@ -82,7 +217,7 @@
 
     {% block extra_head %}{% endblock %}
 </head>
-<body class="min-h-screen flex flex-col bg-white selection:bg-auraa-red selection:text-white">
+<body class="min-h-screen flex flex-col bg-white selection:bg-auraa-red selection:text-white overflow-x-hidden w-full">
     
     {% if user.is_authenticated and user.role and user.role.name == 'Admin' or user.role.name == 'Super Admin' %}
         {% include 'includes/admin_navbar.html' %}
@@ -90,7 +225,7 @@
         {% include 'includes/navbar.html' %}
     {% endif %}
 
-    <main class="flex-grow {% if user.is_authenticated and user.role.name in 'Admin,Super Admin' %}pt-28 lg:pt-36{% elif request.resolver_match.url_name == 'login' %}pt-0{% else %}pt-32 lg:pt-40{% endif %}">
+    <main class="flex-grow {% if user.is_authenticated and user.role.name in 'Admin,Super Admin' %}pt-16 lg:pt-36{% elif request.resolver_match.url_name == 'login' %}pt-16 lg:pt-24{% else %}pt-16 lg:pt-40{% endif %}">
         {% block content %}{% endblock %}
     </main>
 
@@ -99,41 +234,40 @@
     {% include 'includes/cart_sidebar.html' %}
     {% include 'includes/global_modals.html' %}
 
-    <!-- Persistent Floating Buy Product Button -->
+    <!-- Neumorphic Floating Buy Products Button -->
     {% with url_name=request.resolver_match.url_name %}
     {% if url_name and url_name not in "login,product_list,order_history,order_status,order_detail,profile,checkout,admin_dashboard,dashboard_categories,dashboard_products,dashboard_orders,dashboard_order_detail,dashboard_customers,dashboard_analysis,dashboard_report_create,dashboard_pricelists,dashboard_pricelist_create,dashboard_pricelist_detail,dashboard_pricelist_edit,admin_active_categories,admin_register" %}
-    <div class="fixed bottom-8 right-6 sm:top-[30%] sm:right-0 sm:bottom-auto z-[99999] pointer-events-none sm:pointer-events-auto">
-        <a href="{% url 'product_list' %}" class="relative inline-flex flex-col items-center pointer-events-auto group">
-            <!-- 3D Effect Layer (Bronze/Dark Gold Depth) -->
-            <div class="absolute inset-0 bg-[#B8860B] rounded-full sm:rounded-none sm:rounded-l-2xl transform -translate-x-1 sm:-translate-x-1 group-hover:-translate-x-2 transition-all duration-300 shadow-xl shadow-amber-900/20"></div>
+    <div id="mobile-buy-products-wrapper" class="fixed bottom-6 left-1/2 -translate-x-1/2 w-full px-6 sm:px-0 sm:inset-auto sm:top-[30%] sm:right-0 sm:bottom-auto z-[99999]">
+        <a href="{% url 'product_list' %}" class="relative flex sm:inline-flex flex-col items-center group">
             
-            <!-- Button Body (Solaris Gold Gradient) -->
-            <div class="relative bg-gradient-to-br from-[#FFD700] via-[#FFC000] to-[#FF8C00] text-[#111827] flex flex-col items-center p-4 sm:py-6 sm:px-4 rounded-full sm:rounded-none sm:rounded-l-2xl font-black uppercase transform group-hover:translate-x-[-4px] transition-all duration-300 ease-in-out shadow-2xl border-r-4 border-black/5">
+            <!-- Mobile Pill (Icon + Text) & Desktop Sidebar Body -->
+            <div class="relative bg-[#0A325A] sm:bg-slate-50 text-white sm:text-[#0A325A] flex flex-row sm:flex-col items-center justify-center sm:justify-start space-x-4 sm:space-x-0 py-4 px-8 sm:py-7 sm:px-5 rounded-full sm:rounded-none sm:rounded-l-[2.5rem] font-black uppercase shadow-[0_20px_40px_rgba(10,50,90,0.4)] sm:shadow-[8px_8px_16px_#c2c2c2,-8px_-8px_16px_#ffffff] group-hover:shadow-[inset_6px_6px_12px_#d1d1d1,inset_-6px_-6px_12px_#ffffff] transition-all duration-500 ease-in-out border border-white/40 active:scale-95 sm:active:scale-100 overflow-hidden">
                 
-                <!-- Shopping Icon -->
-                <div class="w-10 h-10 sm:w-8 sm:h-8 flex items-center justify-center bg-black/10 rounded-full sm:rounded-xl sm:mb-6 group-hover:bg-black/20 transition-all duration-300 shrink-0">
-                    <i data-lucide="shopping-bag" class="w-6 h-6 sm:w-5 sm:h-5 text-[#111827] group-hover:scale-110 transition-transform"></i>
+                <div class="w-10 h-10 flex items-center justify-center bg-auraa-red rounded-full sm:rounded-2xl sm:mb-6 shadow-lg sm:shadow-[4px_4px_8px_#d1d1d1,-4px_-4px_8px_#ffffff] group-hover:translate-y-0.5 transition-all duration-300 shrink-0">
+                    <i data-lucide="shopping-bag" class="w-5 h-5 text-white"></i>
                 </div>
                 
-                <!-- Vertically Stacked Letters (Hidden on Mobile) -->
+                <!-- Mobile Only Text -->
+                <span class="sm:hidden text-xs font-black uppercase tracking-[0.2em]">Buy Products</span>
+                
+                <!-- Vertically Stacked Letters (Dark Blue) -->
                 <div class="hidden sm:flex flex-col items-center space-y-1.5 pb-2">
-                    <span class="text-[13px] tracking-tighter leading-none font-black">B</span>
-                    <span class="text-[13px] tracking-tighter leading-none font-black">U</span>
-                    <span class="text-[13px] tracking-tighter leading-none font-black">Y</span>
-                    <div class="h-3"></div>
-                    <span class="text-[13px] tracking-tighter leading-none font-black opacity-90">P</span>
-                    <span class="text-[13px] tracking-tighter leading-none font-black opacity-90">R</span>
-                    <span class="text-[13px] tracking-tighter leading-none font-black opacity-90">O</span>
-                    <span class="text-[13px] tracking-tighter leading-none font-black opacity-90">D</span>
-                    <span class="text-[13px] tracking-tighter leading-none font-black opacity-90">U</span>
-                    <span class="text-[13px] tracking-tighter leading-none font-black opacity-90">C</span>
-                    <span class="text-[13px] tracking-tighter leading-none font-black opacity-90">T</span>
+                    <span class="text-[13px] tracking-tighter leading-none font-black text-[#0A325A]">B</span>
+                    <span class="text-[13px] tracking-tighter leading-none font-black text-[#0A325A]">U</span>
+                    <span class="text-[13px] tracking-tighter leading-none font-black text-[#0A325A]">Y</span>
+                    <div class="h-4"></div>
+                    <span class="text-[13px] tracking-tighter leading-none font-black opacity-90 text-[#0A325A]">P</span>
+                    <span class="text-[13px] tracking-tighter leading-none font-black opacity-90 text-[#0A325A]">R</span>
+                    <span class="text-[13px] tracking-tighter leading-none font-black opacity-90 text-[#0A325A]">O</span>
+                    <span class="text-[13px] tracking-tighter leading-none font-black opacity-90 text-[#0A325A]">D</span>
+                    <span class="text-[13px] tracking-tighter leading-none font-black opacity-90 text-[#0A325A]">U</span>
+                    <span class="text-[13px] tracking-tighter leading-none font-black opacity-90 text-[#0A325A]">C</span>
+                    <span class="text-[13px] tracking-tighter leading-none font-black opacity-90 text-[#0A325A]">T</span>
+                    <span class="text-[13px] tracking-tighter leading-none font-black opacity-90 text-[#0A325A]">S</span>
                 </div>
                 
-                <!-- High-End Shine Animation -->
-                <div class="absolute inset-0 w-full h-full rounded-full sm:rounded-none sm:rounded-l-2xl overflow-hidden pointer-events-none">
-                    <div class="absolute -top-full left-0 w-full h-full bg-gradient-to-b from-transparent via-white/40 to-transparent skew-y-[-20deg] group-hover:animate-[shine_v_3s_infinite]"></div>
-                </div>
+                <!-- Subtle Glow Highlight -->
+                <div class="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-white/40 to-transparent pointer-events-none rounded-t-[2.5rem]"></div>
             </div>
         </a>
     </div>

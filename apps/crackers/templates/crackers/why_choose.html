@@ -116,7 +116,7 @@
     /* Scroll Navigation */
     .scroll-indicator {
         position: fixed;
-        left: 40px;
+        right: 40px;
         top: 50%;
         transform: translateY(-50%);
         z-index: 100;
@@ -138,7 +138,7 @@
     .scroll-nav-item::before {
         content: attr(data-label);
         position: absolute;
-        left: 30px;
+        right: 30px;
         top: 50%;
         transform: translateY(-50%);
         opacity: 0;
@@ -148,7 +148,7 @@
         font-weight: 900;
         letter-spacing: 2px;
         pointer-events: none;
-        transition: opacity 0.3sEase;
+        transition: opacity 0.3s ease;
     }
 
     .scroll-nav-item:hover::before, .scroll-nav-item.active::before {
@@ -188,13 +188,24 @@
         <div id="header-sparkles" class="absolute inset-0 opacity-40"></div>
     </div>
     
-    <div class="container mx-auto px-6 relative z-10 text-center">
-        <div class="mb-12 opacity-0 fade-up">
-            <span class="inline-block px-8 py-3 bg-white/10 border border-white/20 rounded-full text-[10px] font-black uppercase tracking-[0.5em] text-white backdrop-blur-md">The Auraa Advantage</span>
+    <!-- Back Navigation -->
+    <div class="flex justify-center md:block md:absolute md:top-32 md:left-10 z-[100] pt-20 md:pt-0 w-full md:w-auto">
+        <div class="btn-3d-wrapper fade-up">
+            <a href="{% url 'about' %}#why" class="btn-3d-container group scale-90 md:scale-100">
+                <span class="btn-3d-shadow"></span>
+                <span class="btn-3d-edge btn-3d-edge-navy"></span>
+                <span class="btn-3d-front btn-3d-front-navy space-x-3">
+                    <i data-lucide="arrow-left" class="w-[18px] h-[18px] group-hover:-translate-x-2 transition-transform"></i>
+                    <span>Auraa Hub</span>
+                </span>
+            </a>
         </div>
+    </div>
+
+    <div class="container mx-auto px-6 relative z-10 text-center space-y-12">
         
-        <h1 class="text-7xl md:text-[10rem] font-black uppercase tracking-tighter leading-[0.85] mb-12 mix-blend-plus-lighter opacity-0 fade-up">
-            Why <br /> <span class="text-auraa-red italic drop-shadow-[0_0_30px_rgba(245,7,29,0.3)]">Choose</span> <br /> Auraa?
+        <h1 class="text-7xl md:text-[8rem] lg:text-[10rem] font-black uppercase tracking-tighter leading-[0.85] mb-12 mix-blend-plus-lighter opacity-0 fade-up">
+            Why <br /> <span class="text-[#0A325A] italic drop-shadow-[0_0_30px_rgba(10,50,90,0.3)]">Choose</span> <br /> Auraa?
         </h1>
 
         <div class="max-w-4xl mx-auto kinetic-card layer-depth-1 opacity-0 fade-up" style="transform: translateY(50px);">
@@ -328,14 +339,27 @@
         <h2 class="text-5xl md:text-8xl font-black uppercase tracking-tighter mb-16 fade-up">
             Ready for a <br /> <span class="text-auraa-red italic">Smarter</span> Celebration?
         </h2>
-        <div class="flex flex-wrap justify-center gap-8 fade-up">
-            <a href="{% url 'product_list' %}" class="bg-auraa-red text-white px-12 py-6 rounded-3xl flex items-center space-x-4 hover:bg-white hover:text-black transition-all group">
-                <span class="font-black uppercase tracking-[0.2em] text-sm">Experience the Collection</span>
-                <i data-lucide="sparkles" class="w-5 h-5 group-hover:rotate-12 transition-transform"></i>
-            </a>
-            <a href="{% url 'founder_story' %}" class="bg-white/5 border border-white/20 text-white px-12 py-6 rounded-3xl hover:bg-white hover:text-black transition-all">
-                <span class="font-black uppercase tracking-[0.2em] text-sm">Read Our Story</span>
-            </a>
+        <div class="flex flex-wrap justify-center gap-12 fade-up">
+            <div class="btn-3d-wrapper">
+                <a href="{% url 'product_list' %}" class="btn-3d-container group">
+                    <span class="btn-3d-shadow"></span>
+                    <span class="btn-3d-edge btn-3d-edge-red"></span>
+                    <span class="btn-3d-front btn-3d-front-red space-x-4">
+                        <span class="font-black uppercase tracking-[0.2em] text-sm">Experience the Collection</span>
+                        <i data-lucide="sparkles" class="w-5 h-5 group-hover:rotate-12 transition-transform"></i>
+                    </span>
+                </a>
+            </div>
+
+            <div class="btn-3d-wrapper">
+                <a href="{% url 'founder_story' %}" class="btn-3d-container group">
+                    <span class="btn-3d-shadow"></span>
+                    <span class="btn-3d-edge btn-3d-edge-white"></span>
+                    <span class="btn-3d-front btn-3d-front-white">
+                        <span class="font-black uppercase tracking-[0.2em] text-sm">Read Our Story</span>
+                    </span>
+                </a>
+            </div>
         </div>
     </div>
 </section>

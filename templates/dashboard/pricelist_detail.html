@@ -118,60 +118,60 @@
                 <div style="display: flex; align-items: center; gap: 20px;">
                     <img id="pdf-logo" src="{% static 'images/logo.png' %}" style="height: 100px; width: auto;">
                     <div style="text-align: center;">
-                        <h1 style="color: #111; font-size: 28px; font-weight: 900; margin: 0; letter-spacing: -1px;">AURAA</h1>
+                        <h1 style="color: #0A325A; font-size: 28px; font-weight: 900; margin: 0; letter-spacing: -1px;">AURAA</h1>
                         <p style="color: #333; font-size: 12px; font-weight: 800; margin: 0; letter-spacing: 2px;">CRACKERS</p>
                     </div>
                 </div>
                 <div style="text-align: right;">
-                    <h2 style="font-size: 22px; font-weight: 900; color: #000; margin: 0;">AURAA CRACKERS</h2>
+                    <h2 style="font-size: 22px; font-weight: 900; color: #0A325A; margin: 0;">AURAA CRACKERS</h2>
                     <a href="https://WWW.AURAACRACKERS.COM" style="color: #f5071d; font-size: 18px; font-weight: 900; text-decoration: underline; display: block; margin: 5px 0;">WWW.AURAACRACKERS.COM</a>
-                    <p style="font-size: 14px; font-weight: 900; color: #000; margin: 0;">PH: 9677570276, 6381426206, 90805 60340</p>
+                    <p style="font-size: 14px; font-weight: 900; color: #0A325A; margin: 0;">PH: 9677570276, 6381426206, 90805 60340</p>
                 </div>
             </div>
 
             <!-- Red Title Bar -->
-            <div style="background: #f5071d; color: #fff; text-align: center; padding: 12px; font-size: 20px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; border: 1px solid #000;">
+            <div style="background: #f5071d; color: #fff; text-align: center; padding: 12px; font-size: 20px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; border: 1px solid #0A325A;">
                 SIVAKASI SHOP PRICE LIST 2025
             </div>
 
             <!-- Price Table -->
-            <table class="pdf-table" style="width: 100%; border-collapse: collapse; margin-top: -1px; border: 1px solid #000;">
+            <table class="pdf-table" style="width: 100%; border-collapse: collapse; margin-top: -1px; border: 1px solid #0A325A;">
                 <thead>
                     <tr style="background: #fff; text-align: center; font-size: 9px; font-weight: 900; text-transform: uppercase;">
-                        <th style="border: 1px solid #000; padding: 6px; width: 60px;">Code</th>
-                        <th style="border: 1px solid #000; padding: 6px;">Item Name</th>
-                        <th class="col-content" style="border: 1px solid #000; padding: 6px; width: 80px;">Content</th>
-                        <th class="col-purchase-rate" style="border: 1px solid #000; padding: 6px; width: 70px;">Purchase Rate</th>
-                        <th class="col-pr-pct" style="border: 1px solid #000; padding: 6px; width: 50px;">PR (%)</th>
-                        <th class="col-selling-price" style="border: 1px solid #000; padding: 6px; width: 70px;">Selling Price</th>
-                        <th class="col-cust-sp-pct" style="border: 1px solid #000; padding: 6px; width: 60px;">Cust SP (%)</th>
-                        <th class="col-shown-value" style="border: 1px solid #000; padding: 6px; width: 70px;">Shown Value</th>
-                        <th class="col-disc-pct" style="border: 1px solid #000; padding: 6px; width: 50px;">Disc (%)</th>
-                        <th class="col-sales-cost" style="border: 1px solid #000; padding: 6px; width: 70px;">Sales Cost</th>
+                        <th style="border: 1px solid #0A325A; padding: 6px; width: 60px;">Code</th>
+                        <th style="border: 1px solid #0A325A; padding: 6px;">Item Name</th>
+                        <th class="col-content" style="border: 1px solid #0A325A; padding: 6px; width: 80px;">Content</th>
+                        <th class="col-purchase-rate" style="border: 1px solid #0A325A; padding: 6px; width: 70px;">Purchase Rate</th>
+                        <th class="col-pr-pct" style="border: 1px solid #0A325A; padding: 6px; width: 50px;">PR (%)</th>
+                        <th class="col-selling-price" style="border: 1px solid #0A325A; padding: 6px; width: 70px;">Selling Price</th>
+                        <th class="col-cust-sp-pct" style="border: 1px solid #0A325A; padding: 6px; width: 60px;">Cust SP (%)</th>
+                        <th class="col-shown-value" style="border: 1px solid #0A325A; padding: 6px; width: 70px;">Shown Value</th>
+                        <th class="col-disc-pct" style="border: 1px solid #0A325A; padding: 6px; width: 50px;">Disc (%)</th>
+                        <th class="col-sales-cost" style="border: 1px solid #0A325A; padding: 6px; width: 70px;">Sales Cost</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for cat_name, category_items in grouped_items.items %}
                     <!-- Category Header Row -->
                     <tr class="pdf-category" style="background: #f5071d; color: #fff; text-align: center; font-size: 11px; font-weight: 900; text-transform: uppercase;">
-                        <td colspan="10" style="border: 1px solid #000; padding: 8px;">{{ cat_name }}</td>
+                        <td colspan="10" style="border: 1px solid #0A325A; padding: 8px;">{{ cat_name }}</td>
                     </tr>
                     {% for item in category_items %}
-                    <tr style="font-size: 8px; font-weight: 700; color: #000;">
-                        <td style="border: 1px solid #000; padding: 6px; text-align: center;">{{ item.product.code|default:"-" }}</td>
-                        <td style="border: 1px solid #000; padding: 6px; text-transform: uppercase;">{{ item.product.name }}</td>
-                        <td class="col-content" style="border: 1px solid #000; padding: 6px; text-align: center;">{{ item.product.content|default:"-" }}</td>
-                        <td class="col-purchase-rate" style="border: 1px solid #000; padding: 6px; text-align: right;">₹ {{ item.purchase_rate|floatformat:2 }}</td>
-                        <td class="col-pr-pct" style="border: 1px solid #000; padding: 6px; text-align: center;">{{ item.purchase_rate_inc|floatformat:0 }}%</td>
-                        <td class="col-selling-price" style="border: 1px solid #000; padding: 6px; text-align: right;">₹ {{ item.selling_price|floatformat:2 }}</td>
-                        <td class="col-cust-sp-pct" style="border: 1px solid #000; padding: 6px; text-align: center;">{{ item.customer_sp|floatformat:0 }}%</td>
-                        <td class="col-shown-value" style="border: 1px solid #000; padding: 6px; text-align: right;">₹ {{ item.shown_values|floatformat:2 }}</td>
-                        <td class="col-disc-pct" style="border: 1px solid #000; padding: 6px; text-align: center;">{{ item.shown_value_disc|floatformat:0 }}%</td>
-                        <td class="col-sales-cost" style="border: 1px solid #000; padding: 6px; text-align: right;">₹ {{ item.sales_cost|floatformat:2 }}</td>
+                    <tr style="font-size: 8px; font-weight: 700; color: #0A325A;">
+                        <td style="border: 1px solid #0A325A; padding: 6px; text-align: center;">{{ item.product.code|default:"-" }}</td>
+                        <td style="border: 1px solid #0A325A; padding: 6px; text-transform: uppercase;">{{ item.product.name }}</td>
+                        <td class="col-content" style="border: 1px solid #0A325A; padding: 6px; text-align: center;">{{ item.product.content|default:"-" }}</td>
+                        <td class="col-purchase-rate" style="border: 1px solid #0A325A; padding: 6px; text-align: right;">₹ {{ item.purchase_rate|floatformat:2 }}</td>
+                        <td class="col-pr-pct" style="border: 1px solid #0A325A; padding: 6px; text-align: center;">{{ item.purchase_rate_inc|floatformat:0 }}%</td>
+                        <td class="col-selling-price" style="border: 1px solid #0A325A; padding: 6px; text-align: right;">₹ {{ item.selling_price|floatformat:2 }}</td>
+                        <td class="col-cust-sp-pct" style="border: 1px solid #0A325A; padding: 6px; text-align: center;">{{ item.customer_sp|floatformat:0 }}%</td>
+                        <td class="col-shown-value" style="border: 1px solid #0A325A; padding: 6px; text-align: right;">₹ {{ item.shown_values|floatformat:2 }}</td>
+                        <td class="col-disc-pct" style="border: 1px solid #0A325A; padding: 6px; text-align: center;">{{ item.shown_value_disc|floatformat:0 }}%</td>
+                        <td class="col-sales-cost" style="border: 1px solid #0A325A; padding: 6px; text-align: right;">₹ {{ item.sales_cost|floatformat:2 }}</td>
                     </tr>
                     {% endfor %}
                     <tr style="height: 15px;">
-                        <td colspan="10" style="border: 1px solid #000;"></td>
+                        <td colspan="10" style="border: 1px solid #0A325A;"></td>
                     </tr>
                     {% endfor %}
                 </tbody>

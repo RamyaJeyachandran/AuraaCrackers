@@ -114,13 +114,27 @@
         <div id="header-sparkles" class="absolute inset-0 opacity-40"></div>
     </div>
     
-    <div class="container mx-auto px-6 text-center relative z-10">
-        <div class="inline-flex items-center space-x-3 bg-white/10 backdrop-blur-md border border-white/20 px-6 py-2 rounded-full mb-8 fade-up">
+    <!-- Back Navigation -->
+    <div class="flex justify-center md:block md:absolute md:top-28 md:left-10 z-20 pt-20 md:pt-0 w-full md:w-auto">
+        <div class="btn-3d-wrapper fade-up">
+            <a href="{% url 'about' %}#values" class="btn-3d-container group scale-90 md:scale-100">
+                <span class="btn-3d-shadow"></span>
+                <span class="btn-3d-edge btn-3d-edge-red"></span>
+                <span class="btn-3d-front btn-3d-front-red space-x-3">
+                    <i data-lucide="arrow-left" class="w-[18px] h-[18px] group-hover:-translate-x-2 transition-transform"></i>
+                    <span>Auraa Hub</span>
+                </span>
+            </a>
+        </div>
+    </div>
+
+    <div class="container mx-auto px-6 text-center relative z-10 pt-32 space-y-12">
+        <div class="inline-flex items-center space-x-3 bg-white/10 backdrop-blur-md border border-white/20 px-6 py-2 rounded-full fade-up">
             <i data-lucide="award" class="w-4 h-4 text-auraa-red"></i>
             <span class="text-[10px] font-black uppercase tracking-[0.3em]">Our Foundation</span>
         </div>
         <h1 class="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-none mb-8 fade-up">
-            Our <span class="text-auraa-red">Core</span> <br /> Values
+            Our <span class="text-auraa-red">Core Values</span>
         </h1>
         <p class="text-white/60 max-w-2xl mx-auto text-xl font-medium leading-relaxed fade-up">
             At Auraa Crackers, our values guide every decision we make and every product we deliver. These principles define who we are and how we serve our customers.
@@ -272,14 +286,27 @@
             Driven by Values, <br>
             Defined by <span class="text-auraa-red italic">Excellence</span>.
         </h2>
-        <div class="flex flex-wrap justify-center gap-6 fade-up">
-            <a href="{% url 'product_list' %}" class="bg-[#f5071d] text-white px-10 py-5 rounded-full flex items-center space-x-3 hover:bg-white hover:text-gray-900 transition-all shadow-xl hover:shadow-white/20 group uppercase font-black tracking-widest text-sm">
-                <span>See Our Collection</span>
-                <i data-lucide="sparkles" class="w-5 h-5 group-hover:rotate-12 transition-transform"></i>
-            </a>
-            <a href="{% url 'founder_story' %}" class="bg-white/10 backdrop-blur-md border border-white/20 text-white px-10 py-5 rounded-full hover:bg-white hover:text-gray-900 transition-all uppercase font-black tracking-widest text-sm">
-                Read Our Story
-            </a>
+        <div class="flex flex-wrap justify-center gap-12 fade-up">
+            <div class="btn-3d-wrapper">
+                <a href="{% url 'product_list' %}" class="btn-3d-container group">
+                    <span class="btn-3d-shadow"></span>
+                    <span class="btn-3d-edge btn-3d-edge-red"></span>
+                    <span class="btn-3d-front btn-3d-front-red space-x-4">
+                        <span class="font-black uppercase tracking-[0.2em] text-sm">See Our Collection</span>
+                        <i data-lucide="sparkles" class="w-5 h-5 group-hover:rotate-12 transition-transform"></i>
+                    </span>
+                </a>
+            </div>
+
+            <div class="btn-3d-wrapper">
+                <a href="{% url 'founder_story' %}" class="btn-3d-container group">
+                    <span class="btn-3d-shadow"></span>
+                    <span class="btn-3d-edge btn-3d-edge-white"></span>
+                    <span class="btn-3d-front btn-3d-front-white">
+                        <span class="font-black uppercase tracking-[0.2em] text-sm">Read Our Story</span>
+                    </span>
+                </a>
+            </div>
         </div>
     </div>
 </section>

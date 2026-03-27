@@ -149,13 +149,27 @@
     <div class="absolute top-[-25%] right-[-15%] w-[800px] h-[800px] bg-white/10 blur-[180px] rounded-full animate-pulse-slow opacity-60"></div>
     <div class="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] bg-black/5 blur-[150px] rounded-full animate-pulse-slow delay-1000"></div>
 
-    <div class="container mx-auto px-6 relative z-10">
-        <div class="inline-flex items-center space-x-3 bg-white/10 backdrop-blur-3xl border border-white/20 px-8 py-3 rounded-full mb-12 fade-up">
+    <!-- Back Navigation -->
+    <div class="flex justify-center md:block md:absolute md:top-28 md:left-10 z-20 pt-20 md:pt-0 w-full md:w-auto">
+        <div class="btn-3d-wrapper fade-up">
+            <a href="{% url 'about' %}#promise" class="btn-3d-container group scale-90 md:scale-100">
+                <span class="btn-3d-shadow"></span>
+                <span class="btn-3d-edge btn-3d-edge-navy"></span>
+                <span class="btn-3d-front btn-3d-front-navy space-x-3">
+                    <i data-lucide="arrow-left" class="w-[18px] h-[18px] group-hover:-translate-x-2 transition-transform"></i>
+                    <span>Auraa Hub</span>
+                </span>
+            </a>
+        </div>
+    </div>
+
+    <div class="container mx-auto px-6 relative z-10 space-y-12 text-center items-center flex flex-col">
+        <div class="inline-flex items-center space-x-3 bg-auraa-navy border border-white/20 px-8 py-3 rounded-full fade-up shadow-xl shadow-black/30">
             <i data-lucide="award" class="w-4 h-4 text-white"></i>
             <span class="text-[10px] font-black uppercase tracking-[0.6em] text-white">Quality You Can Trust Since Day One</span>
         </div>
         <h1 class="text-7xl md:text-[150px] font-black uppercase tracking-tighter leading-[0.8] mb-14 fade-up">
-            The Auraa <br><span class="text-white italic underline underline-offset-[25px] decoration-white/30">Promise</span>
+            The Auraa <br><span class="text-auraa-navy italic underline underline-offset-[25px] decoration-white/30">Promise</span>
         </h1>
         <p class="text-white/90 max-w-2xl mx-auto text-2xl font-medium leading-relaxed fade-up">
             A relentless dedication to safety, transparency, and high-performance quality that fuels every festive moment.
@@ -337,11 +351,17 @@
         <h2 class="text-4xl md:text-6xl font-black text-white uppercase tracking-tighter mb-12 fade-up">
             A promise we keep <br><span class="text-auraa-red">Every Season.</span>
         </h2>
-        <div class="fade-up">
-            <a href="{% url 'founder_story' %}" class="inline-flex items-center space-x-4 bg-white text-gray-900 px-12 py-5 rounded-full font-black uppercase tracking-widest text-sm hover:bg-auraa-red hover:text-white transition-all">
-                <span>Our Founder's Vision</span>
-                <i data-lucide="book-open" class="w-5 h-5"></i>
-            </a>
+        <div class="fade-up flex justify-center">
+            <div class="btn-3d-wrapper">
+                <a href="{% url 'founder_story' %}" class="btn-3d-container group">
+                    <span class="btn-3d-shadow"></span>
+                    <span class="btn-3d-edge btn-3d-edge-white"></span>
+                    <span class="btn-3d-front btn-3d-front-white space-x-4">
+                        <span>Our Founder's Vision</span>
+                        <i data-lucide="book-open" class="w-5 h-5 group-hover:rotate-12 transition-transform"></i>
+                    </span>
+                </a>
+            </div>
         </div>
     </div>
 </section>

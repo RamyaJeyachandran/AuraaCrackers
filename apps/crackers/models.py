@@ -1,7 +1,11 @@
-﻿from django.db import models
+from django.db import models
 from django.conf import settings
+import decimal
 
 class Country(models.Model):
+    """
+    Represents a geographical country for regional classification and shipping.
+    """
     name = models.CharField(max_length=100)
     code = models.CharField(max_length=10, blank=True, null=True)
     is_active = models.BooleanField(default=True, db_column='isActive')
@@ -16,6 +20,9 @@ class Country(models.Model):
         return self.name
 
 class State(models.Model):
+    """
+    Represents a state or province within a Country.
+    """
     country = models.ForeignKey(Country, on_delete=models.CASCADE, db_column='countryId')
     name = models.CharField(max_length=100)
     code = models.CharField(max_length=10, blank=True, null=True)
@@ -31,6 +38,9 @@ class State(models.Model):
         return self.name
 
 class City(models.Model):
+    """
+    Represents a city or township within a State.
+    """
     state = models.ForeignKey(State, on_delete=models.CASCADE, db_column='stateId')
     name = models.CharField(max_length=100)
     code = models.CharField(max_length=10, blank=True, null=True)
@@ -81,6 +91,10 @@ class Unit(models.Model):
         return self.name
 
 class Category(models.Model):
+    """
+    Grouping for products (e.g., Sparklers, Ground Wheels). 
+    Used for filtering and UI organization.
+    """
     name = models.CharField(max_length=150, db_index=True, db_column='categoryName')
     image = models.URLField(max_length=255, blank=True, null=True, db_column='categoryImage')
     order = models.IntegerField(default=0, db_index=True, db_column='sortNo')
@@ -100,6 +114,10 @@ class Category(models.Model):
         return self.name
 
 class Product(models.Model):
+    """
+    Represents a single firecracker item with its pricing, description, and metadata.
+    Mapped to tbl_items in the legacy database.
+    """
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products', db_column='categoryId')
     code = models.CharField(max_length=50, db_index=True, blank=True, null=True, db_column='itemCode')
     name = models.CharField(max_length=150, db_index=True, db_column='itemName')
@@ -135,12 +153,18 @@ class Product(models.Model):
         indexes = [
             models.Index(fields=['name', 'category']),
             models.Index(fields=['code']),
+            models.Index(fields=['price']),
+            models.Index(fields=['created_at']),
         ]
 
     def __str__(self):
         return self.name
 
 class Cart(models.Model):
+    """
+    A temporary storage for items a user intends to purchase. 
+    Distinct from Order items which are historical records.
+    """
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='cart_items', db_column='userId')
     product = models.ForeignKey(Product, on_delete=models.CASCADE, db_column='itemId')
     quantity = models.PositiveIntegerField(default=1)
@@ -164,6 +188,9 @@ class Cart(models.Model):
         return self.product.price * self.quantity
 
 class Customer(models.Model):
+    """
+    The commercial profile of an online user, linking them to legacy accounting systems.
+    """
     name = models.CharField(max_length=200, db_column='name')
     company = models.CharField(max_length=200, blank=True, null=True, db_column='company')
     contact_person = models.CharField(max_length=150, blank=True, null=True, db_column='contactPerson')
@@ -188,10 +215,15 @@ class Customer(models.Model):
         return self.name
 
 class OnlineSales(models.Model):
+    """
+    The header record for a completed order, capturing totals and customer info.
+    """
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE, db_column='customerid', related_name='sales')
     customer_address = models.ForeignKey('CustomerAddress', on_delete=models.SET_NULL, blank=True, null=True, db_column='customeraddrid', related_name='sales')
     trans_no = models.CharField(max_length=50, unique=True, db_column='transno')
     trans_dt = models.DateTimeField(db_column='transdt')
+    updated_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, blank=True, null=True, db_column='updatedBy', related_name='sale_updated')
+
     status = models.CharField(max_length=20, default='New', db_column='status') 
     promo_per = models.DecimalField(max_digits=5, decimal_places=2, default=0.00, db_column='discountper')
     promo_code = models.CharField(max_length=50, blank=True, null=True, db_column='discountcode')
@@ -206,27 +238,31 @@ class OnlineSales(models.Model):
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, blank=True, null=True, db_column='createdBy', related_name='sale_created', default=settings.ADMIN_USER_ID)
     created_at = models.DateTimeField(auto_now_add=True, db_column='createdDt')
     updated_at = models.DateTimeField(auto_now=True, db_column='updatedDt')
-    updated_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, blank=True, null=True, db_column='updatedBy', related_name='sale_updated')
 
     @property
     def sub_total(self):
-        import decimal
         return self.total_amt - self.discount
 
     @property
     def calculated_packing_charges(self):
-        import decimal
         return self.sub_total * decimal.Decimal('0.03')
 
     class Meta:
         db_table = 'tbl_online_sales'
         managed = False
         verbose_name_plural = "Online Sales"
+        indexes = [
+            models.Index(fields=['status']),
+            models.Index(fields=['trans_dt']),
+        ]
 
     def __str__(self):
         return self.trans_no
 
 class OnlineSalesItem(models.Model):
+    """
+    Snapshot of a product's price and quantity at the time of purchase within an order.
+    """
     online_sales = models.ForeignKey(OnlineSales, on_delete=models.CASCADE, db_column='onlineSalesId', related_name='items')
     product = models.ForeignKey(Product, on_delete=models.CASCADE, db_column='itemId')
     item_name = models.CharField(max_length=200, db_column='itemName')
@@ -279,10 +315,10 @@ class Coupon(models.Model):
 class CustomerAddress(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE, db_column='customerId', related_name='addresses')
     address1 = models.CharField(max_length=255, db_column='address1')
-    address2 = models.CharField(max_length=255, blank=True, null=True, db_column='address2')
+    address2 = models.CharField(max_length=255, db_column='address2')
     country = models.ForeignKey(Country, on_delete=models.SET_NULL, blank=True, null=True, db_column='countryId')
     state = models.ForeignKey(State, on_delete=models.SET_NULL, blank=True, null=True, db_column='stateId')
-    city = models.ForeignKey(City, on_delete=models.SET_NULL, blank=True, null=True, db_column='cityId')
+    city_name = models.CharField(max_length=100, db_column='cityName')
     pincode = models.CharField(max_length=20, db_column='pincode')
     phone = models.CharField(max_length=20, db_column='phone')
     email = models.EmailField(max_length=255, blank=True, null=True, db_column='emailId')

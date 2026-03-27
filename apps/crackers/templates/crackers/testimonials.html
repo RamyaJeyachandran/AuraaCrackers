@@ -145,13 +145,27 @@
 
 <div class="bg-auraa-red min-h-screen text-white overflow-hidden selection:bg-gray-950 selection:text-white page-fade-in">
     <!-- Hero Section -->
-    <section class="relative pt-32 pb-20 px-6">
+    <!-- Back Navigation -->
+    <div class="flex justify-center md:block md:absolute md:top-28 md:left-10 z-20 pt-20 md:pt-0">
+        <div class="btn-3d-wrapper fade-up">
+            <a href="{% url 'about' %}#community" class="btn-3d-container group scale-90 md:scale-100">
+                <span class="btn-3d-shadow"></span>
+                <span class="btn-3d-edge btn-3d-edge-navy"></span>
+                <span class="btn-3d-front btn-3d-front-navy space-x-3">
+                    <i data-lucide="arrow-left" class="w-[18px] h-[18px] group-hover:-translate-x-2 transition-transform"></i>
+                    <span>Auraa Hub</span>
+                </span>
+            </a>
+        </div>
+    </div>
+
+    <section class="relative pt-12 md:pt-32 pb-20 px-6">
         <div class="hero-glow"></div>
-        <div class="max-w-7xl mx-auto text-center space-y-8">
-            <div class="inline-flex items-center space-x-3 bg-black/20 backdrop-blur-xl border border-white/10 px-6 py-2 rounded-full">
-                <i data-lucide="heart" class="text-white w-4 h-4 fill-current"></i>
-                <span class="text-[10px] font-black text-white uppercase tracking-[0.3em]">Customer Love</span>
-            </div>
+        <div class="max-w-7xl mx-auto text-center space-y-12 relative z-10">
+        <div class="inline-flex items-center space-x-3 bg-black/20 backdrop-blur-xl border border-white/10 px-6 py-2 rounded-full">
+            <i data-lucide="heart" class="text-white w-4 h-4 fill-current"></i>
+            <span class="text-[10px] font-black text-white uppercase tracking-[0.3em]">Customer Love</span>
+        </div>
             <h1 class="text-7xl md:text-[110px] font-black text-white leading-[0.9] uppercase tracking-tighter">
                 Real <span class="text-gray-900">Voices</span> <br />
                 Real <span class="italic underline decoration-white/20 underline-offset-[10px]">Joy</span>
@@ -266,7 +280,9 @@
     </section>
 
     <!-- Video Stories Section -->
-    <section class="py-40 bg-auraa-red border-t border-white/5">
+    <section class="py-40 bg-gradient-to-br from-[#0A325A] via-[#08294a] to-[#051829] border-t border-white/5 relative overflow-hidden">
+        <!-- Subtle Glow Layer -->
+        <div class="absolute top-0 right-0 w-[800px] h-[800px] bg-auraa-red/10 blur-[200px] rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
         <div class="max-w-7xl mx-auto px-6">
             <div class="flex flex-col md:flex-row justify-between items-end gap-12 mb-32">
                 <div class="space-y-6">
@@ -325,11 +341,17 @@
                 <p class="text-xl text-white/80 leading-relaxed max-w-xl mx-auto font-medium">
                     Loved our products? We'd love to hear from you. Your feedback helps us illuminate more lives with safety and quality.
                 </p>
-                <div class="pt-8">
-                    <a href="{% url 'contact' %}" class="inline-flex items-center space-x-4 bg-white text-gray-950 px-12 py-6 rounded-full font-black uppercase tracking-widest text-sm hover:scale-105 active:scale-95 transition-all shadow-2xl">
-                        <span>Submit Feedback</span>
-                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                    </a>
+                <div class="pt-8 flex justify-center">
+                    <div class="btn-3d-wrapper">
+                        <a href="{% url 'contact' %}" class="btn-3d-container group">
+                            <span class="btn-3d-shadow"></span>
+                            <span class="btn-3d-edge btn-3d-edge-white"></span>
+                            <span class="btn-3d-front btn-3d-front-white space-x-4">
+                                <span>Submit Feedback</span>
+                                <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-2 transition-transform"></i>
+                            </span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

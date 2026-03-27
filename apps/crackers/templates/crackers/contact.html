@@ -17,7 +17,7 @@
 
     body {
         background-color: white;
-        color: #111827;
+        color: #0A325A;
         overflow-x: hidden;
     }
 
@@ -34,6 +34,11 @@
         position: relative;
         overflow: hidden;
         transform-style: preserve-3d;
+    }
+
+    @media (max-width: 768px) {
+        .float-section { margin: 1.5rem 0.75rem; border-radius: 2.5rem; }
+        .glass-card { padding: 2rem 1.25rem !important; }
     }
 
     .glass-card {
@@ -99,18 +104,18 @@
             <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_rgba(255,255,255,0.15)_0%,_transparent_70%)] opacity-40"></div>
             <div id="hero-grains" class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 brightness-200 pointer-events-none"></div>
             <!-- Floating Symbols -->
-            <div class="absolute top-[20%] left-[10%] text-white/5 text-9xl animate-pulse font-black">@</div>
-            <div class="absolute bottom-[20%] right-[10%] text-white/5 text-[15rem] animate-bounce font-black">#</div>
+            <div class="absolute top-[20%] left-[10%] text-[#0A325A]/25 text-9xl animate-pulse font-black">@</div>
+            <div class="absolute bottom-[20%] right-[10%] text-[#0A325A]/25 text-[15rem] animate-bounce font-black">#</div>
         </div>
 
         <div class="container mx-auto px-6 relative z-10 text-center scene-3d">
-            <div class="inline-flex items-center space-x-4 bg-white/10 backdrop-blur-xl border border-white/20 px-8 py-3 rounded-full mb-12 fade-up">
+            <div class="inline-flex items-center space-x-4 bg-[#0A325A] backdrop-blur-xl border border-white/20 px-8 py-3 rounded-full mb-12 fade-up">
                 <i data-lucide="headphones" class="w-4 h-4 text-white"></i>
                 <span class="text-[12px] font-black uppercase tracking-[0.5em] text-white">Premium Support</span>
             </div>
             
             <h1 class="text-5xl md:text-7xl lg:text-[10rem] font-black uppercase tracking-tighter leading-[0.85] mb-12 mix-blend-overlay text-white fade-up">
-                Get In <br /> <span class="italic underline decoration-white/20 underline-offset-[10px]">Touch</span>
+                Get In <br /> <span class="italic underline text-[#0A325A] decoration-[#0A325A]/20 underline-offset-[10px]">Touch</span>
             </h1>
 
             <div class="max-w-3xl mx-auto bg-white rounded-[2.5rem] py-10 px-12 shadow-2xl shadow-black/20 fade-up">
@@ -128,39 +133,40 @@
         <section class="relative py-24 float-section bg-auraa-red group">
             <div class="container mx-auto px-6 lg:px-20 grid md:grid-cols-3 gap-10">
                 <!-- Voice Support -->
-                <div class="glass-card hover-lift space-y-8 fade-up group/card">
-                    <div class="w-20 h-20 bg-white/10 rounded-[2rem] flex items-center justify-center mb-6 group-hover/card:rotate-12 transition-transform">
-                        <i data-lucide="phone" class="text-white w-10 h-10"></i>
+                <div class="glass-card hover-lift space-y-8 fade-up group/card" style="background: #0A325A !important;">
+                    <div class="w-20 h-20 bg-white rounded-[2rem] flex items-center justify-center mb-6 group-hover/card:rotate-12 transition-transform">
+                        <i data-lucide="phone" class="text-[#0A325A] w-10 h-10"></i>
                     </div>
                     <div>
                         <h3 class="text-white/50 text-[10px] font-black uppercase tracking-[0.3em] mb-4">Voice Support</h3>
                         <div class="space-y-4">
-                            <a href="tel:+916381426206" class="block text-2xl md:text-3xl font-black text-white hover:translate-x-2 transition-transform">+91 63814 26206</a>
-                            <a href="tel:+919080560340" class="block text-2xl md:text-3xl font-black text-white hover:translate-x-2 transition-transform">+91 90805 60340</a>
-                            <a href="tel:+919677570276" class="block text-2xl md:text-3xl font-black text-white hover:translate-x-2 transition-transform">+91 96775 70276</a>
+                            <a href="tel:+919080560340" class="block text-xl md:text-2xl font-black text-white hover:translate-x-2 transition-transform md:whitespace-nowrap">+91 90805 60340</a>
+                            <a href="tel:+919677570276" class="block text-xl md:text-2xl font-black text-white hover:translate-x-2 transition-transform md:whitespace-nowrap">+91 96775 70276</a>
+                            <a href="tel:+916381426206" class="block text-xl md:text-2xl font-black text-white hover:translate-x-2 transition-transform md:whitespace-nowrap">+91 63814 26206</a>
+                            <a href="tel:+919489435625" class="block text-xl md:text-2xl font-black text-white hover:translate-x-2 transition-transform md:whitespace-nowrap">+91 94894 35625</a>
                         </div>
                     </div>
                 </div>
 
                 <!-- Email Inquiry -->
-                <div class="glass-card hover-lift space-y-8 fade-up group/card">
-                    <div class="w-20 h-20 bg-white/10 rounded-[2rem] flex items-center justify-center mb-6 group-hover/card:rotate-12 transition-transform">
-                        <i data-lucide="mail" class="text-white w-10 h-10"></i>
+                <div class="glass-card hover-lift space-y-8 fade-up group/card" style="background: #0A325A !important;">
+                    <div class="w-20 h-20 bg-white rounded-[2rem] flex items-center justify-center mb-6 group-hover/card:rotate-12 transition-transform">
+                        <i data-lucide="mail" class="text-[#0A325A] w-10 h-10"></i>
                     </div>
                     <div>
                         <h3 class="text-white/50 text-[10px] font-black uppercase tracking-[0.3em] mb-4">Email Inquiry</h3>
-                        <a href="mailto:info@auraacrackers.com" class="block text-2xl lg:text-3xl font-black text-white hover:translate-x-2 transition-transform break-all">info@auraacrackers.com</a>
+                        <a href="mailto:info@auraacrackers.com" class="block text-base md:text-lg font-black text-white hover:translate-x-2 transition-transform md:whitespace-nowrap break-all">info@auraacrackers.com</a>
                     </div>
                 </div>
 
                 <!-- Our Base -->
-                <div class="glass-card hover-lift space-y-8 fade-up group/card">
-                    <div class="w-20 h-20 bg-white/10 rounded-[2rem] flex items-center justify-center mb-6 group-hover/card:rotate-12 transition-transform">
-                        <i data-lucide="map-pin" class="text-white w-10 h-10"></i>
+                <div class="glass-card hover-lift space-y-8 fade-up group/card" style="background: #0A325A !important;">
+                    <div class="w-20 h-20 bg-white rounded-[2rem] flex items-center justify-center mb-6 group-hover/card:rotate-12 transition-transform">
+                        <i data-lucide="map-pin" class="text-[#0A325A] w-10 h-10"></i>
                     </div>
                     <div>
                         <h3 class="text-white/50 text-[10px] font-black uppercase tracking-[0.3em] mb-4">Our Base</h3>
-                        <p class="text-2xl font-bold text-white leading-tight">
+                        <p class="text-xl md:text-2xl font-black text-white leading-tight">
                             Sivakasi Vembakottai Main Road, <br />
                             Pernaikenpatti, Sivakasi.
                         </p>

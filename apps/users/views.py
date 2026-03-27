@@ -5,6 +5,7 @@ from django.http import JsonResponse
 from django.db import IntegrityError, transaction
 from .models import User, Role
 from apps.crackers.models import Product, Category, Customer, CustomerAddress, Company, Branch, OnlineSales
+from .services import AuthService
 from django.db.models import Sum
 
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -30,88 +31,35 @@ class ProfileView(LoginRequiredMixin, TemplateView):
 
 class SignupAPIView(View):
     def post(self, request):
-        full_name = request.POST.get('full_name')
-        username = request.POST.get('username')
-        email = request.POST.get('email')
-        mobile = request.POST.get('mobile')
-        password = request.POST.get('password')
-        address = request.POST.get('address')
-        pincode = request.POST.get('pincode')
-        country_id = request.POST.get('country_id', 1)
-        state_id = request.POST.get('state_id')
-        city_id = request.POST.get('city_id')
-
-        # Basic Validation
-        if not full_name or not username or not mobile or not password:
-            return JsonResponse({'status': 'error', 'message': 'Full Name, User Name, Mobile No and Password are mandatory fields.'}, status=400)
-
-        # Check if Username or Mobile No already exists
-        if User.objects.filter(username=username).exists():
-            return JsonResponse({'status': 'error', 'message': 'This User Name is already taken.'}, status=400)
-        
-        if User.objects.filter(phone_number=mobile).exists():
-            return JsonResponse({'status': 'error', 'message': 'This Mobile No is already registered.'}, status=400)
-
         try:
-            with transaction.atomic():
-                # Get default role (Online Customers)
-                role, _ = Role.objects.get_or_create(name='Online Customers', defaults={'company_id': settings.COMPANY_ID, 'branch_id': settings.BRANCH_ID})
-                
-                # Check if Customer with this mobile already exists
-                customer = Customer.objects.filter(contact_person_no=mobile).first()
-                if not customer:
-                    customer = Customer.objects.create(
-                        name=full_name,
-                        contact_person=full_name,
-                        contact_person_no=mobile,
-                        is_online=True,
-                        is_active=True,
-                        created_by_id=settings.ADMIN_USER_ID
-                    )
-                
-                # Create Customer Address as Default Shipping
-                CustomerAddress.objects.create(
-                    customer=customer,
-                    address1=address if address else "Default Address",
-                    country_id=country_id,
-                    state_id=state_id,
-                    city_id=city_id,
-                    pincode=pincode if pincode else "",
-                    phone=mobile,
-                    email=email,
-                    is_shipping_default=True,
-                    is_active=True,
-                    created_by_id=settings.ADMIN_USER_ID
-                )
+            # Shift balance of logic to AuthService
+            user = AuthService.register_customer(data=request.POST)
 
-                # Use default company/branch
-                company_id = settings.COMPANY_ID
-                branch_id = settings.BRANCH_ID
+            # Auto login the user
+            login(request, user)
+            
+            # Determine redirect
+            next_url = request.POST.get('next', '/')
+            if not next_url or next_url == 'null': next_url = '/'
+            
+            if user.role and user.role.name in ['Admin', 'Super Admin']:
+                next_url = '/admin/dashboard/'
 
-                # Create user using mobile as internal username
-                user = User.objects.create_user(
-                    username=username,
-                    email=email,
-                    password=password,
-                    full_name=full_name,
-                    phone_number=mobile,
-                    role=role,
-                    online_customer=customer,
-                    company_id=company_id,
-                    branch_id=branch_id,
-                    created_by=settings.ADMIN_USER_ID
-                )
-            return JsonResponse({'status': 'success', 'message': 'Registration successful! Please login to continue.'})
+            return JsonResponse({
+                'status': 'success', 
+                'message': f'Welcome, {user.full_name}! Registration successful.',
+                'redirect': next_url
+            })
         except Exception as e:
-            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+            return JsonResponse({
+                'status': 'error', 
+                'message': 'Registration failed. Our support team is available if this persists.'
+            }, status=500)
 
 class LoginAPIView(View):
     def post(self, request):
         mobile = request.POST.get('mobile', '').strip()
         password = request.POST.get('password', '').strip()
-
-        if not mobile or not password:
-            return JsonResponse({'status': 'error', 'message': 'Mobile No and Password are required.'}, status=400)
 
         if not mobile or not password:
             return JsonResponse({'status': 'error', 'message': 'Mobile No and Password are required.'}, status=400)
@@ -125,21 +73,23 @@ class LoginAPIView(View):
                 # Success - determine role and redirect
                 display_name = user.full_name or user.username
                 
-                redirect_url = '/'
+                # Determine redirect
+                next_url = request.POST.get('next', '/')
+                if not next_url or next_url == 'null': next_url = '/'
+                
                 if user.role and user.role.name in ['Admin', 'Super Admin']:
-                    redirect_url = '/admin/dashboard/'
+                    next_url = '/admin/dashboard/'
                 
                 return JsonResponse({
                     'status': 'success', 
                     'message': f'Welcome back, {display_name}!', 
-                    'redirect': redirect_url
+                    'redirect': next_url
                 })
             else:
                 return JsonResponse({'status': 'error', 'message': 'Account is disabled.'}, status=403)
         else:
             return JsonResponse({'status': 'error', 'message': 'Invalid Mobile No or Password.'}, status=401)
 
-@method_decorator(csrf_exempt, name='dispatch')
 class ForgotPasswordAPIView(View):
     def post(self, request):
         try:
@@ -150,13 +100,18 @@ class ForgotPasswordAPIView(View):
             user = User.objects.filter(phone_number=mobile).first()
             if user:
                 import random
-                # Reset password to a random 6 digit code
+                # Reset password to a random 6 digit code for temporary access
                 temp_pass = str(random.randint(100000, 999999))
                 user.set_password(temp_pass)
                 user.save()
+                
+                # Log reset PIN for internal use temporarily 
+                # (In production, we would integrate an SMS/Email service here)
+                print(f"PASSWORD_RESET_PIN for {mobile}: {temp_pass}")
+                
                 return JsonResponse({
                     'status': 'success', 
-                    'message': f'Security reset successful! Your temporary password is: {temp_pass}. Please use this to login and then change your password in your profile settings.'
+                    'message': 'Secret reset instructions generated. Please contact support via WhatsApp/Email to verify and retrieve your temporary password.'
                 })
             else:
                 return JsonResponse({
@@ -164,65 +119,18 @@ class ForgotPasswordAPIView(View):
                     'message': 'This mobile number is not registered with us.'
                 }, status=404)
         except Exception as e:
-            return JsonResponse({'status': 'error', 'message': f'Server Error: {str(e)}'}, status=500)
+            return JsonResponse({'status': 'error', 'message': 'Failed to process request.'}, status=500)
 
 class ProfileUpdateAPIView(View):
     def post(self, request):
         if not request.user.is_authenticated:
             return JsonResponse({'status': 'error', 'message': 'Authentication required'}, status=401)
         
-        user = request.user
-        name = request.POST.get('name')
-        user_name = request.POST.get('user_name')
-        username = request.POST.get('username')
-        mobile = request.POST.get('mobile')
-        email = request.POST.get('email')
-        address = request.POST.get('address')
-        state_id = request.POST.get('state_id')
-        city_id = request.POST.get('city_id')
-        pincode = request.POST.get('pincode')
-        new_password = request.POST.get('new_password')
-        confirm_password = request.POST.get('confirm_password')
-
-        if not name:
-            return JsonResponse({'status': 'error', 'message': 'Full Name is mandatory.'}, status=400)
-
-        if new_password:
-            if new_password != confirm_password:
-                return JsonResponse({'status': 'error', 'message': 'New passwords do not match.'}, status=400)
-            if len(new_password) < 6:
-                return JsonResponse({'status': 'error', 'message': 'Password must be at least 6 characters.'}, status=400)
-
-        # Uniqueness checks for Admin/Management fields
-        if username and username != user.username:
-            if User.objects.filter(username=username).exclude(id=user.id).exists():
-                return JsonResponse({'status': 'error', 'message': 'This login username is already taken.'}, status=400)
-            user.username = username
-
-        # Mobile number is readonly and cannot be updated
-
         try:
-            with transaction.atomic():
-                user.full_name = name
-                user.email = email
-                if new_password:
-                    user.set_password(new_password)
-                user.save()
-
-                if user.online_customer:
-                    user.online_customer.name = name
-                    user.online_customer.contact_person = name
-                    user.online_customer.save()
-
-                    # Sync with the primary address
-                    addr = CustomerAddress.objects.filter(customer=user.online_customer, is_shipping_default=True).first()
-                    if addr:
-                        addr.address1 = address
-                        addr.state_id = state_id
-                        addr.city_id = city_id
-                        addr.pincode = pincode
-                        addr.email = email
-                        addr.save()
+            user = AuthService.update_profile(
+                user=request.user, 
+                data=request.POST
+            )
             
             return JsonResponse({
                 'status': 'success', 
@@ -235,7 +143,10 @@ class ProfileUpdateAPIView(View):
                 }
             })
         except Exception as e:
-            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+            return JsonResponse({
+                'status': 'error', 
+                'message': 'Update failed. Check your connection or contact support.'
+            }, status=500)
 
 def logout_view(request):
     logout(request)
@@ -307,11 +218,3 @@ class AdminDashboardView(LoginRequiredMixin, TemplateView):
         
         return context
 
-from django.views.decorators.csrf import csrf_exempt
-
-@csrf_exempt
-def delete_all_users_view(request):
-    """TEMPORARY VIEW TO DELETE ALL USERS VIA BROWSER"""
-    count = User.objects.count()
-    User.objects.all().delete()
-    return JsonResponse({'status': 'success', 'message': f'Deleted {count} users successfully.'})

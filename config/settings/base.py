@@ -8,7 +8,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 env = environ.Env(
     DEBUG=(bool, False),
     ALLOWED_HOSTS=(list, ["*"]),
-    CONN_MAX_AGE=(int, 600),
+    CONN_MAX_AGE=(int, 0),
 )
 
 # Take environment variables from .env file
@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     "apps.users.apps.UsersConfig",
     "apps.crackers.apps.CrackersConfig",
     "apps.core.apps.CoreConfig",
+    "drf_spectacular",
 ]
 
 MIDDLEWARE = [
@@ -118,6 +119,14 @@ REST_FRAMEWORK = {
     "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
     "DEFAULT_PAGINATION_CLASS": "apps.core.pagination.StandardResultsSetPagination",
     "PAGE_SIZE": 20,
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Auraa Crackers API',
+    'DESCRIPTION': 'Modernized API for the Auraa Crackers Platform',
+    'VERSION': '2.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
 }
 
 # Celery
@@ -164,6 +173,48 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = env('EMAIL_HOST', default='smtp.hostinger.com')
 EMAIL_PORT = env.int('EMAIL_PORT', default=465)
 EMAIL_USE_SSL = True  # Port 465 is usually SSL
-EMAIL_HOST_USER = env('EMAIL_HOST_USER', default='info@auraazenai.com')
-EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', default='W|8k1eIyTz')
+EMAIL_HOST_USER = env('EMAIL_HOST_USER', default='')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', default='')
 DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL', default='Auraa Crackers <info@auraazenai.com>')
+# ── Logging Configuration ───────────────────────────────────────────────────
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+        },
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs', 'django.log'),
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'apps.crackers': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
+
+# Ensure logs directory exists
+os.makedirs(os.path.join(BASE_DIR, 'logs'), exist_ok=True)

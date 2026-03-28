@@ -6,7 +6,21 @@
 {% block content %}
 <div class="pb-20 bg-[#fafafa]">
     <!-- Playful Hero Section -->
-    <section class="relative py-20 md:py-32 overflow-hidden bg-emerald-600 text-white">
+    <section class="relative py-24 md:py-32 overflow-hidden bg-emerald-600 text-white">
+        <!-- Back Navigation -->
+        <div class="absolute top-6 md:top-12 left-6 md:left-10 z-[100] w-auto">
+            <div class="btn-3d-wrapper fade-up">
+                <a href="{% url 'about' %}" class="btn-3d-container group scale-75 md:scale-100 origin-left">
+                    <span class="btn-3d-shadow"></span>
+                    <span class="btn-3d-edge btn-3d-edge-navy"></span>
+                    <span class="btn-3d-front btn-3d-front-navy px-4 py-2 space-x-2 md:space-x-3 md:px-6 md:py-3 border-none shadow-none">
+                        <i data-lucide="arrow-left" class="w-4 h-4 md:w-[18px] md:h-[18px] group-hover:-translate-x-2 transition-transform"></i>
+                        <span class="text-[10px] md:text-sm uppercase tracking-widest">Auraa Hub</span>
+                    </span>
+                </a>
+            </div>
+        </div>
+
         <!-- Abstract Trust & Protection Background -->
         <div class="absolute inset-0 z-0">
             <img src="{% static 'images/safety_abstract_bg.png' %}" class="w-full h-full object-cover opacity-30 mix-blend-soft-light" alt="">
@@ -30,16 +44,16 @@
                 </div>
 
                 <!-- Text Content (Now on Right) -->
-                <div class="text-center lg:text-left order-1 lg:order-2">
-                    <div class="inline-flex items-center space-x-2 bg-white text-emerald-600 px-6 py-2 rounded-full mb-8 shadow-lg">
+                <div class="text-center lg:text-left order-1 lg:order-2 pt-20 md:pt-0">
+                    <div class="inline-flex items-center space-x-2 bg-white text-emerald-600 px-6 py-2 rounded-full mb-6 md:mb-8 shadow-lg">
                         <i data-lucide="shield" class="w-5 h-5 fill-current"></i>
-                        <span class="text-sm font-black uppercase tracking-widest">Certified Safety Protocol</span>
+                        <span class="text-xs md:text-sm font-black uppercase tracking-widest">Certified Safety Protocol</span>
                     </div>
-                    <h1 class="text-5xl md:text-7xl font-black text-white mb-8 leading-tight tracking-tighter uppercase">
+                    <h1 class="text-4xl md:text-7xl font-black text-white mb-6 md:mb-8 leading-tight tracking-tighter uppercase">
                         The <span class="text-yellow-400">Golden</span> <br />
                         <span class="bg-white text-emerald-600 px-4 rounded-2xl">Standard</span>
                     </h1>
-                    <p class="text-white/90 text-xl font-medium max-w-xl mx-auto lg:mx-0 leading-relaxed">
+                    <p class="text-white/90 text-lg md:text-xl font-medium max-w-xl mx-auto lg:mx-0 leading-relaxed px-4 md:px-0">
                         At Auraa, safety is our top priority. Learn the <span class="font-bold underline decoration-yellow-400 decoration-4">ESSENTIAL</span> guidelines to ensure every celebration is secure and joyful.
                     </p>
                 </div>
@@ -62,12 +76,12 @@
             <!-- Do's Section -->
             <div class="space-y-8">
                 <div class="flex items-center space-x-4 mb-12">
-                    <div class="w-16 h-16 bg-emerald-500 text-white rounded-3xl flex items-center justify-center shadow-lg shadow-emerald-200 rotate-3">
-                        <i data-lucide="check-circle-2" class="w-8 h-8"></i>
+                    <div class="w-12 h-12 md:w-16 md:h-16 bg-emerald-500 text-white rounded-2xl md:rounded-3xl flex items-center justify-center shadow-lg shadow-emerald-200 rotate-3">
+                        <i data-lucide="check-circle-2" class="w-6 h-6 md:w-8 md:h-8"></i>
                     </div>
                     <div>
-                        <h3 class="text-4xl font-black text-emerald-600 uppercase tracking-tight">The "Yes" List</h3>
-                        <p class="text-gray-500 font-bold text-sm uppercase tracking-widest">Always do these!</p>
+                        <h3 class="text-2xl md:text-4xl font-black text-emerald-600 uppercase tracking-tight">The "Yes" List</h3>
+                        <p class="text-gray-500 font-bold text-[10px] md:text-sm uppercase tracking-widest">Always do these!</p>
                     </div>
                 </div>
                 
@@ -134,11 +148,11 @@
                 <div class="inline-block mb-8 animate-bounce">
                     <i data-lucide="shield-check" class="w-[120px] h-[120px]"></i>
                 </div>
-                <h2 class="text-4xl md:text-6xl font-black uppercase tracking-tighter mb-8">
+                <h2 class="text-3xl md:text-6xl font-black uppercase tracking-tighter mb-6 md:mb-8 px-4">
                     You're Now a <br />
-                    <span class="bg-white text-auraa-red px-6 py-2 rounded-3xl inline-block mt-4 shadow-xl">Safety Legend!</span>
+                    <span class="bg-white text-auraa-red px-6 py-2 rounded-2xl md:rounded-3xl inline-block mt-4 shadow-xl">Safety Legend!</span>
                 </h2>
-                <p class="text-gray-900/80 text-xl font-bold max-w-2xl mx-auto mb-12">
+                <p class="text-gray-900/80 text-lg md:text-xl font-bold max-w-2xl mx-auto mb-10 md:mb-12 px-4">
                     Remember, a true hero always looks out for their friends and family. Let's make this celebration the best one ever!
                 </p>
                 <button class="bg-gray-900 text-white px-12 py-5 rounded-2xl font-black uppercase tracking-widest hover:bg-auraa-red transition-all transform hover:scale-110 shadow-2xl">

@@ -7,15 +7,29 @@
 <div class="bg-gray-50 min-h-screen">
     <!-- Hero Section -->
     <section class="bg-auraa-red pt-32 pb-20 relative overflow-hidden text-white">
+        <!-- Back Navigation -->
+        <div class="absolute top-24 md:top-32 left-6 md:left-10 z-[100] w-auto">
+            <div class="btn-3d-wrapper fade-up">
+                <a href="{% url 'about' %}" class="btn-3d-container group scale-75 md:scale-100 origin-left">
+                    <span class="btn-3d-shadow"></span>
+                    <span class="btn-3d-edge btn-3d-edge-navy"></span>
+                    <span class="btn-3d-front btn-3d-front-navy px-4 py-2 space-x-2 md:space-x-3 md:px-6 md:py-3 border-none shadow-none">
+                        <i data-lucide="arrow-left" class="w-4 h-4 md:w-[18px] md:h-[18px] group-hover:-translate-x-2 transition-transform"></i>
+                        <span class="text-[10px] md:text-sm">Auraa Hub</span>
+                    </span>
+                </a>
+            </div>
+        </div>
+
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
             <div class="inline-flex items-center space-x-3 bg-white/10 backdrop-blur-md border border-white/20 px-6 py-2 rounded-full mb-8">
                 <i data-lucide="scroll-text" class="w-4 h-4 text-white"></i>
                 <span class="text-[10px] font-black uppercase tracking-[0.3em]">Corporate Profile</span>
             </div>
-            <h1 class="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-none mb-6">
+            <h1 class="text-4xl md:text-8xl font-black uppercase tracking-tighter leading-none mb-6">
                 Auraa <span class="text-gray-900">Legacy</span>
             </h1>
-            <p class="text-white/70 max-w-2xl mx-auto text-xl font-medium leading-relaxed">
+            <p class="text-white/70 max-w-2xl mx-auto text-lg md:text-xl font-medium leading-relaxed px-4">
                 Defining our commitment to safety, joy, and the traditions that bind us together.
             </p>
         </div>
@@ -31,17 +45,17 @@
         <div class="max-w-5xl mx-auto px-4">
             <div class="space-y-12">
                 <!-- Vision -->
-                <div id="vision" class="bg-white rounded-[3rem] p-10 md:p-16 shadow-2xl border border-gray-100 group transition-all hover:border-auraa-red/30">
-                    <div class="flex items-center space-x-6 mb-10">
-                        <div class="w-16 h-16 bg-auraa-red/5 rounded-2xl flex items-center justify-center text-auraa-red group-hover:scale-110 transition-transform">
-                            <i data-lucide="eye" class="w-8 h-8"></i>
+                <div id="vision" class="bg-white rounded-[2.5rem] md:rounded-[3rem] p-6 md:p-16 shadow-2xl border border-gray-100 group transition-all hover:border-auraa-red/30">
+                    <div class="flex items-center space-x-4 md:space-x-6 mb-6 md:mb-10">
+                        <div class="w-12 h-12 md:w-16 md:h-16 bg-auraa-red/5 rounded-2xl flex items-center justify-center text-auraa-red group-hover:scale-110 transition-transform">
+                            <i data-lucide="eye" class="w-6 h-6 md:w-8 md:h-8"></i>
                         </div>
-                        <h2 class="text-4xl font-black uppercase tracking-tighter text-gray-900">Our Vision</h2>
+                        <h2 class="text-2xl md:text-4xl font-black uppercase tracking-tighter text-gray-900">Our Vision</h2>
                     </div>
-                    <div class="prose prose-xl prose-red max-w-none text-gray-600 font-medium leading-relaxed space-y-6">
+                    <div class="prose prose-lg md:prose-xl prose-red max-w-none text-gray-600 font-medium leading-relaxed space-y-4 md:space-y-6">
                         <p>At <strong class="text-gray-900">Auraa Crackers</strong>, our vision is to become one of India’s most trusted fireworks brands, bringing safe, joyful, and responsible celebrations to every home.</p>
                         <p>We aspire to set higher standards in the fireworks industry through customer delight, trust and transparency, responsibility, innovation, and safety. By honoring tradition while continuously improving our products and practices, we aim to make Auraa Crackers a name families across the country associate with happiness, reliability, and celebration.</p>
-                        <div class="bg-auraa-red/5 border-l-4 border-auraa-red p-8 rounded-r-3xl italic text-gray-900 font-black text-2xl leading-tight">
+                        <div class="bg-auraa-red/5 border-l-4 border-auraa-red p-6 md:p-8 rounded-r-3xl italic text-gray-900 font-black text-xl md:text-2xl leading-tight">
                             "Our vision is simple: to light up every celebration with trust, safety, and unforgettable moments."
                         </div>
                     </div>

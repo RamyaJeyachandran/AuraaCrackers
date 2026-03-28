@@ -137,16 +137,16 @@
                 © <span id="current-year">2026</span> Auraa Crackers — A Sparking Tradition.
             </p>
             
-            <div class="flex flex-wrap justify-center gap-6 md:gap-10 relative z-10">
-                <a href="#" class="text-[10px] md:text-[11px] font-black uppercase tracking-[0.3em] text-white/80 hover:text-white transition-colors">Privacy</a>
+            <div class="flex flex-wrap justify-center gap-6 md:gap-10 relative z-10 transition-all duration-300">
+                <a href="{% url 'terms' %}" class="text-[10px] md:text-[11px] font-black uppercase tracking-[0.3em] text-white/80 hover:text-white transition-colors">Privacy</a>
                 <a href="https://wa.me/916381426206" class="text-[10px] md:text-[11px] font-black uppercase tracking-[0.3em] text-white/80 hover:text-white transition-colors">Compliance</a>
-                <a href="#" class="text-[10px] md:text-[11px] font-black uppercase tracking-[0.3em] text-white/80 hover:text-white transition-colors">Terms</a>
+                <a href="{% url 'terms' %}" class="text-[10px] md:text-[11px] font-black uppercase tracking-[0.3em] text-white/80 hover:text-white transition-colors">Terms</a>
             </div>
         </div>
     </div>
 
     <!-- Floating Up Bolt -->
-    <button id="scrollToTop" class="fixed bottom-28 right-6 md:bottom-10 md:right-10 w-14 h-14 md:w-16 md:h-16 bg-auraa-red rounded-2xl text-white shadow-2xl shadow-auraa-red/40 flex items-center justify-center translate-y-32 opacity-0 hover:scale-110 active:scale-95 transition-all duration-700 z-[100001] group">
+    <button id="scrollToTop" class="fixed bottom-36 right-6 md:bottom-10 md:right-10 w-14 h-14 md:w-16 md:h-16 bg-auraa-red rounded-2xl text-white shadow-2xl shadow-auraa-red/40 flex items-center justify-center translate-y-32 opacity-0 hover:scale-110 active:scale-95 transition-all duration-700 z-[100001] group">
         <i data-lucide="arrow-up-to-line" class="w-6 h-6 group-hover:-translate-y-1 transition-transform"></i>
     </button>
 </footer>

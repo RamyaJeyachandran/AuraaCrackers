@@ -242,12 +242,15 @@
         <a href="{% url 'product_list' %}" class="relative flex items-center group">
             
             <!-- Mobile Circular FAB & Desktop Sidebar Body -->
-            <div class="relative bg-auraa-navy sm:bg-slate-50 text-white sm:text-auraa-navy flex sm:flex-col items-center justify-center p-4 sm:py-7 sm:px-5 rounded-2xl sm:rounded-none sm:rounded-l-[2.5rem] font-black uppercase shadow-[0_20px_40px_rgba(10,50,90,0.4)] sm:shadow-[8px_8px_16px_#c2c2c2,-8px_-8px_16px_#ffffff] group-hover:shadow-[inset_6px_6px_12px_#d1d1d1,inset_-6px_-6px_12px_#ffffff] transition-all duration-500 ease-in-out border border-white/20 active:scale-95 sm:active:scale-100 overflow-hidden">
+            <div class="relative bg-auraa-navy sm:bg-slate-50 text-white sm:text-auraa-navy flex sm:flex-col items-center justify-center p-2 sm:py-7 sm:px-5 rounded-full sm:rounded-none sm:rounded-l-[2.5rem] font-black uppercase shadow-[0_20px_40px_rgba(10,50,90,0.4)] sm:shadow-[8px_8px_16px_#c2c2c2,-8px_-8px_16px_#ffffff] group-hover:shadow-[inset_6px_6px_12px_#d1d1d1,inset_-6px_-6px_12px_#ffffff] transition-all duration-500 ease-in-out border border-white/20 active:scale-95 sm:active:scale-100 overflow-hidden">
                 
                 <div class="w-10 h-10 flex items-center justify-center bg-auraa-red rounded-xl sm:rounded-2xl sm:mb-6 shadow-lg sm:shadow-[4px_4px_8px_#d1d1d1,-4px_-4px_8px_#ffffff] group-hover:translate-y-0.5 transition-all duration-300 shrink-0">
                     <i data-lucide="shopping-bag" class="w-5 h-5 text-white"></i>
                 </div>
                 
+                <!-- Mobile Only Text -->
+                <span class="sm:hidden block px-4 text-xs font-black uppercase tracking-widest whitespace-nowrap">Buy Products</span>
+
                 <!-- Desktop Only Vertically Stacked Letters (Dark Blue) -->
                 <div class="hidden sm:flex flex-col items-center space-y-1.5 pb-2">
                     <span class="text-[13px] tracking-tighter leading-none font-black text-auraa-navy">B</span>

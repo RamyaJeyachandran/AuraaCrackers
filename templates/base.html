@@ -238,7 +238,7 @@
     <!-- Neumorphic Floating Buy Products Button -->
     {% with url_name=request.resolver_match.url_name %}
     {% if not url_name or url_name not in "login,product_list,order_history,order_status,order_detail,profile,checkout,admin_dashboard,dashboard_categories,dashboard_products,dashboard_orders,dashboard_order_detail,dashboard_customers,dashboard_analysis,dashboard_report_create,dashboard_pricelists,dashboard_pricelist_create,dashboard_pricelist_detail,dashboard_pricelist_edit,admin_active_categories,admin_register" %}
-    <div id="mobile-buy-products-wrapper" class="fixed bottom-6 right-6 sm:bottom-auto sm:top-[30%] sm:translate-x-0 w-auto z-[99999]">
+    <div id="mobile-buy-products-wrapper" class="fixed bottom-6 left-1/2 -translate-x-1/2 sm:left-auto sm:right-0 sm:translate-x-0 sm:bottom-auto sm:top-[30%] w-auto z-[99999]">
         <a href="{% url 'product_list' %}" class="relative flex items-center group">
             
             <!-- Mobile Circular FAB & Desktop Sidebar Body -->
@@ -281,8 +281,9 @@
     <style>
         @media (max-width: 640px) {
             #mobile-buy-products-wrapper {
-                right: 1.5rem;
                 bottom: 1.5rem;
+                left: 50%;
+                transform: translateX(-50%);
             }
         }
     </style>

@@ -118,7 +118,7 @@ services:
       context: .
       dockerfile: nginx/Dockerfile
     ports:
-      - "8080:80"
+      - "80:80"
     volumes:
       - ./staticfiles:/var/www/static
       - ./media:/var/www/media

@@ -93,8 +93,11 @@
     }
 
     /* Header Fix for 3D Stacking */
-    #main-nav {
-        z-index: 9999 !important;
+    #main-nav, #mobile-menu-button {
+        z-index: 100000 !important;
+    }
+    #mobile-buy-products-wrapper {
+        z-index: 100000 !important;
     }
 </style>
 {% endblock %}

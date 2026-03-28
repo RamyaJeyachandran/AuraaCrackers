@@ -11,13 +11,20 @@
 <style>
     .promise-card {
         background: white;
-        border-radius: 4rem;
-        padding: 5rem;
+        border-radius: 3rem;
+        padding: 2.5rem;
         box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.05);
         border: 1px solid rgba(0, 0, 0, 0.03);
         transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
         position: relative;
         overflow: hidden;
+    }
+
+    @media (min-width: 1024px) {
+        .promise-card {
+            border-radius: 4rem;
+            padding: 5rem;
+        }
     }
 
     .promise-card:hover {
@@ -40,14 +47,21 @@
     .placeholder-3d {
         width: 100%;
         height: 100%;
-        min-height: 500px;
+        min-height: 300px;
         background: radial-gradient(circle at 50% 50%, #f9fafb 0%, #f3f4f6 100%);
-        border-radius: 4rem;
+        border-radius: 3rem;
         display: flex;
         align-items: center;
         justify-content: center;
         position: relative;
         perspective: 1000px;
+    }
+
+    @media (min-width: 1024px) {
+        .placeholder-3d {
+            min-height: 500px;
+            border-radius: 4rem;
+        }
     }
 
     /* 3D Glass Object Styles */
@@ -137,27 +151,28 @@
 </div>
 
 <!-- Premium Hero -->
-<section class="bg-auraa-red pt-16 pb-48 text-white text-center relative overflow-hidden">
-    <!-- Red & Gold Cinematic Background -->
-    <div class="absolute inset-0 z-0">
-        <img src="https://images.unsplash.com/photo-1533230392656-45e6579d708d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" alt="The Auraa Promise Background" class="w-full h-full object-cover opacity-30 scale-110 animate-[slow-zoom_40s_infinite_alternate] mix-blend-overlay">
-        <!-- Multi-layered Overlays for Text Focus -->
-        <div class="absolute inset-0 bg-gradient-to-t from-auraa-red via-transparent to-auraa-red/80"></div>
-    </div>
+    <section class="bg-auraa-red pt-24 md:pt-16 pb-32 md:pb-48 text-white text-center relative overflow-hidden">
+        <!-- Red & Gold Cinematic Background -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1533230392656-45e6579d708d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" alt="The Auraa Promise Background" class="w-full h-full object-cover opacity-30 scale-110 animate-[slow-zoom_40s_infinite_alternate] mix-blend-overlay">
+            <!-- Multi-layered Overlays for Text Focus -->
+            <div class="absolute inset-0 bg-gradient-to-t from-auraa-red via-transparent to-auraa-red/80"></div>
+        </div>
 
     <!-- Decorative Glow Layers -->
     <div class="absolute top-[-25%] right-[-15%] w-[800px] h-[800px] bg-white/10 blur-[180px] rounded-full animate-pulse-slow opacity-60"></div>
     <div class="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] bg-black/5 blur-[150px] rounded-full animate-pulse-slow delay-1000"></div>
 
     <!-- Back Navigation -->
-    <div class="flex justify-center md:block md:absolute md:top-28 md:left-10 z-20 pt-20 md:pt-0 w-full md:w-auto">
+    <!-- Back Navigation -->
+    <div class="absolute top-24 md:top-32 left-6 md:left-10 z-[100] w-auto">
         <div class="btn-3d-wrapper fade-up">
-            <a href="{% url 'about' %}#promise" class="btn-3d-container group scale-90 md:scale-100">
+            <a href="{% url 'about' %}#promise" class="btn-3d-container group scale-75 md:scale-100 origin-left">
                 <span class="btn-3d-shadow"></span>
                 <span class="btn-3d-edge btn-3d-edge-navy"></span>
-                <span class="btn-3d-front btn-3d-front-navy space-x-3">
-                    <i data-lucide="arrow-left" class="w-[18px] h-[18px] group-hover:-translate-x-2 transition-transform"></i>
-                    <span>Auraa Hub</span>
+                <span class="btn-3d-front btn-3d-front-navy px-4 py-2 space-x-2 md:space-x-3 md:px-6 md:py-3 border-none shadow-none">
+                    <i data-lucide="arrow-left" class="w-4 h-4 md:w-[18px] md:h-[18px] group-hover:-translate-x-2 transition-transform"></i>
+                    <span class="text-[10px] md:text-sm">Auraa Hub</span>
                 </span>
             </a>
         </div>
@@ -168,12 +183,12 @@
             <i data-lucide="award" class="w-4 h-4 text-white"></i>
             <span class="text-[10px] font-black uppercase tracking-[0.6em] text-white">Quality You Can Trust Since Day One</span>
         </div>
-        <h1 class="text-7xl md:text-[150px] font-black uppercase tracking-tighter leading-[0.8] mb-14 fade-up">
-            The Auraa <br><span class="text-auraa-navy italic underline underline-offset-[25px] decoration-white/30">Promise</span>
-        </h1>
-        <p class="text-white/90 max-w-2xl mx-auto text-2xl font-medium leading-relaxed fade-up">
-            A relentless dedication to safety, transparency, and high-performance quality that fuels every festive moment.
-        </p>
+    <h1 class="text-4xl md:text-[8rem] lg:text-[150px] font-black uppercase tracking-tighter leading-[0.8] mb-8 md:mb-14 fade-up">
+        The Auraa <br><span class="text-auraa-navy italic underline underline-offset-[25px] decoration-white/30">Promise</span>
+    </h1>
+    <p class="text-white/90 max-w-2xl mx-auto text-lg md:text-2xl font-medium leading-relaxed fade-up px-4">
+        A relentless dedication to safety, transparency, and high-performance quality that fuels every festive moment.
+    </p>
     </div>
 
     <style>
@@ -191,11 +206,11 @@
         <div class="promise-card grid lg:grid-cols-2 gap-20 items-center">
             <span class="promise-number">01</span>
             <div class="space-y-8 order-2 lg:order-1">
-                <h2 class="text-5xl lg:text-6xl font-black text-gray-900 tracking-tighter uppercase leading-none fade-up">Affordable <br><span class="text-auraa-red">Celebrations</span></h2>
-                <p class="text-xl text-gray-500 font-medium leading-relaxed fade-up">
+                <h2 class="text-3xl md:text-5xl lg:text-6xl font-black text-gray-900 tracking-tighter uppercase leading-none fade-up">Affordable <br><span class="text-auraa-red">Celebrations</span></h2>
+                <p class="text-lg md:text-xl text-gray-500 font-medium leading-relaxed fade-up">
                     We believe every family deserves to celebrate festivals with happiness. That is why we strive to offer fireworks at fair and affordable prices.
                 </p>
-                <div class="pt-6 fade-up">
+                <div class="pt-2 md:pt-6 fade-up">
                     <div class="flex items-center space-x-4 text-gray-900 font-black uppercase tracking-widest text-xs">
                         <span class="w-12 h-1 bg-auraa-red"></span>
                         <span>FAIR PRICING FOR ALL</span>
@@ -325,21 +340,21 @@
 <section class="py-40 bg-white text-center">
     <div class="container mx-auto px-6 max-w-4xl">
         <div class="h-24 w-px bg-auraa-red mx-auto mb-16 fade-up"></div>
-        <blockquote class="text-4xl md:text-5xl font-black italic tracking-tight leading-tight mb-16 fade-up">
+        <blockquote class="text-2xl md:text-5xl font-black italic tracking-tight leading-tight mb-8 md:mb-16 fade-up">
             “A celebration becomes meaningful when the joy is shared by everyone.”
         </blockquote>
-        <div class="flex justify-center space-x-12 fade-up">
+        <div class="flex justify-center space-x-6 md:space-x-12 fade-up">
             <div class="text-center">
-                <p class="text-4xl font-black text-gray-900">100%</p>
-                <p class="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">Authentic</p>
+                <p class="text-2xl md:text-4xl font-black text-gray-900">100%</p>
+                <p class="text-[8px] md:text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">Authentic</p>
             </div>
             <div class="text-center">
-                <p class="text-4xl font-black text-gray-900">5k+</p>
-                <p class="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">Happy Families</p>
+                <p class="text-2xl md:text-4xl font-black text-gray-900">5k+</p>
+                <p class="text-[8px] md:text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">Happy Families</p>
             </div>
             <div class="text-center">
-                <p class="text-4xl font-black text-gray-900">QC</p>
-                <p class="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">Passed</p>
+                <p class="text-2xl md:text-4xl font-black text-gray-900">QC</p>
+                <p class="text-[8px] md:text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">Passed</p>
             </div>
         </div>
     </div>

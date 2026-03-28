@@ -40,12 +40,19 @@
 
     /* 3D Kinetic Section */
     .immersive-section {
-        min-height: 100vh;
+        min-height: 50vh;
         display: flex;
         align-items: center;
         position: relative;
         perspective: 2000px;
-        padding: 100px 0;
+        padding: 4rem 0;
+    }
+
+    @media (min-width: 1024px) {
+        .immersive-section {
+            min-height: 100vh;
+            padding: 100px 0;
+        }
     }
 
     /* Deep Parallax Background */
@@ -70,12 +77,19 @@
         background: white;
         color: #1a1a1a;
         border: 1px solid var(--glass-border);
-        border-radius: 4rem;
-        padding: 4rem;
+        border-radius: 3rem;
+        padding: 2rem;
         position: relative;
         transform-style: preserve-3d;
         transition: transform 0.5s ease-out;
         box-shadow: 0 40px 100px -30px rgba(0, 0, 0, 0.2);
+    }
+
+    @media (min-width: 1024px) {
+        .kinetic-card {
+            border-radius: 4rem;
+            padding: 4rem;
+        }
     }
 
     .kinetic-card:hover {
@@ -189,14 +203,14 @@
     </div>
     
     <!-- Back Navigation -->
-    <div class="flex justify-center md:block md:absolute md:top-32 md:left-10 z-[100] pt-20 md:pt-0 w-full md:w-auto">
+    <div class="absolute top-24 md:top-40 left-6 md:left-10 z-[100] w-auto">
         <div class="btn-3d-wrapper fade-up">
-            <a href="{% url 'about' %}#why" class="btn-3d-container group scale-90 md:scale-100">
+            <a href="{% url 'about' %}#why" class="btn-3d-container group scale-75 md:scale-100 origin-left">
                 <span class="btn-3d-shadow"></span>
                 <span class="btn-3d-edge btn-3d-edge-navy"></span>
-                <span class="btn-3d-front btn-3d-front-navy space-x-3">
-                    <i data-lucide="arrow-left" class="w-[18px] h-[18px] group-hover:-translate-x-2 transition-transform"></i>
-                    <span>Auraa Hub</span>
+                <span class="btn-3d-front btn-3d-front-navy px-4 py-2 space-x-2 md:space-x-3 md:px-6 md:py-3 border-none shadow-none">
+                    <i data-lucide="arrow-left" class="w-4 h-4 md:w-[18px] md:h-[18px] group-hover:-translate-x-2 transition-transform"></i>
+                    <span class="text-[10px] md:text-sm">Auraa Hub</span>
                 </span>
             </a>
         </div>
@@ -204,7 +218,7 @@
 
     <div class="container mx-auto px-6 relative z-10 text-center space-y-12">
         
-        <h1 class="text-7xl md:text-[8rem] lg:text-[10rem] font-black uppercase tracking-tighter leading-[0.85] mb-12 mix-blend-plus-lighter opacity-0 fade-up">
+        <h1 class="text-4xl md:text-[8rem] lg:text-[10rem] font-black uppercase tracking-tighter leading-[0.85] mb-8 md:mb-12 mix-blend-plus-lighter opacity-0 fade-up">
             Why <br /> <span class="text-[#0A325A] italic drop-shadow-[0_0_30px_rgba(10,50,90,0.3)]">Choose</span> <br /> Auraa?
         </h1>
 
@@ -221,8 +235,8 @@
     <div class="container mx-auto px-6 lg:px-20 grid lg:grid-cols-2 gap-24 items-center">
         <div class="order-2 lg:order-1 space-y-12">
             <div class="kinetic-card layer-depth-2">
-                <div class="w-20 h-1 bg-auraa-red mb-10 auraa-glow-red"></div>
-                <h2 class="text-5xl lg:text-7xl font-black tracking-tighter uppercase leading-none mb-8">Customer <br/><span class="text-gray-400">Focused</span></h2>
+                <div class="w-20 h-1 bg-auraa-red mb-6 md:mb-10 auraa-glow-red"></div>
+                <h2 class="text-3xl md:text-5xl lg:text-7xl font-black tracking-tighter uppercase leading-none mb-6 md:mb-8">Customer <br/><span class="text-gray-400">Focused</span></h2>
                 <p class="text-xl text-gray-500 font-medium leading-relaxed mb-10">
                     We place our customers at the center of our 3D ecosystem, ensuring every purchase delivers unmatched satisfaction and happiness.
                 </p>
@@ -336,7 +350,7 @@
 <section class="py-40 bg-black text-center text-white relative overflow-hidden">
     <div class="absolute bottom-0 right-0 w-[800px] h-[800px] bg-auraa-red opacity-10 blur-[200px]"></div>
     <div class="container mx-auto px-6 relative z-10">
-        <h2 class="text-5xl md:text-8xl font-black uppercase tracking-tighter mb-16 fade-up">
+        <h2 class="text-4xl md:text-8xl font-black uppercase tracking-tighter mb-12 md:mb-16 fade-up">
             Ready for a <br /> <span class="text-auraa-red italic">Smarter</span> Celebration?
         </h2>
         <div class="flex flex-wrap justify-center gap-12 fade-up">

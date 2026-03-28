@@ -13,10 +13,10 @@
     .belief-card {
         flex: 0 0 85vw;
         max-width: 800px;
-        min-height: 500px;
+        min-height: 400px;
         background: white;
-        border-radius: 4rem;
-        padding: 5rem;
+        border-radius: 3rem;
+        padding: 2.5rem;
         scroll-snap-align: center;
         display: flex;
         flex-direction: column;
@@ -26,6 +26,14 @@
         box-shadow: 0 40px 100px -20px rgba(0,0,0,0.03);
         border: 1px solid rgba(0,0,0,0.05);
         transition: transform 0.6s cubic-bezier(0.2, 0, 0, 1), opacity 0.6s ease;
+    }
+    @media (min-width: 1024px) {
+        .belief-card { 
+            flex: 0 0 60vw; 
+            min-height: 500px;
+            border-radius: 4rem;
+            padding: 5rem;
+        }
     }
     @media (min-width: 1024px) {
         .belief-card { flex: 0 0 60vw; }
@@ -89,13 +97,22 @@
 
     .principle-item {
         border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-        padding: 4rem 0;
+        padding: 2.5rem 0;
         display: grid;
-        grid-template-columns: 80px 1fr 300px;
-        gap: 2rem;
-        align-items: center;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        align-items: start;
         opacity: 0;
         transform: translateY(40px);
+    }
+
+    @media (min-width: 1024px) {
+        .principle-item {
+            padding: 4rem 0;
+            grid-template-columns: 80px 1fr 300px;
+            gap: 2rem;
+            align-items: center;
+        }
     }
 
     .principle-num {
@@ -105,11 +122,17 @@
     }
 
     .principle-title {
-        font-size: 3rem;
+        font-size: 1.75rem;
         font-weight: 900;
         text-transform: uppercase;
         letter-spacing: -0.02em;
         color: #1a1a1a;
+    }
+
+    @media (min-width: 1024px) {
+        .principle-title {
+            font-size: 3rem;
+        }
     }
 
     .principle-desc {
@@ -126,8 +149,15 @@
         background: rgba(255, 255, 255, 0.02);
         backdrop-filter: blur(30px);
         border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 4rem;
-        padding: 6rem;
+        border-radius: 3rem;
+        padding: 3rem;
+    }
+
+    @media (min-width: 1024px) {
+        .glass-box {
+            border-radius: 4rem;
+            padding: 6rem;
+        }
     }
 
     .scroll-indicator {
@@ -186,14 +216,15 @@
     </div>
 
     <!-- Back Navigation -->
-    <div class="flex justify-center md:block md:absolute md:top-28 md:left-10 z-20 pt-20 md:pt-0 w-full md:w-auto">
+    <!-- Back Navigation -->
+    <div class="absolute top-24 md:top-32 left-6 md:left-10 z-[100] w-auto">
         <div class="btn-3d-wrapper fade-up">
-            <a href="{% url 'about' %}#manifesto" class="btn-3d-container group scale-90 md:scale-100">
+            <a href="{% url 'about' %}#manifesto" class="btn-3d-container group scale-75 md:scale-100 origin-left">
                 <span class="btn-3d-shadow"></span>
                 <span class="btn-3d-edge btn-3d-edge-red"></span>
-                <span class="btn-3d-front btn-3d-front-red space-x-3">
-                    <i data-lucide="arrow-left" class="w-[18px] h-[18px] group-hover:-translate-x-2 transition-transform"></i>
-                    <span>Auraa Hub</span>
+                <span class="btn-3d-front btn-3d-front-red px-4 py-2 space-x-2 md:space-x-3 md:px-6 md:py-3 border-none shadow-none">
+                    <i data-lucide="arrow-left" class="w-4 h-4 md:w-[18px] md:h-[18px] group-hover:-translate-x-2 transition-transform"></i>
+                    <span class="text-[10px] md:text-sm">Auraa Hub</span>
                 </span>
             </a>
         </div>
@@ -204,11 +235,11 @@
         <div class="inline-block px-8 py-3 bg-auraa-red rounded-full shadow-2xl shadow-auraa-red/30 fade-up">
             <span class="text-[10px] font-black uppercase tracking-[0.6em] text-white">The Auraa Manifesto</span>
         </div>
-        <h1 class="text-7xl md:text-[140px] font-black uppercase tracking-tighter leading-[0.85] mb-12 fade-up">
+        <h1 class="text-4xl md:text-[140px] font-black uppercase tracking-tighter leading-[0.85] mb-8 md:mb-12 fade-up">
             Our Shared <br /> <span class="text-auraa-red italic underline underline-offset-[20px] decoration-white/20">Truth</span>
         </h1>
-        <div class="max-w-2xl mx-auto space-y-6 fade-up">
-            <p class="text-2xl font-medium text-white/80 leading-relaxed">
+        <div class="max-w-2xl mx-auto space-y-6 fade-up px-6">
+            <p class="text-xl md:text-2xl font-medium text-white/80 leading-relaxed">
                 From the heart of Sivakasi, we carry forward a tradition of celebration while building a future of responsible joy.
             </p>
         </div>
@@ -219,8 +250,8 @@
 <section class="bg-white py-40">
     <div class="container mx-auto px-6">
         <div class="text-center mb-32">
-            <h2 class="text-6xl md:text-8xl font-black uppercase tracking-tighter mb-8 fade-up">The Auraa <br><span class="text-auraa-red italic">Principles</span></h2>
-            <p class="text-gray-500 max-w-2xl mx-auto text-xl font-medium fade-up">
+            <h2 class="text-4xl md:text-8xl font-black uppercase tracking-tighter mb-8 fade-up">The Auraa <br><span class="text-auraa-red italic">Principles</span></h2>
+            <p class="text-gray-500 max-w-2xl mx-auto text-lg md:text-xl font-medium fade-up px-6">
                 Our actions are guided by simple principles that shape how we serve customers and build our brand.
             </p>
         </div>
@@ -289,7 +320,7 @@
             <div class="inline-block px-6 py-2 bg-auraa-red border border-white/20 rounded-full mb-6 fade-up shadow-lg shadow-auraa-red/30">
                 <span class="text-[10px] font-black uppercase tracking-[0.4em] text-white">Get in Touch</span>
             </div>
-            <h2 class="text-5xl md:text-7xl font-black text-white uppercase tracking-tighter fade-up">Connect with <span class="text-auraa-red italic">Auraa</span></h2>
+            <h2 class="text-4xl md:text-7xl font-black text-white uppercase tracking-tighter fade-up">Connect with <span class="text-auraa-red italic">Auraa</span></h2>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-6xl mx-auto">
@@ -370,8 +401,8 @@
                 </div>
 
                 <!-- Quote - Refined Size -->
-                <blockquote class="text-3xl md:text-5xl font-black italic tracking-tighter leading-tight mb-16 fade-up">
-                    <span class="text-white/40 block text-6xl mb-6 -ml-4 leading-none">“</span>
+                <blockquote class="text-2xl md:text-5xl font-black italic tracking-tighter leading-tight mb-8 md:mb-16 fade-up">
+                    <span class="text-white/40 block text-4xl md:text-6xl mb-4 md:mb-6 -ml-4 leading-none">“</span>
                     When celebrations reach every home, <br class="hidden lg:block"/>
                     <span class="text-auraa-red">happiness becomes the true success</span> <br class="hidden lg:block"/>
                     of a business.

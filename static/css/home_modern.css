@@ -56,6 +56,13 @@
     overflow: hidden;
 }
 
+@media (max-width: 768px) {
+    .glass-testimonial-card {
+        padding: 2rem 1.5rem;
+        border-radius: 2rem;
+    }
+}
+
 .support-card-container {
     min-height: 420px;
 }
@@ -395,6 +402,17 @@
     transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1);
 }
 
+@media (max-width: 768px) {
+    .hero-sliding-text {
+        bottom: 2rem;
+        left: 2rem;
+        right: 2rem;
+    }
+    .hero-sliding-text .text-5xl {
+        font-size: 2rem;
+    }
+}
+
 /* 3D Hover Interactions */
 .hero-image-perspective:hover .premium-image-box {
     transform: rotateX(6deg) rotateY(-8deg) translateY(-15px);
@@ -648,6 +666,12 @@
     margin-bottom: 0.5rem;
     transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
     transform: translateY(10px);
+}
+
+@media (max-width: 768px) {
+    .category-card-title-modern {
+        font-size: 1.25rem;
+    }
 }
 
 .category-card-premium:hover .category-card-title-modern {

@@ -47,6 +47,7 @@
                     <tr class="border-b border-gray-800">
                         <th class="py-6 px-8 text-[12px] font-black uppercase tracking-widest text-white">S.No</th>
                         <th class="py-6 px-4 text-[12px] font-black uppercase tracking-widest text-white">Pricelist Name</th>
+                        <th class="py-6 px-4 text-[12px] font-black uppercase tracking-widest text-white text-center">Version</th>
                         <th class="py-6 px-4 text-[12px] font-black uppercase tracking-widest text-white">Description</th>
                         <th class="py-6 px-4 text-[12px] font-black uppercase tracking-widest text-white text-center">Items</th>
                         <th class="py-6 px-8 text-[12px] font-black uppercase tracking-widest text-white text-center">Status</th>
@@ -62,8 +63,11 @@
                         <td class="py-4 px-4">
                             <span class="text-sm font-black text-gray-900 uppercase tracking-tight">{{ pricelist.list_name }}</span>
                         </td>
+                        <td class="py-4 px-4 text-center">
+                            <span class="text-[10px] font-black text-auraa-red bg-red-50 px-3 py-1.5 rounded-full border border-red-100 uppercase tracking-widest whitespace-nowrap shadow-sm">V {{ pricelist.pl_version }}</span>
+                        </td>
                         <td class="py-4 px-4">
-                            <span class="text-sm font-bold text-gray-400 uppercase tracking-widest">{{ pricelist.list_desc|default:"-" }}</span>
+                            <span class="text-xs font-bold text-gray-400 uppercase tracking-widest">{{ pricelist.list_desc|default:"-" }}</span>
                         </td>
                         <td class="py-4 px-4 text-center">
                             <span class="px-3 py-1 bg-gray-100 rounded-full text-[11px] font-black uppercase text-gray-500 tracking-widest border border-gray-200 shadow-sm">{{ pricelist.items_count }}</span>
@@ -96,7 +100,7 @@
                     </tr>
                     {% empty %}
                     <tr>
-                        <td colspan="5" class="py-32 text-center">
+                        <td colspan="7" class="py-32 text-center">
                             <div class="flex flex-col items-center">
                                 <div class="w-20 h-20 bg-gray-50 rounded-[2rem] flex items-center justify-center text-gray-200 mb-6">
                                     <i data-lucide="list" class="w-10 h-10"></i>

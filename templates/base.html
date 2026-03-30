@@ -230,7 +230,11 @@
         {% block content %}{% endblock %}
     </main>
 
+    {% with url_name=request.resolver_match.url_name %}
+    {% if url_name != 'login' and 'dashboard_' not in url_name and 'admin_' not in url_name %}
     {% include 'includes/footer.html' %}
+    {% endif %}
+    {% endwith %}
     
     {% include 'includes/cart_sidebar.html' %}
     {% include 'includes/global_modals.html' %}

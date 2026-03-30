@@ -14,7 +14,8 @@ from .views_dashboard import (
     DashboardOrderDetailView, DashboardCustomerListView, AdminActiveCategoryListView,
     DashboardAnalysisView, DashboardReportCreateView, DashboardPricelistListView, PricelistToggleActiveView,
     DashboardPricelistCreateView, PricelistSaveView, DashboardPricelistDetailView, DashboardPricelistEditView,
-    PricelistUpdateView, DashboardCouponListView, CouponToggleActiveView
+    PricelistUpdateView, DashboardCouponListView, CouponToggleActiveView,
+    PricelistCheckNameAPIView, PricelistVersionDetailAPIView, PricelistListAPIView
 )
 
 urlpatterns = [
@@ -31,6 +32,9 @@ urlpatterns = [
     path('dashboard/pricelists/', DashboardPricelistListView.as_view(), name='dashboard_pricelists'),
     path('dashboard/pricelists/create/', DashboardPricelistCreateView.as_view(), name='dashboard_pricelist_create'),
     path('api/pricelist/save/', PricelistSaveView.as_view(), name='api_pricelist_save'),
+    path('api/pricelist/check-name/', PricelistCheckNameAPIView.as_view(), name='api_pricelist_check_name'),
+    path('api/pricelist/version-detail/', PricelistVersionDetailAPIView.as_view(), name='api_pricelist_version_detail'),
+    path('api/pricelist/list/', PricelistListAPIView.as_view(), name='api_pricelist_list'),
     path('api/pricelist/<int:pk>/update/', PricelistUpdateView.as_view(), name='api_pricelist_update'),
     path('dashboard/pricelists/<int:pk>/', DashboardPricelistDetailView.as_view(), name='dashboard_pricelist_detail'),
     path('dashboard/pricelists/<int:pk>/edit/', DashboardPricelistEditView.as_view(), name='dashboard_pricelist_edit'),

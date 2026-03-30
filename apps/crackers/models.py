@@ -387,6 +387,7 @@ class Branch(CompanyBase):
 
 class Pricelist(models.Model):
     list_name = models.CharField(max_length=150, db_column='listName')
+    pl_version = models.CharField(max_length=10, default="1.0", db_column='plVersion')
     list_desc = models.TextField(blank=True, null=True, db_column='listDesc')
     company_id = models.IntegerField(null=True, blank=True, db_column='companyId', default=settings.COMPANY_ID)
     branch_id = models.IntegerField(null=True, blank=True, db_column='branchId', default=settings.BRANCH_ID)
@@ -398,9 +399,12 @@ class Pricelist(models.Model):
 
     class Meta:
         db_table = 'tbl_pricelist'
+        constraints = [
+            models.UniqueConstraint(fields=['list_name', 'pl_version'], name='unique_pricelist_version')
+        ]
 
     def __str__(self):
-        return self.list_name
+        return f"{self.list_name} - v{self.pl_version}"
 
 class PricelistItem(models.Model):
     pricelist = models.ForeignKey(Pricelist, on_delete=models.CASCADE, db_column='pricelistId', related_name='items')

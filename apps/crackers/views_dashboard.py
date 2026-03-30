@@ -4,7 +4,8 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.http import JsonResponse
 from django.views import View
-from django.db.models import Q
+from django.db.models import Q, Prefetch, IntegerField, Value, Min
+from django.db.models.functions import Cast, Coalesce
 from .models import Category, Product, OnlineSales, Customer, Pricelist, PricelistItem, Coupon
 from apps.users.models import User
 
@@ -197,9 +198,36 @@ class DashboardPricelistCreateView(LoginRequiredMixin, AdminRequiredMixin, Templ
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Fetch products grouped by category
-        context['categories'] = Category.objects.filter(is_active=True).prefetch_related('products').order_by('order')
+        # Fetch products grouped by category, ordered by integer code (numerical sorting)
+        product_qs = Product.objects.filter(is_active=True).select_related('unit').annotate(
+            code_int=Cast(Coalesce('code', Value('0')), output_field=IntegerField())
+        ).order_by('code_int')
+        
+        # Categories ordered by their lowest product code (matching frontend logic)
+        context['categories'] = Category.objects.filter(is_active=True).annotate(
+            cat_min_code_int=Coalesce(
+                Min(Cast(Coalesce('products__code', Value('0')), output_field=IntegerField())),
+                Value(2147483647) # Push empty categories to the end
+            )
+        ).prefetch_related(
+            Prefetch('products', queryset=product_qs)
+        ).order_by('cat_min_code_int', 'name')
+
+        # Get all unique pricelist names for the "View Pricelist" dropdown
+        context['existing_pricelists'] = Pricelist.objects.values_list('list_name', flat=True).distinct().order_by('list_name')
+        
         return context
+
+def get_next_pl_version(current_version):
+    try:
+        # Standard format: 1.0, 1.1... 1.10, 2.0
+        major, minor = map(int, current_version.split('.'))
+        if minor < 10:
+            return f"{major}.{minor+1}"
+        else:
+            return f"{major+1}.0"
+    except (ValueError, AttributeError, IndexError):
+        return "1.0"
 
 class PricelistSaveView(LoginRequiredMixin, AdminRequiredMixin, View):
     def post(self, request):
@@ -210,32 +238,44 @@ class PricelistSaveView(LoginRequiredMixin, AdminRequiredMixin, View):
             name = data.get('name')
             desc = data.get('description', '')
             items_data = data.get('items', [])
-
+            save_mode = data.get('save_mode', 'NEW_PRICELIST') # NEW_PRICELIST, NEW_VERSION
+            
             if not name:
                 return JsonResponse({'status': 'error', 'message': 'Pricelist name is required'}, status=400)
 
-            # Check if name already exists
-            if Pricelist.objects.filter(list_name=name).exists():
-                return JsonResponse({'status': 'error', 'message': 'A pricelist with this name already exists.'}, status=400)
-
             with transaction.atomic():
-                # 1. Insert into tbl_pricelist
+                version = "1.0"
+                if save_mode == 'NEW_VERSION':
+                    latest_pl = Pricelist.objects.filter(list_name=name).order_by('-created_at').first()
+                    if latest_pl:
+                        version = get_next_pl_version(latest_pl.pl_version)
+                
+                # Double check uniqueness for the calculated version
+                if Pricelist.objects.filter(list_name=name, pl_version=version).exists():
+                    # If it somehow already exists, it might be due to race conditions or manual entry
+                    # In a real app we might want to loop until unique, but here we return error
+                    return JsonResponse({
+                        'status': 'error', 
+                        'message': f'Version {version} for "{name}" already exists.'
+                    }, status=400)
+
+                # 1. Create the Pricelist Header
                 pricelist = Pricelist.objects.create(
                     list_name=name,
+                    pl_version=version,
                     list_desc=desc,
-                    is_active=1, # Default active
-                    # Use default values for other fields as per models
+                    is_active=1
                 )
 
-                # 2. Insert items into tbl_pricelist_items
+                # 2. Bulk Insert Items
+                items_to_create = []
                 for item in items_data:
-                    # Fetch product to get unit
                     try:
-                        product = Product.objects.get(id=item.get('product_id'))
-                        PricelistItem.objects.create(
+                        # Optimization: We assume product exists if passed from frontend
+                        items_to_create.append(PricelistItem(
                             pricelist=pricelist,
-                            product=product,
-                            unit=product.unit or '',
+                            product_id=item.get('product_id'),
+                            unit=item.get('unit', ''),
                             purchase_rate=item.get('purchase_rate', 0),
                             purchase_rate_inc=item.get('purchase_rate_inc', 0),
                             selling_price=item.get('selling_price', 0),
@@ -243,11 +283,20 @@ class PricelistSaveView(LoginRequiredMixin, AdminRequiredMixin, View):
                             shown_values=item.get('shown_values', 0),
                             shown_value_disc=item.get('shown_value_disc', 0),
                             sales_cost=item.get('sales_cost', 0)
-                        )
-                    except Product.DoesNotExist:
-                        continue # Skip invalid products
+                        ))
+                    except Exception:
+                        continue
+                
+                if items_to_create:
+                    PricelistItem.objects.bulk_create(items_to_create)
 
-            return JsonResponse({'status': 'success', 'message': 'Pricelist saved successfully!'})
+            return JsonResponse({
+                'status': 'success', 
+                'message': f'Pricelist "{name}" (v{version}) saved successfully!',
+                'redirect_url': f'/dashboard/pricelists/{pricelist.id}/'
+            })
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
 
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
@@ -268,8 +317,9 @@ class DashboardPricelistDetailView(LoginRequiredMixin, AdminRequiredMixin, Detai
             item.global_index = idx # Add global index for continuous numbering
             cat_name = item.product.category.name if item.product.category else "Uncategorized"
             if cat_name not in categories_data:
-                categories_data[cat_name] = []
-            categories_data[cat_name].append(item)
+                categories_data[cat_name] = {'items': [], 'total_pr': 0}
+            categories_data[cat_name]['items'].append(item)
+            categories_data[cat_name]['total_pr'] += (item.purchase_rate or 0)
         
         context['grouped_items'] = categories_data
         return context
@@ -281,66 +331,173 @@ class DashboardPricelistEditView(LoginRequiredMixin, AdminRequiredMixin, DetailV
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Get all categories like in create view
-        context['categories'] = Category.objects.filter(is_active=True).prefetch_related('products').order_by('order')
+        # Fetch products grouped by category, ordered by integer code (numerical sorting)
+        product_qs = Product.objects.filter(is_active=True).select_related('unit').annotate(
+            code_int=Cast(Coalesce('code', Value('0')), output_field=IntegerField())
+        ).order_by('code_int')
+        
+        # Categories ordered by their lowest product code (matching frontend logic)
+        context['categories'] = Category.objects.filter(is_active=True).annotate(
+            cat_min_code_int=Coalesce(
+                Min(Cast(Coalesce('products__code', Value('0')), output_field=IntegerField())),
+                Value(2147483647) # Push empty categories to the end
+            )
+        ).prefetch_related(
+            Prefetch('products', queryset=product_qs)
+        ).order_by('cat_min_code_int', 'name')
         
         # Get current items for this pricelist to pre-populate
         current_items = {item.product_id: item for item in self.object.items.all()}
         context['current_items'] = current_items
+        context['current_product_ids'] = list(current_items.keys())
+        
+        # Get all versions for this pricelist name
+        context['all_versions'] = Pricelist.objects.filter(list_name=self.object.list_name).order_by('-created_at')
+        
         return context
 
 class PricelistUpdateView(LoginRequiredMixin, AdminRequiredMixin, View):
+    def patch(self, request, pk):
+        return self.post(request, pk)
+
     def post(self, request, pk):
         import json
         from django.db import transaction
         try:
-            pricelist = Pricelist.objects.get(pk=pk)
+            current_pricelist = Pricelist.objects.get(pk=pk)
             data = json.loads(request.body)
             name = data.get('name')
             desc = data.get('description', '')
             items_data = data.get('items', [])
-
-            if not name:
-                return JsonResponse({'status': 'error', 'message': 'Pricelist name is required'}, status=400)
-
-            # Check if name already exists (excluding current)
-            if Pricelist.objects.filter(list_name=name).exclude(pk=pk).exists():
-                return JsonResponse({'status': 'error', 'message': 'A pricelist with this name already exists.'}, status=400)
-
+            save_mode = data.get('save_mode', 'OVERWRITE') # OVERWRITE, NEW_VERSION, NEW_PRICELIST
+            
             with transaction.atomic():
-                # 1. Update tbl_pricelist
-                pricelist.list_name = name
-                pricelist.list_desc = desc
-                pricelist.save()
-
-                # 2. Update items - simplest is delete and re-insert
-                PricelistItem.objects.filter(pricelist=pricelist).delete()
+                if save_mode == 'OVERWRITE':
+                    # Check if name/version unique if name changed
+                    if name != current_pricelist.list_name:
+                        if Pricelist.objects.filter(list_name=name, pl_version=current_pricelist.pl_version).exists():
+                             return JsonResponse({'status': 'error', 'message': f'Version {current_pricelist.pl_version} for "{name}" already exists.'}, status=400)
+                    
+                    current_pricelist.list_name = name
+                    current_pricelist.list_desc = desc
+                    current_pricelist.save()
+                    
+                    # Update items
+                    PricelistItem.objects.filter(pricelist=current_pricelist).delete()
+                    target_pricelist = current_pricelist
                 
-                for item in items_data:
-                    from .models import Product
-                    try:
-                        product = Product.objects.get(id=item.get('product_id'))
-                        PricelistItem.objects.create(
-                            pricelist=pricelist,
-                            product=product,
-                            unit=product.unit or '',
-                            purchase_rate=item.get('purchase_rate', 0),
-                            purchase_rate_inc=item.get('purchase_rate_inc', 0),
-                            selling_price=item.get('selling_price', 0),
-                            customer_sp=item.get('customer_sp', 0),
-                            shown_values=item.get('shown_values', 0),
-                            shown_value_disc=item.get('shown_value_disc', 0),
-                            sales_cost=item.get('sales_cost', 0)
-                        )
-                    except Product.DoesNotExist:
-                        continue
+                elif save_mode == 'NEW_VERSION':
+                    # Incrementing the version (handling 1.10 -> 2.0 logic)
+                    latest_v = Pricelist.objects.filter(list_name=name).order_by('-created_at').first()
+                    version = get_next_pl_version(latest_v.pl_version if latest_v else "1.0")
+                    
+                    target_pricelist = Pricelist.objects.create(
+                        list_name=name,
+                        pl_version=version,
+                        list_desc=desc,
+                        is_active=1
+                    )
+                
+                else: # NEW_PRICELIST (name changed and user wants to start fresh v1.0)
+                    target_pricelist = Pricelist.objects.create(
+                        list_name=name,
+                        pl_version="1.0",
+                        list_desc=desc,
+                        is_active=1
+                    )
 
-            return JsonResponse({'status': 'success', 'message': 'Pricelist updated successfully!'})
+                # Insert items
+                items_to_create = []
+                for item in items_data:
+                    items_to_create.append(PricelistItem(
+                        pricelist=target_pricelist,
+                        product_id=item.get('product_id'),
+                        unit=item.get('unit', ''),
+                        purchase_rate=item.get('purchase_rate', 0),
+                        purchase_rate_inc=item.get('purchase_rate_inc', 0),
+                        selling_price=item.get('selling_price', 0),
+                        customer_sp=item.get('customer_sp', 0),
+                        shown_values=item.get('shown_values', 0),
+                        shown_value_disc=item.get('shown_value_disc', 0),
+                        sales_cost=item.get('sales_cost', 0)
+                    ))
+                
+                if items_to_create:
+                    PricelistItem.objects.bulk_create(items_to_create)
+
+            return JsonResponse({
+                'status': 'success', 
+                'message': f'Pricelist updated successfully!',
+                'redirect_url': f'/dashboard/pricelists/{target_pricelist.id}/'
+            })
+        except Pricelist.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': 'Pricelist not found'}, status=404)
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
 
         except Pricelist.DoesNotExist:
             return JsonResponse({'status': 'error', 'message': 'Pricelist not found'}, status=404)
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+
+class PricelistCheckNameAPIView(LoginRequiredMixin, AdminRequiredMixin, View):
+    def get(self, request):
+        name = request.GET.get('name')
+        if not name:
+            return JsonResponse({'status': 'error', 'message': 'Name is required'}, status=400)
+        
+        pricelists = Pricelist.objects.filter(list_name=name)
+        if pricelists.exists():
+            # Sort versions according to user requirement: 1.0, 1.1... 1.10, 2.0
+            def sort_key(v):
+                parts = v.split('.')
+                return [int(p) for p in parts]
+            
+            versions = [p.pl_version for p in pricelists]
+            versions.sort(key=sort_key)
+            latest = versions[-1]
+            
+            return JsonResponse({
+                'exists': True, 
+                'latest_version': latest,
+                'count': len(versions)
+            })
+        return JsonResponse({'exists': False})
+
+class PricelistVersionDetailAPIView(LoginRequiredMixin, AdminRequiredMixin, View):
+    def get(self, request):
+        name = request.GET.get('name')
+        version = request.GET.get('version')
+        
+        if not name:
+            return JsonResponse({'status': 'error', 'message': 'Name is required'}, status=400)
+            
+        filters = {'list_name': name}
+        if version:
+            filters['pl_version'] = version
+        
+        pricelist = Pricelist.objects.filter(**filters).order_by('-created_at').first()
+        if not pricelist:
+            return JsonResponse({'status': 'error', 'message': 'Pricelist version not found'}, status=404)
+            
+        items = pricelist.items.all().values(
+            'product_id', 'purchase_rate', 'purchase_rate_inc', 
+            'selling_price', 'customer_sp', 'shown_values', 
+            'shown_value_disc', 'sales_cost'
+        )
+        
+        # Get all versions for this name for population if needed
+        all_versions = Pricelist.objects.filter(list_name=name).values_list('pl_version', flat=True).distinct()
+        
+        return JsonResponse({
+            'status': 'success',
+            'id': pricelist.id,
+            'name': pricelist.list_name,
+            'version': pricelist.pl_version,
+            'description': pricelist.list_desc,
+            'items': list(items),
+            'all_versions': list(all_versions)
+        })
 
 class DashboardCouponListView(LoginRequiredMixin, AdminRequiredMixin, ListView):
     model = Coupon
@@ -364,3 +521,7 @@ class CouponToggleActiveView(LoginRequiredMixin, AdminRequiredMixin, View):
             return JsonResponse({'status': 'success', 'is_active': coupon.is_active})
         except Coupon.DoesNotExist:
             return JsonResponse({'status': 'error', 'message': 'Coupon not found'}, status=404)
+class PricelistListAPIView(LoginRequiredMixin, AdminRequiredMixin, View):
+    def get(self, request):
+        names = Pricelist.objects.all().values_list('list_name', flat=True).distinct().order_by('list_name')
+        return JsonResponse({'status': 'success', 'names': list(names)})

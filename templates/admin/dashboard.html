@@ -12,6 +12,51 @@
             <p class="text-gray-500 font-bold uppercase tracking-widest text-[10px]">Overall platform control and monitoring</p>
         </div>
         <div class="flex items-center space-x-4">
+            <!-- Period Filter Dropdown (Premium 2026 Style) -->
+            <div class="relative inline-block text-left" id="period-dropdown-container">
+                <button type="button" onclick="togglePeriodDropdown()" class="inline-flex items-center justify-center w-full rounded-full border border-auraa-red/30 shadow-lg px-6 py-2 bg-auraa-red text-[10px] font-black uppercase tracking-[0.2em] text-white hover:bg-red-600 focus:outline-none transition-all ring-4 ring-auraa-red/10">
+                    <span>{{ period_label }}</span>
+                    <i data-lucide="chevron-down" id="period-chevron" class="ml-2 h-4 w-4 transition-transform duration-300 text-white/80"></i>
+                </button>
+
+                <div id="period-dropdown-menu" class="hidden origin-top-right absolute right-0 mt-3 w-56 rounded-[2rem] shadow-2xl bg-white/95 backdrop-blur-xl ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 focus:outline-none z-50 overflow-hidden border border-gray-100 animate-in fade-in zoom-in duration-200">
+                    <div class="py-2">
+                        <a href="?period=today" class="flex items-center px-6 py-3 text-[10px] font-black uppercase tracking-widest text-gray-600 hover:bg-auraa-red hover:text-white transition-all group/opt">
+                            <span class="w-1.5 h-1.5 rounded-full bg-auraa-red mr-3 group-hover/opt:bg-white transition-colors"></span>
+                            Today
+                        </a>
+                        <a href="?period=yesterday" class="flex items-center px-6 py-3 text-[10px] font-black uppercase tracking-widest text-gray-600 hover:bg-auraa-red hover:text-white transition-all group/opt">
+                            <span class="w-1.5 h-1.5 rounded-full bg-gray-300 mr-3 group-hover/opt:bg-white transition-colors"></span>
+                            Yesterday
+                        </a>
+                        <a href="?period=this_week" class="flex items-center px-6 py-3 text-[10px] font-black uppercase tracking-widest text-gray-600 hover:bg-auraa-red hover:text-white transition-all group/opt">
+                            <span class="w-1.5 h-1.5 rounded-full bg-blue-500 mr-3 group-hover/opt:bg-white transition-colors"></span>
+                            This Week
+                        </a>
+                        <a href="?period=last_week" class="flex items-center px-6 py-3 text-[10px] font-black uppercase tracking-widest text-gray-600 hover:bg-auraa-red hover:text-white transition-all group/opt">
+                            <span class="w-1.5 h-1.5 rounded-full bg-blue-300 mr-3 group-hover/opt:bg-white transition-colors"></span>
+                            Last Week
+                        </a>
+                        <a href="?period=this_month" class="flex items-center px-6 py-3 text-[10px] font-black uppercase tracking-widest text-gray-600 hover:bg-auraa-red hover:text-white transition-all group/opt">
+                            <span class="w-1.5 h-1.5 rounded-full bg-orange-500 mr-3 group-hover/opt:bg-white transition-colors"></span>
+                            This Month
+                        </a>
+                        <a href="?period=last_month" class="flex items-center px-6 py-3 text-[10px] font-black uppercase tracking-widest text-gray-600 hover:bg-auraa-red hover:text-white transition-all group/opt">
+                            <span class="w-1.5 h-1.5 rounded-full bg-orange-300 mr-3 group-hover/opt:bg-white transition-colors"></span>
+                            Last Month
+                        </a>
+                        <a href="?period=this_year" class="flex items-center px-6 py-3 text-[10px] font-black uppercase tracking-widest text-gray-600 hover:bg-auraa-red hover:text-white transition-all group/opt">
+                            <span class="w-1.5 h-1.5 rounded-full bg-green-500 mr-3 group-hover/opt:bg-white transition-colors"></span>
+                            This Year
+                        </a>
+                        <a href="?period=last_year" class="flex items-center px-6 py-3 text-[10px] font-black uppercase tracking-widest text-gray-600 hover:bg-auraa-red hover:text-white transition-all group/opt">
+                            <span class="w-1.5 h-1.5 rounded-full bg-green-300 mr-3 group-hover/opt:bg-white transition-colors"></span>
+                            Last Year
+                        </a>
+                    </div>
+                </div>
+            </div>
+
             <div id="system-status-indicator" class="flex items-center space-x-2 px-4 py-2 bg-green-50 text-green-500 rounded-full border border-green-100 font-black uppercase tracking-widest text-[9px]">
                 <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
                 <span>System Operational</span>
@@ -130,4 +175,31 @@
         </div>
     </div>
 </div>
+
+<script>
+    function togglePeriodDropdown() {
+        const menu = document.getElementById('period-dropdown-menu');
+        const chevron = document.getElementById('period-chevron');
+        const isHidden = menu.classList.contains('hidden');
+        
+        if (isHidden) {
+            menu.classList.remove('hidden');
+            chevron.classList.add('rotate-180');
+        } else {
+            menu.classList.add('hidden');
+            chevron.classList.remove('rotate-180');
+        }
+    }
+
+    // Close on click outside
+    window.addEventListener('click', function(e) {
+        const container = document.getElementById('period-dropdown-container');
+        const menu = document.getElementById('period-dropdown-menu');
+        const chevron = document.getElementById('period-chevron');
+        if (container && !container.contains(e.target)) {
+            menu.classList.add('hidden');
+            chevron.classList.remove('rotate-180');
+        }
+    });
+</script>
 {% endblock %}

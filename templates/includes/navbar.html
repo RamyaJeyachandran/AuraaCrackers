@@ -1,5 +1,5 @@
 {% load static %}
-<header class="fixed top-0 w-full z-[99999]">
+<header class="{% if request.resolver_match.url_name == 'product_list' %}relative bg-white{% else %}fixed top-0{% endif %} w-full z-[99999]">
     {% include 'includes/topbar.html' %}
     <nav id="main-nav" class="w-full transition-all duration-300 bg-white py-3">
         <div class="max-w-7xl mx-auto px-4 lg:px-8">
@@ -50,9 +50,23 @@
                                 <span class="relative text-[11px] font-black uppercase tracking-wider text-white header-username">{{ user.username }}</span>
                                 <i data-lucide="chevron-down" class="w-3 h-3 text-white/50 group-hover:text-white transition-transform group-hover:rotate-180"></i>
                             </button>
-                            <div class="absolute top-full right-0 mt-4 w-56 bg-white rounded-2xl shadow-2xl border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
-                                <a href="{% url 'profile' %}" class="flex items-center space-x-3 px-6 py-3 text-[10px] font-black uppercase text-gray-600 hover:text-auraa-red transition-all"><i data-lucide="user-cog" class="w-4 h-4"></i><span>My Profile</span></a>
-                                <a href="{% url 'logout' %}" class="flex items-center space-x-3 px-6 py-3 text-[10px] font-black uppercase text-auraa-red hover:bg-red-50 transition-all"><i data-lucide="log-out" class="w-4 h-4"></i><span>Logout</span></a>
+                            <div class="absolute top-full right-0 mt-4 w-56 bg-white rounded-2xl shadow-2xl border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 overflow-hidden">
+                                <a href="{% url 'profile' %}" class="flex items-center space-x-3 px-6 py-3 text-[10px] font-black uppercase text-gray-600 hover:text-auraa-red hover:bg-gray-50 transition-all">
+                                    <i data-lucide="user-cog" class="w-4 h-4"></i>
+                                    <span>My Profile</span>
+                                </a>
+                                <a href="{% url 'order_history' %}" class="flex items-center space-x-3 px-6 py-3 text-[10px] font-black uppercase text-gray-600 hover:text-auraa-red hover:bg-gray-50 transition-all">
+                                    <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+                                    <span>My Orders</span>
+                                </a>
+                                <a href="{% url 'order_status' %}" class="flex items-center space-x-3 px-6 py-3 text-[10px] font-black uppercase text-gray-600 hover:text-auraa-red hover:bg-gray-50 transition-all border-b border-gray-50">
+                                    <i data-lucide="truck" class="w-4 h-4"></i>
+                                    <span>Order Status</span>
+                                </a>
+                                <a href="{% url 'logout' %}" class="flex items-center space-x-3 px-6 py-4 text-[10px] font-black uppercase text-auraa-red hover:bg-red-50 transition-all">
+                                    <i data-lucide="log-out" class="w-4 h-4"></i>
+                                    <span>Logout</span>
+                                </a>
                             </div>
                         </div>
                         {% else %}

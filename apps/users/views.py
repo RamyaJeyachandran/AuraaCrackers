@@ -201,6 +201,10 @@ class AdminRegistrationAPIView(View):
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
 
+from django.utils import timezone
+from datetime import timedelta
+from django.db.models import Q
+
 class AdminDashboardView(LoginRequiredMixin, TemplateView):
     template_name = 'admin/dashboard.html'
 
@@ -212,14 +216,72 @@ class AdminDashboardView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         
+        today = timezone.localtime().date()
+        period = self.request.GET.get('period', 'this_week')
+        
+        # Base QuerySets
+        sales_qs = OnlineSales.objects.all()
+        orders_qs = OnlineSales.objects.all()
+        customers_qs = Customer.objects.all()
+        
+        # Period filtering logic
+        if period == 'today':
+            filter_q = Q(trans_dt__date=today)
+            sales_qs = sales_qs.filter(filter_q)
+            orders_qs = orders_qs.filter(filter_q)
+            customers_qs = customers_qs.filter(created_at__date=today)
+        elif period == 'yesterday':
+            yesterday = today - timedelta(days=1)
+            filter_q = Q(trans_dt__date=yesterday)
+            sales_qs = sales_qs.filter(filter_q)
+            orders_qs = orders_qs.filter(filter_q)
+            customers_qs = customers_qs.filter(created_at__date=yesterday)
+        elif period == 'this_week':
+            start_of_week = today - timedelta(days=today.weekday())
+            filter_q = Q(trans_dt__date__gte=start_of_week)
+            sales_qs = sales_qs.filter(filter_q)
+            orders_qs = orders_qs.filter(filter_q)
+            customers_qs = customers_qs.filter(created_at__date__gte=start_of_week)
+        elif period == 'last_week':
+            start_of_this_week = today - timedelta(days=today.weekday())
+            start_of_last_week = start_of_this_week - timedelta(days=7)
+            filter_q = Q(trans_dt__date__gte=start_of_last_week, trans_dt__date__lt=start_of_this_week)
+            sales_qs = sales_qs.filter(filter_q)
+            orders_qs = orders_qs.filter(filter_q)
+            customers_qs = customers_qs.filter(created_at__date__gte=start_of_last_week, created_at__date__lt=start_of_this_week)
+        elif period == 'this_month':
+            filter_q = Q(trans_dt__year=today.year, trans_dt__month=today.month)
+            sales_qs = sales_qs.filter(filter_q)
+            orders_qs = orders_qs.filter(filter_q)
+            customers_qs = customers_qs.filter(created_at__year=today.year, created_at__month=today.month)
+        elif period == 'last_month':
+            last_month_date = today.replace(day=1) - timedelta(days=1)
+            filter_q = Q(trans_dt__year=last_month_date.year, trans_dt__month=last_month_date.month)
+            sales_qs = sales_qs.filter(filter_q)
+            orders_qs = orders_qs.filter(filter_q)
+            customers_qs = customers_qs.filter(created_at__year=last_month_date.year, created_at__month=last_month_date.month)
+        elif period == 'this_year':
+            filter_q = Q(trans_dt__year=today.year)
+            sales_qs = sales_qs.filter(filter_q)
+            orders_qs = orders_qs.filter(filter_q)
+            customers_qs = customers_qs.filter(created_at__year=today.year)
+        elif period == 'last_year':
+            filter_q = Q(trans_dt__year=today.year - 1)
+            sales_qs = sales_qs.filter(filter_q)
+            orders_qs = orders_qs.filter(filter_q)
+            customers_qs = customers_qs.filter(created_at__year=today.year - 1)
+
         # Real statistics
-        context['total_sales'] = OnlineSales.objects.aggregate(total=Sum('grand_amt'))['total'] or 0
-        context['total_orders'] = OnlineSales.objects.count()
-        context['total_customers'] = Customer.objects.count()
+        context['total_sales'] = sales_qs.aggregate(total=Sum('grand_amt'))['total'] or 0
+        context['total_orders'] = orders_qs.count()
+        context['total_customers'] = customers_qs.count()
         context['total_products'] = Product.objects.count()
         
-        # Recent orders for the dashboard feed
+        # Recent orders (Overall last 3 for live feed)
         context['recent_orders'] = OnlineSales.objects.all().order_by('-trans_dt')[:3].select_related('customer')
+        
+        context['current_period'] = period
+        context['period_label'] = period.replace('_', ' ').title()
         
         return context
 

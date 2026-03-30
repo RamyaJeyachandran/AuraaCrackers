@@ -216,14 +216,14 @@
         </div>
     </div>
 
-    <div class="container mx-auto px-6 relative z-10 text-center space-y-12">
+    <div class="container mx-auto px-4 md:px-6 relative z-10 text-center space-y-6 md:space-y-12 pt-28 md:pt-0">
         
-        <h1 class="text-4xl md:text-[8rem] lg:text-[10rem] font-black uppercase tracking-tighter leading-[0.85] mb-8 md:mb-12 mix-blend-plus-lighter opacity-0 fade-up">
+        <h1 class="text-4xl md:text-[8rem] lg:text-[10rem] font-black uppercase tracking-tighter leading-[0.85] mb-4 md:mb-12 mix-blend-plus-lighter opacity-0 fade-up">
             Why <br /> <span class="text-[#0A325A] italic drop-shadow-[0_0_30px_rgba(10,50,90,0.3)]">Choose</span> <br /> Auraa?
         </h1>
 
         <div class="max-w-4xl mx-auto kinetic-card layer-depth-1 opacity-0 fade-up" style="transform: translateY(50px);">
-            <p class="text-gray-600 text-2xl md:text-3xl font-light leading-relaxed">
+            <p class="text-gray-600 text-lg md:text-3xl font-light leading-relaxed">
                 Beyond manufacturing, we create <span class="text-gray-900 font-bold">Immersive Celebrations</span>. Discover why thousands of families trust us for their most precious moments.
             </p>
         </div>
@@ -231,39 +231,39 @@
 </section>
 
 <!-- Section 1: Customer Focused -->
-<section id="customer" class="immersive-section">
-    <div class="container mx-auto px-6 lg:px-20 grid lg:grid-cols-2 gap-24 items-center">
-        <div class="order-2 lg:order-1 space-y-12">
+<section id="customer" class="immersive-section overflow-hidden">
+    <div class="container mx-auto px-6 lg:px-20 grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
+        <div class="order-2 lg:order-1 space-y-8 md:space-y-12">
             <div class="kinetic-card layer-depth-2">
-                <div class="w-20 h-1 bg-auraa-red mb-6 md:mb-10 auraa-glow-red"></div>
-                <h2 class="text-3xl md:text-5xl lg:text-7xl font-black tracking-tighter uppercase leading-none mb-6 md:mb-8">Customer <br/><span class="text-gray-400">Focused</span></h2>
-                <p class="text-xl text-gray-500 font-medium leading-relaxed mb-10">
+                <div class="w-16 md:w-20 h-1 bg-auraa-red mb-6 md:mb-10 auraa-glow-red"></div>
+                <h2 class="text-3xl md:text-5xl lg:text-7xl font-black tracking-tighter uppercase leading-none mb-4 md:mb-8">Customer <br/><span class="text-gray-400">Focused</span></h2>
+                <p class="text-lg md:text-xl text-gray-500 font-medium leading-relaxed mb-6 md:mb-10">
                     We place our customers at the center of our 3D ecosystem, ensuring every purchase delivers unmatched satisfaction and happiness.
                 </p>
-                <div class="bg-gray-50 p-10 rounded-3xl border border-gray-100 italic text-2xl text-gray-700 layer-depth-1">
+                <div class="bg-gray-50 p-6 md:p-10 rounded-2xl md:rounded-3xl border border-gray-100 italic text-xl md:text-2xl text-gray-700 layer-depth-1">
                     "Your celebration is our canvas; your happiness, our greatest digital masterpiece."
                 </div>
             </div>
         </div>
-        <div class="order-1 lg:order-2 floating-scene">
-            <div class="absolute w-[500px] h-[500px] bg-auraa-red/5 rounded-full blur-[120px] animate-pulse"></div>
-            <img src="{% static 'images/why_choose/customer.png' %}" class="asset-3d max-w-full h-auto layer-depth-3 rounded-[4rem] border border-white/10" alt="Customer Focused 3D">
+        <div class="order-1 lg:order-2 floating-scene min-h-[300px] md:min-h-[400px]">
+            <div class="absolute w-[280px] h-[280px] md:w-[500px] md:h-[500px] bg-auraa-red/5 rounded-full blur-[60px] md:blur-[120px] animate-pulse"></div>
+            <img src="{% static 'images/why_choose/customer.png' %}" class="asset-3d max-w-[80%] md:max-w-full h-auto layer-depth-3 rounded-[2.5rem] md:rounded-[4rem] border border-white/10" alt="Customer Focused 3D">
         </div>
     </div>
 </section>
 
 <!-- Section 2: Safety First -->
-<section id="safety" class="immersive-section bg-white/5">
-    <div class="container mx-auto px-6 lg:px-20 grid lg:grid-cols-2 gap-24 items-center">
-        <div class="order-1 floating-scene">
-            <div class="absolute w-[500px] h-[500px] bg-orange-500/5 rounded-full blur-[120px]"></div>
-            <img src="{% static 'images/why_choose/safety.png' %}" class="asset-3d max-w-full h-auto layer-depth-3 rounded-[4rem]" alt="Safety First 3D">
+<section id="safety" class="immersive-section bg-white/5 overflow-hidden">
+    <div class="container mx-auto px-6 lg:px-20 grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
+        <div class="order-1 floating-scene min-h-[300px] md:min-h-[400px]">
+            <div class="absolute w-full max-w-[280px] aspect-square md:max-w-[500px] bg-orange-500/5 rounded-full blur-[60px] md:blur-[120px]"></div>
+            <img src="{% static 'images/why_choose/safety.png' %}" class="asset-3d max-w-[80%] md:max-w-full h-auto layer-depth-3 rounded-[2.5rem] md:rounded-[4rem]" alt="Safety First 3D">
         </div>
-        <div class="order-2 space-y-12">
+        <div class="order-2 space-y-8 md:space-y-12">
             <div class="kinetic-card layer-depth-2">
-                <div class="w-20 h-1 bg-orange-500 mb-10 shadow-[0_0_20px_rgba(249,115,22,0.5)]"></div>
-                <h2 class="text-4xl lg:text-5xl font-black tracking-tighter uppercase leading-none mb-8">Safety <br/><span class="text-gray-400">Uncompromised</span></h2>
-                <p class="text-xl text-gray-500 font-medium leading-relaxed mb-10">
+                <div class="w-16 md:w-20 h-1 bg-orange-500 mb-6 md:mb-10 shadow-[0_0_20px_rgba(249,115,22,0.5)]"></div>
+                <h2 class="text-3xl md:text-5xl font-black tracking-tighter uppercase leading-none mb-4 md:mb-8">Safety <br/><span class="text-gray-400">Uncompromised</span></h2>
+                <p class="text-lg md:text-xl text-gray-500 font-medium leading-relaxed mb-6 md:mb-10">
                     Safety isn't just a standard; it's our core architecture. We ensure every product meets rigorous global safety metrics.
                 </p>
                 <div class="grid grid-cols-1 gap-6">
@@ -280,44 +280,44 @@
 </section>
 
 <!-- Section 3: Trusted & Transparent -->
-<section id="trust" class="immersive-section">
-    <div class="container mx-auto px-6 lg:px-20 grid lg:grid-cols-2 gap-24 items-center">
-        <div class="order-2 lg:order-1 space-y-12">
+<section id="trust" class="immersive-section overflow-hidden">
+    <div class="container mx-auto px-6 lg:px-20 grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
+        <div class="order-2 lg:order-1 space-y-8 md:space-y-12">
             <div class="kinetic-card layer-depth-2">
-                <div class="w-20 h-1 bg-blue-500 mb-10 shadow-[0_0_20px_rgba(59,130,246,0.5)]"></div>
-                <h2 class="text-4xl lg:text-5xl font-black tracking-tighter uppercase leading-none mb-8">Absolute <br/><span class="text-gray-400">Transparency</span></h2>
-                <p class="text-xl text-gray-500 font-medium leading-relaxed mb-10">
+                <div class="w-16 md:w-20 h-1 bg-blue-500 mb-6 md:mb-10 shadow-[0_0_20px_rgba(59,130,246,0.5)]"></div>
+                <h2 class="text-3xl md:text-5xl font-black tracking-tighter uppercase leading-none mb-4 md:mb-8">Absolute <br/><span class="text-gray-400">Transparency</span></h2>
+                <p class="text-lg md:text-xl text-gray-500 font-medium leading-relaxed mb-6 md:mb-10">
                     Trust is the air we breathe. We maintain total clarity in pricing, sourcing, and communication with our partners.
                 </p>
-                <div class="bg-blue-50 p-10 rounded-3xl border border-blue-100 italic text-2xl text-blue-900 layer-depth-1">
+                <div class="bg-blue-50 p-6 md:p-10 rounded-2xl md:rounded-3xl border border-blue-100 italic text-xl md:text-2xl text-blue-900 layer-depth-1">
                     "Clarity in vision, integrity in action. That is the Auraa promise."
                 </div>
             </div>
         </div>
-        <div class="order-1 lg:order-2 floating-scene">
-            <div class="absolute w-[500px] h-[500px] bg-blue-600/5 rounded-full blur-[120px]"></div>
-            <img src="{% static 'images/why_choose/trust.png' %}" class="asset-3d max-w-full h-auto layer-depth-3 rounded-[4rem]" alt="Trust 3D">
+        <div class="order-1 lg:order-2 floating-scene min-h-[300px] md:min-h-[400px]">
+            <div class="absolute w-full max-w-[280px] aspect-square md:max-w-[500px] bg-blue-600/5 rounded-full blur-[60px] md:blur-[120px]"></div>
+            <img src="{% static 'images/why_choose/trust.png' %}" class="asset-3d max-w-[80%] md:max-w-full h-auto layer-depth-3 rounded-[2.5rem] md:rounded-[4rem]" alt="Trust 3D">
         </div>
     </div>
 </section>
 
 <!-- Section 4: Responsible Practices -->
-<section id="practices" class="immersive-section bg-white/5">
-    <div class="container mx-auto px-6 lg:px-20 grid lg:grid-cols-2 gap-24 items-center">
-        <div class="order-1 floating-scene">
-            <div class="absolute w-[500px] h-[500px] bg-emerald-500/5 rounded-full blur-[120px]"></div>
-            <img src="{% static 'images/why_choose/practices.png' %}" class="asset-3d max-w-full h-auto layer-depth-3 rounded-[4rem]" alt="Responsible 3D">
+<section id="practices" class="immersive-section bg-white/5 overflow-hidden">
+    <div class="container mx-auto px-6 lg:px-20 grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
+        <div class="order-1 floating-scene min-h-[300px] md:min-h-[400px]">
+            <div class="absolute w-full max-w-[280px] aspect-square md:max-w-[500px] bg-emerald-500/5 rounded-full blur-[60px] md:blur-[120px]"></div>
+            <img src="{% static 'images/why_choose/practices.png' %}" class="asset-3d max-w-[80%] md:max-w-full h-auto layer-depth-3 rounded-[2.5rem] md:rounded-[4rem]" alt="Responsible 3D">
         </div>
-        <div class="order-2 space-y-12">
+        <div class="order-2 space-y-8 md:space-y-12">
             <div class="kinetic-card layer-depth-2">
-                <div class="w-20 h-1 bg-emerald-500 mb-10 shadow-[0_0_20px_rgba(16,185,129,0.5)]"></div>
-                <h2 class="text-4xl lg:text-5xl font-black tracking-tighter uppercase leading-none mb-8">Green <br/><span class="text-gray-400">Responsibility</span></h2>
-                <p class="text-xl text-gray-500 font-medium leading-relaxed mb-10">
+                <div class="w-16 md:w-20 h-1 bg-emerald-500 mb-6 md:mb-10 shadow-[0_0_20px_rgba(16,185,129,0.5)]"></div>
+                <h2 class="text-3xl md:text-5xl font-black tracking-tighter uppercase leading-none mb-4 md:mb-8">Green <br/><span class="text-gray-400">Responsibility</span></h2>
+                <p class="text-lg md:text-xl text-gray-500 font-medium leading-relaxed mb-6 md:mb-10">
                     We balance the thrill of the explosion with the peace of the environment through sustainable and ethical manufacturing.
                 </p>
                 <div class="flex flex-wrap gap-4">
-                    <span class="px-6 py-3 bg-emerald-50 border border-emerald-100 rounded-full text-[10px] font-black uppercase tracking-widest text-emerald-600">Ethical Sourcing</span>
-                    <span class="px-6 py-3 bg-gray-50 border border-gray-100 rounded-full text-[10px] font-black uppercase tracking-widest text-gray-500">Eco-Friendly Tech</span>
+                    <span class="px-5 py-2.5 md:px-6 md:py-3 bg-emerald-50 border border-emerald-100 rounded-full text-[8px] md:text-[10px] font-black uppercase tracking-widest text-emerald-600">Ethical Sourcing</span>
+                    <span class="px-5 py-2.5 md:px-6 md:py-3 bg-gray-50 border border-gray-100 rounded-full text-[8px] md:text-[10px] font-black uppercase tracking-widest text-gray-500">Eco-Friendly Tech</span>
                 </div>
             </div>
         </div>
@@ -325,23 +325,23 @@
 </section>
 
 <!-- Section 5: Innovation -->
-<section id="innovation" class="immersive-section">
-    <div class="container mx-auto px-6 lg:px-20 grid lg:grid-cols-2 gap-24 items-center">
-        <div class="order-2 lg:order-1 space-y-12">
+<section id="innovation" class="immersive-section overflow-hidden">
+    <div class="container mx-auto px-6 lg:px-20 grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
+        <div class="order-2 lg:order-1 space-y-8 md:space-y-12">
             <div class="kinetic-card layer-depth-2">
-                <div class="w-20 h-1 bg-purple-500 mb-10 shadow-[0_0_20px_rgba(168,85,247,0.5)]"></div>
-                <h2 class="text-5xl lg:text-7xl font-black tracking-tighter uppercase leading-none mb-8">Future <br/><span class="text-gray-400">Innovation</span></h2>
-                <p class="text-xl text-gray-500 font-medium leading-relaxed mb-10">
+                <div class="w-16 md:w-20 h-1 bg-purple-500 mb-6 md:mb-10 shadow-[0_0_20px_rgba(168,85,247,0.5)]"></div>
+                <h2 class="text-3xl md:text-5xl lg:text-7xl font-black tracking-tighter uppercase leading-none mb-4 md:mb-8">Future <br/><span class="text-gray-400">Innovation</span></h2>
+                <p class="text-lg md:text-xl text-gray-500 font-medium leading-relaxed mb-6 md:mb-10">
                     The bridge between tradition and the future. We reinvent the firework experience every single year.
                 </p>
-                <div class="p-8 bg-gray-50 border border-gray-100 rounded-[3rem] layer-depth-1">
-                    <p class="text-gray-700 font-medium">Continuously seeking smarter ways to ignite joy across the nation.</p>
+                <div class="p-6 md:p-8 bg-gray-50 border border-gray-100 rounded-[2rem] md:rounded-[3rem] layer-depth-1">
+                    <p class="text-lg text-gray-700 font-medium">Continuously seeking smarter ways to ignite joy across the nation.</p>
                 </div>
             </div>
         </div>
-        <div class="order-1 lg:order-2 floating-scene">
-            <div class="absolute w-[500px] h-[500px] bg-purple-600/10 rounded-full blur-[150px]"></div>
-            <img src="{% static 'images/why_choose/innovation.png' %}" class="asset-3d max-w-full h-auto layer-depth-3 rounded-[4rem]" alt="Innovation 3D">
+        <div class="order-1 lg:order-2 floating-scene min-h-[300px] md:min-h-[400px]">
+            <div class="absolute w-full max-w-[280px] aspect-square md:max-w-[500px] bg-purple-600/10 rounded-full blur-[80px] md:blur-[150px]"></div>
+            <img src="{% static 'images/why_choose/innovation.png' %}" class="asset-3d max-w-[80%] md:max-w-full h-auto layer-depth-3 rounded-[2.5rem] md:rounded-[4rem]" alt="Innovation 3D">
         </div>
     </div>
 </section>

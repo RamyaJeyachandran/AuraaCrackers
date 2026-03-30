@@ -19,14 +19,20 @@
     function toggleCartSidebar() {
         if (!cartSidebar) return;
         if (cartSidebar.classList.contains('translate-x-full')) {
-            cartSidebar.classList.remove('translate-x-full');
+            cartSidebar.classList.remove('invisible');
+            setTimeout(() => {
+                cartSidebar.classList.remove('translate-x-full');
+            }, 10);
             cartBackdrop.classList.remove('hidden');
             setTimeout(() => cartBackdrop.classList.remove('opacity-0'), 10);
             renderCartSidebar();
         } else {
             cartSidebar.classList.add('translate-x-full');
             cartBackdrop.classList.add('opacity-0');
-            setTimeout(() => cartBackdrop.classList.add('hidden'), 500);
+            setTimeout(() => {
+                cartBackdrop.classList.add('hidden');
+                cartSidebar.classList.add('invisible');
+            }, 500);
         }
     }
 

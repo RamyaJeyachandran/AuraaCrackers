@@ -98,31 +98,18 @@
 
 <div class="perspective-container">
     <!-- Interactive Cinematic Hero -->
-    <section class="min-h-screen flex items-center justify-center float-section bg-auraa-red">
-        <!-- Back Navigation -->
-        <div class="absolute top-24 md:top-32 left-6 md:left-10 z-[100] w-auto">
-            <div class="btn-3d-wrapper fade-up">
-                <a href="{% url 'about' %}" class="btn-3d-container group scale-75 md:scale-100 origin-left">
-                    <span class="btn-3d-shadow"></span>
-                    <span class="btn-3d-edge btn-3d-edge-navy"></span>
-                    <span class="btn-3d-front btn-3d-front-navy px-4 py-2 space-x-2 md:space-x-3 md:px-6 md:py-3 border-none shadow-none">
-                        <i data-lucide="arrow-left" class="w-4 h-4 md:w-[18px] md:h-[18px] group-hover:-translate-x-2 transition-transform"></i>
-                        <span class="text-[10px] md:text-sm">Auraa Hub</span>
-                    </span>
-                </a>
-            </div>
-        </div>
+    <section class="min-h-[450px] md:min-h-screen flex items-start md:items-center justify-center float-section bg-auraa-red pt-16 md:pt-0">
 
         <!-- Parallax Background Elements -->
         <div class="absolute inset-0 z-0">
             <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_rgba(255,255,255,0.15)_0%,_transparent_70%)] opacity-40"></div>
-            <div id="hero-grains" class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 brightness-200 pointer-events-none"></div>
+            <div id="hero-grains" class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg viewBox=\"0 0 200 200\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cfilter id=\"noiseFilter\"%3E%3CfeTurbulence type=\"fractalNoise\" baseFrequency=\"0.65\" numOctaves=\"3\" stitchTiles=\"stitch\"/%3E%3C/filter%3E%3Crect width=\"100%25\" height=\"100%25\" filter=\"url(%23noiseFilter)\"/%3E%3C/svg%3E')] opacity-10 brightness-200 pointer-events-none"></div>
             <!-- Floating Symbols -->
             <div class="absolute top-[20%] left-[10%] text-[#0A325A]/25 text-5xl md:text-9xl animate-pulse font-black">@</div>
             <div class="absolute bottom-[20%] right-[10%] text-[#0A325A]/25 text-[8rem] md:text-[15rem] animate-bounce font-black">#</div>
         </div>
 
-        <div class="container mx-auto px-6 relative z-10 text-center scene-3d">
+        <div class="container mx-auto px-6 relative z-10 text-center scene-3d pt-6 md:pt-0">
             <div class="inline-flex items-center space-x-4 bg-[#0A325A] backdrop-blur-xl border border-white/20 px-8 py-3 rounded-full mb-12 fade-up">
                 <i data-lucide="headphones" class="w-4 h-4 text-white"></i>
                 <span class="text-[12px] font-black uppercase tracking-[0.5em] text-white">Premium Support</span>

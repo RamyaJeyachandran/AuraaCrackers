@@ -38,7 +38,7 @@
                             </label>
                             <label class="flex items-center space-x-3 cursor-pointer group/item">
                                 <input type="checkbox" value="col-pr-pct" class="w-5 h-5 rounded border-2 border-gray-200 text-auraa-red focus:ring-auraa-red/20 transition-all">
-                                <span class="text-xs font-black text-gray-600 uppercase tracking-tight group-hover/item:text-gray-900">PR %</span>
+                                <span class="text-xs font-black text-gray-600 uppercase tracking-tight group-hover/item:text-gray-900">Profit %</span>
                             </label>
                             <label class="flex items-center space-x-3 cursor-pointer group/item">
                                 <input type="checkbox" value="col-selling-price" class="w-5 h-5 rounded border-2 border-gray-200 text-auraa-red focus:ring-auraa-red/20 transition-all">
@@ -142,7 +142,7 @@
                         <th style="border: 1px solid #0A325A; padding: 6px;">Item Name</th>
                         <th class="col-unit" style="border: 1px solid #0A325A; padding: 6px; width: 80px;">Unit</th>
                         <th class="col-purchase-rate" style="border: 1px solid #0A325A; padding: 6px; width: 70px;">Purchase Rate</th>
-                        <th class="col-pr-pct" style="border: 1px solid #0A325A; padding: 6px; width: 50px;">PR (%)</th>
+                        <th class="col-pr-pct" style="border: 1px solid #0A325A; padding: 6px; width: 50px;">Profit (%)</th>
                         <th class="col-selling-price" style="border: 1px solid #0A325A; padding: 6px; width: 70px;">Selling Price</th>
                         <th class="col-cust-sp-pct" style="border: 1px solid #0A325A; padding: 6px; width: 60px;">Cust SP (%)</th>
                         <th class="col-shown-value" style="border: 1px solid #0A325A; padding: 6px; width: 70px;">Shown Value</th>
@@ -154,7 +154,7 @@
                     {% for cat_name, cat_data in grouped_items.items %}
                     <!-- Category Header Row -->
                     <tr class="pdf-category" style="background: #f5071d; color: #fff; text-align: center; font-size: 11px; font-weight: 900; text-transform: uppercase;">
-                        <td colspan="10" style="border: 1px solid #0A325A; padding: 8px;">{{ cat_name }} (Total PR: ₹ {{ cat_data.total_pr|floatformat:2 }})</td>
+                        <td colspan="10" style="border: 1px solid #0A325A; padding: 8px;">{{ cat_name }}</td>
                     </tr>
                     {% for item in cat_data.items %}
                     <tr style="font-size: 8px; font-weight: 700; color: #0A325A;">
@@ -211,12 +211,10 @@
                         <h3 class="text-xl font-black uppercase tracking-[0.2em] text-gray-900">{{ cat_name }}</h3>
                     </div>
                     <div class="flex items-center space-x-2">
-                        <span class="px-4 py-1.5 bg-gray-100 rounded-full text-[10px] font-black text-gray-500 border border-gray-200 uppercase tracking-widest">
+                        <span class="px-4 py-1.5 bg-gray-100 rounded-full text-[10px] font-black text-[#001C3D] border border-gray-200 uppercase tracking-widest">
                             {{ cat_data.items|length }} Items
                         </span>
-                        <span class="px-4 py-1.5 bg-auraa-red text-white rounded-full text-[10px] font-black border border-auraa-red uppercase tracking-widest shadow-md">
-                            Total PR: ₹ {{ cat_data.total_pr|floatformat:2 }}
-                        </span>
+
                     </div>
                 </div>
                 
@@ -228,7 +226,7 @@
                                 <th class="py-6 px-4 text-[11px] font-black uppercase tracking-widest">Item Name</th>
                                 <th class="py-6 px-4 text-[11px] font-black uppercase tracking-widest col-unit">Unit</th>
                                 <th class="py-6 px-4 text-[11px] font-black uppercase tracking-widest text-right col-purchase-rate">Purchase Rate</th>
-                                <th class="py-6 px-4 text-[11px] font-black uppercase tracking-widest text-center col-pr-pct">PR (%)</th>
+                                <th class="py-6 px-4 text-[11px] font-black uppercase tracking-widest text-center col-pr-pct">Profit (%)</th>
                                 <th class="py-6 px-4 text-[11px] font-black uppercase tracking-widest text-right col-selling-price">Selling Price</th>
                                 <th class="py-6 px-4 text-[11px] font-black uppercase tracking-widest text-center col-cust-sp-pct">Cust SP (%)</th>
                                 <th class="py-6 px-4 text-[11px] font-black uppercase tracking-widest text-right col-shown-value">Shown Value</th>

@@ -215,17 +215,20 @@ class DashboardPricelistCreateView(LoginRequiredMixin, AdminRequiredMixin, Templ
 
         # Get all unique pricelist names for the "View Pricelist" dropdown
         context['existing_pricelists'] = Pricelist.objects.values_list('list_name', flat=True).distinct().order_by('list_name')
+
+        # Add pricelist counts for the footer
+        all_pricelists = Pricelist.objects.all()
+        context['total_pricelists'] = all_pricelists.count()
+        context['active_pricelists'] = all_pricelists.filter(is_active=1).count()
+        context['inactive_pricelists'] = all_pricelists.filter(is_active=0).count()
         
         return context
 
 def get_next_pl_version(current_version):
     try:
-        # Standard format: 1.0, 1.1... 1.10, 2.0
+        # Simple format: 1.0, 2.0, 3.0...
         major, minor = map(int, current_version.split('.'))
-        if minor < 10:
-            return f"{major}.{minor+1}"
-        else:
-            return f"{major+1}.0"
+        return f"{major + 1}.0"
     except (ValueError, AttributeError, IndexError):
         return "1.0"
 
@@ -353,6 +356,12 @@ class DashboardPricelistEditView(LoginRequiredMixin, AdminRequiredMixin, DetailV
         
         # Get all versions for this pricelist name
         context['all_versions'] = Pricelist.objects.filter(list_name=self.object.list_name).order_by('-created_at')
+
+        # Add pricelist counts for the footer
+        all_pricelists = Pricelist.objects.all()
+        context['total_pricelists'] = all_pricelists.count()
+        context['active_pricelists'] = all_pricelists.filter(is_active=1).count()
+        context['inactive_pricelists'] = all_pricelists.filter(is_active=0).count()
         
         return context
 

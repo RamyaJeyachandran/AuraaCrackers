@@ -9,23 +9,29 @@
             <h3 id="modal-title" class="text-xl font-black text-gray-900 uppercase tracking-tight">Success!</h3>
             <p id="modal-message" class="text-gray-500 text-sm font-medium leading-relaxed"></p>
         </div>
-        <button id="modal-btn" onclick="closeAuthModal()" class="w-full bg-gray-900 text-white py-4 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-auraa-red transition-all shadow-lg active:scale-95">
-            OK
-        </button>
+        <div id="modal-actions" class="flex flex-col gap-3">
+            <button id="modal-btn" onclick="closeAuthModal()" class="w-full bg-gray-900 text-white py-4 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-auraa-red transition-all shadow-lg active:scale-95">
+                OK
+            </button>
+            <button id="modal-secondary-btn" class="hidden w-full bg-gray-100 text-gray-900 py-4 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-gray-200 transition-all shadow-lg active:scale-95 flex items-center justify-center space-x-2">
+                <span>Secondary</span>
+            </button>
+        </div>
     </div>
 </div>
 
 <script>
-    function showModal(title, message, type = 'success', btnText = 'OK', callback = null) {
+    function showModal(title, message, type = 'success', btnText = 'OK', callback = null, secondaryBtn = null) {
         const modal = document.getElementById('auth-modal');
         const iconContainer = document.getElementById('modal-icon-container');
         const icon = document.getElementById('modal-icon');
         const titleEl = document.getElementById('modal-title');
         const messageEl = document.getElementById('modal-message');
         const btn = document.getElementById('modal-btn');
+        const secondaryBtnEl = document.getElementById('modal-secondary-btn');
 
-        titleEl.innerText = title;
-        messageEl.innerText = message;
+        titleEl.innerHTML = title; // Use innerHTML for rich text
+        messageEl.innerHTML = message;
         btn.innerText = btnText;
 
         if (type === 'success') {
@@ -42,14 +48,26 @@
             icon.setAttribute('data-lucide', 'info');
         }
 
-        // Handle custom callback
+        // Handle custom callback for primary button
         btn.onclick = () => {
             closeAuthModal();
             if (callback) callback();
         };
 
+        // Handle Secondary Button
+        if (secondaryBtn) {
+            secondaryBtnEl.innerHTML = secondaryBtn.icon ? `<i data-lucide="${secondaryBtn.icon}" class="w-4 h-4"></i><span>${secondaryBtn.text}</span>` : `<span>${secondaryBtn.text}</span>`;
+            secondaryBtnEl.classList.remove('hidden');
+            secondaryBtnEl.onclick = () => {
+                if (secondaryBtn.callback) secondaryBtn.callback();
+                if (secondaryBtn.autoClose !== false) closeAuthModal();
+            };
+        } else {
+            secondaryBtnEl.classList.add('hidden');
+        }
+
         modal.classList.remove('hidden');
-        lucide.createIcons();
+        if (window.lucide) lucide.createIcons();
     }
 
     function closeAuthModal() {

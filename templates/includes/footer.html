@@ -96,18 +96,20 @@
                     </div>
                     <div class="grid md:grid-cols-2 gap-8">
                         <!-- Location -->
-                        <div class="p-8 bg-white/5 border border-white/5 rounded-[2.5rem] space-y-4 hover:bg-white/10 transition-all group">
+                        <a href="https://www.google.com/maps/place//data=!4m3!3m2!1s0x3b06c9aa9b9f4741:0xd082609f94bf72c!12e1?source=g.page.m._&laa=merchant-review-solicitation" target="_blank" class="p-8 bg-white/5 border border-white/5 rounded-[2.5rem] space-y-4 hover:bg-white/10 transition-all group block outline-none">
                             <div class="w-12 h-12 bg-auraa-red rounded-2xl flex items-center justify-center text-white shadow-xl shadow-auraa-red/20 group-hover:rotate-12 transition-transform">
                                 <i data-lucide="map-pin" class="w-6 h-6"></i>
                             </div>
                             <div>
                                 <h5 class="text-[10px] font-black uppercase tracking-widest text-white mb-2">Location</h5>
                                 <p class="text-sm font-bold text-white/70 leading-relaxed">
-                                    Sivakasi Main Road, <br />
-                                    Tamil Nadu, India — 626123
+                                    Auraa Crackers Unit II <br />
+                                    S.No.226/5, D.No.1/177_5_20, <br />
+                                    Sivakasi Vembakottai Main Road, Pernaikenpatti Village, Sivakasi Taluk, <br />
+                                    Tamilnadu - 626 189.
                                 </p>
                             </div>
-                        </div>
+                        </a>
                         <!-- Connect -->
                         <div class="p-8 bg-white/5 border border-white/5 rounded-[2.5rem] space-y-4 hover:bg-white/10 transition-all group">
                              <div class="w-12 h-12 bg-auraa-red rounded-2xl flex items-center justify-center text-white shadow-xl shadow-auraa-red/20 group-hover:-rotate-12 transition-transform">
@@ -138,8 +140,8 @@
             </p>
             
             <div class="flex flex-wrap justify-center gap-6 md:gap-10 relative z-10 transition-all duration-300">
-                <a href="{% url 'terms' %}" class="text-[10px] md:text-[11px] font-black uppercase tracking-[0.3em] text-white/80 hover:text-white transition-colors">Privacy</a>
-                <a href="https://wa.me/916381426206" class="text-[10px] md:text-[11px] font-black uppercase tracking-[0.3em] text-white/80 hover:text-white transition-colors">Compliance</a>
+                <a href="{% url 'privacy' %}" class="text-[10px] md:text-[11px] font-black uppercase tracking-[0.3em] text-white/80 hover:text-white transition-colors">Privacy</a>
+                <a href="{% url 'compliance' %}" class="text-[10px] md:text-[11px] font-black uppercase tracking-[0.3em] text-white/80 hover:text-white transition-colors">Compliance</a>
                 <a href="{% url 'terms' %}" class="text-[10px] md:text-[11px] font-black uppercase tracking-[0.3em] text-white/80 hover:text-white transition-colors">Terms</a>
             </div>
         </div>

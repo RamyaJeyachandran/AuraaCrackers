@@ -97,6 +97,12 @@ class ContactView(TemplateView):
 class TermsView(TemplateView):
     template_name = 'crackers/terms.html'
 
+class PrivacyView(TemplateView):
+    template_name = 'crackers/privacy.html'
+
+class ComplianceView(TemplateView):
+    template_name = 'crackers/compliance.html'
+
 class VisionView(TemplateView):
     template_name = 'crackers/vision.html'
 

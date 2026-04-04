@@ -6,7 +6,7 @@ from .views import (
     CartAddAPIView, CartRemoveAPIView, CartListAPIView,
     CouponVerifyAPIView, OrderProcessingView, AddressAddAPIView, PlaceOrderAPIView,
     OrderHistoryListView, OrderDetailView, OrderStatusListView, OrderDeleteAPIView, OrderEditView,
-    TestimonialsView, StateListAPIView, CityListAPIView
+    TestimonialsView, StateListAPIView, CityListAPIView, PrivacyView, ComplianceView
 )
 from .views_dashboard import (
     DashboardCategoryListView, DashboardProductListView, 
@@ -57,6 +57,8 @@ urlpatterns = [
     path('about/', AboutView.as_view(), name='about'),
     path('safety-tips/', SafetyView.as_view(), name='safety'),
     path('terms/', TermsView.as_view(), name='terms'),
+    path('privacy/', PrivacyView.as_view(), name='privacy'),
+    path('compliance/', ComplianceView.as_view(), name='compliance'),
     path('vision/', VisionView.as_view(), name='vision'),
     path('mission/', MissionView.as_view(), name='mission'),
     path('founder-story/', FounderStoryView.as_view(), name='founder_story'),

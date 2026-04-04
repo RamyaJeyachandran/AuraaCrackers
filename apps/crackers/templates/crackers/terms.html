@@ -1,21 +1,39 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Auraa Profile | Terms & Conditions - Auraa Crackers{% endblock %}
+{% block title %}Terms and Conditions | Auraa Crackers{% endblock %}
 
 {% block content %}
-<div class="bg-gray-50 min-h-screen">
+<style>
+    .terms-section-number {
+        background: linear-gradient(135deg, #f5071d 0%, #d40619 100%);
+        box-shadow: 0 10px 20px -5px rgba(245, 7, 29, 0.4);
+    }
+    
+    .terms-content-card {
+        background: white;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.05);
+    }
+    
+    .legal-backdrop {
+        background: radial-gradient(circle at 100% 0%, rgba(245, 7, 29, 0.03), transparent 40%),
+                    radial-gradient(circle at 0% 100%, rgba(10, 50, 90, 0.03), transparent 40%);
+    }
+</style>
+
+<div class="bg-gray-50 min-h-screen legal-backdrop selection:bg-auraa-red selection:text-white">
     <!-- Hero Section -->
-    <section class="bg-auraa-red pt-32 pb-20 relative overflow-hidden text-white">
+    <section class="bg-auraa-red pt-32 pb-16 md:pb-24 relative overflow-hidden text-white">
         <!-- Back Navigation -->
         <div class="absolute top-24 md:top-32 left-6 md:left-10 z-[100] w-auto">
-            <div class="btn-3d-wrapper fade-up">
-                <a href="{% url 'about' %}" class="btn-3d-container group scale-75 md:scale-100 origin-left">
+            <div class="btn-3d-wrapper">
+                <a href="{% url 'home' %}" class="btn-3d-container group scale-75 md:scale-100 origin-left">
                     <span class="btn-3d-shadow"></span>
                     <span class="btn-3d-edge btn-3d-edge-navy"></span>
                     <span class="btn-3d-front btn-3d-front-navy px-4 py-2 space-x-2 md:space-x-3 md:px-6 md:py-3 border-none shadow-none">
                         <i data-lucide="arrow-left" class="w-4 h-4 md:w-[18px] md:h-[18px] group-hover:-translate-x-2 transition-transform"></i>
-                        <span class="text-[10px] md:text-sm">Auraa Hub</span>
+                        <span class="text-[10px] md:text-sm">Back Home</span>
                     </span>
                 </a>
             </div>
@@ -24,136 +42,319 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
             <div class="inline-flex items-center space-x-3 bg-white/10 backdrop-blur-md border border-white/20 px-6 py-2 rounded-full mb-8">
                 <i data-lucide="scroll-text" class="w-4 h-4 text-white"></i>
-                <span class="text-[10px] font-black uppercase tracking-[0.3em]">Corporate Profile</span>
+                <span class="text-[10px] font-black uppercase tracking-[0.3em]">Legal & Compliance</span>
             </div>
             <h1 class="text-4xl md:text-8xl font-black uppercase tracking-tighter leading-none mb-6">
-                Auraa <span class="text-gray-900">Legacy</span>
+                Terms & <span class="text-gray-900">Conditions</span>
             </h1>
             <p class="text-white/70 max-w-2xl mx-auto text-lg md:text-xl font-medium leading-relaxed px-4">
-                Defining our commitment to safety, joy, and the traditions that bind us together.
+                Redefining trust through transparency. Please read our operational guidelines and legal compliance.
             </p>
         </div>
-        <!-- Background Elements -->
-        <div class="absolute top-0 left-0 w-full h-full opacity-5 pointer-events-none">
-            <img src="{% static 'images/logo.png' %}" class="absolute -top-20 -left-20 w-96 h-96 object-contain" alt="">
-            <img src="{% static 'images/logo.png' %}" class="absolute bottom-0 right-0 w-64 h-64 object-contain brightness-0 invert" alt="">
+        
+        <!-- Animated Background Decor -->
+        <div class="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
+            <img src="{% static 'images/logo.png' %}" class="absolute -top-20 -left-20 w-96 h-96 object-contain rotate-12" alt="">
+            <img src="{% static 'images/logo.png' %}" class="absolute -bottom-20 -right-20 w-80 h-80 object-contain -rotate-12" alt="">
         </div>
     </section>
 
     <!-- Main Content -->
     <section class="py-20 -mt-10 relative z-20">
         <div class="max-w-5xl mx-auto px-4">
-            <div class="space-y-12">
-                <!-- Vision -->
-                <div id="vision" class="bg-white rounded-[2.5rem] md:rounded-[3rem] p-6 md:p-16 shadow-2xl border border-gray-100 group transition-all hover:border-auraa-red/30">
-                    <div class="flex items-center space-x-4 md:space-x-6 mb-6 md:mb-10">
-                        <div class="w-12 h-12 md:w-16 md:h-16 bg-auraa-red/5 rounded-2xl flex items-center justify-center text-auraa-red group-hover:scale-110 transition-transform">
-                            <i data-lucide="eye" class="w-6 h-6 md:w-8 md:h-8"></i>
+            <div class="terms-content-card rounded-[3rem] p-8 md:p-20">
+                <div class="prose prose-lg md:prose-xl max-w-none text-gray-600 font-medium leading-relaxed space-y-16">
+                    
+                    <!-- Intro -->
+                    <div class="space-y-8">
+                        <div class="bg-gray-50 border-l-4 border-auraa-red p-8 md:p-12 rounded-r-[2.5rem]">
+                            <p class="text-xl md:text-2xl font-bold text-gray-900 leading-tight mb-0">
+                                Welcome to <span class="text-auraa-red">The Auraa Crackers</span> ('we', 'our', or 'the Company'). 
+                                By accessing or using our website <a href="https://auraacrackers.com/" class="text-auraa-red hover:underline italic">https://auraacrackers.com/</a> and placing an order or enquiry with us, you agree to be bound by the following Terms and Conditions.
+                            </p>
                         </div>
-                        <h2 class="text-2xl md:text-4xl font-black uppercase tracking-tighter text-gray-900">Our Vision</h2>
+                        <p class="text-gray-500 italic">Please read them carefully before proceeding. If you do not agree to these Terms and Conditions, please do not use our website or submit any enquiries.</p>
                     </div>
-                    <div class="prose prose-lg md:prose-xl prose-red max-w-none text-gray-600 font-medium leading-relaxed space-y-4 md:space-y-6">
-                        <p>At <strong class="text-gray-900">Auraa Crackers</strong>, our vision is to become one of India’s most trusted fireworks brands, bringing safe, joyful, and responsible celebrations to every home.</p>
-                        <p>We aspire to set higher standards in the fireworks industry through customer delight, trust and transparency, responsibility, innovation, and safety. By honoring tradition while continuously improving our products and practices, we aim to make Auraa Crackers a name families across the country associate with happiness, reliability, and celebration.</p>
-                        <div class="bg-auraa-red/5 border-l-4 border-auraa-red p-6 md:p-8 rounded-r-3xl italic text-gray-900 font-black text-xl md:text-2xl leading-tight">
-                            "Our vision is simple: to light up every celebration with trust, safety, and unforgettable moments."
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Mission -->
-                <div id="mission" class="bg-white rounded-[3rem] p-10 md:p-16 shadow-2xl border border-gray-100 group transition-all hover:border-auraa-red/30">
-                    <div class="flex items-center space-x-6 mb-10">
-                        <div class="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600 group-hover:scale-110 transition-transform">
-                            <i data-lucide="target" class="w-8 h-8"></i>
+                    <!-- 1. Business -->
+                    <div class="space-y-8">
+                        <div class="flex items-center gap-6">
+                            <span class="terms-section-number w-14 h-14 rounded-2xl flex items-center justify-center text-white text-2xl font-black shrink-0">1</span>
+                            <h2 class="text-3xl md:text-4xl font-black uppercase tracking-tight text-gray-900">Business & Legal Compliance</h2>
                         </div>
-                        <h2 class="text-4xl font-black uppercase tracking-tighter text-gray-900">Our Mission</h2>
-                    </div>
-                    <div class="prose prose-xl prose-red max-w-none text-gray-600 font-medium leading-relaxed space-y-6">
-                        <p>At <strong class="text-gray-900">Auraa Crackers</strong>, our mission is to bring joy to every celebration by providing high-quality fireworks that combine safety, reliability, and excitement.</p>
-                        <p>We are committed to delivering products that families can trust, ensuring every festival moment is filled with happiness and confidence. Through responsible practices, transparent business values, and continuous innovation, we strive to create memorable experiences for our customers while maintaining the highest standards of safety and integrity.</p>
-                        <div class="bg-blue-50 border-l-4 border-blue-600 p-8 rounded-r-3xl italic text-gray-900 font-black text-2xl leading-tight">
-                            "Our mission is not just to sell fireworks — but to ignite celebrations, strengthen traditions, and build lasting trust with every customer we serve."
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Values -->
-                <div id="values" class="bg-white rounded-[3rem] p-10 md:p-16 shadow-2xl border border-gray-100 group transition-all hover:border-auraa-red/30">
-                    <div class="flex items-center space-x-6 mb-12 text-gray-900">
-                        <div class="w-16 h-16 bg-emerald-50 rounded-2xl flex items-center justify-center text-emerald-600 group-hover:scale-110 transition-transform">
-                            <i data-lucide="award" class="w-8 h-8"></i>
-                        </div>
-                        <h2 class="text-4xl font-black uppercase tracking-tighter">Our Core Values</h2>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <!-- Value Item -->
-                        <div class="p-8 bg-gray-50 rounded-[2rem] border border-gray-100 hover:bg-white hover:shadow-xl transition-all group/item">
-                            <h3 class="text-auraa-red font-black uppercase tracking-widest text-xs mb-4">Customer Delight</h3>
-                            <p class="text-gray-600 font-bold leading-relaxed">We strive to exceed customer expectations by delivering joyful experiences and dependable products that make every celebration memorable.</p>
-                        </div>
-                        <div class="p-8 bg-gray-50 rounded-[2rem] border border-gray-100 hover:bg-white hover:shadow-xl transition-all group/item">
-                            <h3 class="text-emerald-600 font-black uppercase tracking-widest text-xs mb-4">Trust & Transparency</h3>
-                            <p class="text-gray-600 font-bold leading-relaxed">We conduct our business with honesty, clear communication, and ethical practices to build long-term relationships with customers and partners.</p>
-                        </div>
-                        <div class="p-8 bg-gray-50 rounded-[2rem] border border-gray-100 hover:bg-white hover:shadow-xl transition-all group/item">
-                            <h3 class="text-blue-600 font-black uppercase tracking-widest text-xs mb-4">Responsibility</h3>
-                            <p class="text-gray-600 font-bold leading-relaxed">We take responsibility for our actions, our products, and our commitments to customers, society, and the environment.</p>
-                        </div>
-                        <div class="p-8 bg-gray-50 rounded-[2rem] border border-gray-100 hover:bg-white hover:shadow-xl transition-all group/item">
-                            <h3 class="text-purple-600 font-black uppercase tracking-widest text-xs mb-4">Innovation</h3>
-                            <p class="text-gray-600 font-bold leading-relaxed">We continuously seek better ideas, improved products, and smarter ways to serve our customers and grow our business.</p>
-                        </div>
-                        <div class="md:col-span-2 p-8 bg-auraa-red text-white rounded-[2rem] shadow-2xl shadow-auraa-red/20 transform hover:scale-[1.02] transition-transform">
-                            <div class="flex items-center space-x-4 mb-4">
-                                <i data-lucide="shield-check" class="w-6 h-6"></i>
-                                <h3 class="font-black uppercase tracking-widest text-xs">Safety & Security</h3>
+                        <div class="space-y-6">
+                            <p>The Auraa Crackers operates in accordance with applicable Indian laws and regulations governing the manufacture, sale, and distribution of fireworks and firecrackers.</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="bg-auraa-navy/5 p-6 rounded-2xl border border-auraa-navy/10">
+                                    <h4 class="text-auraa-navy font-black text-xs uppercase tracking-widest mb-2">License Information</h4>
+                                    <p class="text-gray-900 font-bold mb-0">Our License Number: 526/2023</p>
+                                </div>
+                                <div class="bg-emerald-50 p-6 rounded-2xl border border-emerald-100">
+                                    <h4 class="text-emerald-700 font-black text-xs uppercase tracking-widest mb-2">Statutory Compliance</h4>
+                                    <p class="text-emerald-900 font-bold mb-0">Full compliance with Explosives Act.</p>
+                                </div>
                             </div>
-                            <p class="text-white/80 font-bold leading-relaxed text-lg">We prioritize the safety of our products, customers, employees, and communities by following strict quality and safety standards.</p>
+                            <ul class="list-none space-y-4 pl-0">
+                                <li class="flex items-start gap-4">
+                                    <div class="w-6 h-6 rounded-full bg-auraa-red/10 flex items-center justify-center shrink-0 mt-1">
+                                        <i data-lucide="check" class="w-3 h-3 text-auraa-red"></i>
+                                    </div>
+                                    <span class="font-bold text-gray-700">All our shops and godowns are maintained as per explosive act guidelines.</span>
+                                </li>
+                                <li class="flex items-start gap-4">
+                                    <div class="w-6 h-6 rounded-full bg-auraa-red/10 flex items-center justify-center shrink-0 mt-1">
+                                        <i data-lucide="check" class="w-3 h-3 text-auraa-red"></i>
+                                    </div>
+                                    <span class="font-bold text-gray-700">Shipments are dispatched via registered and legal transport service providers only.</span>
+                                </li>
+                            </ul>
+                            <div class="bg-gray-900 rounded-[2rem] p-8 md:p-10 text-white relative overflow-hidden group">
+                                <div class="relative z-10 flex flex-col md:flex-row items-center gap-8">
+                                    <div class="w-20 h-20 bg-auraa-red rounded-full flex items-center justify-center shrink-0 animate-pulse">
+                                        <i data-lucide="alert-triangle" class="w-10 h-10"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-auraa-red font-black uppercase tracking-[0.2em] text-xs mb-3">Supreme Court Compliance</h4>
+                                        <p class="text-white font-bold text-lg leading-relaxed mb-0">
+                                            As per the 2018 Supreme Court Order, online sale of firecrackers is not permitted. Therefore, this website operates as an enquiry-based platform. Orders are confirmed only through WhatsApp or direct phone communication.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Why Choose Auraa -->
-                <div id="why-auraa" class="bg-gray-900 rounded-[4rem] p-10 md:p-20 text-white shadow-2xl relative overflow-hidden">
-                    <div class="relative z-10">
-                        <div class="flex items-center space-x-6 mb-16">
-                            <div class="w-16 h-16 bg-white rounded-2xl overflow-hidden shadow-xl p-1">
-                                <img src="{% static 'images/logo.png' %}" class="w-full h-full object-cover object-top scale-[1.3]" alt="">
+                    <!-- 2. Enquiry -->
+                    <div class="space-y-8">
+                        <div class="flex items-center gap-6">
+                            <span class="terms-section-number w-14 h-14 rounded-2xl flex items-center justify-center text-white text-2xl font-black shrink-0">2</span>
+                            <h2 class="text-3xl md:text-4xl font-black uppercase tracking-tight text-gray-900">Enquiry & Order Process</h2>
+                        </div>
+                        <div class="space-y-6">
+                            <p>Due to legal restrictions on online sales of firecrackers, the ordering process on our website works as follows:</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="p-6 bg-gray-50 rounded-2xl border border-gray-100 flex gap-4 items-center">
+                                    <i data-lucide="shopping-cart" class="w-8 h-8 text-auraa-red"></i>
+                                    <span class="font-bold text-gray-700">Add desired items to your cart.</span>
+                                </div>
+                                <div class="p-6 bg-gray-50 rounded-2xl border border-gray-100 flex gap-4 items-center">
+                                    <i data-lucide="message-square" class="w-8 h-8 text-auraa-red"></i>
+                                    <span class="font-bold text-gray-700">Submit enquiry via website.</span>
+                                </div>
+                                <div class="p-6 bg-gray-50 rounded-2xl border border-gray-100 flex gap-4 items-center">
+                                    <i data-lucide="phone-call" class="w-8 h-8 text-auraa-red"></i>
+                                    <span class="font-bold text-gray-700">Confirmation within 24 hours.</span>
+                                </div>
+                                <div class="p-6 bg-auraa-red text-white rounded-2xl shadow-xl flex gap-4 items-center">
+                                    <i data-lucide="shopping-bag" class="w-8 h-8"></i>
+                                    <span class="font-black text-sm uppercase tracking-widest">MOQ: Rs. 3,000</span>
+                                </div>
                             </div>
-                            <h2 class="text-4xl md:text-6xl font-black uppercase tracking-tighter">Why Choose Auraa?</h2>
+                            <p class="font-bold text-gray-900 underline decoration-auraa-red decoration-2 underline-offset-4 leading-relaxed">
+                                Orders are finalized only upon verbal or WhatsApp confirmation from our team. We reserve the right to refuse or cancel any order at our discretion.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- 3. Pricing -->
+                    <div class="space-y-8">
+                        <div class="flex items-center gap-6">
+                            <span class="terms-section-number w-14 h-14 rounded-2xl flex items-center justify-center text-white text-2xl font-black shrink-0">3</span>
+                            <h2 class="text-3xl md:text-4xl font-black uppercase tracking-tight text-gray-900">Pricing & Payment</h2>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div class="space-y-4">
+                                <div class="inline-flex items-center px-4 py-1.5 bg-gray-100 rounded-lg text-gray-900 font-black text-[10px] uppercase tracking-widest">3.1 Pricing Policy</div>
+                                <p class="text-base text-gray-600 leading-relaxed font-medium">All prices listed on our website and pricelist are subject to change without prior notice. The prices quoted at the time of order confirmation shall be the final applicable price.</p>
+                            </div>
+                            <div class="space-y-4 p-8 bg-auraa-navy rounded-[2rem] text-white">
+                                <div class="inline-flex items-center px-4 py-1.5 bg-white/10 rounded-lg text-white font-black text-[10px] uppercase tracking-widest">3.2 Payment Logistics</div>
+                                <p class="text-sm text-white/70 font-medium">Payment terms will be communicated during confirmation. Reach us directly for secure payment queries:</p>
+                                <div class="flex flex-col gap-3">
+                                    <a href="tel:+919080560340" class="flex items-center gap-4 text-auraa-red hover:underline font-black text-lg">
+                                        <i data-lucide="phone-outgoing" class="w-5 h-5"></i>
+                                        +91 90805 60340
+                                    </a>
+                                    <a href="tel:+916381426206" class="flex items-center gap-4 text-auraa-red hover:underline font-black text-lg">
+                                        <i data-lucide="check-circle-2" class="w-5 h-5"></i>
+                                        +91 63814 26206
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 4. Delivery -->
+                    <div class="space-y-8">
+                        <div class="flex items-center gap-6">
+                            <span class="terms-section-number w-14 h-14 rounded-2xl flex items-center justify-center text-white text-2xl font-black shrink-0">4</span>
+                            <h2 class="text-3xl md:text-4xl font-black uppercase tracking-tight text-gray-900">Delivery & Shipping</h2>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="p-6 bg-white border border-gray-100 rounded-3xl group hover:border-auraa-red transition-colors">
+                                <i data-lucide="truck" class="w-10 h-10 text-auraa-red mb-4"></i>
+                                <h4 class="font-black text-gray-900 uppercase text-xs tracking-wider mb-2">Legal Transit</h4>
+                                <p class="text-xs text-gray-500 font-bold mb-0">Registered and statutory transport providers only.</p>
+                            </div>
+                            <div class="p-6 bg-white border border-gray-100 rounded-3xl group hover:border-auraa-red transition-colors">
+                                <i data-lucide="clock" class="w-10 h-10 text-auraa-red mb-4"></i>
+                                <h4 class="font-black text-gray-900 uppercase text-xs tracking-wider mb-2">Timeline</h4>
+                                <p class="text-xs text-gray-500 font-bold mb-0">Approximate based on demand and availability.</p>
+                            </div>
+                            <div class="p-6 bg-white border border-gray-100 rounded-3xl group hover:border-auraa-red transition-colors">
+                                <i data-lucide="shield-alert" class="w-10 h-10 text-auraa-red mb-4"></i>
+                                <h4 class="font-black text-gray-900 uppercase text-xs tracking-wider mb-2">Risk</h4>
+                                <p class="text-xs text-gray-500 font-bold mb-0">Passes to customer upon handover to provider.</p>
+                            </div>
+                        </div>
+                        <div class="bg-blue-50 border-l-4 border-blue-600 p-8 rounded-r-3xl">
+                             <p class="text-gray-900 font-bold leading-relaxed mb-4">
+                                Customers are advised to place orders early to avoid transport delays, especially during peak seasons like Diwali.
+                            </p>
+                            <p class="font-black text-blue-800 text-lg">Dispatch Support: +91 96775 70276</p>
+                        </div>
+                    </div>
+
+                    <!-- 5. Safety -->
+                    <div class="space-y-8">
+                        <div class="flex items-center gap-6">
+                            <span class="terms-section-number w-14 h-14 rounded-2xl flex items-center justify-center text-white text-2xl font-black shrink-0">5</span>
+                            <h2 class="text-3xl md:text-4xl font-black uppercase tracking-tight text-gray-900">Product Safety & Liability</h2>
+                        </div>
+                        <div class="prose prose-lg text-gray-600 font-medium leading-relaxed">
+                            <p class="text-gray-900 font-black">Firecrackers and fireworks are inherently dangerous products. By purchasing from us, you acknowledge and agree to the following:</p>
+                            <ul class="space-y-4">
+                                <li>Use strictly in accordance with safety instructions.</li>
+                                <li>Comply with all local government/municipal restrictions.</li>
+                                <li><strong>Auraa Crackers shall not be liable for injury, death, or property damage arising from improper use.</strong></li>
+                                <li>Intended for <span class="text-auraa-red font-black">adult use only</span>. Keep away from children.</li>
+                            </ul>
+                            <div class="mt-8">
+                                <a href="{% url 'safety' %}" class="inline-flex items-center gap-4 px-10 py-5 bg-gray-900 text-white rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-auraa-red transition-all shadow-2xl">
+                                    <i data-lucide="shield-check" class="w-5 h-5"></i>
+                                    View Full Safety Guidance
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 6-10 Sections -->
+                    <div class="space-y-12">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                            <!-- 6. Returns -->
+                            <div class="space-y-4 p-10 bg-gray-50 rounded-[2.5rem] border border-gray-100 flex flex-col justify-between">
+                                <div class="space-y-4">
+                                    <div class="flex items-center gap-4">
+                                        <span class="w-10 h-10 bg-gray-900 text-white rounded-xl flex items-center justify-center font-black text-sm">6</span>
+                                        <h3 class="text-xl font-black text-gray-900 uppercase tracking-tight">Returns & Refunds</h3>
+                                    </div>
+                                    <p class="text-sm font-bold text-gray-600 leading-relaxed">Due to the explosive nature of items, returns aren't accepted once dispatched. Damaged items must be reported within 24h with proof.</p>
+                                </div>
+                            </div>
+                            <!-- 7. IP -->
+                            <div class="space-y-4 p-10 bg-gray-50 rounded-[2.5rem] border border-gray-100 flex flex-col justify-between">
+                                <div class="space-y-4">
+                                    <div class="flex items-center gap-4">
+                                        <span class="w-10 h-10 bg-gray-900 text-white rounded-xl flex items-center justify-center font-black text-sm">7</span>
+                                        <h3 class="text-xl font-black text-gray-900 uppercase tracking-tight">Intellectual Property</h3>
+                                    </div>
+                                    <p class="text-sm font-bold text-gray-600 leading-relaxed">All content, including text, images, and logos, are the property of The Auraa Crackers. Reproduction is strictly prohibited.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 8. Limitation -->
+                        <div class="p-10 bg-gray-950 rounded-[3rem] text-white space-y-6 relative overflow-hidden group">
+                            <div class="relative z-10">
+                                <div class="flex items-center gap-6 mb-6">
+                                    <span class="w-12 h-12 bg-auraa-red rounded-2xl flex items-center justify-center font-black text-lg">8</span>
+                                    <h3 class="text-2xl font-black uppercase tracking-tight">Limitation of Liability</h3>
+                                </div>
+                                <p class="text-white/60 font-bold leading-relaxed mb-0">To the maximum extent permitted by law, The Auraa Crackers shall not be liable for any indirect, incidental, or consequential damages arising from the use of our products, including loss of profits or personal injury.</p>
+                            </div>
+                            <div class="absolute top-0 right-0 w-64 h-64 bg-auraa-red/10 blur-[80px] rounded-full pointer-events-none"></div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                             <!-- 9. Law -->
+                            <div class="p-8 bg-white border border-gray-200 rounded-3xl">
+                                <h4 class="font-black text-gray-900 uppercase text-xs tracking-[0.2em] mb-4 flex items-center gap-3">
+                                    <span class="w-6 h-6 bg-gray-100 text-gray-900 rounded flex items-center justify-center font-black text-[10px]">9</span>
+                                    Governing Law
+                                </h4>
+                                <p class="text-[13px] font-bold text-gray-600 leading-relaxed">Governed by the laws of India. Jurisdiction: Virudhunagar District, Tamil Nadu, India.</p>
+                            </div>
+                            <!-- 10. Modifications -->
+                            <div class="p-8 bg-white border border-gray-200 rounded-3xl">
+                                <h4 class="font-black text-gray-900 uppercase text-xs tracking-[0.2em] mb-4 flex items-center gap-3">
+                                    <span class="w-6 h-6 bg-gray-100 text-gray-900 rounded flex items-center justify-center font-black text-[10px]">10</span>
+                                    Modifications
+                                </h4>
+                                <p class="text-[13px] font-bold text-gray-600 leading-relaxed">We reserve the right to update these terms at any time. Continued use constitutes acceptance.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 11. Contact -->
+                    <div id="contact" class="space-y-10 border-t border-gray-100 pt-20">
+                        <div class="flex flex-col items-center text-center space-y-6">
+                            <div class="w-24 h-24 bg-auraa-red/5 rounded-full flex items-center justify-center text-auraa-red animate-bounce">
+                                <i data-lucide="help-circle" class="w-12 h-12"></i>
+                            </div>
+                            <h2 class="text-4xl font-black uppercase tracking-tight text-gray-900">Questions? Reach Out</h2>
+                            <p class="max-w-xl text-gray-500 font-bold">Have queries regarding these Terms and Conditions? Our legal support team is available via direct communication channels.</p>
                         </div>
                         
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-                            <div class="space-y-4">
-                                <h3 class="inline-block px-6 py-2 bg-auraa-red text-white font-black uppercase tracking-widest text-[10px] rounded-xl mb-4">Customer-Focused Approach</h3>
-                                <p class="text-white/60 font-bold leading-relaxed">We place our customers at the center of everything we do, ensuring every purchase delivers satisfaction and happiness.</p>
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                            <div class="p-10 bg-white shadow-2xl rounded-[2.5rem] border border-gray-50 text-center space-y-4">
+                                <div class="w-14 h-14 bg-gray-900 text-white rounded-2xl flex items-center justify-center mx-auto mb-6">
+                                    <i data-lucide="map" class="w-7 h-7"></i>
+                                </div>
+                                <h4 class="text-xs font-black uppercase tracking-widest text-auraa-red">Headquarters</h4>
+                                <p class="text-sm font-bold text-gray-900 leading-relaxed">The Auraa Crackers (Unit II)<br>Sivakasi Taluk, Tamil Nadu</p>
                             </div>
-                            <div class="space-y-4">
-                                <h3 class="inline-block px-6 py-2 bg-auraa-red text-white font-black uppercase tracking-widest text-[10px] rounded-xl mb-4">Trusted and Transparent</h3>
-                                <p class="text-white/60 font-bold leading-relaxed">Our commitment to honesty, fair pricing, and clear communication helps us build long-lasting relationships.</p>
+                            <div class="p-10 bg-white shadow-2xl rounded-[2.5rem] border border-gray-50 text-center space-y-4">
+                                <div class="w-14 h-14 bg-gray-900 text-white rounded-2xl flex items-center justify-center mx-auto mb-6">
+                                    <i data-lucide="mail" class="w-7 h-7"></i>
+                                </div>
+                                <h4 class="text-xs font-black uppercase tracking-widest text-auraa-red">Official Email</h4>
+                                <p class="text-sm font-bold text-gray-900 leading-relaxed">info@auraacrackers.com</p>
                             </div>
-                            <div class="space-y-4 border-t border-white/10 pt-8">
-                                <h3 class="inline-block px-6 py-2 bg-auraa-red text-white font-black uppercase tracking-widest text-[10px] rounded-xl mb-4">Responsible Practices</h3>
-                                <p class="text-white/60 font-bold leading-relaxed">We take full responsibility for the quality of our products and the promises we make.</p>
-                            </div>
-                            <div class="space-y-4 border-t border-white/10 pt-8">
-                                <h3 class="inline-block px-6 py-2 bg-auraa-red text-white font-black uppercase tracking-widest text-[10px] rounded-xl mb-4">Continuous Innovation</h3>
-                                <p class="text-white/60 font-bold leading-relaxed">We constantly look for better products and solutions to enhance your celebration experience.</p>
-                            </div>
-                            <div class="md:col-span-2 bg-white/5 p-10 rounded-[2.5rem] border border-white/10">
-                                <h3 class="inline-block px-6 py-2 bg-auraa-red text-white font-black uppercase tracking-widest text-[10px] rounded-xl mb-4">Commitment to Safety</h3>
-                                <p class="text-white/80 font-bold text-xl leading-relaxed">Safety is a top priority. We ensure our products meet proper safety standards so families can celebrate with confidence.</p>
+                            <div class="p-10 bg-white shadow-2xl rounded-[2.5rem] border border-gray-50 text-center space-y-4">
+                                <div class="w-14 h-14 bg-gray-900 text-white rounded-2xl flex items-center justify-center mx-auto mb-6">
+                                    <i data-lucide="phone" class="w-7 h-7"></i>
+                                </div>
+                                <h4 class="text-xs font-black uppercase tracking-widest text-auraa-red">Direct Lines</h4>
+                                <p class="text-sm font-bold text-gray-900 leading-relaxed">
+                                    +91 90805 60340 <br>
+                                    +91 96775 70276 <br>
+                                    +91 63814 26206 <br>
+                                    +91 94894 35625
+                                </p>
                             </div>
                         </div>
                     </div>
-                    <!-- Decor -->
-                    <div class="absolute top-0 right-0 w-full h-full opacity-5 pointer-events-none">
-                        <img src="{% static 'images/logo.png' %}" class="absolute -bottom-20 -right-20 w-[400px] h-[400px] object-contain rotate-12" alt="">
-                    </div>
+
+                </div>
+            </div>
+            
+            <!-- Final Footer Legalese Pill -->
+            <div class="mt-12 flex justify-center">
+                <div class="inline-flex items-center gap-4 bg-gray-900 text-white px-8 py-4 rounded-full font-black uppercase tracking-widest text-[10px] shadow-2xl">
+                    <span class="w-2 h-2 bg-auraa-red rounded-full"></span>
+                    Last Updated: 2026 Revision
+                    <span class="w-2 h-2 bg-auraa-red rounded-full"></span>
                 </div>
             </div>
         </div>
     </section>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+    });
+</script>
 {% endblock %}

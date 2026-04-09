@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import TemplateView, ListView
 from .models import Category, Product, Cart, Coupon, Customer, CustomerAddress, OnlineSales, OnlineSalesItem, Country, State, City, SerialNo
-from django.db.models import Q, Sum, F, Min, IntegerField, Value
-from django.db.models.functions import Length, Cast, Coalesce
+from django.db.models import Q, Sum, F, Min, IntegerField, Value, CharField
+from django.db.models.functions import Length, Cast, Coalesce, LPad
 from django.http import JsonResponse
 from django.views import View
 from django.utils.decorators import method_decorator
@@ -39,16 +39,20 @@ class ProductListView(ListView):
 
 
     def get_queryset(self):
-        queryset = super().get_queryset().filter(is_active=True).select_related('category')
+        queryset = super().get_queryset().filter(is_active=True, category__is_active=True).select_related('category')
         
-        # Cast code to integer for perfect numerical sorting (1, 2, 3... 10, 11)
-        # We use '0' as a safe default for any non-integer or empty codes
+        # Filter: AND COALESCE("itemCode", '') <> ''
+        queryset = queryset.filter(code__isnull=False).exclude(code='')
+
+        # Annotation: LPAD("itemCode", 10, '0') for numerical sorting
         queryset = queryset.annotate(
-            code_int=Cast(Coalesce('code', Value('0')), output_field=IntegerField())
+            padded_code=LPad('code', 10, Value('0'))
         )
-        # Annotate each product with the lowest integer code in its category for grouping
+        # Group by category (lowest padded code in category), then by item padded code
         queryset = queryset.annotate(
-            cat_min_code_int=Min(Cast(Coalesce('category__products__code', Value('0')), output_field=IntegerField()))
+            cat_min_padded=Min('category__products__code') # Fallback for now
+        ).annotate(
+            cat_min_padded_code=Min(LPad('category__products__code', 10, Value('0')))
         )
 
         category_name = self.request.GET.get('category')
@@ -66,14 +70,14 @@ class ProductListView(ListView):
             )
 
         if sort == 'price-low':
-            queryset = queryset.order_by('cat_min_code_int', 'category__name', 'price', 'code_int')
+            queryset = queryset.order_by('price', 'padded_code')
         elif sort == 'price-high':
-            queryset = queryset.order_by('cat_min_code_int', 'category__name', '-price', 'code_int')
+            queryset = queryset.order_by('-price', 'padded_code')
         elif sort == 'name':
-            queryset = queryset.order_by('cat_min_code_int', 'category__name', 'code_int')
+            queryset = queryset.order_by('padded_code')
         else:
-            # Default ordering: Group by category (based on lowest numerical code in category), then by code
-            queryset = queryset.order_by('cat_min_code_int', 'category__name', 'code_int')
+            # Default ordering: Strictly by the LPAD result across all categories
+            queryset = queryset.order_by('padded_code')
         
         return queryset
 

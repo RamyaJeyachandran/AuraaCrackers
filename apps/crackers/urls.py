@@ -11,7 +11,7 @@ from .views import (
 from .views_dashboard import (
     DashboardCategoryListView, DashboardProductListView, 
     ProductToggleActiveView, DashboardOrderListView, 
-    DashboardOrderDetailView, DashboardCustomerListView, AdminActiveCategoryListView,
+    DashboardOrderDetailView, DashboardCustomerListView, DashboardCustomerExportView, DashboardCustomerPrintView, AdminActiveCategoryListView,
     DashboardAnalysisView, DashboardReportCreateView, DashboardPricelistListView, PricelistToggleActiveView,
     DashboardPricelistCreateView, PricelistSaveView, DashboardPricelistDetailView, DashboardPricelistEditView,
     PricelistUpdateView, DashboardCouponListView, CouponToggleActiveView,
@@ -27,6 +27,8 @@ urlpatterns = [
     path('dashboard/orders/', DashboardOrderListView.as_view(), name='dashboard_orders'),
     path('dashboard/order/<str:trans_no>/', DashboardOrderDetailView.as_view(), name='dashboard_order_detail'),
     path('dashboard/customers/', DashboardCustomerListView.as_view(), name='dashboard_customers'),
+    path('dashboard/customers/export/', DashboardCustomerExportView.as_view(), name='dashboard_customers_export'),
+    path('dashboard/customers/print/', DashboardCustomerPrintView.as_view(), name='dashboard_customers_print'),
     path('dashboard/analysis/', DashboardAnalysisView.as_view(), name='dashboard_analysis'),
     path('dashboard/reports/create/', DashboardReportCreateView.as_view(), name='dashboard_report_create'),
     path('dashboard/pricelists/', DashboardPricelistListView.as_view(), name='dashboard_pricelists'),

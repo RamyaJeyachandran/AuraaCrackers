@@ -13,9 +13,10 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'code', 'price', 'category', 'is_active')
+    list_display = ('name', 'sort_no', 'code', 'price', 'category', 'is_active')
     list_filter = ('category', 'is_active')
     search_fields = ('name', 'code')
+    ordering = ('sort_no', 'name')
 
 class CustomerAddressInline(admin.TabularInline):
     model = CustomerAddress

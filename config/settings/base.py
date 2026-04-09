@@ -36,7 +36,7 @@ INSTALLED_APPS = [
     "apps.users.apps.UsersConfig",
     "apps.crackers.apps.CrackersConfig",
     "apps.core.apps.CoreConfig",
-    "drf_spectacular",
+    # "drf_spectacular",
 ]
 
 MIDDLEWARE = [
@@ -189,6 +189,10 @@ LOGGING = {
             'format': '{levelname} {message}',
             'style': '{',
         },
+        'json': {
+            '()': 'pythonjsonlogger.jsonlogger.JsonFormatter',
+            'format': '%(levelname)s %(asctime)s %(module)s %(message)s %(process)d %(thread)d',
+        },
     },
     'handlers': {
         'console': {
@@ -198,8 +202,8 @@ LOGGING = {
         'file': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'logs', 'django.log'),
-            'formatter': 'verbose',
+            'filename': os.path.join(BASE_DIR, 'logs', 'django.json'),
+            'formatter': 'json',
         },
     },
     'loggers': {

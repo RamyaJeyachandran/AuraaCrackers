@@ -27,17 +27,17 @@
         <div class="relative z-10 flex flex-col md:flex-row gap-4 w-full">
             <form method="GET" class="relative w-full flex flex-col md:flex-row items-center gap-4">
                 <div class="relative w-full md:w-96 flex-shrink-0">
-                    <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 text-white w-[18px] h-[18px]"></i>
+                    <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-[18px] h-[18px]"></i>
                     <input type="text" name="q" id="search-input" placeholder="Search Trans No or Customer..." value="{{ search_query|default:'' }}" 
-                           class="w-full pl-12 pr-12 py-3.5 bg-white/10 border border-white/20 rounded-2xl text-sm font-bold text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-white/40 transition-all"
+                           class="w-full pl-12 pr-12 py-3.5 bg-white border border-gray-100 rounded-2xl text-sm font-bold text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white/40 transition-all"
                            oninput="toggleClearSearchBtn()">
-                    <button type="button" id="clear-search-btn" onclick="clearSearch()" class="absolute right-4 top-1/2 -translate-y-1/2 text-white hover:text-white transition-colors {% if not search_query %}hidden{% endif %}">
+                    <button type="button" id="clear-search-btn" onclick="clearSearch()" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors {% if not search_query %}hidden{% endif %}">
                         <i data-lucide="x" class="w-5 h-5"></i>
                     </button>
                 </div>
                 <div class="relative w-full md:w-56">
                     <input type="hidden" name="status" id="status-input" value="{{ selected_status|default:'All' }}">
-                    <button type="button" onclick="toggleAdminCatDropdown(event)" class="w-full bg-white/10 hover:bg-white/20 border border-white/20 rounded-2xl px-6 py-3.5 text-[10px] font-black uppercase tracking-widest text-white flex items-center justify-between transition-all group shadow-sm backdrop-blur-sm">
+                    <button type="button" onclick="toggleAdminCatDropdown(event)" class="w-full bg-white hover:bg-gray-50 border border-gray-100 rounded-2xl px-6 py-3.5 text-[10px] font-black uppercase tracking-widest text-gray-900 flex items-center justify-between transition-all group shadow-sm">
                         <span id="admin-cat-label" class="truncate text-center w-full">
                             {% if selected_status and selected_status != 'All' %}
                                 {{ selected_status }}
@@ -45,7 +45,7 @@
                                 ALL STATUSES
                             {% endif %}
                         </span>
-                        <i data-lucide="chevron-down" id="admin-cat-chevron" class="w-4 h-4 transition-transform shrink-0"></i>
+                        <i data-lucide="chevron-down" id="admin-cat-chevron" class="w-4 h-4 transition-transform shrink-0 text-gray-400"></i>
                     </button>
                     
                     <div id="admin-cat-options" class="hidden absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-y-auto max-h-64 z-[70] animate-in fade-in slide-in-from-top-2 duration-200 scrollbar-thin scrollbar-thumb-auraa-red scrollbar-track-gray-100">
@@ -62,7 +62,7 @@
                 
                 <div class="relative w-full md:w-56">
                     <input type="hidden" name="category" id="category-input" value="{{ selected_category|default:'All' }}">
-                    <button type="button" onclick="toggleAdminCatDropdown2(event)" class="w-full bg-white/10 hover:bg-white/20 border border-white/20 rounded-2xl px-6 py-3.5 text-[10px] font-black uppercase tracking-widest text-white flex items-center justify-between transition-all group shadow-sm backdrop-blur-sm">
+                    <button type="button" onclick="toggleAdminCatDropdown2(event)" class="w-full bg-white hover:bg-gray-50 border border-gray-100 rounded-2xl px-6 py-3.5 text-[10px] font-black uppercase tracking-widest text-gray-900 flex items-center justify-between transition-all group shadow-sm">
                         <span id="admin-cat-label2" class="truncate text-center w-full">
                             {% if selected_category and selected_category != 'All' %}
                                 {{ selected_category }}
@@ -70,7 +70,7 @@
                                 ALL CATEGORIES
                             {% endif %}
                         </span>
-                        <i data-lucide="chevron-down" id="admin-cat-chevron2" class="w-4 h-4 transition-transform shrink-0"></i>
+                        <i data-lucide="chevron-down" id="admin-cat-chevron2" class="w-4 h-4 transition-transform shrink-0 text-gray-400"></i>
                     </button>
                     
                     <div id="admin-cat-options2" class="hidden absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-y-auto max-h-64 z-[70] animate-in fade-in slide-in-from-top-2 duration-200 scrollbar-thin scrollbar-thumb-auraa-red scrollbar-track-gray-100">
@@ -80,6 +80,31 @@
                         {% for cat in categories %}
                         <div onclick="selectAdminCat2('{{ cat.name|escapejs }}', '{{ cat.name|escapejs }}')" class="w-full px-6 py-3 text-center text-[10px] font-black uppercase tracking-widest cursor-pointer transition-colors border-b border-gray-50 last:border-0 {% if selected_category == cat.name %}bg-auraa-red text-white{% else %}text-gray-600 hover:bg-red-50 hover:text-auraa-red{% endif %}">
                             {{ cat.name }}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="relative w-full md:w-32">
+                    <input type="hidden" name="year" id="year-input" value="{{ selected_year|default:'All' }}">
+                    <button type="button" onclick="toggleAdminYearDropdown(event)" class="w-full bg-white hover:bg-gray-50 border border-gray-100 rounded-2xl px-6 py-3.5 text-[10px] font-black uppercase tracking-widest text-gray-900 flex items-center justify-between transition-all group shadow-sm">
+                        <span id="admin-year-label" class="truncate text-center w-full">
+                            {% if selected_year and selected_year != 'All' %}
+                                {{ selected_year }}
+                            {% else %}
+                                YEAR
+                            {% endif %}
+                        </span>
+                        <i data-lucide="chevron-down" id="admin-year-chevron" class="w-4 h-4 transition-transform shrink-0 text-gray-400"></i>
+                    </button>
+                    
+                    <div id="admin-year-options" class="hidden absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-y-auto max-h-64 z-[70] animate-in fade-in slide-in-from-top-2 duration-200 scrollbar-thin scrollbar-thumb-auraa-red scrollbar-track-gray-100">
+                        <div onclick="selectAdminYear('All', 'YEAR')" class="w-full px-6 py-3 text-center text-[10px] font-black uppercase tracking-widest cursor-pointer transition-colors border-b border-gray-100 {% if not selected_year or selected_year == 'All' %}bg-gray-500 text-white{% else %}text-gray-600 hover:bg-gray-50 hover:text-auraa-red{% endif %}">
+                            YEAR
+                        </div>
+                        {% for y in years %}
+                        <div onclick="selectAdminYear('{{ y }}', '{{ y }}')" class="w-full px-6 py-3 text-center text-[10px] font-black uppercase tracking-widest cursor-pointer transition-colors border-b border-gray-50 last:border-0 {% if selected_year == y %}bg-auraa-red text-white{% else %}text-gray-600 hover:bg-red-50 hover:text-auraa-red{% endif %}">
+                            {{ y }}
                         </div>
                         {% endfor %}
                     </div>
@@ -117,7 +142,12 @@
                         <td class="py-6 px-8">
                             <div class="flex flex-col">
                                 <span class="text-sm font-black text-gray-900 uppercase">{{ order.customer.name }}</span>
-                                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{{ order.customer.contact_person_no }}</span>
+                                <div class="flex flex-col mt-0.5 space-y-0.5">
+                                    <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Phone: {{ order.customer_address.phone|default:order.customer.contact_person_no }}</span>
+                                    {% if order.customer_address.email %}
+                                        <span class="text-[10px] font-bold text-gray-400 lowercase tracking-tight">{{ order.customer_address.email }}</span>
+                                    {% endif %}
+                                </div>
                             </div>
                         </td>
                         <td class="py-6 px-8 text-center">
@@ -213,7 +243,35 @@ window.addEventListener('click', () => {
         options2.classList.add('hidden');
         chevron2.classList.remove('rotate-180');
     }
+
+    const options3 = document.getElementById('admin-year-options');
+    const chevron3 = document.getElementById('admin-year-chevron');
+    if (options3 && !options3.classList.contains('hidden')) {
+        options3.classList.add('hidden');
+        chevron3.classList.remove('rotate-180');
+    }
 });
+
+// Year Dropdown Logic
+function toggleAdminYearDropdown(e) {
+    if (e) e.stopPropagation();
+    const options = document.getElementById('admin-year-options');
+    const chevron = document.getElementById('admin-year-chevron');
+    
+    // Close others
+    document.getElementById('admin-cat-options').classList.add('hidden');
+    document.getElementById('admin-cat-chevron').classList.remove('rotate-180');
+    document.getElementById('admin-cat-options2').classList.add('hidden');
+    document.getElementById('admin-cat-chevron2').classList.remove('rotate-180');
+
+    options.classList.toggle('hidden');
+    chevron.classList.toggle('rotate-180');
+}
+
+function selectAdminYear(val, labelText) {
+    document.getElementById('year-input').value = val;
+    document.getElementById('year-input').closest('form').submit();
+}
 
 // Category Dropdown Logic
 function toggleAdminCatDropdown2(e) {

@@ -28,7 +28,7 @@
         <div class="flex items-center space-x-3">
             <div class="px-5 py-2.5 bg-white border border-gray-100 rounded-full shadow-sm flex items-center space-x-2 mr-4">
                 <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                <span class="text-[10px] font-black text-gray-900 uppercase tracking-widest">Total: {{ page_obj.paginator.count|default:products.count }}</span>
+                <span class="text-[10px] font-black text-gray-900 uppercase tracking-widest">Total: {{ products.count }}</span>
             </div>
             <button onclick="window.print()" class="px-5 py-2.5 bg-gray-900 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-black transition-all flex items-center space-x-2 shadow-lg shadow-gray-200">
                 <i data-lucide="printer" class="w-3.5 h-3.5"></i>
@@ -55,17 +55,17 @@
         <div class="relative z-10 flex flex-col md:flex-row gap-4 w-full">
             <form method="GET" class="relative w-full flex flex-col md:flex-row items-center gap-4">
                 <div class="relative w-full md:w-96 flex-shrink-0">
-                    <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 text-white w-[18px] h-[18px]"></i>
+                    <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-[18px] h-[18px]"></i>
                     <input type="text" name="q" id="search-input" placeholder="Search products..." value="{{ search_query|default:'' }}" 
-                           class="w-full pl-12 pr-12 py-3.5 bg-white/10 border border-white/20 rounded-2xl text-sm font-bold text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-white/40 transition-all"
+                           class="w-full pl-12 pr-12 py-3.5 bg-white border border-gray-100 rounded-2xl text-sm font-bold text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white/40 transition-all"
                            oninput="toggleClearSearchBtn()">
-                    <button type="button" id="clear-search-btn" onclick="clearSearch()" class="absolute right-4 top-1/2 -translate-y-1/2 text-white hover:text-white transition-colors {% if not search_query %}hidden{% endif %}">
+                    <button type="button" id="clear-search-btn" onclick="clearSearch()" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors {% if not search_query %}hidden{% endif %}">
                         <i data-lucide="x" class="w-5 h-5"></i>
                     </button>
                 </div>
                 <div class="relative w-full md:w-64">
                     <input type="hidden" name="category" id="category-input" value="{{ selected_category|default:'All' }}">
-                    <button type="button" onclick="toggleAdminCatDropdown(event)" class="w-full bg-white/10 hover:bg-white/20 border border-white/20 rounded-2xl px-6 py-3.5 text-[10px] font-black uppercase tracking-widest text-white flex items-center justify-between transition-all group shadow-sm backdrop-blur-sm">
+                    <button type="button" onclick="toggleAdminCatDropdown(event)" class="w-full bg-white hover:bg-gray-50 border border-gray-100 rounded-2xl px-6 py-3.5 text-[10px] font-black uppercase tracking-widest text-gray-900 flex items-center justify-between transition-all group shadow-sm">
                         <span id="admin-cat-label" class="truncate text-center w-full">
                             {% if selected_category and selected_category != 'All' %}
                                 {{ selected_category }}
@@ -73,7 +73,7 @@
                                 ALL CATEGORIES
                             {% endif %}
                         </span>
-                        <i data-lucide="chevron-down" id="admin-cat-chevron" class="w-4 h-4 transition-transform shrink-0"></i>
+                        <i data-lucide="chevron-down" id="admin-cat-chevron" class="w-4 h-4 transition-transform shrink-0 text-gray-400"></i>
                     </button>
                     
                     <div id="admin-cat-options" class="hidden absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-100 overflow-y-auto max-h-64 z-[70] animate-in fade-in slide-in-from-top-2 duration-200 scrollbar-thin scrollbar-thumb-auraa-red scrollbar-track-gray-100">
@@ -90,7 +90,7 @@
 
                 <div class="relative w-full md:w-48">
                     <input type="hidden" name="status" id="status-input" value="{{ selected_status|default:'All' }}">
-                    <button type="button" onclick="toggleAdminStatusDropdown(event)" class="w-full bg-white/10 hover:bg-white/20 border border-white/20 rounded-2xl px-6 py-3.5 text-[10px] font-black uppercase tracking-widest text-white flex items-center justify-between transition-all group shadow-sm backdrop-blur-sm">
+                    <button type="button" onclick="toggleAdminStatusDropdown(event)" class="w-full bg-white hover:bg-gray-50 border border-gray-100 rounded-2xl px-6 py-3.5 text-[10px] font-black uppercase tracking-widest text-gray-900 flex items-center justify-between transition-all group shadow-sm">
                         <span id="admin-status-label" class="truncate text-center w-full">
                             {% if selected_status and selected_status != 'All' %}
                                 {{ selected_status|upper }}
@@ -98,7 +98,7 @@
                                 ALL STATUS
                             {% endif %}
                         </span>
-                        <i data-lucide="chevron-down" id="admin-status-chevron" class="w-4 h-4 transition-transform shrink-0"></i>
+                        <i data-lucide="chevron-down" id="admin-status-chevron" class="w-4 h-4 transition-transform shrink-0 text-gray-400"></i>
                     </button>
                     
                     <div id="admin-status-options" class="hidden absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden z-[70] animate-in fade-in slide-in-from-top-2 duration-200">
@@ -124,6 +124,11 @@
             <table class="w-full text-left border-collapse">
                 <thead class="bg-gray-900 text-white">
                     <tr class="border-b border-gray-800">
+                        <th class="py-6 px-4 text-center">
+                            <button onclick="toggleAllCategories()" title="Expand / Collapse All" class="text-white hover:text-auraa-red transition-colors">
+                                <i data-lucide="chevrons-down-up" class="w-4 h-4"></i>
+                            </button>
+                        </th>
                         <th class="py-6 px-8 text-[10px] font-black uppercase tracking-widest text-white/90">Code</th>
                         <th class="py-6 px-4 text-[10px] font-black uppercase tracking-widest text-white/90">Image</th>
                         <th class="py-6 px-4 text-[10px] font-black uppercase tracking-widest text-white/90">Product Name</th>
@@ -137,13 +142,13 @@
                     {% for category_group in category_list %}
                         <tbody class="group transition-all">
                             <tr class="bg-auraa-red shadow-lg cursor-pointer hover:bg-red-600 transition-colors" onclick="toggleCategory('admin-cat-{{ category_group.grouper.id }}')">
-                                <td colspan="7" class="py-5 px-8">
+                                <td class="py-5 px-4 text-center">
+                                    <i data-lucide="chevron-down" id="icon-admin-cat-{{ category_group.grouper.id }}" class="w-5 h-5 text-white transition-transform duration-300"></i>
+                                </td>
+                                <td colspan="7" class="py-5 px-4">
                                     <div class="flex justify-between items-center">
-                                        <div class="flex items-center space-x-3">
-                                            <i data-lucide="chevron-down" id="icon-admin-cat-{{ category_group.grouper.id }}" class="w-5 h-5 text-white transition-transform duration-300"></i>
-                                            <h2 class="text-sm font-black uppercase tracking-[0.3em] text-white">{{ category_group.grouper.name }}</h2>
-                                        </div>
-                                        <span class="text-[10px] font-black text-white bg-white/20 px-3 py-1 rounded-full border border-white/20 shadow-sm">{{ category_group.list|length }} Items</span>
+                                        <h2 class="text-sm font-black uppercase tracking-[0.3em] text-white">{{ category_group.grouper.name }}</h2>
+                                        <span class="text-[10px] font-black text-blue-900 bg-white px-3 py-1 rounded-full border border-white shadow-sm">{{ category_group.list|length }} Items</span>
                                     </div>
                                 </td>
                             </tr>
@@ -151,6 +156,7 @@
                         <tbody id="admin-cat-{{ category_group.grouper.id }}" class="divide-y divide-gray-50 transition-all duration-300">
                             {% for product in category_group.list %}
                         <tr class="hover:bg-gray-50/50 transition-colors group">
+                            <td class="py-4 px-4"></td>
                             <td class="py-4 px-8">
                                 <span class="text-sm font-black text-gray-900 uppercase">{{ product.code|default:"-" }}</span>
                             </td>
@@ -220,7 +226,7 @@
             </table>
     </div>
 
-    {% include 'includes/pagination.html' %}
+    {# {% include 'includes/pagination.html' %} #}
 </div>
 
 <!-- Image Preview Modal -->
@@ -302,6 +308,36 @@ function toggleCategory(categoryId) {
         body.classList.add('hidden');
         icon.classList.add('-rotate-90');
     }
+}
+
+function toggleAllCategories() {
+    const bodies = document.querySelectorAll('tbody[id^="admin-cat-"]');
+    const icons = document.querySelectorAll('i[id^="icon-admin-cat-"]');
+    
+    // Check if any category is hidden
+    let anyHidden = false;
+    for (let body of bodies) {
+        if (body.classList.contains('hidden')) {
+            anyHidden = true;
+            break;
+        }
+    }
+    
+    bodies.forEach(body => {
+        if (anyHidden) {
+            body.classList.remove('hidden');
+        } else {
+            body.classList.add('hidden');
+        }
+    });
+    
+    icons.forEach(icon => {
+        if (anyHidden) {
+            icon.classList.remove('-rotate-90');
+        } else {
+            icon.classList.add('-rotate-90');
+        }
+    });
 }
 
 // Custom Category Dropdown Logic

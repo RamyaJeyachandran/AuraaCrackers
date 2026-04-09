@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Print Customers Report | Auraa Admin{% endblock %}
+
+{% block content %}
+<div class="max-w-[1200px] mx-auto p-12 bg-white min-h-screen">
+    <!-- Print Header -->
+    <div class="text-center border-b-2 border-gray-900 pb-8 mb-10">
+        <div class="flex justify-between items-center mb-6">
+            <div class="text-left">
+                <p class="text-[10px] font-black uppercase tracking-widest text-gray-400">Generated On</p>
+                <p class="text-base font-black text-gray-900">{% now "F d, Y" %}</p>
+            </div>
+            <div class="flex-grow"></div>
+        </div>
+        <h1 class="text-3xl font-black uppercase tracking-widest text-gray-900">Auraa Crackers Customers</h1>
+    </div>
+
+    <!-- Data Table -->
+    <table class="w-full text-left border-collapse border border-gray-200" style="table-layout: fixed;">
+        <thead class="bg-gray-100">
+            <tr>
+                <th class="py-4 px-2 border border-gray-200 text-[10px] font-black uppercase tracking-widest text-gray-600 text-center w-[40px]">S.No.</th>
+                <th class="py-4 px-3 border border-gray-200 text-[10px] font-black uppercase tracking-widest text-gray-600 w-1/4">Company Name</th>
+                <th class="py-4 px-3 border border-gray-200 text-[10px] font-black uppercase tracking-widest text-gray-600">Contact Details</th>
+                <th class="py-4 px-2 border border-gray-200 text-[10px] font-black uppercase tracking-widest text-gray-600 text-center w-[60px]">Orders</th>
+                <th class="py-4 px-2 border border-gray-200 text-[10px] font-black uppercase tracking-widest text-gray-600 text-center w-[80px]">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for customer in customers %}
+            <tr>
+                <td class="py-4 px-2 border border-gray-100 text-center text-xs font-bold">{{ forloop.counter }}</td>
+                <td class="py-4 px-3 border border-gray-100 text-xs font-black uppercase">{{ customer.name }}</td>
+                <td class="py-4 px-3 border border-gray-100">
+                    <div class="flex flex-col space-y-1">
+                        {% with addr=customer.addresses.first %}
+                            {% if addr %}
+                                <p class="text-[9px] font-bold text-gray-600 leading-tight">
+                                    {{ addr.address1 }}, {{ addr.city_name }}, {{ addr.state.name }} - {{ addr.pincode }}
+                                </p>
+                                <p class="text-xs font-black text-auraa-red">{{ addr.phone }}</p>
+                            {% else %}
+                                <p class="text-xs font-black text-auraa-red">{{ customer.contact_person_no }}</p>
+                            {% endif %}
+                        {% endwith %}
+                    </div>
+                </td>
+                <td class="py-4 px-2 border border-gray-100 text-center text-xs font-black">{{ customer.order_count }}</td>
+                <td class="py-4 px-2 border border-gray-100 text-center">
+                    <span class="text-[9px] font-black uppercase tracking-widest {% if customer.is_active %}text-green-600{% else %}text-red-600{% endif %}">
+                        {% if customer.is_active %}Active{% else %}Inactive{% endif %}
+                    </span>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="mt-12 text-center text-[10px] font-bold text-gray-400 uppercase tracking-[0.4em]">
+        End of Report
+    </div>
+</div>
+
+<style>
+    @media print {
+        header, nav, footer, .no-print, #admin-nav, #mobile-buy-products-wrapper { display: none !important; }
+        body { background: white !important; margin: 0 !important; padding: 0 !important; }
+        .max-w-\[1200px\] { max-width: 100% !important; padding: 0.1in !important; }
+    }
+</style>
+
+<script>
+    window.onload = function() {
+        setTimeout(function() {
+            window.print();
+        }, 500);
+    };
+</script>
+{% endblock %}

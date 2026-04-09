@@ -8,9 +8,14 @@ __pycache__
 .git
 .gitignore
 venv
-scripts
+scripts/archive
+backups
 media
 staticfiles
 Dockerfile
 docker-compose.yml
 README.md
+*.sql
+migration_log.txt
+*.log
+!requirements.txt

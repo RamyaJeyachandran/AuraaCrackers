@@ -109,6 +109,7 @@ class Category(models.Model):
     class Meta:
         verbose_name_plural = "Categories"
         db_table = 'tbl_category'
+        ordering = ['order', 'name']
 
     def __str__(self):
         return self.name
@@ -150,6 +151,7 @@ class Product(models.Model):
 
     class Meta:
         db_table = 'tbl_items'
+        ordering = ['sort_no', 'name']
         indexes = [
             models.Index(fields=['name', 'category']),
             models.Index(fields=['code']),
@@ -427,6 +429,7 @@ class PricelistItem(models.Model):
 
     class Meta:
         db_table = 'tbl_pricelist_items'
+        ordering = ['product__sort_no', 'product__name']
 
     def __str__(self):
         return f"{self.pricelist.list_name} - {self.product.name}"

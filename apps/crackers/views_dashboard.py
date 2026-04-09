@@ -2,10 +2,11 @@ from django.views.generic import ListView, DetailView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
+import csv
 from django.views import View
-from django.db.models import Q, Prefetch, IntegerField, Value, Min
-from django.db.models.functions import Cast, Coalesce
+from django.db.models import Q, Prefetch, IntegerField, Value, Min, Case, When, Sum, Count
+from django.db.models.functions import Cast, Coalesce, LPad
 from .models import Category, Product, OnlineSales, Customer, Pricelist, PricelistItem, Coupon
 from apps.users.models import User
 
@@ -26,10 +27,18 @@ class DashboardProductListView(LoginRequiredMixin, AdminRequiredMixin, ListView)
     model = Product
     template_name = 'dashboard/products.html'
     context_object_name = 'products'
-    paginate_by = 50
+    # paginate_by = 50
     
     def get_queryset(self):
-        qs = Product.objects.all().select_related('category').order_by('category__order', 'sort_no', 'name')
+        qs = Product.objects.filter(is_active=True, category__is_active=True).select_related('category')
+        
+        # Filter: code exists
+        qs = qs.filter(code__isnull=False).exclude(code='')
+        
+        # Annotation for numerical sorting by code
+        qs = qs.annotate(
+            padded_code=LPad('code', 10, Value('0'))
+        ).order_by('padded_code')
         
         category_name = self.request.GET.get('category')
         if category_name and category_name != 'All':
@@ -72,7 +81,7 @@ class DashboardOrderListView(LoginRequiredMixin, AdminRequiredMixin, ListView):
     paginate_by = 20
     
     def get_queryset(self):
-        qs = OnlineSales.objects.all().select_related('customer').order_by('-trans_dt')
+        qs = OnlineSales.objects.all().select_related('customer', 'customer_address').order_by('-trans_dt')
         status = self.request.GET.get('status')
         if status and status != 'All':
             qs = qs.filter(status=status)
@@ -81,6 +90,14 @@ class DashboardOrderListView(LoginRequiredMixin, AdminRequiredMixin, ListView):
         if category and category != 'All':
             qs = qs.filter(items__product__category__name=category).distinct()
             
+        year = self.request.GET.get('year')
+        if not year:
+            from datetime import datetime
+            year = str(datetime.now().year)
+            
+        if year and year != 'All':
+            qs = qs.filter(trans_no__startswith=year)
+            
         query = self.request.GET.get('q')
         if query:
             qs = qs.filter(Q(trans_no__icontains=query) | Q(customer__name__icontains=query))
@@ -88,12 +105,19 @@ class DashboardOrderListView(LoginRequiredMixin, AdminRequiredMixin, ListView):
         return qs
 
     def get_context_data(self, **kwargs):
+        from datetime import datetime
         context = super().get_context_data(**kwargs)
         context['search_query'] = self.request.GET.get('q', '')
         context['selected_status'] = self.request.GET.get('status', 'All')
         context['selected_category'] = self.request.GET.get('category', 'All')
+        
+        current_year = datetime.now().year
+        context['selected_year'] = self.request.GET.get('year', str(current_year))
+        
         context['statuses'] = ['New', 'Progressing', 'Shipped', 'Delivered', 'Cancelled']
         context['categories'] = Category.objects.filter(is_active=True).order_by('order')
+        # Generate years from 2024 to current year
+        context['years'] = [str(y) for y in range(2024, current_year + 1)]
         return context
 
 class DashboardOrderDetailView(LoginRequiredMixin, AdminRequiredMixin, DetailView):
@@ -104,9 +128,12 @@ class DashboardOrderDetailView(LoginRequiredMixin, AdminRequiredMixin, DetailVie
     slug_url_kwarg = 'trans_no'
     
     def get_context_data(self, **kwargs):
+        from django.db.models import Sum
         context = super().get_context_data(**kwargs)
         # Optimize by pre-fetching products for all items in one go
-        context['items'] = self.object.items.all().select_related('product', 'product__category')
+        items = self.object.items.all().select_related('product', 'product__category').order_by('item_code')
+        context['items'] = items
+        context['total_qty'] = items.aggregate(Sum('qty'))['qty__sum'] or 0
         return context
 
 class DashboardCustomerListView(LoginRequiredMixin, AdminRequiredMixin, ListView):
@@ -116,7 +143,20 @@ class DashboardCustomerListView(LoginRequiredMixin, AdminRequiredMixin, ListView
     paginate_by = 50
     
     def get_queryset(self):
-        qs = Customer.objects.all().order_by('name')
+        from django.db.models import Count
+        qs = Customer.objects.all().prefetch_related('addresses', 'addresses__state').annotate(
+            order_count=Count('sales')
+        )
+        
+        # Sorting
+        sort = self.request.GET.get('sort', 'name')
+        direction = self.request.GET.get('dir', 'desc')
+        prefix = '-' if direction == 'desc' else ''
+        
+        if sort == 'orders':
+            qs = qs.order_by(f'{prefix}order_count', 'name')
+        else: 
+            qs = qs.order_by('name')
         
         # Status Filter
         status = self.request.GET.get('status')
@@ -124,6 +164,13 @@ class DashboardCustomerListView(LoginRequiredMixin, AdminRequiredMixin, ListView
             qs = qs.filter(is_active=True)
         elif status == 'Inactive':
             qs = qs.filter(is_active=False)
+            
+        # Orders Filter
+        order_filter = self.request.GET.get('orders')
+        if order_filter == 'With':
+            qs = qs.filter(order_count__gt=0)
+        elif order_filter == 'None':
+            qs = qs.filter(order_count=0)
             
         # Search Filter
         query = self.request.GET.get('q')
@@ -136,10 +183,54 @@ class DashboardCustomerListView(LoginRequiredMixin, AdminRequiredMixin, ListView
         return qs
 
     def get_context_data(self, **kwargs):
+        from django.db.models import Count, Sum
         context = super().get_context_data(**kwargs)
         context['search_query'] = self.request.GET.get('q', '')
         context['selected_status'] = self.request.GET.get('status', 'All')
+        context['selected_orders'] = self.request.GET.get('orders', 'All')
+        context['sort_by'] = self.request.GET.get('sort', 'name')
+        context['sort_dir'] = self.request.GET.get('dir', 'asc')
+        
+        # Calculate total orders across all customers (filtered by search/status if desired, but usually global)
+        context['total_customers'] = Customer.objects.count()
+        context['total_orders'] = OnlineSales.objects.count()
+        
         return context
+
+class DashboardCustomerExportView(DashboardCustomerListView):
+    def get_paginate_by(self, queryset):
+        return None  # Disable pagination for export
+
+    def get(self, request, *args, **kwargs):
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="customers_full_report.csv"'
+        
+        writer = csv.writer(response)
+        writer.writerow(['S.No', 'Name', 'Phone', 'Email', 'Address', 'City', 'State', 'Pincode', 'Orders Count', 'Status'])
+        
+        queryset = self.get_queryset()
+        for i, customer in enumerate(queryset, 1):
+            addr = customer.addresses.first()
+            writer.writerow([
+                i,
+                customer.name,
+                addr.phone if addr else customer.contact_person_no,
+                addr.email if addr else '',
+                f"{addr.address1} {addr.address2}" if addr else '',
+                addr.city_name if addr else '',
+                addr.state.name if addr and addr.state else '',
+                addr.pincode if addr else '',
+                customer.order_count,
+                'Active' if customer.is_active else 'Inactive'
+            ])
+            
+        return response
+
+class DashboardCustomerPrintView(DashboardCustomerListView):
+    template_name = 'dashboard/customers_print.html'
+    
+    def get_paginate_by(self, queryset):
+        return None # Disable pagination for printing
 
 class AdminActiveCategoryListView(LoginRequiredMixin, AdminRequiredMixin, ListView):
     model = Category
@@ -198,20 +289,13 @@ class DashboardPricelistCreateView(LoginRequiredMixin, AdminRequiredMixin, Templ
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Fetch products grouped by category, ordered by integer code (numerical sorting)
-        product_qs = Product.objects.filter(is_active=True).select_related('unit').annotate(
-            code_int=Cast(Coalesce('code', Value('0')), output_field=IntegerField())
-        ).order_by('code_int')
+        # Fetch products grouped by category, ordered by sortNo
+        product_qs = Product.objects.filter(is_active=True).select_related('unit').order_by('sort_no', 'name')
         
-        # Categories ordered by their lowest product code (matching frontend logic)
-        context['categories'] = Category.objects.filter(is_active=True).annotate(
-            cat_min_code_int=Coalesce(
-                Min(Cast(Coalesce('products__code', Value('0')), output_field=IntegerField())),
-                Value(2147483647) # Push empty categories to the end
-            )
-        ).prefetch_related(
+        # Categories ordered by their order field (sortNo in DB)
+        context['categories'] = Category.objects.filter(is_active=True).prefetch_related(
             Prefetch('products', queryset=product_qs)
-        ).order_by('cat_min_code_int', 'name')
+        ).order_by('order', 'name')
 
         # Get all unique pricelist names for the "View Pricelist" dropdown
         context['existing_pricelists'] = Pricelist.objects.values_list('list_name', flat=True).distinct().order_by('list_name')
@@ -301,9 +385,6 @@ class PricelistSaveView(LoginRequiredMixin, AdminRequiredMixin, View):
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
 
-        except Exception as e:
-            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
-
 class DashboardPricelistDetailView(LoginRequiredMixin, AdminRequiredMixin, DetailView):
     model = Pricelist
     template_name = 'dashboard/pricelist_detail.html'
@@ -334,20 +415,13 @@ class DashboardPricelistEditView(LoginRequiredMixin, AdminRequiredMixin, DetailV
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Fetch products grouped by category, ordered by integer code (numerical sorting)
-        product_qs = Product.objects.filter(is_active=True).select_related('unit').annotate(
-            code_int=Cast(Coalesce('code', Value('0')), output_field=IntegerField())
-        ).order_by('code_int')
+        # Fetch products grouped by category, ordered by sortNo
+        product_qs = Product.objects.filter(is_active=True).select_related('unit').order_by('sort_no', 'name')
         
-        # Categories ordered by their lowest product code (matching frontend logic)
-        context['categories'] = Category.objects.filter(is_active=True).annotate(
-            cat_min_code_int=Coalesce(
-                Min(Cast(Coalesce('products__code', Value('0')), output_field=IntegerField())),
-                Value(2147483647) # Push empty categories to the end
-            )
-        ).prefetch_related(
+        # Categories ordered by their order field (sortNo in DB)
+        context['categories'] = Category.objects.filter(is_active=True).prefetch_related(
             Prefetch('products', queryset=product_qs)
-        ).order_by('cat_min_code_int', 'name')
+        ).order_by('order', 'name')
         
         # Get current items for this pricelist to pre-populate
         current_items = {item.product_id: item for item in self.object.items.all()}
@@ -439,11 +513,6 @@ class PricelistUpdateView(LoginRequiredMixin, AdminRequiredMixin, View):
                 'message': f'Pricelist updated successfully!',
                 'redirect_url': f'/dashboard/pricelists/{target_pricelist.id}/'
             })
-        except Pricelist.DoesNotExist:
-            return JsonResponse({'status': 'error', 'message': 'Pricelist not found'}, status=404)
-        except Exception as e:
-            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
-
         except Pricelist.DoesNotExist:
             return JsonResponse({'status': 'error', 'message': 'Pricelist not found'}, status=404)
         except Exception as e:

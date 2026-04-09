@@ -12,3 +12,9 @@ def multiply(value, arg):
 @register.filter
 def get_item(dictionary, key):
     return dictionary.get(key)
+
+@register.filter
+def replace_quotes(value):
+    if isinstance(value, str):
+        return value.replace('\\"', '"')
+    return value

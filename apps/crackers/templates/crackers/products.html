@@ -73,7 +73,7 @@
         font-size: 11px;
         line-height: 1;
         margin: 0;
-        color: #f5071d; /* Auraa Red */
+        color: #0A325A; /* Auraa Dark Blue */
         font-weight: 900;
         letter-spacing: 0.05em;
         text-transform: uppercase;
@@ -138,7 +138,7 @@
         .category-sep-row .items-count-pill span {
             font-size: 8px !important;
             letter-spacing: 0.02em !important;
-            color: #ef4444 !important;
+            color: #0A325A !important;
             font-weight: 900 !important;
             line-height: 1 !important;
         }
@@ -423,13 +423,18 @@
                             <!-- Pill-Shaped Floating Header -->
                             <thead>
                                 <tr class="bg-gray-900 shadow-2xl relative z-20">
-                                    <th class="py-2 px-2 lg:px-3 text-[11px] font-black uppercase tracking-[0.2em] text-white first:rounded-l-full last:rounded-r-full">Code</th>
+                                    <th class="py-2 px-2 lg:px-3 text-center first:rounded-l-full">
+                                        <button onclick="toggleAllCategories()" class="text-white hover:text-auraa-red transition-colors" title="Expand/Collapse All">
+                                            <i data-lucide="layers-2" class="w-4 h-4"></i>
+                                        </button>
+                                    </th>
+                                    <th class="py-2 px-2 lg:px-3 text-[11px] font-black uppercase tracking-[0.2em] text-white">Code</th>
                                     <th class="py-2 px-2 lg:px-3 text-[11px] font-black uppercase tracking-[0.2em] text-white">Image</th>
                                     <th class="py-2 px-2 lg:px-3 text-[11px] font-black uppercase tracking-[0.2em] text-white">Product</th>
                                     <th class="py-2 px-2 lg:px-3 text-[11px] font-black uppercase tracking-[0.2em] text-white text-center">Actual Price</th>
                                     <th class="py-2 px-2 lg:px-3 text-[11px] font-black uppercase tracking-[0.2em] text-white text-center">Price</th>
                                     <th class="py-2 px-2 lg:px-3 text-[11px] font-black uppercase tracking-[0.2em] text-white text-center">Quantity</th>
-                                    <th class="py-2 px-2 lg:px-3 text-[11px] font-black uppercase tracking-[0.2em] text-white text-right min-w-[120px] first:rounded-l-full last:rounded-r-full">Total</th>
+                                    <th class="py-2 px-2 lg:px-3 text-[11px] font-black uppercase tracking-[0.2em] text-white text-right min-w-[120px] last:rounded-r-full">Total</th>
                                 </tr>
                             </thead>
                             
@@ -438,15 +443,19 @@
                                 <!-- Category Separator Pill -->
                                 <tbody>
                                     <tr class="cursor-pointer group relative category-sep-row" onclick="toggleCategory('cat-{{ category_group.grouper.id }}')">
+                                        <td class="bg-auraa-red p-0 rounded-l-xl">
+                                            <div class="h-full flex items-center justify-center py-2 px-2">
+                                                <i data-lucide="chevron-down" id="icon-cat-{{ category_group.grouper.id }}" class="w-4 h-4 text-white transition-transform duration-500"></i>
+                                            </div>
+                                        </td>
                                         <td colspan="7" class="p-0">
-                                            <div class="bg-auraa-red px-4 py-2 rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-500 relative flex justify-between items-center group-hover:bg-red-600">
+                                            <div class="bg-auraa-red pr-4 py-2 rounded-r-xl shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-500 relative flex justify-between items-center group-hover:bg-red-600">
                                                 <div class="flex items-center space-x-3">
-                                                    <i data-lucide="chevron-down" id="icon-cat-{{ category_group.grouper.id }}" class="w-4 h-4 text-white transition-transform duration-500"></i>
                                                     <h2 class="text-sm md:text-base font-black uppercase tracking-[0.3em] text-white">{{ category_group.grouper.name }}</h2>
                                                 </div>
                                                 <div class="flex items-center space-x-3">
                                                     <div class="items-count-pill">
-                                                        <span class="text-[11px] font-black text-auraa-red uppercase tracking-widest">{{ category_group.list|length }} Items</span>
+                                                        <span class="text-[11px] font-black text-[#0A325A] uppercase tracking-widest">{{ category_group.list|length }} Items</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -606,15 +615,67 @@
         }
     }
 
+    function toggleAllCategories() {
+        const allBodies = document.querySelectorAll('tbody[id^="cat-"]');
+        const allIcons = document.querySelectorAll('i[id^="icon-cat-"]');
+        
+        // Determine state from first category
+        const firstHidden = allBodies.length > 0 && 
+            (allBodies[0].classList.contains('hidden') || allBodies[0].style.display === 'none');
+        
+        allBodies.forEach(tbody => {
+            if (firstHidden) {
+                tbody.classList.remove('hidden');
+                tbody.style.display = window.innerWidth < 1024 ? 'block' : 'table-row-group';
+            } else {
+                tbody.classList.add('hidden');
+                tbody.style.display = 'none';
+            }
+        });
+        
+        allIcons.forEach(icon => {
+            if (firstHidden) {
+                icon.classList.add('rotate-180');
+                icon.style.transform = 'rotate(180deg)';
+            } else {
+                icon.classList.remove('rotate-180');
+                icon.style.transform = 'rotate(0deg)';
+            }
+        });
+
+        // REFRESH SCROLL POSITION FOR GSAP
+        setTimeout(() => {
+            if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
+        }, 300);
+    }
+
     function toggleCategory(catId) {
         const tbody = document.getElementById(catId);
         const icon = document.getElementById(`icon-${catId}`);
-        if (tbody) {
-            tbody.classList.toggle('hidden');
+        if (!tbody) return;
+
+        const isHidden = tbody.classList.contains('hidden') || tbody.style.display === 'none';
+        
+        if (isHidden) {
+            tbody.classList.remove('hidden');
+            tbody.style.display = window.innerWidth < 1024 ? 'block' : 'table-row-group';
             if (icon) {
-                icon.classList.toggle('rotate-180');
+                icon.classList.add('rotate-180');
+                icon.style.transform = 'rotate(180deg)';
+            }
+        } else {
+            tbody.classList.add('hidden');
+            tbody.style.display = 'none';
+            if (icon) {
+                icon.classList.remove('rotate-180');
+                icon.style.transform = 'rotate(0deg)';
             }
         }
+
+        // REFRESH SCROLL POSITION FOR GSAP
+        setTimeout(() => {
+            if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
+        }, 300);
     }
 
     function toggleCategoryDropdown(e) {
@@ -907,23 +968,6 @@
         window.location.search = urlParams.toString();
     }
 
-    function toggleCategory(categoryId) {
-        const body = document.getElementById(categoryId);
-        const icon = document.getElementById('icon-' + categoryId);
-        if (!body) return;
-
-        const isHidden = body.classList.contains('hidden') || getComputedStyle(body).display === 'none';
-        
-        if (isHidden) {
-            body.classList.remove('hidden');
-            body.style.display = window.innerWidth < 1024 ? 'block' : 'table-row-group';
-            if (icon) icon.style.transform = 'rotate(0deg)';
-        } else {
-            body.classList.add('hidden');
-            body.style.display = 'none';
-            if (icon) icon.style.transform = 'rotate(-90deg)';
-        }
-    }
 
     // DOM References (summary only if exists)
     const summaryNetTotal = document.getElementById('summary-net-total');

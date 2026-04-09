@@ -1,4 +1,4 @@
-﻿from django.db import models
+from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.conf import settings
 
@@ -79,3 +79,23 @@ class User(AbstractBaseUser):
 
     def __str__(self):
         return self.username
+
+class UserAddress(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, db_column='userid', related_name='addresses', null=True, blank=True)
+    address = models.TextField(blank=True, null=True, db_column='address')
+    country_id = models.IntegerField(blank=True, null=True, db_column='countryid')
+    state = models.ForeignKey('crackers.State', on_delete=models.SET_NULL, blank=True, null=True, db_column='stateid')
+    city = models.CharField(max_length=100, blank=True, null=True, db_column='city')
+    pincode = models.CharField(max_length=20, blank=True, null=True, db_column='pincode')
+    is_active = models.BooleanField(default=True, db_column='isactive')
+    created_at = models.DateTimeField(auto_now_add=True, db_column='createddt')
+    updated_at = models.DateTimeField(auto_now=True, db_column='updateddt')
+    created_by = models.IntegerField(blank=True, null=True, db_column='createdby')
+    updated_by = models.IntegerField(blank=True, null=True, db_column='updatedby')
+
+    class Meta:
+        db_table = 'tbl_users_addr'
+        managed = False
+
+    def __str__(self):
+        return f"{self.user.username}'s Address" if self.user else "Unnamed Address"

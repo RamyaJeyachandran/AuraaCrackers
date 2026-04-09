@@ -1,11 +1,14 @@
 {% load static %}
-<tr class="product-row group bg-white transition-all duration-300 border-b border-gray-100 cursor-pointer hover:bg-gray-50 relative z-10 hover:z-[1001]" 
+<tr class="product-row group transition-all duration-300 border-b border-gray-100 relative z-10 hover:z-[1001] {% if product.is_disabled %}bg-gray-300 grayscale cursor-not-allowed pointer-events-none{% else %}bg-white cursor-pointer hover:bg-gray-50{% endif %}" 
     id="product-row-{{ product.id }}" 
     {% if product.is_disabled == 0 %}onclick="selectProductRow('{{ product.id }}', event)"{% endif %}>
     
+    <!-- Toggle Placeholder -->
+    <td class="py-1 lg:py-1.5 px-2 lg:px-3 text-center"></td>
+    
     <!-- Code -->
     <td class="py-1 lg:py-1.5 px-2 lg:px-3" data-label="Code">
-        <span class="text-[10px] font-black text-gray-900 border-b-2 border-auraa-red/30 group-hover:border-auraa-red transition-all">{{ product.sku|default:product.code|default:'-' }}</span>
+        <span class="text-[10px] font-black text-gray-900 border-b-2 border-auraa-red/30 group-hover:border-auraa-red transition-all">{{ product.code|default:'-' }}</span>
     </td>
 
     <!-- Image -->
@@ -34,18 +37,13 @@
     <td class="py-1 lg:py-1.5 px-2 lg:px-4 product-name-cell" data-label="Product">
         <div class="flex flex-col product-name-container relative">
             <span class="text-base md:text-[18px] font-black text-gray-900 group-hover:text-auraa-red transition-colors block leading-tight uppercase tracking-tight">{{ product.name }}</span>
-            <div class="flex items-center space-x-2 mt-2">
-                {% if product.is_disabled %}
-                <span class="inline-block px-2.5 py-0.5 rounded-full bg-red-100 text-[8px] font-black text-auraa-red uppercase tracking-widest">Out of Stock</span>
-                {% endif %}
-            </div>
         </div>
     </td>
 
     <!-- Actual Price -->
     <td class="py-1 lg:py-1.5 px-4 lg:px-6 text-center lg:text-center" data-label="Actual Price">
         <span class="text-xs text-gray-400 line-through font-bold">
-            {% if product.original_price %}₹{{ product.original_price }}{% else %}-{% endif %}
+            {% if product.purchase_rate %}₹{{ product.purchase_rate }}{% else %}-{% endif %}
         </span>
     </td>
 

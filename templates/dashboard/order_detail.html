@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load custom_filters %}
 
 {% block title %}Order Details | Auraa Admin{% endblock %}
 
@@ -14,7 +15,7 @@
                 </a>
                 <h1 class="text-4xl font-black text-gray-900 tracking-tight uppercase">Order <span class="text-auraa-red">{{ order.trans_no }}</span></h1>
             </div>
-            <p class="text-gray-500 font-bold uppercase tracking-widest text-[10px] ml-9">Order detailed history and contents</p>
+            <p class="text-gray-500 font-bold uppercase tracking-widest text-[10px] ml-9">Order detailed history and contents page</p>
         </div>
         <div class="flex items-center space-x-3">
             <!-- Status Badge -->
@@ -31,6 +32,11 @@
             <div class="px-5 py-2.5 bg-auraa-red rounded-full shadow-lg shadow-auraa-red/30 flex items-center space-x-2 border border-red-500/30">
                 <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
                 <span class="text-[10px] font-black text-white uppercase tracking-widest">Total products: {{ items.count }}</span>
+            </div>
+
+            <div class="px-5 py-2.5 bg-orange-600 rounded-full shadow-lg shadow-orange-600/30 flex items-center space-x-2 border border-orange-500/30">
+                <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
+                <span class="text-[10px] font-black text-white uppercase tracking-widest">Total Qty: {{ total_qty|floatformat:0 }}</span>
             </div>
             
             <div class="px-5 py-2.5 bg-gray-900 rounded-full shadow-lg shadow-gray-900/30 flex items-center space-x-2 border border-gray-700">
@@ -53,7 +59,7 @@
             <div class="space-y-4">
                 <div>
                     <p class="text-[9px] font-black uppercase tracking-widest text-gray-400 mb-1">Name</p>
-                    <p class="text-sm font-bold text-gray-900 uppercase">{{ order.customer.name }}</p>
+                    <p class="text-sm font-bold text-gray-900 uppercase">{{ order.customer.name|replace_quotes }}</p>
                 </div>
                 <div>
                     <p class="text-[9px] font-black uppercase tracking-widest text-gray-400 mb-1">Contact</p>
@@ -124,7 +130,8 @@
                     <thead class="bg-auraa-red text-white shadow-md">
                         <tr>
                             <th class="py-4 px-6 text-[10px] font-black uppercase tracking-widest rounded-l-2xl w-16 text-center">S.No.</th>
-                            <th class="py-4 px-6 text-[10px] font-black uppercase tracking-widest">Item</th>
+                            <th class="py-4 px-6 text-[10px] font-black uppercase tracking-widest">Item Code</th>
+                            <th class="py-4 px-6 text-[10px] font-black uppercase tracking-widest">Item Name</th>
                             <th class="py-4 px-6 text-[10px] font-black uppercase tracking-widest text-center">Rate</th>
                             <th class="py-4 px-6 text-[10px] font-black uppercase tracking-widest text-center">Qty</th>
                             <th class="py-4 px-6 text-[10px] font-black uppercase tracking-widest text-right rounded-r-2xl">Total</th>
@@ -137,9 +144,11 @@
                                 <span class="text-sm font-black text-gray-900">{{ forloop.counter }}</span>
                             </td>
                             <td class="py-4 px-6">
+                                <span class="text-sm font-black text-gray-900 uppercase">{{ item.item_code }}</span>
+                            </td>
+                            <td class="py-4 px-6">
                                 <div class="flex flex-col">
-                                    <span class="text-sm font-black text-gray-900 uppercase">{{ item.item_name }}</span>
-                                    <span class="text-[9px] font-bold text-gray-400 uppercase tracking-widest">#{{ item.item_code }}</span>
+                                    <span class="text-sm font-black text-gray-900 uppercase">{{ item.item_name|replace_quotes }}</span>
                                 </div>
                             </td>
                             <td class="py-4 px-6 text-center">

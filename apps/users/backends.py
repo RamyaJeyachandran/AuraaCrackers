@@ -12,11 +12,12 @@ class MobileBackend(ModelBackend):
             
         try:
             # Check if username is actually a mobile number in our phone_number field
-            user = User.objects.get(phone_number=username)
-            if user.check_password(password):
+            # Use filter().first() instead of get() to handle cases where multiple users might share a number (legacy data issues)
+            user = User.objects.filter(phone_number=username).first()
+            if user and user.check_password(password):
                 return user
-        except User.DoesNotExist:
-            # Fallback to standard username check if mobile not found
+        except Exception:
+            # Fallback to standard username check if mobile not found or error
             try:
                 user = User.objects.get(username=username)
                 if user.check_password(password):

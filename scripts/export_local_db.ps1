@@ -23,8 +23,13 @@ if (-not (Test-Path "backups")) {
 }
 
 Write-Host "Exporting database '$DB_NAME' from container 'db'..."
-# We use & to execute the command regardless of whether it's a string or array
-& $DOCKER_CMD exec -T db pg_dump -U $DB_USER $DB_NAME > $BACKUP_FILE
+# We use cmd /c to ensure the redirection (>) uses raw binary/UTF-8 and not PowerShell's default UTF-16
+if ($DOCKER_CMD -is [array]) {
+    $cmdStr = "$($DOCKER_CMD -join ' ') exec -T db pg_dump -U $DB_USER $DB_NAME > $BACKUP_FILE"
+} else {
+    $cmdStr = "$DOCKER_CMD exec -T db pg_dump -U $DB_USER $DB_NAME > $BACKUP_FILE"
+}
+cmd /c $cmdStr
 
 if ($LASTEXITCODE -eq 0) {
     Write-Host "Successfully exported database to: $BACKUP_FILE" -ForegroundColor Green

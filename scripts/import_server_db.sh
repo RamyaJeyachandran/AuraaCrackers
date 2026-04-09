@@ -25,7 +25,10 @@ if [ ! -f "$BACKUP_FILE" ]; then
 fi
 
 echo "Cleaning up existing database '$DB_NAME'..."
-# Drop and recreate database to ensure a fresh import
+# 1. Forcefully disconnect any existing sessions (like the Django app)
+$DOCKER_CMD exec -T db psql -U $DB_ROOT_USER -d postgres -c "SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = '$DB_NAME' AND pid <> pg_backend_pid();"
+
+# 2. Drop and recreate database to ensure a fresh import
 $DOCKER_CMD exec -T db psql -U $DB_ROOT_USER -d postgres -c "DROP DATABASE IF EXISTS $DB_NAME;"
 $DOCKER_CMD exec -T db psql -U $DB_ROOT_USER -d postgres -c "CREATE DATABASE $DB_NAME;"
 

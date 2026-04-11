@@ -1003,7 +1003,7 @@
             const target = document.getElementById('header-' + slug);
             if (target) {
                 setTimeout(() => {
-                    const offset = window.innerWidth < 1024 ? 220 : 250; 
+                    const offset = window.innerWidth < 1024 ? 160 : 180; 
                     const bodyRect = document.body.getBoundingClientRect().top;
                     const elementRect = target.getBoundingClientRect().top;
                     const elementPosition = elementRect - bodyRect;
@@ -1014,15 +1014,12 @@
                         behavior: 'smooth'
                     });
                     
-                    // Highlight effect for the focused category
+                    // Highlight effect for the focused category - Permanent for this session
                     const mainDiv = target.querySelector('div.bg-auraa-red');
                     if (mainDiv) {
-                        mainDiv.classList.add('ring-4', 'ring-white/50', 'scale-[1.01]');
-                        setTimeout(() => {
-                            mainDiv.classList.remove('ring-4', 'ring-white/50', 'scale-[1.01]');
-                        }, 4000);
+                        mainDiv.classList.add('ring-4', 'ring-white/50', 'scale-[1.01]', 'shadow-2xl', 'relative', 'z-40');
                     }
-                }, 600);
+                }, 500);
             }
         }
 

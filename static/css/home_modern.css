@@ -81,18 +81,13 @@
 }
 
 .glass-support-card {
-    background: rgba(255, 255, 255, 0.08);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 2.5rem;
-    padding: 3rem;
     transition: transform 0.3s ease-out, background 0.3s ease;
     transform-style: preserve-3d;
 }
 
 .glass-support-card:hover {
-    background: rgba(255, 255, 255, 0.12);
     transform: translateY(-10px) translateZ(30px);
 }
 

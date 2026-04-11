@@ -59,8 +59,10 @@ class ProductListView(ListView):
         query = self.request.GET.get('q')
         sort = self.request.GET.get('sort', 'featured')
 
-        if category_name and category_name != 'All':
-            queryset = queryset.filter(category__name=category_name)
+        # Note: Category filtering removed as per user request to show all categories 
+        # and simply scroll to the selected one.
+        # if category_name and category_name != 'All':
+        #     queryset = queryset.filter(category__name=category_name)
         
         if query:
             queryset = queryset.filter(

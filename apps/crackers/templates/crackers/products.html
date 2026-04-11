@@ -450,7 +450,7 @@
                             {% for category_group in category_list %}
                                 <!-- Category Separator Pill -->
                                 <tbody>
-                                    <tr class="cursor-pointer group relative category-sep-row" onclick="toggleCategory('cat-{{ category_group.grouper.id }}')">
+                                    <tr id="header-{{ category_group.grouper.name|slugify }}" class="cursor-pointer group relative category-sep-row" onclick="toggleCategory('cat-{{ category_group.grouper.id }}')">
                                         <td class="bg-auraa-red p-0 rounded-l-xl">
                                             <div class="h-full flex items-center justify-center py-2 px-2">
                                                 <i data-lucide="chevron-down" id="icon-cat-{{ category_group.grouper.id }}" class="w-4 h-4 text-white transition-transform duration-500"></i>
@@ -989,6 +989,43 @@
     document.addEventListener('DOMContentLoaded', () => {
         fetchCart();
         
+        // Handle Auto-Scroll to Category
+        const urlParams = new URLSearchParams(window.location.search);
+        const selectedCat = urlParams.get('category');
+        if (selectedCat && selectedCat !== 'All') {
+            // Slugify the category name to match the Django slugify filter
+            const slug = selectedCat.toLowerCase()
+                .trim()
+                .replace(/[^\w\s-]/g, '')
+                .replace(/[\s_-]+/g, '-')
+                .replace(/^-+|-+$/g, '');
+            
+            const target = document.getElementById('header-' + slug);
+            if (target) {
+                setTimeout(() => {
+                    const offset = window.innerWidth < 1024 ? 220 : 250; 
+                    const bodyRect = document.body.getBoundingClientRect().top;
+                    const elementRect = target.getBoundingClientRect().top;
+                    const elementPosition = elementRect - bodyRect;
+                    const offsetPosition = elementPosition - offset;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Highlight effect for the focused category
+                    const mainDiv = target.querySelector('div.bg-auraa-red');
+                    if (mainDiv) {
+                        mainDiv.classList.add('ring-4', 'ring-white/50', 'scale-[1.01]');
+                        setTimeout(() => {
+                            mainDiv.classList.remove('ring-4', 'ring-white/50', 'scale-[1.01]');
+                        }, 4000);
+                    }
+                }, 600);
+            }
+        }
+
         // Sequential Entrances for Bank Details
         gsap.utils.toArray('.fade-up').forEach((elem) => {
             gsap.from(elem, {

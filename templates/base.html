@@ -296,6 +296,34 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <script>
         lucide.createIcons();
+
+        // Magnetic 3D Button Interaction
+        const magneticBtn = document.querySelector('#mobile-buy-products-wrapper');
+        const magneticTarget = magneticBtn ? magneticBtn.querySelector('a') : null;
+
+        if (magneticBtn && magneticTarget && window.innerWidth > 1024) {
+            magneticBtn.addEventListener('mousemove', (e) => {
+                const rect = magneticBtn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                
+                gsap.to(magneticTarget, {
+                    x: x * 0.4,
+                    y: y * 0.4,
+                    duration: 0.5,
+                    ease: "power2.out"
+                });
+            });
+
+            magneticBtn.addEventListener('mouseleave', () => {
+                gsap.to(magneticTarget, {
+                    x: 0,
+                    y: 0,
+                    duration: 1,
+                    ease: "elastic.out(1, 0.4)"
+                });
+            });
+        }
     </script>
     
     {% include 'includes/cart_scripts.html' %}

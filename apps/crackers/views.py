@@ -72,14 +72,14 @@ class ProductListView(ListView):
             )
 
         if sort == 'price-low':
-            queryset = queryset.order_by('price', 'padded_code')
+            queryset = queryset.order_by('category__order', 'price', 'padded_code')
         elif sort == 'price-high':
-            queryset = queryset.order_by('-price', 'padded_code')
+            queryset = queryset.order_by('category__order', '-price', 'padded_code')
         elif sort == 'name':
-            queryset = queryset.order_by('padded_code')
+            queryset = queryset.order_by('category__order', 'padded_code')
         else:
-            # Default ordering: Strictly by the LPAD result across all categories
-            queryset = queryset.order_by('padded_code')
+            # Default ordering: By category order, then by the LPAD result
+            queryset = queryset.order_by('category__order', 'padded_code')
         
         return queryset
 

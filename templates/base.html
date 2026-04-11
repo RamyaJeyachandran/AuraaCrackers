@@ -245,34 +245,31 @@
     <div id="mobile-buy-products-wrapper" class="fixed bottom-6 left-1/2 -translate-x-1/2 sm:left-auto sm:right-0 sm:translate-x-0 sm:bottom-auto sm:top-[30%] w-auto z-[99999]">
         <a href="{% url 'product_list' %}" class="relative flex items-center group">
             
-            <!-- Glassmorphism Mobile FAB & Desktop Sidebar Body -->
-            <div class="relative bg-auraa-navy/70 backdrop-blur-2xl text-white flex sm:flex-col items-center justify-center p-2 sm:py-8 sm:px-5 rounded-full sm:rounded-none sm:rounded-l-[2.5rem] font-black uppercase shadow-[0_20px_60px_-15px_rgba(10,50,90,0.6)] border-l border-t border-b border-white/20 hover:bg-auraa-navy/80 transition-all duration-700 ease-in-out active:scale-95 group-hover:scale-[1.02] overflow-hidden">
+            <!-- Glassmorphism 3D Sidebar Body -->
+            <div class="relative bg-yellow-400/80 backdrop-blur-xl text-white flex sm:flex-col items-center justify-center p-2 sm:py-8 sm:px-5 rounded-full sm:rounded-none sm:rounded-l-[2.5rem] font-black uppercase shadow-[0_20px_50px_rgba(245,7,29,0.3)] border-2 border-auraa-red group-hover:bg-yellow-400 transition-all duration-500 ease-in-out active:scale-95 overflow-hidden">
                 
-                <div class="w-11 h-11 flex items-center justify-center bg-auraa-red rounded-xl sm:rounded-2xl sm:mb-8 shadow-[0_8px_20px_rgba(245,7,29,0.4)] animate-pulse-slow">
-                    <i data-lucide="shopping-bag" class="w-5 h-5 text-white"></i>
+                <div class="w-11 h-11 flex items-center justify-center bg-white rounded-xl sm:rounded-2xl sm:mb-8 shadow-lg group-hover:rotate-12 transition-transform duration-300">
+                    <i data-lucide="shopping-bag" class="w-5 h-5 text-auraa-red"></i>
                 </div>
                 
-                <!-- Mobile Only Text (White on Glass) -->
-                <span class="sm:hidden block px-4 text-[13px] font-black uppercase tracking-[0.25em] whitespace-nowrap text-white">Buy Products</span>
+                <!-- Mobile Only Text -->
+                <span class="sm:hidden block px-4 text-[13px] font-black uppercase tracking-[0.2em] whitespace-nowrap text-white drop-shadow-md">Buy Products</span>
 
                 <!-- Desktop Only Vertically Stacked Letters (White) -->
                 <div class="hidden sm:flex flex-col items-center space-y-2 pb-2">
-                    <span class="text-[14px] tracking-widest leading-none font-black text-white">B</span>
-                    <span class="text-[14px] tracking-widest leading-none font-black text-white">U</span>
-                    <span class="text-[14px] tracking-widest leading-none font-black text-white">Y</span>
+                    <span class="text-[14px] tracking-widest leading-none font-black text-white drop-shadow-md">B</span>
+                    <span class="text-[14px] tracking-widest leading-none font-black text-white drop-shadow-md">U</span>
+                    <span class="text-[14px] tracking-widest leading-none font-black text-white drop-shadow-md">Y</span>
                     <div class="h-6"></div>
-                    <span class="text-[14px] tracking-widest leading-none font-black text-white/90">P</span>
-                    <span class="text-[14px] tracking-widest leading-none font-black text-white/90">R</span>
-                    <span class="text-[14px] tracking-widest leading-none font-black text-white/90">O</span>
-                    <span class="text-[14px] tracking-widest leading-none font-black text-white/90">D</span>
-                    <span class="text-[14px] tracking-widest leading-none font-black text-white/90">U</span>
-                    <span class="text-[14px] tracking-widest leading-none font-black text-white/90">C</span>
-                    <span class="text-[14px] tracking-widest leading-none font-black text-white/90">T</span>
-                    <span class="text-[14px] tracking-widest leading-none font-black text-white/90">S</span>
+                    <span class="text-[14px] tracking-widest leading-none font-black text-white drop-shadow-md">P</span>
+                    <span class="text-[14px] tracking-widest leading-none font-black text-white drop-shadow-md">R</span>
+                    <span class="text-[14px] tracking-widest leading-none font-black text-white drop-shadow-md">O</span>
+                    <span class="text-[14px] tracking-widest leading-none font-black text-white drop-shadow-md">D</span>
+                    <span class="text-[14px] tracking-widest leading-none font-black text-white drop-shadow-md">U</span>
+                    <span class="text-[14px] tracking-widest leading-none font-black text-white drop-shadow-md">C</span>
+                    <span class="text-[14px] tracking-widest leading-none font-black text-white drop-shadow-md">T</span>
+                    <span class="text-[14px] tracking-widest leading-none font-black text-white drop-shadow-md">S</span>
                 </div>
-                
-                <!-- Inner Glow for Glassmorphism -->
-                <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none"></div>
             </div>
         </a>
     </div>

@@ -257,15 +257,15 @@
                 </div>
                 
                 <!-- Mobile Only Text -->
-                <span class="sm:hidden block px-5 text-[14px] font-black uppercase tracking-[0.25em] text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)] whitespace-nowrap">Buy Products</span>
+                <span class="sm:hidden block px-5 text-[14px] font-black uppercase tracking-[0.25em] text-[#f5071d] drop-shadow-sm whitespace-nowrap">Buy Products</span>
 
-                <!-- Desktop Only Vertically Stacked Letters (White with Soft Shadow) -->
+                <!-- Desktop Only Vertically Stacked Letters (Auraa Red) -->
                 <div class="hidden sm:flex flex-col items-center space-y-2 pb-2">
                     {% for char in "BUY PRODUCTS"|make_list %}
                         {% if char == " " %}
                             <div class="h-6"></div>
                         {% else %}
-                            <span class="text-[15px] tracking-widest leading-none font-black text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]">{{ char }}</span>
+                            <span class="text-[15px] tracking-widest leading-none font-black text-[#f5071d]">{{ char }}</span>
                         {% endif %}
                     {% endfor %}
                 </div>

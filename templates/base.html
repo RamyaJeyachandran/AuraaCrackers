@@ -239,42 +239,39 @@
     {% include 'includes/cart_sidebar.html' %}
     {% include 'includes/global_modals.html' %}
 
-    <!-- Latest 3D UI & UX Floating Buy Products Button -->
+    <!-- Modern 3D/Tactile Floating Buy Products Button -->
     {% with url_name=request.resolver_match.url_name %}
     {% if not url_name or url_name not in "login,product_list,order_history,order_status,order_detail,profile,checkout,admin_dashboard,dashboard_categories,dashboard_products,dashboard_orders,dashboard_order_detail,dashboard_customers,dashboard_customers_print,dashboard_analysis,dashboard_report_create,dashboard_pricelists,dashboard_pricelist_create,dashboard_pricelist_detail,dashboard_pricelist_edit,admin_active_categories,admin_register" %}
     <div id="mobile-buy-products-wrapper" class="fixed bottom-6 left-1/2 -translate-x-1/2 sm:left-auto sm:right-0 sm:translate-x-0 sm:bottom-auto sm:top-[30%] w-auto z-[99999] perspective-[1000px]">
-        <a href="{% url 'product_list' %}" class="relative block group transform-gpu transition-all duration-500 hover:rotate-[-2deg]">
+        <a href="{% url 'product_list' %}" class="relative block group transform-gpu perspective-[1000px]">
             
-            <!-- 3D Shadow Layer -->
-            <div class="absolute inset-0 bg-yellow-700/40 rounded-full sm:rounded-none sm:rounded-l-[2.5rem] translate-y-3 sm:translate-x-2 blur-md transition-transform group-hover:translate-y-4"></div>
-            
-            <!-- 3D Edge/Depth Layer -->
-            <div class="absolute inset-0 bg-yellow-600 rounded-full sm:rounded-none sm:rounded-l-[2.5rem] translate-y-1.5 sm:translate-x-1"></div>
+            <!-- Realistic Stacking Depth Layer -->
+            <div class="absolute inset-0 bg-[#eab308] rounded-full sm:rounded-none sm:rounded-l-[2.5rem] translate-y-[6px] transition-transform duration-300 group-active:translate-y-[2px]"></div>
 
-            <!-- Front Content Layer (The Main Button Body) -->
-            <div class="relative bg-[#FFD700] flex sm:flex-col items-center justify-center p-3 sm:py-8 sm:px-6 rounded-full sm:rounded-none sm:rounded-l-[2.5rem] border-t border-white/50 shadow-xl group-hover:-translate-y-1 sm:group-hover:-translate-x-1 transition-all duration-300 ease-out overflow-hidden active:translate-y-1 sm:active:translate-x-0">
+            <!-- Main Button Body (The Raised Surface) -->
+            <div class="relative bg-[#FFD700] flex sm:flex-col items-center justify-center p-3 sm:py-8 sm:px-6 rounded-full sm:rounded-none sm:rounded-l-[2.5rem] shadow-[0_12px_24px_-8px_rgba(0,0,0,0.5)] border-t border-white/60 transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:-translate-y-2 group-active:translate-y-[4px] group-active:shadow-[inset_0_4px_12px_rgba(0,0,0,0.2)]">
                 
-                <!-- Red 3D Icon Container -->
-                <div class="relative w-12 h-12 flex items-center justify-center bg-[#f5071d] rounded-2xl sm:mb-8 shadow-[0_6px_0_#990000] group-hover:shadow-[0_4px_0_#990000] group-hover:translate-y-0.5 transition-all">
+                <!-- 3D Red Icon Container -->
+                <div class="relative w-12 h-12 flex items-center justify-center bg-[#f5071d] rounded-2xl sm:mb-8 shadow-[0_6px_0_#990000,0_8px_16px_rgba(0,0,0,0.2)] group-hover:shadow-[0_8px_0_#990000,0_12px_20px_rgba(0,0,0,0.3)] transition-all duration-300">
                     <i data-lucide="shopping-bag" class="w-6 h-6 text-white drop-shadow-md"></i>
                 </div>
                 
                 <!-- Mobile Only Text -->
-                <span class="sm:hidden block px-5 text-[14px] font-black uppercase tracking-[0.2em] text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)] whitespace-nowrap">Buy Products</span>
+                <span class="sm:hidden block px-5 text-[14px] font-black uppercase tracking-[0.25em] text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)] whitespace-nowrap">Buy Products</span>
 
-                <!-- Desktop Only Vertically Stacked Letters (White with Shadow) -->
+                <!-- Desktop Only Vertically Stacked Letters (White with Soft Shadow) -->
                 <div class="hidden sm:flex flex-col items-center space-y-2 pb-2">
                     {% for char in "BUY PRODUCTS"|make_list %}
                         {% if char == " " %}
                             <div class="h-6"></div>
                         {% else %}
-                            <span class="text-[15px] tracking-widest leading-none font-black text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.4)]">{{ char }}</span>
+                            <span class="text-[15px] tracking-widest leading-none font-black text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]">{{ char }}</span>
                         {% endif %}
                     {% endfor %}
                 </div>
                 
-                <!-- Interactive Glare -->
-                <div class="absolute inset-0 bg-gradient-to-tr from-transparent via-white/40 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-[1.5s]"></div>
+                <!-- Subtle Top Glint for Lighting -->
+                <div class="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent pointer-events-none"></div>
             </div>
         </a>
     </div>

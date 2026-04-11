@@ -314,11 +314,11 @@
 
 
             <!-- Controls -->
-            <div class="bg-auraa-red p-3 sm:p-4 rounded-[1.5rem] shadow-xl relative group">
+            <div class="bg-auraa-red p-3 sm:p-4 rounded-[1.5rem] shadow-xl relative z-[100] group">
                 <div class="absolute inset-0 overflow-hidden rounded-[2.5rem] pointer-events-none">
                     <div class="absolute -top-24 -right-24 w-48 h-48 bg-white/10 rounded-full blur-[60px] group-hover:bg-white/20 transition-all duration-1000"></div>
                 </div>
-                <div class="relative z-10 flex flex-col lg:flex-row gap-6 lg:gap-8 justify-between lg:items-center w-full">
+                <div class="relative z-30 flex flex-col lg:flex-row gap-6 lg:gap-8 justify-between lg:items-center w-full">
                     <!-- Search Form -->
                     <form method="GET" class="relative w-full lg:w-96 order-1">
                         {% if selected_category %}<input type="hidden" name="category" value="{{ selected_category }}">{% endif %}
@@ -408,6 +408,14 @@
                                 </button>
                             </div>
                         </div>
+
+                        <!-- Reset Filters Button -->
+                        {% if search_query or selected_category and selected_category != 'All' or sort_by and sort_by != 'featured' %}
+                        <a href="{% url 'product_list' %}" class="flex items-center justify-center px-6 py-4 bg-[#0A325A] hover:bg-gray-900 text-white rounded-2xl transition-all shadow-lg group shrink-0" title="Clear All Filters">
+                            <i data-lucide="rotate-ccw" class="w-4 h-4 group-hover:rotate-[-90deg] transition-transform"></i>
+                            <span class="ml-2 text-[10px] font-black uppercase tracking-widest">Reset All</span>
+                        </a>
+                        {% endif %}
                     </div>
                 </div>
             </div>

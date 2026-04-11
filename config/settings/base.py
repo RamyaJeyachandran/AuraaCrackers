@@ -20,6 +20,18 @@ DEBUG = env("DEBUG")
 
 ALLOWED_HOSTS = env("ALLOWED_HOSTS", default=["*"]) + ["testserver"]
 
+# Trust Nginx proxy for HTTPS detection
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
+# CSRF Trusted Origins (required for Django 4.0+ with HTTPS)
+CSRF_TRUSTED_ORIGINS = [f"https://{h}" for h in ALLOWED_HOSTS if h not in ["localhost", "127.0.0.1", "*", "testserver"]]
+# Also allow IP if present
+if env("ALLOWED_HOSTS", default=[]):
+    for h in env("ALLOWED_HOSTS", default=[]):
+         if h and not h.startswith('http'):
+             CSRF_TRUSTED_ORIGINS.append(f"http://{h}")
+             CSRF_TRUSTED_ORIGINS.append(f"https://{h}")
+
 # Application definition
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -155,7 +167,6 @@ SESSION_SAVE_EVERY_REQUEST = True
 # Authentication Settings
 AUTHENTICATION_BACKENDS = [
     'apps.users.backends.MobileBackend',
-    'django.contrib.auth.backends.ModelBackend',
 ]
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'home'

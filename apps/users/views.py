@@ -62,37 +62,44 @@ class SignupAPIView(View):
 
 class LoginAPIView(View):
     def post(self, request):
-        mobile = request.POST.get('mobile', '').strip()
-        password = request.POST.get('password', '').strip()
+        try:
+            mobile = request.POST.get('mobile', '').strip()
+            password = request.POST.get('password', '').strip()
 
-        if not mobile or not password:
-            return JsonResponse({'status': 'error', 'message': 'Mobile No and Password are required.'}, status=400)
+            if not mobile or not password:
+                return JsonResponse({'status': 'error', 'message': 'Mobile No and Password are required.'}, status=400)
 
-        # Let our custom MobileBackend find the user by either mobile OR username!
-        user = authenticate(request, username=mobile, password=password)
+            # Let our custom MobileBackend find the user by either mobile OR username!
+            user = authenticate(request, username=mobile, password=password)
 
-        if user is not None:
-            if user.is_active:
-                login(request, user)
-                # Success - determine role and redirect
-                display_name = user.full_name or user.username
-                
-                # Determine redirect
-                next_url = request.POST.get('next', '/')
-                if not next_url or next_url == 'null': next_url = '/'
-                
-                if user.role and user.role.name in ['Admin', 'Super Admin']:
-                    next_url = '/admin/dashboard/'
-                
-                return JsonResponse({
-                    'status': 'success', 
-                    'message': f'Welcome back, {display_name}!', 
-                    'redirect': next_url
-                })
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    # Success - determine role and redirect
+                    display_name = user.full_name or user.username
+                    
+                    # Determine redirect
+                    next_url = request.POST.get('next', '/')
+                    if not next_url or next_url == 'null': next_url = '/'
+                    
+                    if user.role and user.role.name in ['Admin', 'Super Admin']:
+                        next_url = '/admin/dashboard/'
+                    
+                    return JsonResponse({
+                        'status': 'success', 
+                        'message': f'Welcome back, {display_name}!', 
+                        'redirect': next_url
+                    })
+                else:
+                    return JsonResponse({'status': 'error', 'message': 'Account is disabled.'}, status=403)
             else:
-                return JsonResponse({'status': 'error', 'message': 'Account is disabled.'}, status=403)
-        else:
-            return JsonResponse({'status': 'error', 'message': 'Invalid Mobile No or Password.'}, status=401)
+                return JsonResponse({'status': 'error', 'message': 'Invalid Mobile No or Password.'}, status=401)
+        except Exception as e:
+            logger.error(f"Login API exception: {str(e)}")
+            return JsonResponse({
+                'status': 'error',
+                'message': 'A server error occurred. Please try again later.'
+            }, status=500)
 
 class ForgotPasswordAPIView(View):
     def post(self, request):

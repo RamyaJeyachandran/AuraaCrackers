@@ -19,9 +19,10 @@ class MobileBackend(ModelBackend):
         except Exception:
             # Fallback to standard username check if mobile not found or error
             try:
-                user = User.objects.get(username=username)
-                if user.check_password(password):
+                # Use filter().first() instead of get() to be resilient against duplicate usernames
+                user = User.objects.filter(username=username).first()
+                if user and user.check_password(password):
                     return user
-            except User.DoesNotExist:
+            except Exception:
                 return None
         return None

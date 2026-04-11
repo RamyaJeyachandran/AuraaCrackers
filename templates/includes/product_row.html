@@ -14,7 +14,7 @@
     <!-- Image -->
     <td class="py-1 lg:py-1.5 px-2 lg:px-3 product-image-cell" data-label="Image">
         <div class="relative w-12 h-12 md:w-10 md:h-10 rounded-xl bg-gray-50 group/img flex items-center justify-center p-1.5 shadow-sm border border-gray-100">
-            <img src="{% if product.image and 'noimage' not in product.image and 'list_product_image' not in product.image %}{{ product.image }}{% else %}{% static 'images/logo.jpeg' %}{% endif %}" 
+            <img src="{% if product.image and 'noimage' not in product.image and 'list_product_image' not in product.image %}{{ product.image }}{% else %}{% static 'images/logo.png' %}{% endif %}" 
                  onclick="showZoom(this.src, '{{ product.name|escapejs }}'); event.stopPropagation();"
                  alt="{{ product.name }}" loading="lazy" class="w-full h-full object-contain transition-transform duration-700 group-hover/img:scale-110 cursor-zoom-in">
             
@@ -22,7 +22,7 @@
             <div class="hidden lg:flex absolute left-[170%] top-1/2 -translate-y-1/2 w-64 h-64 bg-white rounded-[2rem] shadow-[0_40px_80px_-15px_rgba(0,0,0,0.6),0_0_30px_rgba(255,255,255,0.2)] opacity-0 invisible group-hover/img:opacity-100 group-hover/img:visible group-hover/img:scale-105 transition-all duration-300 z-[1000] pointer-events-none flex-col transform origin-left overflow-hidden border border-white/40 backdrop-blur-3xl">
                 <!-- Image Container with Shine -->
                 <div class="relative w-full aspect-square p-6 flex items-center justify-center bg-white overflow-hidden">
-                    <img src="{% if product.image and 'noimage' not in product.image and 'list_product_image' not in product.image %}{{ product.image }}{% else %}{% static 'images/logo.jpeg' %}{% endif %}" alt="{{ product.name }}" class="w-full h-full object-contain transition-all duration-700 group-hover/img:scale-105">
+                    <img src="{% if product.image and 'noimage' not in product.image and 'list_product_image' not in product.image %}{{ product.image }}{% else %}{% static 'images/logo.png' %}{% endif %}" alt="{{ product.name }}" class="w-full h-full object-contain transition-all duration-700 group-hover/img:scale-105">
                 </div>
                 <!-- Details Footer in Popout (Simplified for Clearance) -->
                 <div class="px-6 py-4 bg-gray-50/50 border-t border-gray-100 flex flex-col items-center">

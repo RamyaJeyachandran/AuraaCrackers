@@ -1,0 +1,55 @@
+﻿                                        Table "public.tbl_items"
+    Column    |           Type           | Collation | Nullable |                Default                
+--------------+--------------------------+-----------+----------+---------------------------------------
+ id           | integer                  |           | not null | nextval('tbl_items_id_seq'::regclass)
+ categoryId   | integer                  |           |          | 
+ itemCode     | character varying(50)    |           |          | 
+ itemName     | character varying(255)   |           |          | 
+ itemImage    | text                     |           |          | 
+ itemType     | character varying(1)     |           |          | 'G'::character varying
+ unitId       | integer                  |           |          | 
+ isSales      | integer                  |           |          | 1
+ saleRate     | numeric(15,2)            |           |          | 0.00
+ saleDesc     | text                     |           |          | 
+ purchaseRate | numeric(15,2)            |           |          | 0.00
+ mrp          | numeric(15,2)            |           |          | 0.00
+ taxId        | integer                  |           |          | 
+ accountId    | integer                  |           |          | 
+ minOrdQty    | numeric(15,3)            |           |          | 0.00
+ discountPer  | numeric(5,2)             |           |          | 0.00
+ discount     | numeric(15,2)            |           |          | 0.00
+ freeQty      | numeric(15,3)            |           |          | 0.00
+ locationId   | integer                  |           |          | 
+ openingQty   | numeric(15,3)            |           |          | 0.00
+ sortNo       | integer                  |           |          | 0
+ isDisabled   | integer                  |           |          | 0
+ companyId    | integer                  |           |          | 
+ branchId     | integer                  |           |          | 
+ isActive     | boolean                  |           |          | true
+ createdBy    | integer                  |           |          | 
+ createdDt    | timestamp with time zone |           |          | CURRENT_TIMESTAMP
+ updatedDt    | timestamp with time zone |           |          | CURRENT_TIMESTAMP
+ updatedBy    | integer                  |           |          | 
+Indexes:
+    "tbl_items_pkey" PRIMARY KEY, btree (id)
+    "tbl_items_created_00271d_idx" btree ("createdDt")
+    "tbl_items_saleRat_cdd488_idx" btree ("saleRate")
+Foreign-key constraints:
+    "tbl_items_branchid_fkey" FOREIGN KEY ("branchId") REFERENCES tbl_branch(id)
+    "tbl_items_categoryid_fkey" FOREIGN KEY ("categoryId") REFERENCES tbl_category(id)
+    "tbl_items_companyid_fkey" FOREIGN KEY ("companyId") REFERENCES tbl_company(id)
+    "tbl_items_unitid_fkey" FOREIGN KEY ("unitId") REFERENCES tbl_units(id)
+Referenced by:
+    TABLE "tbl_cart" CONSTRAINT "tbl_cart_itemid_fkey" FOREIGN KEY ("itemId") REFERENCES tbl_items(id)
+    TABLE "tbl_onlinesales_items" CONSTRAINT "tbl_onlinesales_items_itemid_fkey" FOREIGN KEY ("itemId") REFERENCES tbl_items(id)
+    TABLE "tbl_pricelist_items" CONSTRAINT "tbl_pricelist_items_itemid_fkey" FOREIGN KEY ("itemId") REFERENCES tbl_items(id)
+
+ id | name  | code  | descr | convFactor | companyId | branchId | isActive | createdBy |           createdDt           |           updatedDt           | updatedBy 
+----+-------+-------+-------+------------+-----------+----------+----------+-----------+-------------------------------+-------------------------------+-----------
+  1 | 1 Box | 1 Box |       |   1.000000 |           |          | t        |           | 2026-04-04 15:41:00.908465+00 | 2026-04-04 15:41:00.908465+00 |          
+  2 | Bag   | Bag   |       |   1.000000 |           |          | t        |           | 2026-04-04 15:41:00.908465+00 | 2026-04-04 15:41:00.908465+00 |          
+  3 | Box   | Box   |       |   1.000000 |           |          | t        |           | 2026-04-04 15:41:00.908465+00 | 2026-04-04 15:41:00.908465+00 |          
+  4 | Pcs   | Pcs   |       |   1.000000 |           |          | t        |           | 2026-04-04 15:41:00.908465+00 | 2026-04-04 15:41:00.908465+00 |          
+  5 | Pkt   | Pkt   |       |   1.000000 |           |          | t        |           | 2026-04-04 15:41:00.908465+00 | 2026-04-04 15:41:00.908465+00 |          
+(5 rows)
+

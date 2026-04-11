@@ -10663,3 +10663,1100 @@ INFO 2026-04-04 00:05:28,510 autoreload 9 131514898027264 Watching for file chan
 INFO 2026-04-04 00:05:59,286 basehttp 9 131514807346880 "GET / HTTP/1.1" 200 162496
 INFO 2026-04-04 00:05:59,382 basehttp 9 131514807346880 "GET /static/css/home_modern.css HTTP/1.1" 200 16792
 INFO 2026-04-04 00:06:01,287 basehttp 9 131514798954176 "GET /static/images/review2.mp4 HTTP/1.1" 200 3879586
+INFO 2026-04-04 00:57:52,047 basehttp 9 131514807346880 "GET / HTTP/1.1" 200 162594
+INFO 2026-04-04 00:57:52,206 basehttp 9 131514807346880 "GET /static/css/home_modern.css HTTP/1.1" 200 16792
+INFO 2026-04-04 00:57:52,485 basehttp 9 131514798954176 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-04 00:57:52,869 basehttp 9 131514798954176 "GET /static/images/categories/bijili.png HTTP/1.1" 200 56747
+INFO 2026-04-04 00:57:54,777 basehttp 9 131514807346880 "GET /static/js/home_modern.js HTTP/1.1" 200 6638
+INFO 2026-04-04 00:57:55,045 basehttp 9 131514557777600 "GET /static/images/categories/one-sound.png HTTP/1.1" 200 49106
+INFO 2026-04-04 00:57:55,133 basehttp 9 131514574563008 "GET /static/images/categories/bomb.png HTTP/1.1" 200 68111
+INFO 2026-04-04 00:57:56,344 basehttp 9 131514566170304 "GET /static/images/categories/power-deluxe.png HTTP/1.1" 200 119624
+INFO 2026-04-04 00:57:56,357 basehttp 9 131514798954176 "GET /static/images/categories/multi-sound.png HTTP/1.1" 200 82480
+INFO 2026-04-04 00:57:56,639 basehttp 9 131514557777600 "GET /static/images/support2.png HTTP/1.1" 200 167109
+INFO 2026-04-04 00:57:56,641 basehttp 9 131514574563008 "GET /static/images/support3.png HTTP/1.1" 200 141854
+INFO 2026-04-04 00:57:56,799 basehttp 9 131514807346880 "GET /static/images/support1.png HTTP/1.1" 200 249057
+INFO 2026-04-04 00:57:56,863 basehttp 9 131514566170304 "GET /static/images/support4.png HTTP/1.1" 200 158967
+INFO 2026-04-04 00:58:09,049 basehttp 9 131514582955712 "GET /static/images/shop2.png HTTP/1.1" 200 2584589
+INFO 2026-04-04 00:58:10,887 basehttp 9 131514582955712 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-04 00:59:48,035 basehttp 9 131514582955712 "GET / HTTP/1.1" 200 162702
+INFO 2026-04-04 00:59:50,322 basehttp 9 131514798954176 "GET /static/js/home_modern.js HTTP/1.1" 200 6638
+INFO 2026-04-04 00:59:50,325 basehttp 9 131514807346880 "GET /static/css/home_modern.css HTTP/1.1" 200 16792
+INFO 2026-04-04 00:59:50,368 basehttp 9 131514566170304 "GET /static/images/categories/bijili.png HTTP/1.1" 200 56747
+INFO 2026-04-04 00:59:51,212 basehttp 9 131514574563008 "GET /static/images/categories/bomb.png HTTP/1.1" 200 68111
+INFO 2026-04-04 00:59:51,687 basehttp 9 131514798954176 "GET /static/images/categories/one-sound.png HTTP/1.1" 200 49106
+INFO 2026-04-04 00:59:52,120 basehttp 9 131514807346880 "GET /static/images/categories/power-deluxe.png HTTP/1.1" 200 119624
+INFO 2026-04-04 00:59:52,129 basehttp 9 131514566170304 "GET /static/images/categories/multi-sound.png HTTP/1.1" 200 82480
+INFO 2026-04-04 00:59:53,642 basehttp 9 131514798954176 "GET /static/images/support2.png HTTP/1.1" 200 167109
+INFO 2026-04-04 00:59:53,827 basehttp 9 131514574563008 "GET /static/images/support1.png HTTP/1.1" 200 249057
+INFO 2026-04-04 00:59:53,963 basehttp 9 131514807346880 "GET /static/images/support4.png HTTP/1.1" 200 158967
+INFO 2026-04-04 00:59:54,001 basehttp 9 131514566170304 "GET /static/images/support3.png HTTP/1.1" 200 141854
+INFO 2026-04-04 00:59:54,211 basehttp 9 131514582955712 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-04 01:00:14,618 basehttp 9 131514557777600 "GET /static/images/shop2.png HTTP/1.1" 200 2584589
+INFO 2026-04-04 01:00:17,315 basehttp 9 131514557777600 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-04 01:01:14,036 basehttp 9 131514557777600 "GET / HTTP/1.1" 200 162814
+INFO 2026-04-04 01:01:14,297 basehttp 9 131514557777600 "GET /static/css/home_modern.css HTTP/1.1" 200 16792
+INFO 2026-04-04 01:01:16,255 basehttp 9 131514807346880 "GET /static/js/home_modern.js HTTP/1.1" 200 6638
+INFO 2026-04-04 01:01:16,370 basehttp 9 131514557777600 "GET /static/images/categories/bijili.png HTTP/1.1" 200 56747
+INFO 2026-04-04 01:01:16,504 basehttp 9 131514574563008 "GET /static/images/categories/bomb.png HTTP/1.1" 200 68111
+INFO 2026-04-04 01:01:16,610 basehttp 9 131514798954176 "GET /static/images/categories/power-deluxe.png HTTP/1.1" 200 119624
+INFO 2026-04-04 01:01:16,676 basehttp 9 131514807346880 "GET /static/images/categories/one-sound.png HTTP/1.1" 200 49106
+INFO 2026-04-04 01:01:17,037 basehttp 9 131514557777600 "GET /static/images/categories/multi-sound.png HTTP/1.1" 200 82480
+INFO 2026-04-04 01:01:17,177 basehttp 9 131514582955712 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-04 01:01:18,348 basehttp 9 131514807346880 "GET /static/images/support3.png HTTP/1.1" 200 141854
+INFO 2026-04-04 01:01:18,427 basehttp 9 131514798954176 "GET /static/images/support2.png HTTP/1.1" 200 167109
+INFO 2026-04-04 01:01:18,744 basehttp 9 131514574563008 "GET /static/images/support1.png HTTP/1.1" 200 249057
+INFO 2026-04-04 01:01:18,905 basehttp 9 131514557777600 "GET /static/images/support4.png HTTP/1.1" 200 158967
+INFO 2026-04-04 01:01:32,970 basehttp 9 131514566170304 "GET /static/images/shop2.png HTTP/1.1" 200 2584589
+INFO 2026-04-04 01:01:34,485 basehttp 9 131514566170304 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-04 01:05:02,582 basehttp 9 131514566170304 "GET / HTTP/1.1" 200 162814
+INFO 2026-04-04 01:05:04,347 basehttp 9 131514557777600 "GET /static/css/home_modern.css HTTP/1.1" 200 16792
+INFO 2026-04-04 01:05:04,813 basehttp 9 131514807346880 "GET /static/js/home_modern.js HTTP/1.1" 200 6638
+INFO 2026-04-04 01:05:06,065 basehttp 9 131514566170304 "GET /static/images/categories/bijili.png HTTP/1.1" 200 56747
+INFO 2026-04-04 01:05:06,418 basehttp 9 131514582955712 "GET /static/images/categories/bomb.png HTTP/1.1" 200 68111
+INFO 2026-04-04 01:05:10,567 basehttp 9 131514557777600 "GET /static/images/categories/power-deluxe.png HTTP/1.1" 200 119624
+INFO 2026-04-04 01:05:12,010 basehttp 9 131514807346880 "GET /static/images/categories/one-sound.png HTTP/1.1" 200 49106
+INFO 2026-04-04 01:05:15,012 basehttp 9 131514566170304 "GET /static/images/categories/multi-sound.png HTTP/1.1" 200 82480
+INFO 2026-04-04 01:05:26,911 basehttp 9 131514582955712 "GET /static/images/support1.png HTTP/1.1" 200 249057
+INFO 2026-04-04 01:05:27,043 basehttp 9 131514807346880 "GET /static/images/support3.png HTTP/1.1" 200 141854
+INFO 2026-04-04 01:05:27,143 basehttp 9 131514557777600 "GET /static/images/support2.png HTTP/1.1" 200 167109
+INFO 2026-04-04 01:05:29,925 basehttp 9 131514566170304 "GET /static/images/support4.png HTTP/1.1" 200 158967
+INFO 2026-04-04 01:05:30,087 basehttp 9 131514798954176 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-04 01:06:28,449 basehttp 9 131514574563008 "GET /static/images/shop2.png HTTP/1.1" 200 2584589
+INFO 2026-04-04 01:06:40,250 basehttp 9 131514574563008 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-04 01:46:14,749 basehttp 9 131514582955712 "GET /static/images/review2.mp4 HTTP/1.1" 200 3879586
+INFO 2026-04-04 01:46:32,659 basehttp 9 131514574563008 "GET /contact/ HTTP/1.1" 200 89223
+INFO 2026-04-04 01:47:04,901 basehttp 9 131514574563008 "GET / HTTP/1.1" 200 162814
+INFO 2026-04-04 01:47:04,997 basehttp 9 131514574563008 "GET /static/images/support1.png HTTP/1.1" 304 0
+INFO 2026-04-04 01:47:04,998 basehttp 9 131514582955712 "GET /static/images/support2.png HTTP/1.1" 304 0
+INFO 2026-04-04 01:47:05,026 basehttp 9 131514807346880 "GET /static/images/support3.png HTTP/1.1" 304 0
+INFO 2026-04-04 01:47:05,033 basehttp 9 131514566170304 "GET /static/images/support4.png HTTP/1.1" 304 0
+INFO 2026-04-04 01:47:07,061 basehttp 9 131514807346880 "GET /static/images/review2.mp4 HTTP/1.1" 200 3879586
+INFO 2026-04-04 01:47:09,981 basehttp 9 131514566170304 "GET /static/images/review1.mp4 HTTP/1.1" 200 11239589
+INFO 2026-04-04 01:47:29,007 basehttp 9 131514582955712 "GET /about/ HTTP/1.1" 200 98539
+INFO 2026-04-04 01:47:40,024 basehttp 9 131514582955712 "GET /testimonials/ HTTP/1.1" 200 129330
+INFO 2026-04-04 01:47:41,954 basehttp 9 131514574563008 "GET /static/images/review2.mp4 HTTP/1.1" 200 3879586
+INFO 2026-04-04 01:47:52,511 basehttp 9 131514807346880 "GET /contact/ HTTP/1.1" 200 89223
+INFO 2026-04-04 01:47:55,121 basehttp 9 131514807346880 "GET /about/ HTTP/1.1" 200 98539
+INFO 2026-04-04 01:48:02,215 basehttp 9 131514807346880 "GET /testimonials/ HTTP/1.1" 200 129330
+INFO 2026-04-04 01:48:05,718 basehttp 9 131514582955712 "GET /static/images/review2.mp4 HTTP/1.1" 200 3879586
+INFO 2026-04-04 01:50:22,015 basehttp 9 131514807346880 "GET /testimonials/ HTTP/1.1" 200 129606
+INFO 2026-04-04 01:50:22,362 basehttp 9 131514807346880 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-04 01:50:25,288 basehttp 9 131514582955712 "GET /static/images/review2.mp4 HTTP/1.1" 200 3879586
+INFO 2026-04-04 01:50:25,314 basehttp 9 131514574563008 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-04 01:57:33,933 basehttp 9 131514574563008 "GET / HTTP/1.1" 200 162814
+INFO 2026-04-04 01:57:33,955 basehttp 9 131514582955712 "GET / HTTP/1.1" 200 162814
+INFO 2026-04-04 01:57:36,959 basehttp 9 131514807346880 "GET /static/images/support3.png HTTP/1.1" 304 0
+INFO 2026-04-04 01:57:36,961 basehttp 9 131514566170304 "GET /static/images/support4.png HTTP/1.1" 304 0
+INFO 2026-04-04 01:57:36,963 basehttp 9 131514582955712 "GET /static/images/support1.png HTTP/1.1" 304 0
+INFO 2026-04-04 01:57:36,988 basehttp 9 131514574563008 "GET /static/images/support2.png HTTP/1.1" 304 0
+INFO 2026-04-04 07:05:25,827 autoreload 9 136134631736064 Watching for file changes with StatReloader
+INFO 2026-04-04 14:13:41,606 autoreload 8 123485657318144 Watching for file changes with StatReloader
+INFO 2026-04-04 14:20:03,719 autoreload 9 123669344449280 Watching for file changes with StatReloader
+INFO 2026-04-05 00:27:00,618 basehttp 9 123669253711552 "GET / HTTP/1.1" 200 157173
+INFO 2026-04-05 00:27:00,671 basehttp 9 123669234828992 "GET /static/images/shop2.png HTTP/1.1" 304 0
+INFO 2026-04-05 00:27:00,676 basehttp 9 123669245318848 "GET /static/css/home_modern.css HTTP/1.1" 304 0
+INFO 2026-04-05 00:27:00,722 basehttp 9 123669245318848 "GET /static/images/support1.png HTTP/1.1" 304 0
+INFO 2026-04-05 00:27:00,818 basehttp 9 123669253711552 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-05 00:27:00,890 basehttp 9 123669253711552 "GET /static/js/home_modern.js HTTP/1.1" 304 0
+INFO 2026-04-05 00:27:00,953 basehttp 9 123669234828992 "GET /static/images/support3.png HTTP/1.1" 304 0
+INFO 2026-04-05 00:27:00,954 basehttp 9 123669245318848 "GET /static/images/support2.png HTTP/1.1" 304 0
+INFO 2026-04-05 00:27:00,956 basehttp 9 123669019883200 "GET /static/images/support4.png HTTP/1.1" 304 0
+INFO 2026-04-05 00:27:14,598 basehttp 9 123669245318848 "GET /static/images/review2.mp4 HTTP/1.1" 200 3879586
+INFO 2026-04-06 04:27:16,973 autoreload 9 139795713184512 Watching for file changes with StatReloader
+INFO 2026-04-06 04:35:18,255 autoreload 9 128677661618944 Watching for file changes with StatReloader
+INFO 2026-04-06 05:12:05,023 basehttp 9 128677570406080 "GET / HTTP/1.1" 200 157173
+INFO 2026-04-06 05:12:05,180 basehttp 9 128677570406080 "GET /static/css/home_modern.css HTTP/1.1" 304 0
+INFO 2026-04-06 05:12:05,250 basehttp 9 128677488621248 "GET /static/images/shop2.png HTTP/1.1" 304 0
+INFO 2026-04-06 05:12:05,377 basehttp 9 128677570406080 "GET /static/images/support1.png HTTP/1.1" 304 0
+INFO 2026-04-06 05:12:05,536 basehttp 9 128677570406080 "GET /static/js/home_modern.js HTTP/1.1" 304 0
+INFO 2026-04-06 05:12:05,967 basehttp 9 128677570406080 "GET /static/images/support2.png HTTP/1.1" 304 0
+INFO 2026-04-06 05:12:06,020 basehttp 9 128677488621248 "GET /static/images/support3.png HTTP/1.1" 304 0
+INFO 2026-04-06 05:12:06,992 basehttp 9 128677488621248 "GET /static/images/support4.png HTTP/1.1" 304 0
+INFO 2026-04-06 13:08:13,484 autoreload 9 134453070541568 Watching for file changes with StatReloader
+INFO 2026-04-06 14:00:44,578 basehttp 9 134452979164864 "GET / HTTP/1.1" 200 162956
+INFO 2026-04-06 14:00:44,721 basehttp 9 134452979164864 "GET /static/css/home_modern.css HTTP/1.1" 304 0
+INFO 2026-04-06 14:00:45,087 basehttp 9 134452743239360 "GET /static/images/support4.png HTTP/1.1" 304 0
+INFO 2026-04-06 14:00:45,088 basehttp 9 134452960282304 "GET /static/images/support3.png HTTP/1.1" 304 0
+INFO 2026-04-06 14:00:45,089 basehttp 9 134452970772160 "GET /static/images/support2.png HTTP/1.1" 304 0
+INFO 2026-04-06 14:00:45,090 basehttp 9 134452979164864 "GET /static/images/support1.png HTTP/1.1" 304 0
+INFO 2026-04-06 14:00:48,210 basehttp 9 134452979164864 "GET /static/images/review2.mp4 HTTP/1.1" 200 3879586
+INFO 2026-04-06 14:01:00,646 basehttp 9 134452960282304 "GET /products/ HTTP/1.1" 200 1652511
+ERROR 2026-04-06 14:22:59,419 log 9 134452960282304 Internal Server Error: /products/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InvalidTextRepresentation: invalid input syntax for type integer: ""
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 220, in _get_response
+    response = response.render()
+               ^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/backends/django.py", line 61, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 175, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/loader_tags.py", line 63, in render
+    result = block.nodelist.render(context)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/defaulttags.py", line 320, in render
+    if match:
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 412, in __bool__
+    self._fetch_all()
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 102, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "/usr/local/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.DataError: invalid input syntax for type integer: ""
+
+ERROR 2026-04-06 14:22:59,552 basehttp 9 134452960282304 "GET /products/ HTTP/1.1" 500 221704
+WARNING 2026-04-06 14:23:00,190 log 9 134452960282304 Not Found: /favicon.ico
+WARNING 2026-04-06 14:23:00,192 basehttp 9 134452960282304 "GET /favicon.ico HTTP/1.1" 404 14784
+INFO 2026-04-06 14:25:02,185 autoreload 9 134453070541568 /app/apps/crackers/views.py changed, reloading.
+INFO 2026-04-06 14:25:06,588 autoreload 17 136021361844992 Watching for file changes with StatReloader
+INFO 2026-04-06 14:25:16,972 autoreload 17 136021361844992 /app/apps/crackers/views.py changed, reloading.
+INFO 2026-04-06 14:25:20,137 autoreload 19 132720257307392 Watching for file changes with StatReloader
+INFO 2026-04-06 14:26:21,700 basehttp 19 132720166430400 "GET /products/ HTTP/1.1" 200 1698337
+INFO 2026-04-06 14:26:22,078 basehttp 19 132720158037696 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-06 14:26:26,514 basehttp 19 132720158037696 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-06 14:31:34,149 basehttp 19 132720166430400 "GET /products/ HTTP/1.1" 200 1700445
+INFO 2026-04-06 14:31:34,356 basehttp 19 132720166430400 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-06 14:31:37,290 basehttp 19 132720166430400 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-06 14:36:15,316 basehttp 19 132720166430400 "GET /products/ HTTP/1.1" 200 1741690
+INFO 2026-04-06 14:36:16,207 basehttp 19 132720166430400 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-06 14:36:22,451 basehttp 19 132720166430400 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-06 14:37:03,011 basehttp 19 132720166430400 "GET /products/ HTTP/1.1" 200 1741741
+INFO 2026-04-06 14:37:03,132 basehttp 19 132720158037696 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-06 14:37:07,882 basehttp 19 132720158037696 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-06 14:37:35,407 basehttp 19 132720158037696 "GET /products/ HTTP/1.1" 200 1741741
+INFO 2026-04-06 14:37:35,605 basehttp 19 132720166430400 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-06 14:37:40,332 basehttp 19 132720166430400 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-06 14:38:56,971 autoreload 19 132720257307392 /app/apps/crackers/views.py changed, reloading.
+INFO 2026-04-06 14:39:00,406 autoreload 27 136288600228608 Watching for file changes with StatReloader
+INFO 2026-04-06 14:39:15,635 basehttp 27 136288439105216 "GET /products/ HTTP/1.1" 200 1741741
+INFO 2026-04-06 14:39:15,765 basehttp 27 136288430712512 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-06 14:39:19,905 basehttp 27 136288430712512 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-06 14:39:34,955 autoreload 27 136288600228608 /app/apps/crackers/views.py changed, reloading.
+INFO 2026-04-06 14:39:39,096 autoreload 31 126693880238848 Watching for file changes with StatReloader
+INFO 2026-04-06 14:39:51,287 basehttp 31 126693789394624 "GET /products/ HTTP/1.1" 200 1741741
+INFO 2026-04-06 14:39:54,570 basehttp 31 126693789394624 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-06 14:41:02,099 autoreload 31 126693880238848 /app/apps/crackers/views.py changed, reloading.
+INFO 2026-04-06 14:41:04,856 autoreload 35 125394227614464 Watching for file changes with StatReloader
+INFO 2026-04-06 14:41:38,445 basehttp 35 125394136065728 "GET /products/ HTTP/1.1" 200 1741741
+INFO 2026-04-06 14:41:38,576 basehttp 35 125394136065728 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-06 14:41:47,734 basehttp 35 125394136065728 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-06 14:42:48,400 autoreload 35 125394227614464 /app/apps/crackers/views.py changed, reloading.
+INFO 2026-04-06 14:42:50,888 autoreload 39 140055585882880 Watching for file changes with StatReloader
+INFO 2026-04-06 14:43:39,585 basehttp 39 140055494518464 "GET /products/ HTTP/1.1" 200 1785510
+INFO 2026-04-06 14:43:39,890 basehttp 39 140055494518464 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-06 14:43:47,556 basehttp 39 140055494518464 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-06 14:44:00,366 autoreload 39 140055585882880 /app/apps/crackers/views.py changed, reloading.
+INFO 2026-04-06 14:44:12,178 autoreload 43 134004584235776 Watching for file changes with StatReloader
+INFO 2026-04-06 14:44:28,353 basehttp 43 134004492723904 "GET /products/ HTTP/1.1" 200 1741741
+INFO 2026-04-06 14:44:28,622 basehttp 43 134004492723904 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-06 14:44:32,946 basehttp 43 134004492723904 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-06 14:44:41,383 basehttp 43 134004492723904 "GET /products/ HTTP/1.1" 200 1741741
+INFO 2026-04-06 15:26:49,755 autoreload 43 134004584235776 /app/apps/crackers/views.py changed, reloading.
+INFO 2026-04-06 15:26:54,567 autoreload 47 126262168773376 Watching for file changes with StatReloader
+INFO 2026-04-06 15:28:24,202 basehttp 47 126262078072512 "GET /products/ HTTP/1.1" 200 1741741
+INFO 2026-04-06 15:28:24,584 basehttp 47 126262078072512 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-06 15:28:27,589 basehttp 47 126262078072512 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-06 15:36:52,877 basehttp 47 126262078072512 "GET /products/ HTTP/1.1" 200 1733823
+INFO 2026-04-06 15:36:53,162 basehttp 47 126262069679808 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-06 15:36:56,355 basehttp 47 126262069679808 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-06 15:38:45,294 basehttp 47 126262069679808 "GET /products/ HTTP/1.1" 200 1720241
+INFO 2026-04-06 15:38:45,577 basehttp 47 126262078072512 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-06 15:38:48,181 basehttp 47 126262078072512 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-06 15:39:50,921 basehttp 47 126262078072512 "GET /products/ HTTP/1.1" 200 1712335
+INFO 2026-04-06 15:39:51,152 basehttp 47 126262069679808 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-06 15:39:54,565 basehttp 47 126262069679808 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-06 15:42:34,223 basehttp 47 126262078072512 "GET /products/ HTTP/1.1" 200 1698701
+INFO 2026-04-06 15:42:34,499 basehttp 47 126262078072512 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-06 15:42:37,799 basehttp 47 126262078072512 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-06 15:43:38,753 autoreload 47 126262168773376 /app/apps/crackers/views.py changed, reloading.
+INFO 2026-04-06 15:43:41,640 autoreload 57 127647180374784 Watching for file changes with StatReloader
+INFO 2026-04-06 15:44:23,393 basehttp 57 127647089682112 "GET /products/ HTTP/1.1" 200 1634744
+INFO 2026-04-06 15:44:23,833 basehttp 57 127647089682112 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-06 15:44:26,963 basehttp 57 127647089682112 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-06 15:50:04,308 basehttp 57 127647089682112 "GET /products/ HTTP/1.1" 200 1634744
+INFO 2026-04-06 15:50:04,714 basehttp 57 127647089682112 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-06 15:50:07,965 basehttp 57 127647089682112 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-06 15:51:25,667 basehttp 57 127647089682112 "GET /products/ HTTP/1.1" 200 1634747
+INFO 2026-04-06 15:51:25,930 basehttp 57 127647081289408 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-06 15:51:28,105 basehttp 57 127647081289408 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-06 15:57:49,234 basehttp 57 127647089682112 "GET /products/ HTTP/1.1" 200 1629196
+INFO 2026-04-06 15:57:49,543 basehttp 57 127647089682112 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-06 15:57:51,919 basehttp 57 127647089682112 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-06 15:58:22,269 basehttp 57 127647089682112 "GET /products/ HTTP/1.1" 200 1623687
+INFO 2026-04-06 15:58:22,526 basehttp 57 127647089682112 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-06 15:58:25,421 basehttp 57 127647089682112 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-06 16:00:04,007 basehttp 57 127647089682112 "GET /products/ HTTP/1.1" 200 1612400
+INFO 2026-04-06 16:00:04,331 basehttp 57 127647089682112 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-06 16:00:14,036 basehttp 57 127647089682112 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-07 00:51:00,526 basehttp 57 127647081289408 "GET /products/ HTTP/1.1" 200 1612400
+INFO 2026-04-07 00:51:00,967 basehttp 57 127647089682112 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-07 00:51:06,342 basehttp 57 127647089682112 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-07 00:58:40,920 basehttp 57 127647081289408 "GET /products/ HTTP/1.1" 200 1595646
+INFO 2026-04-07 00:58:41,377 basehttp 57 127647081289408 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-07 00:58:46,763 basehttp 57 127647081289408 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-07 01:00:33,027 basehttp 57 127647081289408 "GET /products/ HTTP/1.1" 200 1595646
+INFO 2026-04-07 01:00:35,179 basehttp 57 127647081289408 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-07 01:00:38,125 basehttp 57 127647081289408 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-07 01:05:08,603 basehttp 57 127647081289408 "GET /products/ HTTP/1.1" 200 1590170
+INFO 2026-04-07 01:05:08,932 basehttp 57 127647081289408 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-07 01:05:12,182 basehttp 57 127647081289408 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-07 01:08:54,613 basehttp 57 127647081289408 "GET /products/ HTTP/1.1" 200 1557428
+INFO 2026-04-07 01:08:55,701 basehttp 57 127647081289408 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-07 01:09:08,463 basehttp 57 127647081289408 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-07 01:13:13,616 autoreload 57 127647180374784 /app/apps/crackers/views.py changed, reloading.
+INFO 2026-04-07 01:13:33,624 autoreload 77 137004774736640 Watching for file changes with StatReloader
+ERROR 2026-04-07 01:13:49,826 log 77 137004615464640 Internal Server Error: /products/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UndefinedFunction: function lpad(integer, integer, unknown) does not exist
+LINE 1: ...tbl_items"."updatedBy", "tbl_items"."isDisabled", LPAD("tbl_...
+                                                             ^
+HINT:  No function matches the given name and argument types. You might need to add explicit type casts.
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 220, in _get_response
+    response = response.render()
+               ^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/backends/django.py", line 61, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 175, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/loader_tags.py", line 63, in render
+    result = block.nodelist.render(context)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/defaulttags.py", line 320, in render
+    if match:
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 412, in __bool__
+    self._fetch_all()
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 102, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "/usr/local/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: function lpad(integer, integer, unknown) does not exist
+LINE 1: ...tbl_items"."updatedBy", "tbl_items"."isDisabled", LPAD("tbl_...
+                                                             ^
+HINT:  No function matches the given name and argument types. You might need to add explicit type casts.
+
+ERROR 2026-04-07 01:13:49,855 basehttp 77 137004615464640 "GET /products/ HTTP/1.1" 500 232528
+WARNING 2026-04-07 01:13:51,710 log 77 137004615464640 Not Found: /favicon.ico
+WARNING 2026-04-07 01:13:51,718 basehttp 77 137004615464640 "GET /favicon.ico HTTP/1.1" 404 14784
+INFO 2026-04-07 01:14:07,898 autoreload 77 137004774736640 /app/apps/crackers/views.py changed, reloading.
+INFO 2026-04-07 01:14:18,878 autoreload 81 127741175464704 Watching for file changes with StatReloader
+INFO 2026-04-07 01:14:50,005 basehttp 81 127741084034752 "GET /products/ HTTP/1.1" 200 1557428
+INFO 2026-04-07 01:14:50,369 basehttp 81 127741084034752 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-07 01:14:54,304 basehttp 81 127741084034752 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-07 01:17:32,422 autoreload 81 127741175464704 /app/apps/crackers/views.py changed, reloading.
+INFO 2026-04-07 01:17:55,169 autoreload 85 124766683353856 Watching for file changes with StatReloader
+INFO 2026-04-07 01:18:09,942 basehttp 85 124766518245056 "GET /products/ HTTP/1.1" 200 1557428
+INFO 2026-04-07 01:18:16,502 basehttp 85 124766518245056 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-07 01:18:49,026 autoreload 85 124766683353856 /app/apps/crackers/views.py changed, reloading.
+INFO 2026-04-07 01:18:58,115 autoreload 89 123545141469952 Watching for file changes with StatReloader
+INFO 2026-04-07 01:19:11,004 basehttp 89 123545049884352 "GET /about/ HTTP/1.1" 200 98539
+INFO 2026-04-07 01:19:11,123 basehttp 89 123545049884352 "GET /static/images/shop.png HTTP/1.1" 304 0
+INFO 2026-04-07 01:19:37,461 basehttp 89 123545049884352 "GET /products/ HTTP/1.1" 200 1557428
+INFO 2026-04-07 01:21:46,548 autoreload 89 123545141469952 /app/apps/crackers/views.py changed, reloading.
+INFO 2026-04-07 01:22:03,775 autoreload 93 136783011218176 Watching for file changes with StatReloader
+INFO 2026-04-07 01:22:37,751 basehttp 93 136782920279744 "GET /products/ HTTP/1.1" 200 1557428
+INFO 2026-04-07 01:22:47,528 basehttp 93 136782920279744 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-07 01:22:53,874 basehttp 93 136782920279744 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-07 01:28:38,944 basehttp 93 136782920279744 "GET /products/ HTTP/1.1" 200 1557218
+INFO 2026-04-07 01:28:39,305 basehttp 93 136782920279744 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-07 01:28:45,721 basehttp 93 136782920279744 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-07 01:30:40,678 basehttp 93 136782920279744 "GET /products/ HTTP/1.1" 200 1557224
+INFO 2026-04-07 01:30:41,094 basehttp 93 136782920279744 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-07 01:30:45,625 basehttp 93 136782920279744 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-07 01:33:06,450 basehttp 93 136782920279744 "GET /products/ HTTP/1.1" 200 1525313
+INFO 2026-04-07 01:33:06,685 basehttp 93 136782920279744 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-07 01:33:09,386 basehttp 93 136782920279744 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-07 01:34:13,130 basehttp 93 136782920279744 "GET /products/ HTTP/1.1" 200 1525313
+INFO 2026-04-07 01:34:13,575 basehttp 93 136782920279744 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-07 01:34:23,827 basehttp 93 136782920279744 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-07 01:40:40,813 basehttp 93 136782911887040 "GET /login/ HTTP/1.1" 200 71611
+INFO 2026-04-07 01:40:41,470 basehttp 93 136782911887040 "GET /api/states/?country_id=1 HTTP/1.1" 200 1268
+WARNING 2026-04-07 01:40:55,724 log 93 136782911887040 Unauthorized: /api/login/
+WARNING 2026-04-07 01:40:55,742 basehttp 93 136782911887040 "POST /api/login/ HTTP/1.1" 401 64
+WARNING 2026-04-07 01:55:39,370 log 93 136782911887040 Unauthorized: /api/login/
+WARNING 2026-04-07 01:55:39,418 basehttp 93 136782911887040 "POST /api/login/ HTTP/1.1" 401 64
+WARNING 2026-04-07 01:55:54,058 log 93 136782911887040 Unauthorized: /api/login/
+WARNING 2026-04-07 01:55:54,481 basehttp 93 136782911887040 "POST /api/login/ HTTP/1.1" 401 64
+WARNING 2026-04-07 01:57:15,000 log 93 136782911887040 Unauthorized: /api/login/
+WARNING 2026-04-07 01:57:15,019 basehttp 93 136782911887040 "POST /api/login/ HTTP/1.1" 401 64
+INFO 2026-04-07 01:57:19,735 basehttp 93 136782911887040 "GET /login/ HTTP/1.1" 200 71611
+INFO 2026-04-07 01:57:20,731 basehttp 93 136782911887040 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-07 01:57:26,606 basehttp 93 136782911887040 "GET /api/states/?country_id=1 HTTP/1.1" 200 1268
+INFO 2026-04-07 01:57:29,825 basehttp 93 136782920279744 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-07 03:33:03,964 basehttp 93 136782920279744 "GET /login/ HTTP/1.1" 200 71611
+INFO 2026-04-07 03:33:04,156 basehttp 93 136782920279744 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-07 03:33:04,588 basehttp 93 136782920279744 "GET /api/states/?country_id=1 HTTP/1.1" 200 1268
+INFO 2026-04-07 03:33:04,945 basehttp 93 136782920279744 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+WARNING 2026-04-07 03:33:17,862 log 93 136782920279744 Unauthorized: /api/login/
+WARNING 2026-04-07 03:33:17,871 basehttp 93 136782920279744 "POST /api/login/ HTTP/1.1" 401 64
+INFO 2026-04-07 04:05:08,889 basehttp 93 136782911887040 "GET /login/ HTTP/1.1" 200 71611
+INFO 2026-04-07 04:05:09,128 basehttp 93 136782911887040 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-07 04:05:09,574 basehttp 93 136782911887040 "GET /api/states/?country_id=1 HTTP/1.1" 200 1268
+INFO 2026-04-07 04:05:09,888 basehttp 93 136782911887040 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-07 04:05:50,616 basehttp 93 136782911887040 "POST /api/login/ HTTP/1.1" 200 90
+INFO 2026-04-07 04:05:52,033 basehttp 93 136782911887040 "GET /admin/dashboard/ HTTP/1.1" 200 46135
+INFO 2026-04-07 04:05:52,766 basehttp 93 136782911887040 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 04:05:56,843 basehttp 93 136782911887040 "GET /admin/category/ HTTP/1.1" 200 126632
+INFO 2026-04-07 04:05:57,097 basehttp 93 136782911887040 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 04:06:00,998 basehttp 93 136782911887040 "GET /dashboard/products/ HTTP/1.1" 200 241121
+INFO 2026-04-07 04:06:01,483 basehttp 93 136782911887040 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 04:06:15,418 basehttp 93 136782911887040 "GET /dashboard/pricelists/ HTTP/1.1" 200 59881
+INFO 2026-04-07 04:06:15,793 basehttp 93 136782911887040 "GET /api/cart/list/ HTTP/1.1" 200 70
+ERROR 2026-04-07 04:06:17,126 log 93 136782911887040 Internal Server Error: /dashboard/pricelists/create/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InvalidTextRepresentation: invalid input syntax for type integer: "false"
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 220, in _get_response
+    response = response.render()
+               ^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/backends/django.py", line 61, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 175, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/loader_tags.py", line 63, in render
+    result = block.nodelist.render(context)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/defaulttags.py", line 194, in render
+    len_values = len(values)
+                 ^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 380, in __len__
+    self._fetch_all()
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 102, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "/usr/local/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.DataError: invalid input syntax for type integer: "false"
+
+ERROR 2026-04-07 04:06:17,163 basehttp 93 136782911887040 "GET /dashboard/pricelists/create/ HTTP/1.1" 500 206652
+WARNING 2026-04-07 04:06:17,331 log 93 136782911887040 Not Found: /favicon.ico
+WARNING 2026-04-07 04:06:17,333 basehttp 93 136782911887040 "GET /favicon.ico HTTP/1.1" 404 14784
+INFO 2026-04-07 04:06:23,731 basehttp 93 136782911887040 "GET /dashboard/products/ HTTP/1.1" 200 241121
+INFO 2026-04-07 04:06:24,401 basehttp 93 136782911887040 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 04:07:20,230 basehttp 93 136782911887040 "GET /dashboard/customers/ HTTP/1.1" 200 159320
+INFO 2026-04-07 04:07:21,968 basehttp 93 136782911887040 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 04:13:46,528 autoreload 93 136783011218176 /app/apps/crackers/views_dashboard.py changed, reloading.
+INFO 2026-04-07 04:13:59,986 autoreload 268 135072015635200 Watching for file changes with StatReloader
+INFO 2026-04-07 04:15:49,219 basehttp 268 135071924217536 "GET /dashboard/products/ HTTP/1.1" 200 242272
+INFO 2026-04-07 04:15:50,836 basehttp 268 135071924217536 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 04:17:30,834 autoreload 268 135072015635200 /app/apps/crackers/views_dashboard.py changed, reloading.
+INFO 2026-04-07 04:17:35,609 autoreload 278 130276768391936 Watching for file changes with StatReloader
+INFO 2026-04-07 04:17:45,997 basehttp 278 130276677117632 "GET /dashboard/customers/ HTTP/1.1" 200 159320
+INFO 2026-04-07 04:17:47,764 basehttp 278 130276677117632 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 04:19:21,523 basehttp 278 130276677117632 "GET /dashboard/products/ HTTP/1.1" 200 961343
+INFO 2026-04-07 04:19:24,971 basehttp 278 130276677117632 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 04:20:30,119 autoreload 278 130276768391936 /app/apps/crackers/views_dashboard.py changed, reloading.
+INFO 2026-04-07 04:20:45,124 autoreload 283 127184296780544 Watching for file changes with StatReloader
+INFO 2026-04-07 04:21:15,467 basehttp 283 127184205244096 "GET /dashboard/products/ HTTP/1.1" 200 961343
+INFO 2026-04-07 04:21:16,281 basehttp 283 127184205244096 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-07 04:21:19,459 basehttp 283 127184205244096 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 04:21:25,495 basehttp 283 127184205244096 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-07 04:22:45,131 basehttp 283 127184205244096 "GET /dashboard/customers/ HTTP/1.1" 200 160426
+INFO 2026-04-07 04:22:46,873 basehttp 283 127184205244096 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 04:23:51,347 basehttp 283 127184205244096 "GET /dashboard/customers/?q=Aadhi&status=All HTTP/1.1" 200 45416
+INFO 2026-04-07 04:23:53,268 basehttp 283 127184205244096 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 04:24:04,987 basehttp 283 127184205244096 "GET /dashboard/customers/?q=&status=All HTTP/1.1" 200 160426
+INFO 2026-04-07 04:24:06,693 basehttp 283 127184205244096 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 04:28:49,187 basehttp 283 127184196851392 "GET /admin/category/ HTTP/1.1" 200 126632
+INFO 2026-04-07 04:28:49,193 basehttp 283 127184205244096 "GET /dashboard/products/ HTTP/1.1" 200 961343
+INFO 2026-04-07 04:28:51,220 basehttp 283 127184196851392 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 04:29:11,654 basehttp 283 127184196851392 "GET /dashboard/products/ HTTP/1.1" 200 961343
+INFO 2026-04-07 04:29:19,145 basehttp 283 127184196851392 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 04:29:43,008 basehttp 283 127184196851392 "GET /dashboard/customers/ HTTP/1.1" 200 160426
+INFO 2026-04-07 04:29:45,642 basehttp 283 127184196851392 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 04:40:27,236 basehttp 283 127184196851392 "GET /dashboard/orders/ HTTP/1.1" 200 108031
+INFO 2026-04-07 04:40:27,256 basehttp 283 127183980852928 "GET /dashboard/orders/ HTTP/1.1" 200 108031
+INFO 2026-04-07 04:40:29,530 basehttp 283 127183980852928 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 04:40:38,145 basehttp 283 127183980852928 "GET /dashboard/order/2026040007/ HTTP/1.1" 200 54626
+INFO 2026-04-07 04:40:38,560 basehttp 283 127183980852928 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 04:40:49,743 basehttp 283 127183980852928 "GET /dashboard/products/ HTTP/1.1" 200 961343
+INFO 2026-04-07 04:40:51,919 basehttp 283 127183980852928 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 04:41:02,897 basehttp 283 127183980852928 "GET /dashboard/orders/ HTTP/1.1" 200 108031
+INFO 2026-04-07 04:41:03,811 basehttp 283 127183980852928 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 04:41:05,585 basehttp 283 127183980852928 "GET /dashboard/order/2026040007/ HTTP/1.1" 200 54626
+INFO 2026-04-07 04:41:06,255 basehttp 283 127183980852928 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 04:41:27,802 basehttp 283 127183980852928 "GET /dashboard/products/ HTTP/1.1" 200 961343
+INFO 2026-04-07 04:41:35,971 basehttp 283 127183980852928 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 04:41:42,677 basehttp 283 127183980852928 "GET /dashboard/orders/ HTTP/1.1" 200 108031
+INFO 2026-04-07 04:41:44,924 basehttp 283 127183980852928 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 04:42:04,086 basehttp 283 127183980852928 "GET /dashboard/orders/?page=3 HTTP/1.1" 200 108616
+INFO 2026-04-07 04:42:05,627 basehttp 283 127183980852928 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 04:42:10,421 basehttp 283 127183980852928 "GET /dashboard/orders/?page=2 HTTP/1.1" 200 108366
+INFO 2026-04-07 04:42:12,018 basehttp 283 127183980852928 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 04:42:23,910 basehttp 283 127183980852928 "GET /dashboard/order/2025100654/ HTTP/1.1" 200 73084
+INFO 2026-04-07 04:42:24,706 basehttp 283 127183980852928 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 04:42:43,926 basehttp 283 127183980852928 "GET /dashboard/orders/ HTTP/1.1" 200 108031
+INFO 2026-04-07 04:42:44,528 basehttp 283 127183980852928 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 04:42:56,294 basehttp 283 127183980852928 "GET /dashboard/customers/ HTTP/1.1" 200 160426
+INFO 2026-04-07 04:42:56,792 basehttp 283 127183980852928 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 04:43:03,237 basehttp 283 127183980852928 "GET /dashboard/orders/ HTTP/1.1" 200 108031
+INFO 2026-04-07 04:43:03,798 basehttp 283 127183980852928 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 04:43:07,081 basehttp 283 127183980852928 "GET /dashboard/order/2026040007/ HTTP/1.1" 200 54626
+INFO 2026-04-07 04:43:07,531 basehttp 283 127183980852928 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 04:45:55,913 basehttp 283 127183980852928 "GET /dashboard/orders/ HTTP/1.1" 200 108031
+INFO 2026-04-07 04:45:56,697 basehttp 283 127183980852928 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 04:50:24,440 basehttp 283 127183980852928 "GET /dashboard/pricelists/ HTTP/1.1" 200 59881
+INFO 2026-04-07 04:50:25,477 basehttp 283 127183980852928 "GET /api/cart/list/ HTTP/1.1" 200 70
+ERROR 2026-04-07 04:50:28,202 log 283 127183980852928 Internal Server Error: /dashboard/pricelists/create/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.InvalidTextRepresentation: invalid input syntax for type integer: "false"
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 220, in _get_response
+    response = response.render()
+               ^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/backends/django.py", line 61, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 175, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/loader_tags.py", line 63, in render
+    result = block.nodelist.render(context)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/template/defaulttags.py", line 194, in render
+    len_values = len(values)
+                 ^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 380, in __len__
+    self._fetch_all()
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 102, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "/usr/local/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.DataError: invalid input syntax for type integer: "false"
+
+ERROR 2026-04-07 04:50:28,282 basehttp 283 127183980852928 "GET /dashboard/pricelists/create/ HTTP/1.1" 500 206652
+WARNING 2026-04-07 04:50:28,669 log 283 127183980852928 Not Found: /favicon.ico
+WARNING 2026-04-07 04:50:28,670 basehttp 283 127183980852928 "GET /favicon.ico HTTP/1.1" 404 14784
+INFO 2026-04-07 04:52:15,097 basehttp 283 127183980852928 "GET /dashboard/orders/ HTTP/1.1" 200 108031
+INFO 2026-04-07 04:52:16,642 basehttp 283 127183980852928 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 04:56:04,421 basehttp 283 127183980852928 "GET /dashboard/customers/ HTTP/1.1" 200 160426
+INFO 2026-04-07 04:56:06,313 basehttp 283 127183980852928 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 04:58:21,296 basehttp 283 127183980852928 "GET /dashboard/customers/?q=&status=Active HTTP/1.1" 200 160425
+INFO 2026-04-07 04:58:23,368 basehttp 283 127183980852928 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 04:58:28,585 basehttp 283 127183980852928 "GET /dashboard/customers/?q=&status=All HTTP/1.1" 200 160426
+INFO 2026-04-07 04:58:29,518 basehttp 283 127183980852928 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 04:59:32,444 basehttp 283 127183980852928 "GET /dashboard/orders/ HTTP/1.1" 200 108031
+INFO 2026-04-07 04:59:37,284 basehttp 283 127183980852928 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 05:00:20,312 autoreload 283 127184296780544 /app/apps/crackers/views_dashboard.py changed, reloading.
+INFO 2026-04-07 05:00:41,406 autoreload 316 132497961816832 Watching for file changes with StatReloader
+INFO 2026-04-07 05:01:09,322 autoreload 316 132497961816832 /app/apps/crackers/views_dashboard.py changed, reloading.
+INFO 2026-04-07 05:01:27,321 autoreload 318 124694714434304 Watching for file changes with StatReloader
+INFO 2026-04-07 05:02:23,930 autoreload 318 124694714434304 /app/apps/crackers/views_dashboard.py changed, reloading.
+INFO 2026-04-07 05:02:46,229 autoreload 320 131618506646272 Watching for file changes with StatReloader
+INFO 2026-04-07 05:03:45,464 basehttp 320 131618415044288 "GET /dashboard/pricelists/ HTTP/1.1" 200 59881
+INFO 2026-04-07 05:03:46,643 basehttp 320 131618415044288 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 05:03:50,905 basehttp 320 131618415044288 "GET /dashboard/pricelists/create/ HTTP/1.1" 200 1195685
+INFO 2026-04-07 05:03:57,197 basehttp 320 131618415044288 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 05:05:28,544 autoreload 320 131618506646272 /app/apps/crackers/views_dashboard.py changed, reloading.
+INFO 2026-04-07 05:05:32,761 autoreload 324 124263275139840 Watching for file changes with StatReloader
+INFO 2026-04-07 05:05:49,242 autoreload 324 124263275139840 /app/apps/crackers/views_dashboard.py changed, reloading.
+INFO 2026-04-07 05:05:52,016 autoreload 326 134449957942016 Watching for file changes with StatReloader
+INFO 2026-04-07 05:05:59,978 autoreload 326 134449957942016 /app/apps/crackers/views_dashboard.py changed, reloading.
+INFO 2026-04-07 05:06:01,658 autoreload 328 130121895531264 Watching for file changes with StatReloader
+INFO 2026-04-07 05:06:12,913 autoreload 328 130121895531264 /app/apps/crackers/models.py changed, reloading.
+INFO 2026-04-07 05:06:15,879 autoreload 330 132402539008768 Watching for file changes with StatReloader
+INFO 2026-04-07 05:06:22,489 autoreload 330 132402539008768 /app/apps/crackers/models.py changed, reloading.
+INFO 2026-04-07 05:06:24,352 autoreload 332 128765339394816 Watching for file changes with StatReloader
+ERROR 2026-04-07 05:07:03,196 log 332 128765248136896 Internal Server Error: /dashboard/pricelists/create/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/contrib/auth/mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/contrib/auth/mixins.py", line 135, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 226, in get
+    context = self.get_context_data(**kwargs)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/apps/crackers/views_dashboard.py", line 203, in get_context_data
+    Prefetch('products', queryset=product_qs)
+                                  ^^^^^^^^^^
+NameError: name 'product_qs' is not defined
+ERROR 2026-04-07 05:07:03,219 basehttp 332 128765248136896 "GET /dashboard/pricelists/create/ HTTP/1.1" 500 88131
+WARNING 2026-04-07 05:07:03,481 log 332 128765248136896 Not Found: /favicon.ico
+WARNING 2026-04-07 05:07:03,483 basehttp 332 128765248136896 "GET /favicon.ico HTTP/1.1" 404 14784
+INFO 2026-04-07 05:07:46,878 autoreload 332 128765339394816 /app/apps/crackers/views_dashboard.py changed, reloading.
+INFO 2026-04-07 05:07:49,160 autoreload 336 137027525001984 Watching for file changes with StatReloader
+INFO 2026-04-07 05:08:23,710 basehttp 336 137027365369536 "GET /dashboard/pricelists/create/ HTTP/1.1" 200 1195685
+INFO 2026-04-07 05:08:23,966 basehttp 336 137027356976832 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-07 05:08:27,873 basehttp 336 137027356976832 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 05:08:27,957 basehttp 336 137027356976832 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-07 05:25:04,625 basehttp 336 137027365369536 "GET /dashboard/pricelists/create/ HTTP/1.1" 200 1195685
+INFO 2026-04-07 05:25:04,869 basehttp 336 137027365369536 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-07 05:25:09,357 basehttp 336 137027365369536 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 05:25:09,434 basehttp 336 137027365369536 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-07 05:28:45,349 autoreload 336 137027525001984 /app/apps/crackers/views_dashboard.py changed, reloading.
+INFO 2026-04-07 05:28:50,904 autoreload 342 132249609929472 Watching for file changes with StatReloader
+INFO 2026-04-07 05:35:53,990 basehttp 342 132249518335680 "GET /dashboard/pricelists/create/ HTTP/1.1" 200 1363458
+INFO 2026-04-07 05:35:54,458 basehttp 342 132249518335680 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-07 05:36:00,876 basehttp 342 132249518335680 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 05:36:01,118 basehttp 342 132249518335680 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-07 05:40:31,543 autoreload 342 132249609929472 /app/apps/crackers/views_dashboard.py changed, reloading.
+INFO 2026-04-07 05:40:35,561 autoreload 346 131627400782592 Watching for file changes with StatReloader
+INFO 2026-04-07 05:41:35,052 basehttp 346 131627310114496 "GET /dashboard/pricelists/create/ HTTP/1.1" 200 1363458
+INFO 2026-04-07 05:41:35,467 basehttp 346 131627310114496 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-07 05:41:40,534 basehttp 346 131627310114496 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 05:41:40,655 basehttp 346 131627310114496 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-07 05:42:06,222 basehttp 346 131627310114496 "GET /dashboard/pricelists/create/ HTTP/1.1" 200 1363458
+INFO 2026-04-07 05:42:06,536 basehttp 346 131627310114496 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-07 05:42:11,536 basehttp 346 131627310114496 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 05:42:11,703 basehttp 346 131627310114496 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-07 05:43:26,162 autoreload 346 131627400782592 /app/apps/crackers/views_dashboard.py changed, reloading.
+INFO 2026-04-07 05:43:29,378 autoreload 350 140026409083648 Watching for file changes with StatReloader
+INFO 2026-04-07 05:43:38,020 autoreload 350 140026409083648 /app/apps/crackers/views_dashboard.py changed, reloading.
+INFO 2026-04-07 05:43:41,045 autoreload 352 130888156287744 Watching for file changes with StatReloader
+INFO 2026-04-07 05:44:43,162 basehttp 352 130888065083072 "GET /dashboard/pricelists/create/ HTTP/1.1" 200 1195685
+INFO 2026-04-07 05:44:43,548 basehttp 352 130888065083072 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-07 05:44:47,248 basehttp 352 130888065083072 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 05:44:47,353 basehttp 352 130888065083072 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-07 05:49:13,742 basehttp 352 130888065083072 "GET /dashboard/orders/ HTTP/1.1" 200 108031
+INFO 2026-04-07 05:49:14,532 basehttp 352 130888065083072 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 05:56:23,932 autoreload 352 130888156287744 /app/apps/crackers/views_dashboard.py changed, reloading.
+INFO 2026-04-07 05:56:27,059 autoreload 357 136339080123136 Watching for file changes with StatReloader
+INFO 2026-04-07 05:57:11,775 basehttp 357 136338988852928 "GET /dashboard/orders/ HTTP/1.1" 200 111790
+INFO 2026-04-07 05:57:11,923 basehttp 357 136338988852928 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-07 05:57:12,424 basehttp 357 136338988852928 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 05:57:12,475 basehttp 357 136338988852928 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-07 05:57:16,378 basehttp 357 136338988852928 "GET /dashboard/orders/?q=&status=All&category=All&year=2026 HTTP/1.1" 200 78350
+INFO 2026-04-07 05:57:16,739 basehttp 357 136338988852928 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 05:57:32,947 basehttp 357 136338988852928 "GET /dashboard/orders/?q=&status=All&category=All&year=2025 HTTP/1.1" 200 110972
+INFO 2026-04-07 05:57:33,304 basehttp 357 136338988852928 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 05:57:50,657 basehttp 357 136338988852928 "GET /dashboard/orders/?q=&status=All&category=All&year=2026 HTTP/1.1" 200 78350
+INFO 2026-04-07 05:57:50,970 basehttp 357 136338988852928 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 05:59:47,220 autoreload 357 136339080123136 /app/apps/crackers/views_dashboard.py changed, reloading.
+INFO 2026-04-07 05:59:51,310 autoreload 361 124488243397376 Watching for file changes with StatReloader
+INFO 2026-04-07 05:59:57,396 autoreload 361 124488243397376 /app/apps/crackers/views_dashboard.py changed, reloading.
+INFO 2026-04-07 06:00:01,354 autoreload 363 136902579897088 Watching for file changes with StatReloader
+INFO 2026-04-07 06:00:51,211 basehttp 363 136902418101952 "GET /dashboard/orders/?q=&status=All&category=All&year=2026 HTTP/1.1" 200 80284
+INFO 2026-04-07 06:00:51,970 basehttp 363 136902418101952 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-07 06:00:54,620 basehttp 363 136902418101952 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 06:00:54,671 basehttp 363 136902409709248 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-07 06:01:04,517 basehttp 363 136902418101952 "GET /dashboard/order/2026040007/ HTTP/1.1" 200 54626
+INFO 2026-04-07 06:01:04,530 basehttp 363 136902409709248 "GET /dashboard/order/2026040007/ HTTP/1.1" 200 54626
+INFO 2026-04-07 06:01:05,261 basehttp 363 136902418101952 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 06:16:10,290 autoreload 363 136902579897088 /app/apps/crackers/views_dashboard.py changed, reloading.
+INFO 2026-04-07 06:16:14,378 autoreload 368 133651646726912 Watching for file changes with StatReloader
+INFO 2026-04-07 06:16:21,548 autoreload 368 133651646726912 /app/apps/crackers/templatetags/custom_filters.py changed, reloading.
+INFO 2026-04-07 06:16:23,818 autoreload 370 138397179429632 Watching for file changes with StatReloader
+INFO 2026-04-07 06:16:49,198 basehttp 370 138397088736960 "GET /dashboard/order/2026040007/ HTTP/1.1" 200 55365
+INFO 2026-04-07 06:16:49,564 basehttp 370 138397088736960 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-07 06:16:50,079 basehttp 370 138397088736960 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 06:16:50,268 basehttp 370 138397088736960 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-07 06:18:20,880 autoreload 370 138397179429632 /app/apps/crackers/views_dashboard.py changed, reloading.
+INFO 2026-04-07 06:18:23,964 autoreload 374 133317634466560 Watching for file changes with StatReloader
+INFO 2026-04-07 06:18:46,884 basehttp 374 133317543323328 "GET /dashboard/order/2026040007/ HTTP/1.1" 200 55730
+INFO 2026-04-07 06:18:47,805 basehttp 374 133317543323328 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 06:19:04,826 basehttp 374 133317543323328 "GET /dashboard/orders/ HTTP/1.1" 200 80284
+INFO 2026-04-07 06:19:05,502 basehttp 374 133317543323328 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 06:19:17,469 basehttp 374 133317543323328 "GET /dashboard/orders/?q=&status=All&category=SPARKLERS&year=2026 HTTP/1.1" 200 70953
+INFO 2026-04-07 06:19:18,362 basehttp 374 133317543323328 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 06:19:21,284 basehttp 374 133317543323328 "GET /dashboard/orders/?q=&status=All&category=All&year=2026 HTTP/1.1" 200 80284
+INFO 2026-04-07 06:19:21,796 basehttp 374 133317543323328 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 06:19:34,302 basehttp 374 133317543323328 "GET /dashboard/customers/ HTTP/1.1" 200 160426
+INFO 2026-04-07 06:19:34,902 basehttp 374 133317543323328 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 06:20:20,877 autoreload 374 133317634466560 /app/apps/crackers/views_dashboard.py changed, reloading.
+INFO 2026-04-07 06:20:23,503 autoreload 380 133510068916992 Watching for file changes with StatReloader
+INFO 2026-04-07 06:24:10,311 basehttp 380 133509977990848 "GET /dashboard/customers/ HTTP/1.1" 200 2828200
+INFO 2026-04-07 06:24:10,740 basehttp 380 133509969598144 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-07 06:24:14,012 basehttp 380 133509969598144 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 06:24:14,196 basehttp 380 133509969598144 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-07 06:25:14,746 autoreload 380 133510068916992 /app/apps/crackers/views_dashboard.py changed, reloading.
+INFO 2026-04-07 06:25:19,226 autoreload 384 138642392761088 Watching for file changes with StatReloader
+INFO 2026-04-07 06:25:25,087 autoreload 384 138642392761088 /app/apps/crackers/views_dashboard.py changed, reloading.
+INFO 2026-04-07 06:25:27,470 autoreload 386 125195294155520 Watching for file changes with StatReloader
+INFO 2026-04-07 06:26:10,415 basehttp 386 125195135219392 "GET /dashboard/customers/ HTTP/1.1" 200 2831960
+INFO 2026-04-07 06:26:10,872 basehttp 386 125195126826688 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-07 06:26:13,702 basehttp 386 125195126826688 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 06:26:13,843 basehttp 386 125195126826688 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-07 06:26:27,793 basehttp 386 125195126826688 "GET /dashboard/customers/?q=&status=All&orders=With HTTP/1.1" 200 1611533
+INFO 2026-04-07 06:26:29,660 basehttp 386 125195126826688 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 06:26:35,505 basehttp 386 125195126826688 "GET /dashboard/customers/?q=&status=All&orders=None HTTP/1.1" 200 1267244
+INFO 2026-04-07 06:26:36,646 basehttp 386 125195126826688 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 06:27:32,328 basehttp 386 125195126826688 "GET /dashboard/customers/?q=&status=All&orders=None HTTP/1.1" 200 1267248
+INFO 2026-04-07 06:27:32,743 basehttp 386 125195126826688 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-07 06:27:34,094 basehttp 386 125195126826688 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 06:27:34,181 basehttp 386 125195126826688 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-07 06:27:54,697 basehttp 386 125195126826688 "GET /dashboard/customers/?q=&status=All&orders=All HTTP/1.1" 200 2831964
+INFO 2026-04-07 06:27:57,078 basehttp 386 125195126826688 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 06:28:08,694 basehttp 386 125195126826688 "GET /dashboard/orders/ HTTP/1.1" 200 80284
+INFO 2026-04-07 06:28:08,943 basehttp 386 125195135219392 "GET /dashboard/orders/ HTTP/1.1" 200 80284
+INFO 2026-04-07 06:28:09,477 basehttp 386 125195135219392 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 06:28:11,467 basehttp 386 125195135219392 "GET /dashboard/products/ HTTP/1.1" 200 936045
+INFO 2026-04-07 06:28:14,328 basehttp 386 125195135219392 "GET /admin/category/ HTTP/1.1" 200 126632
+INFO 2026-04-07 06:28:15,552 basehttp 386 125195135219392 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 06:28:16,802 basehttp 386 125195135219392 "GET /dashboard/products/ HTTP/1.1" 200 936045
+INFO 2026-04-07 06:28:19,810 basehttp 386 125195135219392 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 06:29:30,111 autoreload 386 125195294155520 /app/apps/crackers/views_dashboard.py changed, reloading.
+INFO 2026-04-07 06:29:34,339 autoreload 391 133679506207488 Watching for file changes with StatReloader
+INFO 2026-04-07 06:29:45,161 basehttp 391 133679415289536 "GET /dashboard/products/ HTTP/1.1" 200 869474
+INFO 2026-04-07 06:29:45,549 basehttp 391 133679415289536 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-07 06:29:48,802 basehttp 391 133679415289536 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 06:29:49,205 basehttp 391 133679415289536 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-07 06:29:57,481 basehttp 391 133679415289536 "GET /dashboard/pricelists/ HTTP/1.1" 200 59881
+INFO 2026-04-07 06:29:58,111 basehttp 391 133679415289536 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 06:29:59,899 basehttp 391 133679415289536 "GET /dashboard/pricelists/create/ HTTP/1.1" 200 1195685
+INFO 2026-04-07 06:30:04,821 basehttp 391 133679415289536 "GET /dashboard/products/ HTTP/1.1" 200 869474
+INFO 2026-04-07 06:30:07,434 basehttp 391 133679415289536 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 07:43:56,385 basehttp 391 133679406896832 "GET /dashboard/products/ HTTP/1.1" 302 0
+INFO 2026-04-07 07:43:56,758 basehttp 391 133679406896832 "GET /login/?next=/dashboard/products/ HTTP/1.1" 200 71611
+INFO 2026-04-07 07:43:57,025 basehttp 391 133679406896832 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-07 07:43:57,580 basehttp 391 133679406896832 "GET /api/states/?country_id=1 HTTP/1.1" 200 1268
+INFO 2026-04-07 07:44:01,930 basehttp 391 133679406896832 "POST /api/login/ HTTP/1.1" 200 90
+INFO 2026-04-07 07:44:02,614 basehttp 391 133679406896832 "GET /admin/dashboard/ HTTP/1.1" 200 50138
+INFO 2026-04-07 07:44:03,373 basehttp 391 133679406896832 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 07:44:04,958 basehttp 391 133679406896832 "GET /dashboard/products/ HTTP/1.1" 200 869474
+INFO 2026-04-07 07:44:07,290 basehttp 391 133679406896832 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 07:44:28,082 autoreload 391 133679506207488 /app/apps/crackers/views_dashboard.py changed, reloading.
+INFO 2026-04-07 07:44:30,353 autoreload 397 129380768674560 Watching for file changes with StatReloader
+INFO 2026-04-07 07:44:50,595 autoreload 397 129380768674560 /app/apps/crackers/views_dashboard.py changed, reloading.
+INFO 2026-04-07 07:44:52,555 autoreload 399 126952920945408 Watching for file changes with StatReloader
+INFO 2026-04-07 07:45:49,050 basehttp 399 126952829609664 "GET /dashboard/products/ HTTP/1.1" 200 869474
+INFO 2026-04-07 07:45:49,300 basehttp 399 126952829609664 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-07 07:45:51,335 basehttp 399 126952829609664 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 07:45:51,561 basehttp 399 126952829609664 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-07 07:46:08,652 basehttp 399 126952829609664 "GET /logout/ HTTP/1.1" 302 0
+INFO 2026-04-07 07:46:08,944 basehttp 399 126952829609664 "GET / HTTP/1.1" 200 162956
+INFO 2026-04-07 07:46:09,048 basehttp 399 126952829609664 "GET /static/css/home_modern.css HTTP/1.1" 304 0
+INFO 2026-04-07 07:46:09,138 basehttp 399 126952802334400 "GET /static/images/support3.png HTTP/1.1" 304 0
+INFO 2026-04-07 07:46:09,143 basehttp 399 126952810727104 "GET /static/images/support1.png HTTP/1.1" 304 0
+INFO 2026-04-07 07:46:09,150 basehttp 399 126952821216960 "GET /static/images/support2.png HTTP/1.1" 304 0
+INFO 2026-04-07 07:46:09,152 basehttp 399 126952455272128 "GET /static/images/support4.png HTTP/1.1" 304 0
+INFO 2026-04-07 07:46:12,180 basehttp 399 126952810727104 "GET /products/ HTTP/1.1" 200 1525313
+INFO 2026-04-07 07:46:12,204 basehttp 399 126952821216960 "GET /static/images/review2.mp4 HTTP/1.1" 200 3879586
+INFO 2026-04-07 07:46:19,953 basehttp 399 126952810727104 "GET /login/ HTTP/1.1" 200 71611
+INFO 2026-04-07 07:46:20,208 basehttp 399 126952810727104 "GET /api/states/?country_id=1 HTTP/1.1" 200 1268
+INFO 2026-04-07 07:46:25,084 basehttp 399 126952810727104 "POST /api/login/ HTTP/1.1" 200 90
+INFO 2026-04-07 07:46:27,518 basehttp 399 126952810727104 "GET /admin/dashboard/ HTTP/1.1" 200 50138
+INFO 2026-04-07 07:46:28,230 basehttp 399 126952810727104 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 07:46:31,039 basehttp 399 126952810727104 "GET /dashboard/products/ HTTP/1.1" 200 869474
+INFO 2026-04-07 07:46:33,292 basehttp 399 126952810727104 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 07:49:01,751 basehttp 399 126952810727104 "GET /dashboard/products/ HTTP/1.1" 200 950578
+INFO 2026-04-07 07:49:02,371 basehttp 399 126952829609664 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-07 07:49:05,789 basehttp 399 126952829609664 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 07:49:05,919 basehttp 399 126952829609664 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-07 07:49:51,807 autoreload 399 126952920945408 /app/apps/crackers/views_dashboard.py changed, reloading.
+INFO 2026-04-07 07:49:55,209 autoreload 410 130771596010240 Watching for file changes with StatReloader
+INFO 2026-04-07 07:50:09,988 autoreload 410 130771596010240 /app/apps/crackers/views_dashboard.py changed, reloading.
+INFO 2026-04-07 07:50:11,843 autoreload 412 124013988557568 Watching for file changes with StatReloader
+INFO 2026-04-07 07:50:22,655 basehttp 412 124013825226432 "GET /dashboard/products/ HTTP/1.1" 200 838521
+INFO 2026-04-07 07:50:23,570 basehttp 412 124013816833728 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-07 07:50:26,564 basehttp 412 124013816833728 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 07:50:26,732 basehttp 412 124013816833728 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-07 07:51:03,559 basehttp 412 124013816833728 "GET /dashboard/pricelists/ HTTP/1.1" 200 59881
+INFO 2026-04-07 07:51:04,873 basehttp 412 124013816833728 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 07:51:05,933 basehttp 412 124013816833728 "GET /dashboard/pricelists/create/ HTTP/1.1" 200 1195685
+INFO 2026-04-07 07:51:10,272 basehttp 412 124013816833728 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 07:51:22,370 basehttp 412 124013816833728 "GET /dashboard/products/ HTTP/1.1" 200 838521
+INFO 2026-04-07 07:51:24,205 basehttp 412 124013816833728 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 07:57:50,701 basehttp 412 124013825226432 "GET /dashboard/products/ HTTP/1.1" 200 838414
+INFO 2026-04-07 07:57:51,162 basehttp 412 124013825226432 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-07 07:57:54,448 basehttp 412 124013825226432 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 07:57:54,629 basehttp 412 124013816833728 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-07 07:58:19,301 basehttp 412 124013816833728 "GET /dashboard/pricelists/ HTTP/1.1" 200 59881
+INFO 2026-04-07 07:58:20,015 basehttp 412 124013816833728 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 07:58:22,118 basehttp 412 124013816833728 "GET /dashboard/pricelists/create/ HTTP/1.1" 200 1195685
+INFO 2026-04-07 07:58:26,979 basehttp 412 124013816833728 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 08:04:25,800 basehttp 412 124013825226432 "GET /dashboard/pricelists/create/ HTTP/1.1" 200 1216109
+INFO 2026-04-07 08:04:25,985 basehttp 412 124013825226432 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-07 08:04:28,417 basehttp 412 124013825226432 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 08:04:28,504 basehttp 412 124013825226432 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-07 08:05:45,128 basehttp 412 124013825226432 "GET /dashboard/pricelists/create/ HTTP/1.1" 200 1205860
+INFO 2026-04-07 08:05:45,299 basehttp 412 124013825226432 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-07 08:05:48,123 basehttp 412 124013825226432 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 08:05:48,326 basehttp 412 124013825226432 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-07 08:07:24,652 basehttp 412 124013825226432 "GET /dashboard/customers/ HTTP/1.1" 200 2831964
+INFO 2026-04-07 08:07:27,507 basehttp 412 124013825226432 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 08:08:51,447 basehttp 412 124013825226432 "GET /dashboard/customers/ HTTP/1.1" 200 3040258
+INFO 2026-04-07 08:08:51,679 basehttp 412 124013816833728 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-07 08:08:57,020 basehttp 412 124013816833728 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 08:08:57,361 basehttp 412 124013816833728 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-07 08:10:29,871 basehttp 412 124013825226432 "GET /dashboard/customers/ HTTP/1.1" 200 3040284
+INFO 2026-04-07 08:10:30,083 basehttp 412 124013816833728 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-07 08:10:33,535 basehttp 412 124013816833728 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 08:10:33,700 basehttp 412 124013816833728 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-07 08:12:32,696 autoreload 412 124013988557568 /app/apps/crackers/views_dashboard.py changed, reloading.
+INFO 2026-04-07 08:12:39,198 autoreload 426 136129159308032 Watching for file changes with StatReloader
+INFO 2026-04-07 08:14:14,215 basehttp 426 136129068132032 "GET /dashboard/customers/ HTTP/1.1" 200 3042178
+INFO 2026-04-07 08:14:14,504 basehttp 426 136128988444352 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-07 08:14:19,955 basehttp 426 136128988444352 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 08:14:20,348 basehttp 426 136129068132032 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-07 08:14:31,081 basehttp 426 136129068132032 "GET /dashboard/customers/?sort=name&dir=asc HTTP/1.1" 200 3042178
+INFO 2026-04-07 08:14:34,275 basehttp 426 136129068132032 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 08:14:42,470 basehttp 426 136129068132032 "GET /dashboard/customers/?sort=orders&dir=asc HTTP/1.1" 200 3042178
+INFO 2026-04-07 08:14:46,514 basehttp 426 136129068132032 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 08:16:31,588 basehttp 426 136129068132032 "GET /dashboard/customers/?sort=orders&dir=asc HTTP/1.1" 200 3042379
+INFO 2026-04-07 08:16:32,145 basehttp 426 136128968517312 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-07 08:16:40,417 basehttp 426 136128968517312 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-07 08:16:40,779 basehttp 426 136129068132032 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 08:17:00,673 basehttp 426 136129068132032 "GET /dashboard/customers/?sort=orders&dir=desc HTTP/1.1" 200 3042381
+INFO 2026-04-07 08:17:05,407 basehttp 426 136129068132032 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 08:18:33,241 basehttp 426 136129068132032 "GET /dashboard/customers/?sort=orders&dir=desc HTTP/1.1" 200 3042381
+INFO 2026-04-07 08:18:33,709 basehttp 426 136128968517312 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-07 08:18:39,265 basehttp 426 136128968517312 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 08:18:39,682 basehttp 426 136128968517312 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-07 08:19:49,537 basehttp 426 136129068132032 "GET /dashboard/customers/?sort=orders&dir=desc HTTP/1.1" 200 3042386
+INFO 2026-04-07 08:19:49,861 basehttp 426 136128968517312 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-07 08:19:52,882 basehttp 426 136128968517312 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 08:19:53,042 basehttp 426 136128968517312 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-07 08:20:04,704 basehttp 426 136128968517312 "GET /dashboard/customers/?sort=orders&dir=asc HTTP/1.1" 200 3042384
+INFO 2026-04-07 08:20:08,948 basehttp 426 136128968517312 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 08:24:22,424 basehttp 426 136128968517312 "GET /dashboard/customers/?sort=name&dir=asc HTTP/1.1" 200 3042384
+INFO 2026-04-07 08:24:24,058 basehttp 426 136128968517312 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 08:24:31,065 basehttp 426 136128968517312 "GET /dashboard/customers/?sort=id&dir=asc HTTP/1.1" 200 3042384
+INFO 2026-04-07 08:24:33,189 basehttp 426 136128968517312 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 08:28:05,030 basehttp 426 136128968517312 "GET /dashboard/customers/?sort=orders&dir=asc HTTP/1.1" 200 3042384
+INFO 2026-04-07 08:28:09,224 basehttp 426 136128968517312 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 08:28:17,880 basehttp 426 136128968517312 "GET /dashboard/customers/?sort=orders&dir=desc HTTP/1.1" 200 3042386
+INFO 2026-04-07 08:28:20,363 basehttp 426 136128968517312 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 08:28:29,859 basehttp 426 136128968517312 "GET /dashboard/customers/?sort=name&dir=asc HTTP/1.1" 200 3042384
+INFO 2026-04-07 08:28:32,389 basehttp 426 136128968517312 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 08:29:12,556 autoreload 426 136129159308032 /app/apps/crackers/views_dashboard.py changed, reloading.
+INFO 2026-04-07 08:29:19,039 autoreload 442 129608155755264 Watching for file changes with StatReloader
+INFO 2026-04-07 08:30:03,879 basehttp 442 129608064165568 "GET /dashboard/customers/?sort=name&dir=asc HTTP/1.1" 200 3041610
+INFO 2026-04-07 08:30:04,297 basehttp 442 129608055772864 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-07 08:30:08,811 basehttp 442 129608055772864 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 08:30:09,271 basehttp 442 129608055772864 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-07 08:35:06,997 basehttp 442 129608064165568 "GET /dashboard/orders/ HTTP/1.1" 200 80284
+INFO 2026-04-07 08:35:08,652 basehttp 442 129608064165568 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 08:35:11,202 basehttp 442 129608064165568 "GET /dashboard/order/2026040006/ HTTP/1.1" 200 85679
+INFO 2026-04-07 08:35:12,369 basehttp 442 129608064165568 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 08:35:24,363 basehttp 442 129608064165568 "GET /dashboard/orders/ HTTP/1.1" 200 80284
+INFO 2026-04-07 08:35:25,253 basehttp 442 129608064165568 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 08:36:09,228 basehttp 442 129608064165568 "GET /logout/ HTTP/1.1" 302 0
+INFO 2026-04-07 08:36:09,534 basehttp 442 129608064165568 "GET / HTTP/1.1" 200 162956
+INFO 2026-04-07 08:36:09,668 basehttp 442 129608064165568 "GET /static/images/shop2.png HTTP/1.1" 304 0
+INFO 2026-04-07 08:36:11,113 basehttp 442 129608064165568 "GET /static/images/review2.mp4 HTTP/1.1" 200 3879586
+INFO 2026-04-07 08:36:12,587 basehttp 442 129608034797248 "GET /products/ HTTP/1.1" 200 1525313
+INFO 2026-04-07 08:36:29,272 basehttp 442 129608034797248 "GET /products/ HTTP/1.1" 200 1525313
+INFO 2026-04-07 08:36:29,668 basehttp 442 129608034797248 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-07 08:36:32,681 basehttp 442 129608034797248 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-07 08:36:49,058 basehttp 442 129608034797248 "GET /products/ HTTP/1.1" 200 1525313
+INFO 2026-04-07 08:36:49,438 basehttp 442 129608055772864 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-07 08:36:51,630 basehttp 442 129608055772864 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-07 08:36:57,493 basehttp 442 129608055772864 "GET /products/ HTTP/1.1" 200 1525313
+INFO 2026-04-07 08:36:57,868 basehttp 442 129608055772864 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-07 08:37:00,530 basehttp 442 129608055772864 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-07 08:45:24,567 basehttp 442 129608034797248 "GET /products/ HTTP/1.1" 200 1525881
+INFO 2026-04-07 08:45:24,909 basehttp 442 129608034797248 "GET /static/images/logo.png HTTP/1.1" 200 520870
+INFO 2026-04-07 08:45:28,162 basehttp 442 129608034797248 "GET /static/images/favicon.ico HTTP/1.1" 200 27501
+INFO 2026-04-07 08:46:35,526 basehttp 442 129608034797248 "GET /login/ HTTP/1.1" 200 71611
+INFO 2026-04-07 08:46:35,895 basehttp 442 129608034797248 "GET /api/states/?country_id=1 HTTP/1.1" 200 1268
+WARNING 2026-04-07 08:46:45,013 log 442 129608034797248 Unauthorized: /api/login/
+WARNING 2026-04-07 08:46:45,042 basehttp 442 129608034797248 "POST /api/login/ HTTP/1.1" 401 64
+INFO 2026-04-07 08:46:52,972 basehttp 442 129608034797248 "POST /api/login/ HTTP/1.1" 200 73
+INFO 2026-04-07 08:46:54,207 basehttp 442 129608034797248 "GET / HTTP/1.1" 200 166771
+INFO 2026-04-07 08:46:57,096 basehttp 442 129608064165568 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 08:46:58,799 basehttp 442 129608055772864 "GET /static/images/review2.mp4 HTTP/1.1" 200 3879586
+INFO 2026-04-07 08:47:05,954 basehttp 442 129608064165568 "GET /products/ HTTP/1.1" 200 1535410
+INFO 2026-04-07 08:47:09,391 basehttp 442 129608064165568 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 08:47:09,452 basehttp 442 129608064165568 "GET /api/cart/list/ HTTP/1.1" 200 70
+INFO 2026-04-07 08:54:41,547 basehttp 442 129608064165568 "GET /logout/ HTTP/1.1" 302 0
+INFO 2026-04-07 08:54:41,964 basehttp 442 129608064165568 "GET / HTTP/1.1" 200 162956
+INFO 2026-04-07 08:54:44,926 basehttp 442 129608034797248 "GET /static/images/review2.mp4 HTTP/1.1" 200 3879586
+INFO 2026-04-07 09:05:54,325 autoreload 442 129608155755264 /app/config/settings/base.py changed, reloading.

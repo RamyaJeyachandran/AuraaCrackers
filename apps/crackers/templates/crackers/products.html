@@ -364,15 +364,15 @@
                                     </div>
                                 </div>
                                 <div id="cat-options-list" class="max-h-64 overflow-y-auto custom-scrollbar">
-                                    <a href="?category=All" class="luxury-dropdown-option block w-full px-6 py-4 text-left text-[10px] font-black uppercase tracking-widest {% if not selected_category or selected_category == 'All' %}selected{% else %}text-[#0A325A]/70 hover:text-[#0A325A]{% endif %} transition-all border-b border-gray-50 flex items-center justify-between">
+                                    <button onclick="scrollToCategory('all', 'All Products')" class="luxury-dropdown-option block w-full px-6 py-4 text-left text-[10px] font-black uppercase tracking-widest {% if not selected_category or selected_category == 'All' %}selected{% else %}text-[#0A325A]/70 hover:text-[#0A325A]{% endif %} transition-all border-b border-gray-50 flex items-center justify-between">
                                         <span>All Products</span>
                                         {% if not selected_category or selected_category == 'All' %}<i data-lucide="check" class="w-3 h-3 text-[#0A325A]"></i>{% endif %}
-                                    </a>
+                                    </button>
                                     {% for cat in categories %}
-                                    <a href="?category={{ cat.name|urlencode }}" class="luxury-dropdown-option block w-full px-6 py-4 text-left text-[10px] font-black uppercase tracking-widest {% if selected_category == cat.name %}selected{% else %}text-[#0A325A]/70 hover:text-[#0A325A]{% endif %} transition-all border-b border-gray-50 flex items-center justify-between">
+                                    <button onclick="scrollToCategory('{{ cat.name|slugify }}', '{{ cat.name|escapejs }}')" class="luxury-dropdown-option block w-full px-6 py-4 text-left text-[10px] font-black uppercase tracking-widest {% if selected_category == cat.name %}selected{% else %}text-[#0A325A]/70 hover:text-[#0A325A]{% endif %} transition-all border-b border-gray-50 flex items-center justify-between">
                                         <span>{{ cat.name }}</span>
                                         {% if selected_category == cat.name %}<i data-lucide="check" class="w-3 h-3 text-[#0A325A]"></i>{% endif %}
-                                    </a>
+                                    </button>
                                     {% endfor %}
                                 </div>
                             </div>
@@ -991,6 +991,69 @@
     const summaryRoundOff = document.getElementById('summary-round-off');
     const summaryPacking = document.getElementById('summary-packing');
     const summaryOverall = document.getElementById('summary-overall');
+
+    function scrollToCategory(slug, name) {
+        // Update URL without reload
+        const url = new URL(window.location);
+        if (slug === 'all') url.searchParams.delete('category');
+        else url.searchParams.set('category', name);
+        window.history.pushState({}, '', url);
+
+        // Update Label
+        const label = document.getElementById('current-category-label');
+        if (label) label.innerText = name;
+
+        // Update Selected Class in Dropdown
+        document.querySelectorAll('#cat-options-list .luxury-dropdown-option').forEach(opt => {
+            opt.classList.remove('selected');
+            const check = opt.querySelector('i[data-lucide="check"]');
+            if (check) check.remove();
+            
+            if (opt.innerText.trim() === name.trim()) {
+                opt.classList.add('selected');
+                const i = document.createElement('i');
+                i.setAttribute('data-lucide', 'check');
+                i.setAttribute('class', 'w-3 h-3 text-[#0A325A]');
+                opt.appendChild(i);
+            }
+        });
+        lucide.createIcons();
+
+        // Close Dropdown
+        const menu = document.getElementById('category-options');
+        if (menu) menu.classList.add('hidden');
+        const chevron = document.getElementById('category-chevron');
+        if (chevron) chevron.classList.remove('rotate-180');
+
+        // Scroll
+        if (slug === 'all') {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            return;
+        }
+
+        const target = document.getElementById('header-' + slug);
+        if (target) {
+            const offset = window.innerWidth < 1024 ? 160 : 180;
+            const bodyRect = document.body.getBoundingClientRect().top;
+            const elementRect = target.getBoundingClientRect().top;
+            const elementPosition = elementRect - bodyRect;
+            const offsetPosition = elementPosition - offset;
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            });
+
+            // Highlight focus
+            document.querySelectorAll('.category-sep-row div.bg-auraa-red').forEach(d => {
+                d.classList.remove('ring-4', 'ring-white/50', 'scale-[1.01]', 'shadow-2xl', 'relative', 'z-40');
+            });
+            const mainDiv = target.querySelector('div.bg-auraa-red');
+            if (mainDiv) {
+                mainDiv.classList.add('ring-4', 'ring-white/50', 'scale-[1.01]', 'shadow-2xl', 'relative', 'z-40');
+            }
+        }
+    }
 
     // Initialize
     document.addEventListener('DOMContentLoaded', () => {

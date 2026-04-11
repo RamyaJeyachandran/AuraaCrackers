@@ -245,37 +245,34 @@
     <div id="mobile-buy-products-wrapper" class="fixed bottom-6 left-1/2 -translate-x-1/2 sm:left-auto sm:right-0 sm:translate-x-0 sm:bottom-auto sm:top-[30%] w-auto z-[99999]">
         <a href="{% url 'product_list' %}" class="relative flex items-center group">
             
-            <!-- Glassmorphism & Gradient Sidebar Body -->
-            <div class="relative bg-gradient-to-br from-white/40 via-[#FFD700]/40 to-[#FFD700]/10 backdrop-blur-2xl text-auraa-navy flex sm:flex-col items-center justify-center p-2 sm:py-8 sm:px-5 rounded-full sm:rounded-none sm:rounded-l-[2.5rem] font-black uppercase shadow-[0_32px_64px_-16px_rgba(0,0,0,0.2)] border border-white/40 group-hover:bg-white/60 transition-all duration-700 ease-in-out active:scale-95 overflow-hidden">
+            <!-- Glassmorphism Mobile FAB & Desktop Sidebar Body -->
+            <div class="relative bg-auraa-navy/70 backdrop-blur-2xl text-white flex sm:flex-col items-center justify-center p-2 sm:py-8 sm:px-5 rounded-full sm:rounded-none sm:rounded-l-[2.5rem] font-black uppercase shadow-[0_20px_60px_-15px_rgba(10,50,90,0.6)] border-l border-t border-b border-white/20 hover:bg-auraa-navy/80 transition-all duration-700 ease-in-out active:scale-95 group-hover:scale-[1.02] overflow-hidden">
                 
-                <div class="w-11 h-11 flex items-center justify-center bg-auraa-red rounded-xl sm:rounded-2xl sm:mb-8 shadow-[0_8px_16px_rgba(245,7,29,0.3)] animate-pulse-slow">
+                <div class="w-11 h-11 flex items-center justify-center bg-auraa-red rounded-xl sm:rounded-2xl sm:mb-8 shadow-[0_8px_20px_rgba(245,7,29,0.4)] animate-pulse-slow">
                     <i data-lucide="shopping-bag" class="w-5 h-5 text-white"></i>
                 </div>
                 
-                <!-- Mobile Only Text -->
-                <span class="sm:hidden block px-4 text-[13px] font-black uppercase tracking-[0.2em] whitespace-nowrap">Buy Products</span>
+                <!-- Mobile Only Text (White on Glass) -->
+                <span class="sm:hidden block px-4 text-[13px] font-black uppercase tracking-[0.25em] whitespace-nowrap text-white">Buy Products</span>
 
-                <!-- Desktop Only Vertically Stacked Letters (Glass Effect) -->
+                <!-- Desktop Only Vertically Stacked Letters (White) -->
                 <div class="hidden sm:flex flex-col items-center space-y-2 pb-2">
-                    <span class="text-[14px] tracking-widest leading-none font-black text-auraa-navy opacity-90">B</span>
-                    <span class="text-[14px] tracking-widest leading-none font-black text-auraa-navy opacity-90">U</span>
-                    <span class="text-[14px] tracking-widest leading-none font-black text-auraa-navy opacity-90">Y</span>
+                    <span class="text-[14px] tracking-widest leading-none font-black text-white">B</span>
+                    <span class="text-[14px] tracking-widest leading-none font-black text-white">U</span>
+                    <span class="text-[14px] tracking-widest leading-none font-black text-white">Y</span>
                     <div class="h-6"></div>
-                    <span class="text-[14px] tracking-widest leading-none font-black text-auraa-navy opacity-90">P</span>
-                    <span class="text-[14px] tracking-widest leading-none font-black text-auraa-navy opacity-90">R</span>
-                    <span class="text-[14px] tracking-widest leading-none font-black text-auraa-navy opacity-90">O</span>
-                    <span class="text-[14px] tracking-widest leading-none font-black text-auraa-navy opacity-90">D</span>
-                    <span class="text-[14px] tracking-widest leading-none font-black text-auraa-navy opacity-90">U</span>
-                    <span class="text-[14px] tracking-widest leading-none font-black text-auraa-navy opacity-90">C</span>
-                    <span class="text-[14px] tracking-widest leading-none font-black text-auraa-navy opacity-90">T</span>
-                    <span class="text-[14px] tracking-widest leading-none font-black text-auraa-navy opacity-90">S</span>
+                    <span class="text-[14px] tracking-widest leading-none font-black text-white/90">P</span>
+                    <span class="text-[14px] tracking-widest leading-none font-black text-white/90">R</span>
+                    <span class="text-[14px] tracking-widest leading-none font-black text-white/90">O</span>
+                    <span class="text-[14px] tracking-widest leading-none font-black text-white/90">D</span>
+                    <span class="text-[14px] tracking-widest leading-none font-black text-white/90">U</span>
+                    <span class="text-[14px] tracking-widest leading-none font-black text-white/90">C</span>
+                    <span class="text-[14px] tracking-widest leading-none font-black text-white/90">T</span>
+                    <span class="text-[14px] tracking-widest leading-none font-black text-white/90">S</span>
                 </div>
                 
-                <!-- Glass Reflection Shine -->
-                <div class="absolute inset-0 bg-gradient-to-tr from-transparent via-white/40 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
-                
-                <!-- Top Inner Highlight -->
-                <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white to-transparent"></div>
+                <!-- Inner Glow for Glassmorphism -->
+                <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none"></div>
             </div>
         </a>
     </div>

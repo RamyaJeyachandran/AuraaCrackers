@@ -50,8 +50,8 @@
         padding-left: 1.5rem;
     }
     .luxury-dropdown-option.selected {
-        background: var(--auraa-red);
-        color: white !important;
+        background: #f8fafc;
+        color: #0A325A !important;
     }
     .custom-scrollbar::-webkit-scrollbar { width: 4px; }
     .custom-scrollbar::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 10px; }
@@ -341,11 +341,11 @@
 
                         <div class="relative w-full sm:w-64" id="category-dropdown-container">
                             <button onclick="toggleCategoryDropdown(event)" 
-                                    class="w-full bg-white border-2 border-white rounded-2xl px-6 py-4 text-xs font-black uppercase tracking-widest text-auraa-red flex items-center justify-between group hover:bg-white/90 transition-all shadow-lg">
+                                    class="w-full bg-white border-2 border-white rounded-2xl px-6 py-4 text-xs font-black uppercase tracking-widest text-[#0A325A] flex items-center justify-between group hover:bg-white/90 transition-all shadow-lg">
                                 <span id="current-category-label">
                                     {{ selected_category|default:"All Products" }}
                                 </span>
-                                <i data-lucide="chevron-down" id="category-chevron" class="w-4 h-4 transition-transform"></i>
+                                <i data-lucide="chevron-down" id="category-chevron" class="w-4 h-4 text-[#0A325A] transition-transform"></i>
                             </button>
                             
                             <div id="category-options" class="luxury-dropdown-menu absolute top-full left-0 right-0 mt-3 bg-white/95 backdrop-blur-xl border border-gray-100 rounded-[2.5rem] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.2)] overflow-hidden">
@@ -353,18 +353,18 @@
                                     <div class="relative">
                                         <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400"></i>
                                         <input type="text" id="cat-search" placeholder="Search category..." 
-                                               class="w-full pl-10 pr-4 py-3 bg-white border border-gray-100 rounded-xl text-[10px] font-black uppercase tracking-widest outline-none focus:ring-2 focus:ring-auraa-red/10 transition-all">
+                                               class="w-full pl-10 pr-4 py-3 bg-white border border-gray-100 rounded-xl text-[10px] font-black uppercase tracking-widest text-[#0A325A] outline-none focus:ring-2 focus:ring-auraa-red/10 transition-all">
                                     </div>
                                 </div>
                                 <div id="cat-options-list" class="max-h-64 overflow-y-auto custom-scrollbar">
-                                    <a href="?category=All" class="luxury-dropdown-option block w-full px-6 py-4 text-left text-[10px] font-black uppercase tracking-widest {% if not selected_category or selected_category == 'All' %}selected{% else %}text-gray-600{% endif %} transition-all border-b border-gray-50 flex items-center justify-between">
+                                    <a href="?category=All" class="luxury-dropdown-option block w-full px-6 py-4 text-left text-[10px] font-black uppercase tracking-widest {% if not selected_category or selected_category == 'All' %}selected{% else %}text-[#0A325A]/70 hover:text-[#0A325A]{% endif %} transition-all border-b border-gray-50 flex items-center justify-between">
                                         <span>All Products</span>
-                                        {% if not selected_category or selected_category == 'All' %}<i data-lucide="check" class="w-3 h-3"></i>{% endif %}
+                                        {% if not selected_category or selected_category == 'All' %}<i data-lucide="check" class="w-3 h-3 text-[#0A325A]"></i>{% endif %}
                                     </a>
                                     {% for cat in categories %}
-                                    <a href="?category={{ cat.name|urlencode }}" class="luxury-dropdown-option block w-full px-6 py-4 text-left text-[10px] font-black uppercase tracking-widest {% if selected_category == cat.name %}selected{% else %}text-gray-600{% endif %} transition-all border-b border-gray-50 flex items-center justify-between">
+                                    <a href="?category={{ cat.name|urlencode }}" class="luxury-dropdown-option block w-full px-6 py-4 text-left text-[10px] font-black uppercase tracking-widest {% if selected_category == cat.name %}selected{% else %}text-[#0A325A]/70 hover:text-[#0A325A]{% endif %} transition-all border-b border-gray-50 flex items-center justify-between">
                                         <span>{{ cat.name }}</span>
-                                        {% if selected_category == cat.name %}<i data-lucide="check" class="w-3 h-3"></i>{% endif %}
+                                        {% if selected_category == cat.name %}<i data-lucide="check" class="w-3 h-3 text-[#0A325A]"></i>{% endif %}
                                     </a>
                                     {% endfor %}
                                 </div>
@@ -379,32 +379,32 @@
 
                         <div class="relative w-full sm:w-64" id="custom-sort-container">
                             <button onclick="toggleSortDropdown(event)" 
-                                    class="w-full bg-white border-2 border-white rounded-2xl px-6 py-4 text-xs font-black uppercase tracking-widest text-auraa-red flex items-center justify-between group hover:bg-white/90 transition-all shadow-lg">
+                                    class="w-full bg-white border-2 border-white rounded-2xl px-6 py-4 text-xs font-black uppercase tracking-widest text-[#0A325A] flex items-center justify-between group hover:bg-white/90 transition-all shadow-lg">
                                 <span id="current-sort-label">
                                     {% if sort_by == 'price-low' %}Price: Low to High
                                     {% elif sort_by == 'price-high' %}Price: High to Low
                                     {% elif sort_by == 'name' %}Code: Ascending
                                     {% else %}Featured{% endif %}
                                 </span>
-                                <i data-lucide="chevron-down" id="sort-chevron" class="w-4 h-4 transition-transform"></i>
+                                <i data-lucide="chevron-down" id="sort-chevron" class="w-4 h-4 text-[#0A325A] transition-transform"></i>
                             </button>
                             
                             <div id="sort-options" class="luxury-dropdown-menu absolute top-full left-0 right-0 mt-3 bg-white/95 backdrop-blur-xl border border-gray-100 rounded-[2.5rem] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.2)] overflow-hidden">
-                                <button onclick="updateSort('featured')" class="luxury-dropdown-option w-full px-6 py-4 text-left text-[10px] font-black uppercase tracking-widest {% if sort_by == 'featured' or not sort_by %}selected{% else %}text-gray-600{% endif %} transition-all border-b border-gray-50 flex items-center justify-between">
+                                <button onclick="updateSort('featured')" class="luxury-dropdown-option w-full px-6 py-4 text-left text-[10px] font-black uppercase tracking-widest {% if sort_by == 'featured' or not sort_by %}selected{% else %}text-[#0A325A]/70{% endif %} transition-all border-b border-gray-50 flex items-center justify-between">
                                     <span>Featured</span>
-                                    {% if sort_by == 'featured' or not sort_by %}<i data-lucide="check" class="w-3 h-3"></i>{% endif %}
+                                    {% if sort_by == 'featured' or not sort_by %}<i data-lucide="check" class="w-3 h-3 text-[#0A325A]"></i>{% endif %}
                                 </button>
-                                <button onclick="updateSort('price-low')" class="luxury-dropdown-option w-full px-6 py-4 text-left text-[10px] font-black uppercase tracking-widest {% if sort_by == 'price-low' %}selected{% else %}text-gray-600{% endif %} transition-all border-b border-gray-50 flex items-center justify-between">
+                                <button onclick="updateSort('price-low')" class="luxury-dropdown-option w-full px-6 py-4 text-left text-[10px] font-black uppercase tracking-widest {% if sort_by == 'price-low' %}selected{% else %}text-[#0A325A]/70{% endif %} transition-all border-b border-gray-50 flex items-center justify-between">
                                     <span>Price: Low to High</span>
-                                    {% if sort_by == 'price-low' %}<i data-lucide="check" class="w-3 h-3"></i>{% endif %}
+                                    {% if sort_by == 'price-low' %}<i data-lucide="check" class="w-3 h-3 text-[#0A325A]"></i>{% endif %}
                                 </button>
-                                <button onclick="updateSort('price-high')" class="luxury-dropdown-option w-full px-6 py-4 text-left text-[10px] font-black uppercase tracking-widest {% if sort_by == 'price-high' %}selected{% else %}text-gray-600{% endif %} transition-all border-b border-gray-50 flex items-center justify-between">
+                                <button onclick="updateSort('price-high')" class="luxury-dropdown-option w-full px-6 py-4 text-left text-[10px] font-black uppercase tracking-widest {% if sort_by == 'price-high' %}selected{% else %}text-[#0A325A]/70{% endif %} transition-all border-b border-gray-50 flex items-center justify-between">
                                     <span>Price: High to Low</span>
-                                    {% if sort_by == 'price-high' %}<i data-lucide="check" class="w-3 h-3"></i>{% endif %}
+                                    {% if sort_by == 'price-high' %}<i data-lucide="check" class="w-3 h-3 text-[#0A325A]"></i>{% endif %}
                                 </button>
-                                <button onclick="updateSort('name')" class="luxury-dropdown-option w-full px-6 py-4 text-left text-[10px] font-black uppercase tracking-widest {% if sort_by == 'name' %}selected{% else %}text-gray-600{% endif %} transition-all flex items-center justify-between">
+                                <button onclick="updateSort('name')" class="luxury-dropdown-option w-full px-6 py-4 text-left text-[10px] font-black uppercase tracking-widest {% if sort_by == 'name' %}selected{% else %}text-[#0A325A]/70{% endif %} transition-all flex items-center justify-between">
                                     <span>Code: Ascending</span>
-                                    {% if sort_by == 'name' %}<i data-lucide="check" class="w-3 h-3"></i>{% endif %}
+                                    {% if sort_by == 'name' %}<i data-lucide="check" class="w-3 h-3 text-[#0A325A]"></i>{% endif %}
                                 </button>
                             </div>
                         </div>

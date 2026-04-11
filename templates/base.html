@@ -246,26 +246,26 @@
         <a href="{% url 'product_list' %}" class="relative block group transform-gpu perspective-[1000px]">
             
             <!-- Realistic Stacking Depth Layer -->
-            <div class="absolute inset-0 bg-[#eab308] rounded-full sm:rounded-none sm:rounded-l-[2.5rem] translate-y-[6px] transition-transform duration-300 group-active:translate-y-[2px]"></div>
+            <div class="absolute inset-0 bg-[#eab308] rounded-full sm:rounded-none sm:rounded-l-[2rem] translate-y-[4px] transition-transform duration-300 group-active:translate-y-[2px]"></div>
 
             <!-- Main Button Body (The Raised Surface) -->
-            <div class="relative bg-[#FFD700] flex sm:flex-col items-center justify-center p-3 sm:py-8 sm:px-6 rounded-full sm:rounded-none sm:rounded-l-[2.5rem] shadow-[0_12px_24px_-8px_rgba(0,0,0,0.5)] border-t border-white/60 transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:-translate-y-2 group-active:translate-y-[4px] group-active:shadow-[inset_0_4px_12px_rgba(0,0,0,0.2)]">
+            <div class="relative bg-[#FFD700] flex sm:flex-col items-center justify-center p-2.5 sm:py-6 sm:px-4 rounded-full sm:rounded-none sm:rounded-l-[2rem] shadow-[0_12px_24px_-8px_rgba(0,0,0,0.5)] border-2 border-white transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:-translate-y-2 group-active:translate-y-[4px] group-active:shadow-[inset_0_4px_12px_rgba(0,0,0,0.2)]">
                 
                 <!-- 3D Red Icon Container -->
-                <div class="relative w-12 h-12 flex items-center justify-center bg-[#f5071d] rounded-2xl sm:mb-8 shadow-[0_6px_0_#990000,0_8px_16px_rgba(0,0,0,0.2)] group-hover:shadow-[0_8px_0_#990000,0_12px_20px_rgba(0,0,0,0.3)] transition-all duration-300">
-                    <i data-lucide="shopping-bag" class="w-6 h-6 text-white drop-shadow-md"></i>
+                <div class="relative w-10 h-10 flex items-center justify-center bg-[#f5071d] rounded-xl sm:mb-6 shadow-[0_4px_0_#990000,0_6px_12px_rgba(0,0,0,0.2)] group-hover:shadow-[0_6px_0_#990000,0_10px_16px_rgba(0,0,0,0.3)] transition-all duration-300">
+                    <i data-lucide="shopping-bag" class="w-5 h-5 text-white drop-shadow-md"></i>
                 </div>
                 
                 <!-- Mobile Only Text -->
-                <span class="sm:hidden block px-5 text-[14px] font-black uppercase tracking-[0.25em] text-[#f5071d] drop-shadow-sm whitespace-nowrap">Buy Products</span>
+                <span class="sm:hidden block px-4 text-[13px] font-black uppercase tracking-[0.2em] text-[#f5071d] drop-shadow-sm whitespace-nowrap">Buy Products</span>
 
                 <!-- Desktop Only Vertically Stacked Letters (Auraa Red) -->
-                <div class="hidden sm:flex flex-col items-center space-y-2 pb-2">
+                <div class="hidden sm:flex flex-col items-center space-y-1.5 pb-1">
                     {% for char in "BUY PRODUCTS"|make_list %}
                         {% if char == " " %}
-                            <div class="h-6"></div>
+                            <div class="h-4"></div>
                         {% else %}
-                            <span class="text-[15px] tracking-widest leading-none font-black text-[#f5071d]">{{ char }}</span>
+                            <span class="text-[13px] tracking-widest leading-none font-black text-[#f5071d]">{{ char }}</span>
                         {% endif %}
                     {% endfor %}
                 </div>

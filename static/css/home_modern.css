@@ -252,6 +252,22 @@
     box-shadow: inset 0 2px 0 rgba(255,255,255,0.2);
 }
 
+/* Custom 2026 Theme: White Background, Red Text, Dark Blue Border */
+.btn-3d-edge-custom-navy {
+    background: #051b31;
+}
+
+.btn-3d-front-custom-white {
+    background: white;
+    color: #f5071d !important;
+    border: 2px solid #0A325A !important;
+    box-shadow: inset 0 2px 0 rgba(255,255,255,1);
+}
+
+.btn-3d-glow-custom:hover .btn-3d-front {
+    box-shadow: 0 0 30px rgba(10, 50, 90, 0.4), 0 0 60px rgba(245, 7, 29, 0.2);
+}
+
 .btn-3d-container:hover {
     filter: brightness(110%);
 }

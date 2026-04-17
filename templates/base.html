@@ -30,7 +30,8 @@
                         }
                     },
                     fontFamily: {
-                        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', 'sans-serif'],
+                        sans: ['Poppins', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', 'sans-serif'],
+                        inter: ['Inter', 'sans-serif'],
                     },
                     keyframes: {
                         floatIn: {
@@ -62,7 +63,7 @@
     </script>
     
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&family=Bebas+Neue&display=swap" rel="stylesheet">
     
     <!-- GSAP for advanced animations (Premium requirement) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
@@ -70,7 +71,9 @@
     
     <style>
         html { scroll-behavior: smooth; }
-        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { font-family: 'Poppins', sans-serif; }
+        h1, h2, h3, h4, h5, h6, .font-inter { font-family: 'Inter', sans-serif; }
+        .font-bebas, blockquote { font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.05em; }
         [v-cloak] { display: none; }
         /* Modern scrollbar to match modern UI */
         ::-webkit-scrollbar { width: 8px; }

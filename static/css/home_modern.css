@@ -488,10 +488,10 @@
     border-radius: 1.5rem;
     background: linear-gradient(
         to left,
-        #030d18 0%,
-        #0A325A 8%,
-        #0A325A 92%,
-        #030d18 100%
+        #8a0410 0%,
+        #f5071d 8%,
+        #f5071d 92%,
+        #8a0410 100%
     );
 }
 
@@ -503,7 +503,7 @@
     padding: 1.25rem 2.5rem;
     border-radius: 1.5rem;
     color: white;
-    background: linear-gradient(135deg, #0A325A 0%, #051b31 100%);
+    background: linear-gradient(135deg, #f5071d 0%, #d40619 100%);
     border: 1px solid rgba(255, 255, 255, 0.15);
     transform: translateY(-8px);
     will-change: transform;
@@ -517,9 +517,9 @@
 
 .premium-view-all-btn:hover .premium-view-all-front {
     transform: translateY(-12px);
-    background: linear-gradient(135deg, #0d4073 0%, #072645 100%);
+    background: linear-gradient(135deg, #ff1a31 0%, #f5071d 100%);
     transition: transform 250ms cubic-bezier(.3, .7, .4, 1.5);
-    box-shadow: 0 0 40px rgba(10, 50, 90, 0.6), inset 0 2px 0 rgba(255,255,255,0.1);
+    box-shadow: 0 0 40px rgba(245, 7, 29, 0.6), inset 0 2px 0 rgba(255,255,255,0.1);
 }
 
 .premium-view-all-btn:hover .premium-view-all-front i {

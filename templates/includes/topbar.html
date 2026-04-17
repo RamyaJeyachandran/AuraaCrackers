@@ -7,15 +7,15 @@
             <a href="{% url 'home' %}" class="flex items-center group relative z-[75]">
                 <!-- Main Logo Container -->
                 <div class="h-[120px] w-[120px] rounded-2xl overflow-hidden border border-white/30 shadow-[0_15px_35px_-10px_rgba(0,0,0,0.5)] bg-white transition-all transform group-hover:scale-105 group-hover:-translate-y-1 duration-500">
-                    <img src="{% static 'images/logo.png' %}" alt="Auraa Crackers" class="w-full h-full object-contain p-2 scale-[1.2] transition-transform duration-700 group-hover:scale-[1.35]">
+                    <img src="{% static 'images/logo.png' %}" alt="Auraa Crackers" class="w-full h-full object-cover p-0 scale-[1.35] transition-transform duration-700 group-hover:scale-[1.5]">
                 </div>
 
                 <!-- Hover Popout Preview (Perfectly Cropped & Seamless) -->
                 <div class="absolute top-[85%] left-[140%] -translate-y-0 w-80 h-80 bg-white rounded-[3rem] shadow-[0_60px_120px_-20px_rgba(0,0,0,0.8),0_0_50px_rgba(255,255,255,0.4)] opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:scale-110 transition-all duration-500 z-[999] pointer-events-none flex items-center justify-center transform origin-top-left overflow-hidden">
                     <div class="absolute inset-0 bg-white rounded-[inherit]"></div>
                     <!-- Crop Container to Hide Image Edge Borders -->
-                    <div class="w-[90%] h-[90%] overflow-hidden flex items-center justify-center rounded-[2rem] relative z-10 transition-all duration-500 group-hover:scale-105">
-                        <img src="{% static 'images/logo.png' %}" alt="Auraa Preview" class="w-full h-full object-contain mix-blend-multiply scale-110">
+                    <div class="w-full h-full overflow-hidden flex items-center justify-center rounded-[2rem] relative z-10 transition-all duration-500 group-hover:scale-105">
+                        <img src="{% static 'images/logo.png' %}" alt="Auraa Preview" class="w-full h-full object-cover mix-blend-multiply scale-[1.25]">
                     </div>
                     <!-- Premium Glass Shine Overlay -->
                     <div class="absolute inset-0 bg-gradient-to-tr from-white/40 via-transparent to-white/20 rounded-[inherit] z-20"></div>
@@ -30,9 +30,8 @@
                         <i data-lucide="credit-card" class="w-5 h-5"></i>
                     </div>
                     <div class="flex flex-col">
-                        <span class="text-[8px] font-black uppercase tracking-[0.2em] text-white leading-none mb-1">Payment Confirm</span>
                         <a href="tel:+919080560340" class="text-xs font-extrabold text-white leading-none tracking-tight mb-1">+91 90805 60340</a>
-                        <span class="inline-block px-2 py-0.5 rounded-full bg-white/10 text-[7px] font-black text-white/60 uppercase tracking-widest w-fit">Finance Desk</span>
+                        <span class="inline-block px-4 py-1 rounded-full bg-white text-[10px] font-black text-auraa-red uppercase tracking-widest whitespace-nowrap w-full text-center shadow-lg">Payment Confirm</span>
                     </div>
                 </div>
 
@@ -42,9 +41,8 @@
                         <i data-lucide="truck" class="w-5 h-5"></i>
                     </div>
                     <div class="flex flex-col">
-                        <span class="text-[8px] font-black uppercase tracking-[0.2em] text-white leading-none mb-1">Dispatch Details</span>
                         <a href="tel:+919677570276" class="text-xs font-extrabold text-white leading-none tracking-tight mb-1">+91 96775 70276</a>
-                        <span class="inline-block px-2 py-0.5 rounded-full bg-white/10 text-[7px] font-black text-white/60 uppercase tracking-widest w-fit">Hub Tracking</span>
+                        <span class="inline-block px-4 py-1 rounded-full bg-white text-[10px] font-black text-auraa-red uppercase tracking-widest whitespace-nowrap w-full text-center shadow-lg">Dispatch Details</span>
                     </div>
                 </div>
 
@@ -54,9 +52,8 @@
                         <i data-lucide="phone" class="w-5 h-5"></i>
                     </div>
                     <div class="flex flex-col">
-                        <span class="text-[8px] font-black uppercase tracking-[0.2em] text-white leading-none mb-1">Direct Support</span>
                         <a href="tel:+916381426206" class="text-xs font-extrabold text-white leading-none tracking-tight mb-1">+91 63814 26206</a>
-                        <span class="inline-block px-2 py-0.5 rounded-full bg-white/10 text-[7px] font-black text-white/60 uppercase tracking-widest w-fit">Direct Call</span>
+                        <span class="inline-block px-4 py-1 rounded-full bg-white text-[10px] font-black text-auraa-red uppercase tracking-widest whitespace-nowrap w-full text-center shadow-lg">Direct Support</span>
                     </div>
                 </div>
 
@@ -66,9 +63,8 @@
                         <i data-lucide="headphones" class="w-5 h-5"></i>
                     </div>
                     <div class="flex flex-col">
-                        <span class="text-[8px] font-black uppercase tracking-[0.2em] text-white leading-none mb-1">Customer Support</span>
                         <a href="tel:+919489435625" class="text-xs font-extrabold text-white leading-none tracking-tight mb-1">+91 94894 35625</a>
-                        <span class="inline-block px-2 py-0.5 rounded-full bg-white/10 text-[7px] font-black text-white/60 uppercase tracking-widest w-fit">Expert Help</span>
+                        <span class="inline-block px-4 py-1 rounded-full bg-white text-[10px] font-black text-auraa-red uppercase tracking-widest whitespace-nowrap w-full text-center shadow-lg">Customer Support</span>
                     </div>
                 </div>
             </div>

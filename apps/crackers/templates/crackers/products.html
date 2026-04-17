@@ -152,6 +152,25 @@
             line-height: 1 !important;
         }
 
+        /* Mobile Dynamic State */
+        .category-sep-row.collapsed td div.category-div-wrap {
+            background: #ffffff !important;
+            border: 2px solid #ef4444 !important;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05) !important;
+        }
+        .category-sep-row.collapsed td div.category-div-wrap h2,
+        .category-sep-row.collapsed td div.category-div-wrap i,
+        .category-sep-row.collapsed td div.category-div-wrap svg {
+            color: #ef4444 !important;
+            stroke: #ef4444 !important;
+        }
+        .category-sep-row.collapsed .category-sep-row .items-count-pill {
+            background-color: #ef4444 !important;
+        }
+        .category-sep-row.collapsed .category-sep-row .items-count-pill span {
+            color: #ffffff !important;
+        }
+
         /* Column-balanced grid */
         .product-row {
             display: grid !important;
@@ -312,6 +331,31 @@
             display: none !important;
         }
     }
+
+    /* Desktop Dynamic State */
+    .category-sep-row.collapsed td.category-icon-td {
+        background-color: #ffffff !important;
+        border: 2px solid var(--auraa-red) !important;
+        border-right: none !important;
+    }
+    .category-sep-row.collapsed td div.category-div-wrap {
+        background-color: #ffffff !important;
+        border: 2px solid var(--auraa-red) !important;
+        border-left: none !important;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05) !important;
+    }
+    .category-sep-row.collapsed h2,
+    .category-sep-row.collapsed i[data-lucide],
+    .category-sep-row.collapsed svg {
+        color: var(--auraa-red) !important;
+        stroke: var(--auraa-red) !important;
+    }
+    .category-sep-row.collapsed .items-count-pill {
+        background-color: var(--auraa-red) !important;
+    }
+    .category-sep-row.collapsed .items-count-pill span {
+        color: #ffffff !important;
+    }
 </style>
 {% endblock %}
 
@@ -460,18 +504,18 @@
                                 <!-- Category Separator Pill -->
                                 <tbody>
                                     <tr id="header-{{ category_group.grouper.name|slugify }}" class="cursor-pointer group relative category-sep-row" onclick="toggleCategory('cat-{{ category_group.grouper.id }}')">
-                                        <td class="bg-auraa-red p-0 rounded-l-xl">
+                                        <td class="bg-auraa-red p-0 rounded-l-xl category-icon-td transition-colors duration-500">
                                             <div class="h-full flex items-center justify-center py-2 px-2">
-                                                <i data-lucide="chevron-down" id="icon-cat-{{ category_group.grouper.id }}" class="w-4 h-4 text-white transition-transform duration-500"></i>
+                                                <i data-lucide="minus" id="icon-cat-{{ category_group.grouper.id }}" class="w-4 h-4 text-white transition-all duration-500"></i>
                                             </div>
                                         </td>
                                         <td colspan="7" class="p-0">
-                                            <div class="bg-auraa-red pr-4 py-2 rounded-r-xl shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-500 relative flex justify-between items-center group-hover:bg-red-600">
+                                            <div class="bg-auraa-red pr-4 py-2 rounded-r-xl shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-500 relative flex justify-between items-center group-hover:bg-red-600 category-div-wrap">
                                                 <div class="flex items-center space-x-3">
                                                     <h2 class="text-sm md:text-base font-black uppercase tracking-[0.3em] text-white">{{ category_group.grouper.name }}</h2>
                                                 </div>
                                                 <div class="flex items-center space-x-3">
-                                                    <div class="items-count-pill">
+                                                    <div class="items-count-pill transition-colors duration-500">
                                                         <span class="text-[11px] font-black text-[#0A325A] uppercase tracking-widest">{{ category_group.list|length }} Items</span>
                                                     </div>
                                                 </div>
@@ -576,9 +620,9 @@
         </main>
 
         <!-- Bank Details Block (Integrated from Contact) -->
-        <section class="relative py-24 mb-20 float-section bg-auraa-red">
+        <section class="relative py-24 mb-20 float-section bg-[#0A325A]">
             <div class="container mx-auto px-6 lg:px-20 fade-up">
-                <div class="glass-card shadow-none border-none p-0 overflow-hidden">
+                <div class="glass-card shadow-none border-none p-0 overflow-hidden bg-white/5">
                     {% include 'includes/bank_details.html' %}
                 </div>
             </div>
@@ -634,7 +678,8 @@
 
     function toggleAllCategories() {
         const allBodies = document.querySelectorAll('tbody[id^="cat-"]');
-        const allIcons = document.querySelectorAll('i[id^="icon-cat-"]');
+        const allIcons = document.querySelectorAll('[id^="icon-cat-"]');
+        const allRows = document.querySelectorAll('.category-sep-row');
         
         // Determine state from first category
         const firstHidden = allBodies.length > 0 && 
@@ -652,11 +697,18 @@
         
         allIcons.forEach(icon => {
             if (firstHidden) {
-                icon.classList.add('rotate-180');
-                icon.style.transform = 'rotate(180deg)';
+                icon.setAttribute('data-lucide', 'minus');
             } else {
-                icon.classList.remove('rotate-180');
-                icon.style.transform = 'rotate(0deg)';
+                icon.setAttribute('data-lucide', 'plus');
+            }
+        });
+        lucide.createIcons();
+
+        allRows.forEach(row => {
+            if (firstHidden) {
+                row.classList.remove('collapsed');
+            } else {
+                row.classList.add('collapsed');
             }
         });
 
@@ -669,6 +721,7 @@
     function toggleCategory(catId) {
         const tbody = document.getElementById(catId);
         const icon = document.getElementById(`icon-${catId}`);
+        const headerRow = document.querySelector(`.category-sep-row[onclick*="${catId}"]`);
         if (!tbody) return;
 
         const isHidden = tbody.classList.contains('hidden') || tbody.style.display === 'none';
@@ -676,16 +729,18 @@
         if (isHidden) {
             tbody.classList.remove('hidden');
             tbody.style.display = window.innerWidth < 1024 ? 'block' : 'table-row-group';
+            if (headerRow) headerRow.classList.remove('collapsed');
             if (icon) {
-                icon.classList.add('rotate-180');
-                icon.style.transform = 'rotate(180deg)';
+                icon.setAttribute('data-lucide', 'minus');
+                lucide.createIcons();
             }
         } else {
             tbody.classList.add('hidden');
             tbody.style.display = 'none';
+            if (headerRow) headerRow.classList.add('collapsed');
             if (icon) {
-                icon.classList.remove('rotate-180');
-                icon.style.transform = 'rotate(0deg)';
+                icon.setAttribute('data-lucide', 'plus');
+                lucide.createIcons();
             }
         }
 

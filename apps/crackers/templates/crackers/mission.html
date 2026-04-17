@@ -28,17 +28,17 @@
         </div>
     </div>
 
-    <div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-20 grid lg:grid-cols-2 gap-12 lg:gap-24 items-center mb-16 md:mb-40 mt-10 relative pt-20 md:pt-0">
-        <div class="space-y-6 md:space-y-8 order-2 lg:order-1 text-center lg:text-left">
+    <div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-20 flex flex-col items-center justify-center text-center mb-16 md:mb-40 mt-10 relative pt-20 md:pt-0">
+        <div class="space-y-6 md:space-y-8 order-2 lg:order-1 flex flex-col items-center">
             <div class="inline-block px-4 py-1.5 md:px-6 md:py-2 bg-blue-600 rounded-full shadow-2xl shadow-blue-600/40 transform rotate-1">
                 <span class="text-[8px] md:text-[10px] font-black text-white uppercase tracking-[0.3em] md:tracking-[0.4em]">Brand Mission</span>
             </div>
-            <h1 class="text-4xl md:text-6xl lg:text-9xl font-black text-white uppercase tracking-tighter leading-none mb-4 md:mb-8">
-                The <span class="text-auraa-red">Auraa</span> <br />
+            <h1 class="text-4xl md:text-6xl lg:text-9xl text-white uppercase leading-none mb-4 md:mb-8 font-bebas" style="letter-spacing: 2px; word-spacing: 10px;">
+                The Auraa <br />
                 Purpose
             </h1>
-            <div class="mt-6 md:mt-8 inline-flex items-center space-x-3 bg-white/10 backdrop-blur-md border border-white/20 px-6 py-3 md:px-8 md:py-4 rounded-2xl animate-float-in opacity-0">
-                <p class="text-white text-base md:text-xl font-bold italic tracking-wide">
+            <div class="mt-6 md:mt-8 inline-flex items-center space-x-3 bg-white border border-white/20 px-6 py-3 md:px-8 md:py-4 rounded-2xl animate-float-in opacity-0">
+                <p class="text-auraa-red text-base md:text-xl font-bold italic tracking-wide">
                     "Igniting Celebrations, Strengthening Traditions"
                 </p>
             </div>
@@ -57,10 +57,10 @@
                         <div class="space-y-6 md:space-y-10">
                             <div class="bg-white p-6 md:p-8 rounded-2xl md:rounded-3xl border border-gray-100 shadow-lg transform -rotate-2 hover:rotate-0 transition-transform duration-500">
                                 <i data-lucide="target" class="w-8 h-8 md:w-12 md:h-12 text-blue-600 mb-4 md:mb-6"></i>
-                                <p class="text-lg md:text-xl font-black text-gray-900 italic">"Our mission is not just to sell fireworks — but to build lasting trust."</p>
+                                <p class="text-xl md:text-2xl font-bebas text-gray-900 tracking-wide">"Our mission is not just to sell fireworks — but to build lasting trust."</p>
                             </div>
-                            <div class="bg-auraa-red p-6 md:p-10 rounded-[2rem] md:rounded-[2.5rem] shadow-2xl shadow-auraa-red/20 transform rotate-3 hover:rotate-0 transition-transform duration-500">
-                                <p class="text-white text-xl md:text-2xl font-black leading-tight">Deliver products that families can trust with total confidence.</p>
+                            <div class="bg-auraa-navy p-6 md:p-10 rounded-[2rem] md:rounded-[2.5rem] shadow-2xl shadow-auraa-navy/20 transform rotate-3 hover:rotate-0 transition-transform duration-500">
+                                <p class="text-white text-2xl md:text-3xl font-bebas leading-tight tracking-wide">"Deliver products that families can trust with total confidence."</p>
                             </div>
                         </div>
                         <!-- Watermark -->
@@ -139,8 +139,8 @@
                         <span class="text-[8px] md:text-[10px] font-black text-white uppercase tracking-[0.2em] md:tracking-[0.3em]">The Auraa Mission</span>
                     </div>
                     
-                    <p class="text-xl md:text-6xl font-black text-white leading-tight md:leading-none tracking-tighter uppercase grayscale group-hover:grayscale-0 transition-all duration-700 p-2 md:p-4">
-                        Mission is not just to sell fireworks — but to <span class="text-auraa-red italic">ignite</span> celebrations and consolidate <span class="underline decoration-auraa-red decoration-2 md:decoration-4 underline-offset-4 md:underline-offset-8">traditions.</span>
+                    <p class="text-xl md:text-6xl font-bebas text-white leading-tight md:leading-none uppercase grayscale group-hover:grayscale-0 transition-all duration-700 p-2 md:p-4" style="letter-spacing: 2px; word-spacing: 8px;">
+                        Mission is not just to sell fireworks — <br /> but to <span class="text-white italic">ignite</span>&nbsp; celebrations and consolidate <span class="underline decoration-auraa-red decoration-2 md:decoration-4 underline-offset-4 md:underline-offset-8">traditions.</span>
                     </p>
 
                     <p class="text-white/40 font-black italic text-base md:text-xl uppercase tracking-widest px-2">
@@ -171,7 +171,7 @@
             <div class="w-24 h-24 mx-auto rounded-3xl overflow-hidden shadow-2xl bg-white p-2">
                 <img src="{% static 'images/logo.png' %}" class="w-full h-full object-cover object-top scale-[1.3]" alt="">
             </div>
-            <p class="text-2xl md:text-3xl font-black text-gray-900 tracking-tighter uppercase italic leading-none px-4">
+            <p class="text-2xl md:text-3xl font-sans font-bold text-gray-900 tracking-tighter uppercase italic leading-none px-4">
                 "Happiness is the Goal, <br />
                 <span class="text-auraa-red">Trust is the Foundation."</span>
             </p>
@@ -188,8 +188,8 @@
                 <div class="btn-3d-wrapper">
                     <a href="{% url 'terms' %}" class="btn-3d-container group">
                         <span class="btn-3d-shadow"></span>
-                        <span class="btn-3d-edge btn-3d-edge-white"></span>
-                        <span class="btn-3d-front btn-3d-front-white">
+                        <span class="btn-3d-edge btn-3d-edge-navy"></span>
+                        <span class="btn-3d-front btn-3d-front-navy">
                             Corporate Profile
                         </span>
                     </a>

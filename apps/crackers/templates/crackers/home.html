@@ -77,12 +77,12 @@
     </section>
 
     <!-- Exclusive Products Bento Grid -->
-    <section class="py-16 px-4 bg-auraa-red">
+    <section class="py-16 px-4 bg-white">
         <div class="max-w-7xl mx-auto">
             <div class="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
                 <div class="space-y-4">
-                    <h2 class="text-xs font-black text-white uppercase tracking-[0.4em] opacity-60">The Collection</h2>
-                    <h3 class="text-4xl md:text-5xl lg:text-7xl font-black text-white uppercase tracking-tighter">Exclusive Products</h3>
+                    <h2 class="text-xs font-black text-auraa-red uppercase tracking-[0.4em] opacity-80">The Collection</h2>
+                    <h3 class="text-4xl md:text-5xl lg:text-7xl font-black text-auraa-navy uppercase tracking-tighter">Exclusive Products</h3>
                 </div>
                 <div class="lg:block hidden">
                     <div class="premium-view-all-wrapper">
@@ -154,14 +154,14 @@
 
 
     <!-- Core Values Section -->
-    <section class="py-16 px-6 bg-auraa-red relative overflow-hidden">
-        <!-- Floating Ambient Glows (Subtler) -->
-        <div class="absolute top-1/4 left-0 w-[600px] h-[600px] bg-white/10 rounded-full blur-[180px] animate-pulse"></div>
-        <div class="absolute bottom-1/4 right-0 w-[600px] h-[600px] bg-black/10 rounded-full blur-[200px] animate-pulse" style="animation-delay: 2s;"></div>
+    <section class="py-16 px-6 bg-white relative overflow-hidden">
+        <!-- Floating Ambient Glows (Subtler for White Background) -->
+        <div class="absolute top-1/4 left-0 w-[600px] h-[600px] bg-auraa-red/5 rounded-full blur-[180px] animate-pulse"></div>
+        <div class="absolute bottom-1/4 right-0 w-[600px] h-[600px] bg-blue-500/5 rounded-full blur-[200px] animate-pulse" style="animation-delay: 2s;"></div>
 
         <div class="max-w-7xl mx-auto relative group/main">
             <!-- Layered Offset Background Panel (Decorative) -->
-            <div class="absolute -top-6 -left-6 w-full h-full bg-black/10 border border-white/5 shadow-2xl rounded-[3rem] pointer-events-none transition-transform duration-1000 group-hover/main:-translate-x-2 group-hover/main:-translate-y-2"></div>
+            <div class="absolute -top-6 -left-6 w-full h-full bg-gray-100 border border-gray-200 shadow-2xl rounded-[3rem] pointer-events-none transition-transform duration-1000 group-hover/main:-translate-x-2 group-hover/main:-translate-y-2"></div>
 
             <!-- The 2026 Asymmetric Floating Panel -->
             <div class="relative bg-[#0A325A]/90 backdrop-blur-3xl border border-white/10 p-6 sm:p-12 md:p-24 shadow-[0_80px_150px_-30px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.1)] overflow-hidden transition-all duration-700 hover:shadow-[0_100px_180px_-40px_rgba(0,0,0,0.7)]"
@@ -179,7 +179,7 @@
                     <h3 class="text-3xl md:text-5xl lg:text-6xl font-black text-white uppercase tracking-tighter leading-none mb-12 drop-shadow-2xl">
                         Our <span class="text-auraa-red italic selection:bg-white selection:text-auraa-red">Core Values</span>
                     </h3>
-                    <p class="text-white/40 max-w-3xl mx-auto text-lg md:text-2xl font-medium leading-relaxed italic border-t border-white/5 pt-8 underline decoration-auraa-red underline-offset-8">
+                    <p class="bg-white text-auraa-red px-8 py-6 rounded-3xl max-w-3xl mx-auto text-2xl md:text-3xl font-bebas leading-relaxed shadow-2xl border border-red-50" style="font-family: 'Bebas Neue', sans-serif; letter-spacing: 2px;">
                         "Guided by principles, defined by a legacy of excellence and trust."
                     </p>
                 </div>
@@ -187,48 +187,43 @@
                 <!-- Grid of Cards -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 relative z-10">
                     <!-- Customer Delight -->
-                    <div class="group p-8 md:p-10 rounded-[2.5rem] bg-auraa-red border border-white/20 hover:bg-auraa-red/90 hover:border-white/40 transition-all duration-700 hover:-translate-y-4 flex flex-col items-center text-center shadow-[0_20px_50px_rgba(245,7,29,0.3)] hover:shadow-[0_40px_80px_rgba(245,7,29,0.5)]">
-                        <div class="w-20 h-20 bg-white text-auraa-red rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-2xl">
+                    <div class="group p-8 md:p-10 rounded-[2.5rem] bg-white border border-white/10 hover:bg-slate-50 transition-all duration-700 hover:-translate-y-4 flex flex-col items-center text-center shadow-[0_20px_50px_rgba(0,0,0,0.1)] hover:shadow-[0_40px_80px_rgba(0,0,0,0.2)]">
+                        <div class="w-20 h-20 bg-auraa-red text-white rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-2xl">
                             <i data-lucide="heart" class="w-10 h-10"></i>
                         </div>
-                        <h4 class="text-lg font-black text-white uppercase tracking-tight mb-4 group-hover:scale-105 transition-transform">Customer Delight</h4>
-                        <p class="text-white/90 text-[10px] font-black leading-relaxed uppercase tracking-widest">Joyful experiences and dependable products.</p>
+                        <h4 class="text-lg font-black text-auraa-red uppercase tracking-tight mb-4 group-hover:scale-105 transition-transform">Customer Delight</h4>
                     </div>
 
                     <!-- Trust & Transparency -->
-                    <div class="group p-8 md:p-10 rounded-[2.5rem] bg-auraa-red border border-white/20 hover:bg-auraa-red/90 hover:border-white/40 transition-all duration-700 hover:-translate-y-4 flex flex-col items-center text-center shadow-[0_20px_50px_rgba(245,7,29,0.3)] hover:shadow-[0_40px_80px_rgba(245,7,29,0.5)]">
-                        <div class="w-20 h-20 bg-white text-blue-500 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-2xl">
+                    <div class="group p-8 md:p-10 rounded-[2.5rem] bg-white border border-white/10 hover:bg-slate-50 transition-all duration-700 hover:-translate-y-4 flex flex-col items-center text-center shadow-[0_20px_50px_rgba(0,0,0,0.1)] hover:shadow-[0_40px_80px_rgba(0,0,0,0.2)]">
+                        <div class="w-20 h-20 bg-blue-500 text-white rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-2xl">
                             <i data-lucide="shield-check" class="w-10 h-10"></i>
                         </div>
-                        <h4 class="text-lg font-black text-white uppercase tracking-tight mb-4 group-hover:scale-105 transition-transform">Trust & Transparency</h4>
-                        <p class="text-white/90 text-[10px] font-black leading-relaxed uppercase tracking-widest">Honesty and ethical business practices.</p>
+                        <h4 class="text-lg font-black text-auraa-red uppercase tracking-tight mb-4 group-hover:scale-105 transition-transform">Trust & Transparency</h4>
                     </div>
 
                     <!-- Responsibility -->
-                    <div class="group p-8 md:p-10 rounded-[2.5rem] bg-auraa-red border border-white/20 hover:bg-auraa-red/90 hover:border-white/40 transition-all duration-700 hover:-translate-y-4 flex flex-col items-center text-center shadow-[0_20px_50px_rgba(245,7,29,0.3)] hover:shadow-[0_40px_80px_rgba(245,7,29,0.5)]">
-                        <div class="w-20 h-20 bg-white text-emerald-500 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-2xl">
+                    <div class="group p-8 md:p-10 rounded-[2.5rem] bg-white border border-white/10 hover:bg-slate-50 transition-all duration-700 hover:-translate-y-4 flex flex-col items-center text-center shadow-[0_20px_50px_rgba(0,0,0,0.1)] hover:shadow-[0_40px_80px_rgba(0,0,0,0.2)]">
+                        <div class="w-20 h-20 bg-emerald-500 text-white rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-2xl">
                             <i data-lucide="globe" class="w-10 h-10"></i>
                         </div>
-                        <h4 class="text-lg font-black text-white uppercase tracking-tight mb-4 group-hover:scale-105 transition-transform">Responsibility</h4>
-                        <p class="text-white/90 text-[10px] font-black leading-relaxed uppercase tracking-widest">Accountability for our actions & society.</p>
+                        <h4 class="text-lg font-black text-auraa-red uppercase tracking-tight mb-4 group-hover:scale-105 transition-transform">Responsibility</h4>
                     </div>
 
                     <!-- Innovation -->
-                    <div class="group p-8 md:p-10 rounded-[2.5rem] bg-auraa-red border border-white/20 hover:bg-auraa-red/90 hover:border-white/40 transition-all duration-700 hover:-translate-y-4 flex flex-col items-center text-center shadow-[0_20px_50px_rgba(245,7,29,0.3)] hover:shadow-[0_40px_80px_rgba(245,7,29,0.5)]">
-                        <div class="w-20 h-20 bg-white text-purple-500 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-2xl">
+                    <div class="group p-8 md:p-10 rounded-[2.5rem] bg-white border border-white/10 hover:bg-slate-50 transition-all duration-700 hover:-translate-y-4 flex flex-col items-center text-center shadow-[0_20px_50px_rgba(0,0,0,0.1)] hover:shadow-[0_40px_80px_rgba(0,0,0,0.2)]">
+                        <div class="w-20 h-20 bg-purple-500 text-white rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-2xl">
                             <i data-lucide="zap" class="w-10 h-10"></i>
                         </div>
-                        <h4 class="text-lg font-black text-white uppercase tracking-tight mb-4 group-hover:scale-105 transition-transform">Innovation</h4>
-                        <p class="text-white/90 text-[10px] font-black leading-relaxed uppercase tracking-widest">Smarter ways to serve and better products.</p>
+                        <h4 class="text-lg font-black text-auraa-red uppercase tracking-tight mb-4 group-hover:scale-105 transition-transform">Innovation</h4>
                     </div>
 
                     <!-- Safety & Security -->
-                    <div class="group p-8 md:p-10 rounded-[2.5rem] bg-auraa-red border border-white/20 hover:bg-auraa-red/90 hover:border-white/40 transition-all duration-700 hover:-translate-y-4 flex flex-col items-center text-center shadow-[0_20px_50px_rgba(245,7,29,0.3)] hover:shadow-[0_40px_80px_rgba(245,7,29,0.5)]">
-                        <div class="w-20 h-20 bg-white text-amber-500 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-2xl">
+                    <div class="group p-8 md:p-10 rounded-[2.5rem] bg-white border border-white/10 hover:bg-slate-50 transition-all duration-700 hover:-translate-y-4 flex flex-col items-center text-center shadow-[0_20px_50px_rgba(0,0,0,0.1)] hover:shadow-[0_40px_80px_rgba(0,0,0,0.2)]">
+                        <div class="w-20 h-20 bg-amber-500 text-white rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-2xl">
                             <i data-lucide="shield" class="w-10 h-10"></i>
                         </div>
-                        <h4 class="text-lg font-black text-white uppercase tracking-tight mb-4 group-hover:scale-105 transition-transform">Safety & Security</h4>
-                        <p class="text-white/90 text-[10px] font-black leading-relaxed uppercase tracking-widest">Strict quality and safety standards.</p>
+                        <h4 class="text-lg font-black text-auraa-red uppercase tracking-tight mb-4 group-hover:scale-105 transition-transform">Safety & Security</h4>
                     </div>
                 </div>
             </div>
@@ -323,8 +318,8 @@
 
                 <div class="relative z-10 text-center space-y-20">
                     <div class="space-y-6">
-                        <div class="inline-block px-8 py-3 bg-white/10 backdrop-blur-md rounded-full shadow-lg border border-white/20">
-                            <h2 class="text-[12px] font-black text-white uppercase tracking-[0.5em]">24/7 Assistance</h2>
+                        <div class="inline-block px-8 py-3 bg-white rounded-full shadow-lg border border-white/20">
+                            <h2 class="text-[12px] font-black text-auraa-red uppercase tracking-[0.5em]">24/7 Assistance</h2>
                         </div>
                         <h3 class="text-4xl md:text-8xl font-black text-white uppercase tracking-tighter leading-none">
                             Our Support <span class="text-auraa-red italic underline decoration-white/20 underline-offset-[10px]">Team</span>
@@ -337,50 +332,50 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 items-stretch">
                         <!-- Payment Confirm Card -->
                         <a href="tel:+919080560340" class="glass-support-card p-6 rounded-[2.5rem] bg-white border border-gray-100 flex flex-col items-center justify-center text-center space-y-6 group/card transition-all duration-500 hover:scale-105 shadow-3xl hover:border-auraa-red/20">
-                            <div class="w-44 h-44 rounded-[2rem] overflow-hidden shadow-xl transition-all duration-300 group-hover/card:scale-105">
+                            <div class="w-full aspect-square rounded-[2rem] overflow-hidden shadow-xl transition-all duration-300 group-hover/card:scale-105">
                                 <img src="{% static 'images/support1.png' %}" class="w-full h-full object-cover">
                             </div>
                             <div class="space-y-2">
-                                <div class="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em]">Payment Confirm</div>
+
                                 <div class="text-xl whitespace-nowrap font-black text-[#0A325A]">+91 90805 60340</div>
                             </div>
-                            <span class="text-[9px] font-black uppercase tracking-widest text-white bg-auraa-red px-6 py-2 rounded-full shadow-lg">Finance Desk</span>
+                            <span class="w-full text-center text-[11px] font-black uppercase tracking-widest whitespace-nowrap text-auraa-red bg-white px-4 py-2.5 rounded-full shadow-lg border border-red-100">Payment Confirm</span>
                         </a>
 
                         <!-- Dispatch Hub Card -->
                         <a href="tel:+919677570276" class="glass-support-card p-6 rounded-[2.5rem] bg-white border border-gray-100 flex flex-col items-center justify-center text-center space-y-6 group/card transition-all duration-500 hover:scale-105 shadow-3xl hover:border-auraa-red/20">
-                            <div class="w-44 h-44 rounded-[2rem] overflow-hidden shadow-xl transition-all duration-300 group-hover/card:scale-105">
+                            <div class="w-full aspect-square rounded-[2rem] overflow-hidden shadow-xl transition-all duration-300 group-hover/card:scale-105">
                                 <img src="{% static 'images/support2.png' %}" class="w-full h-full object-cover">
                             </div>
                             <div class="space-y-2">
-                                <div class="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em]">Dispatch Details</div>
+
                                 <div class="text-xl whitespace-nowrap font-black text-[#0A325A]">+91 96775 70276</div>
                             </div>
-                            <span class="text-[9px] font-black uppercase tracking-widest text-white bg-auraa-red px-6 py-2 rounded-full shadow-lg">Tracking</span>
+                            <span class="w-full text-center text-[11px] font-black uppercase tracking-widest whitespace-nowrap text-auraa-red bg-white px-4 py-2.5 rounded-full shadow-lg border border-red-100">Dispatch Details</span>
                         </a>
 
                         <!-- Order Confirm Card -->
                         <a href="tel:+916381426206" class="glass-support-card p-6 rounded-[2.5rem] bg-white border border-gray-100 flex flex-col items-center justify-center text-center space-y-6 group/card transition-all duration-500 hover:scale-105 shadow-3xl hover:border-auraa-red/20">
-                            <div class="w-44 h-44 rounded-[2rem] overflow-hidden shadow-xl transition-all duration-300 group-hover/card:scale-105">
+                            <div class="w-full aspect-square rounded-[2rem] overflow-hidden shadow-xl transition-all duration-300 group-hover/card:scale-105">
                                 <img src="{% static 'images/support3.png' %}" class="w-full h-full object-cover">
                             </div>
                             <div class="space-y-2">
-                                <div class="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em]">Order Confirm</div>
+
                                 <div class="text-xl whitespace-nowrap font-black text-[#0A325A]">+91 63814 26206</div>
                             </div>
-                            <span class="text-[9px] font-black uppercase tracking-widest text-white bg-auraa-red px-6 py-2 rounded-full shadow-lg">Direct Call</span>
+                            <span class="w-full text-center text-[11px] font-black uppercase tracking-widest whitespace-nowrap text-auraa-red bg-white px-4 py-2.5 rounded-full shadow-lg border border-red-100">Direct Support</span>
                         </a>
 
                         <!-- Direct Support Card -->
                         <a href="tel:+919489435625" class="glass-support-card p-6 rounded-[2.5rem] bg-white border border-gray-100 flex flex-col items-center justify-center text-center space-y-6 group/card transition-all duration-500 hover:scale-105 shadow-3xl hover:border-auraa-red/20">
-                            <div class="w-44 h-44 rounded-[2rem] overflow-hidden shadow-xl transition-all duration-300 group-hover/card:scale-105">
-                                <img src="{% static 'images/support4.png' %}" class="w-full h-full object-cover">
+                            <div class="w-full aspect-square rounded-[2rem] overflow-hidden shadow-xl transition-all duration-300 group-hover/card:scale-105">
+                                <img src="{% static 'images/support4.png' %}" class="w-full h-full object-cover object-top scale-[1.15]">
                             </div>
                             <div class="space-y-2">
-                                <div class="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em]">Customer Support</div>
+
                                 <div class="text-xl whitespace-nowrap font-black text-[#0A325A]">+91 94894 35625</div>
                             </div>
-                            <span class="text-[9px] font-black uppercase tracking-widest text-white bg-auraa-red px-6 py-2 rounded-full shadow-lg">Expert Help</span>
+                            <span class="w-full text-center text-[11px] font-black uppercase tracking-widest whitespace-nowrap text-auraa-red bg-white px-4 py-2.5 rounded-full shadow-lg border border-red-100">Customer Support</span>
                         </a>
                     </div>
                 </div>
@@ -409,6 +404,7 @@
                         <div class="w-2 h-2 bg-auraa-red rounded-full animate-ping"></div>
                         <h2 class="text-[12px] font-black uppercase tracking-[0.6em]">Happy Customers</h2>
                     </div>
+                    <p class="text-white text-2xl md:text-3xl font-bebas leading-tight tracking-wide">"Deliver products that families can trust with total confidence."</p>
                     
                     <h3 class="text-4xl md:text-8xl lg:text-9xl font-black text-white uppercase tracking-tighter leading-none">
                         What <span class="text-auraa-red italic selection:bg-white selection:text-auraa-red drop-shadow-[0_0_50px_rgba(245,7,29,0.3)]">They</span> Say
@@ -431,7 +427,7 @@
                                     <i data-lucide="star" class="w-4 h-4 fill-current"></i>
                                     <i data-lucide="star" class="w-4 h-4 fill-current"></i>
                                 </div>
-                                <p class="text-lg text-white/80 font-medium leading-relaxed italic">
+                                <p class="text-xl md:text-2xl text-white font-bebas tracking-wider leading-relaxed">
                                     "Good experience shopping here. Service was polite and efficient."
                                 </p>
                             </div>
@@ -458,7 +454,7 @@
                                     <i data-lucide="star" class="w-4 h-4 fill-current"></i>
                                     <i data-lucide="star" class="w-4 h-4 fill-current"></i>
                                 </div>
-                                <p class="text-lg text-white/80 font-medium leading-relaxed italic">
+                                <p class="text-xl md:text-2xl text-white font-bebas tracking-wider leading-relaxed">
                                     "Auraa Crackers has proven to be a trusted brand for buying quality crackers at fair and reasonable prices."
                                 </p>
                             </div>
@@ -485,7 +481,7 @@
                                     <i data-lucide="star" class="w-4 h-4 fill-current"></i>
                                     <i data-lucide="star" class="w-4 h-4 fill-current"></i>
                                 </div>
-                                <p class="text-lg text-white/80 font-medium leading-relaxed italic">
+                                <p class="text-xl md:text-2xl text-white font-bebas tracking-wider leading-relaxed">
                                     "The crackers from Auraa Crackers performed exceptionally well, showing consistent quality across all items."
                                 </p>
                             </div>
@@ -512,7 +508,7 @@
                                     <i data-lucide="star" class="w-4 h-4 fill-current"></i>
                                     <i data-lucide="star" class="w-4 h-4 fill-current"></i>
                                 </div>
-                                <p class="text-lg text-white/80 font-medium leading-relaxed italic">
+                                <p class="text-xl md:text-2xl text-white font-bebas tracking-wider leading-relaxed">
                                     "Excellent quality, vibrant effects and reliable performance. You can clearly see they are genuine Sivakasi products."
                                 </p>
                             </div>
@@ -539,7 +535,7 @@
                                     <i data-lucide="star" class="w-4 h-4 fill-current"></i>
                                     <i data-lucide="star" class="w-4 h-4 fill-current"></i>
                                 </div>
-                                <p class="text-lg text-white/80 font-medium leading-relaxed italic">
+                                <p class="text-xl md:text-2xl text-white font-bebas tracking-wider leading-relaxed">
                                     "Wide variety of high-quality, own & branded crackers at very competitive prices. Fantastic experience!"
                                 </p>
                             </div>
@@ -566,7 +562,7 @@
                                     <i data-lucide="star" class="w-4 h-4 fill-current"></i>
                                     <i data-lucide="star" class="w-4 h-4 fill-current"></i>
                                 </div>
-                                <p class="text-lg text-white/80 font-medium leading-relaxed italic">
+                                <p class="text-xl md:text-2xl text-white font-bebas tracking-wider leading-relaxed">
                                     "I joined their chit scheme, and it honestly made things much easier for me. Paid small monthly amounts."
                                 </p>
                             </div>
@@ -593,7 +589,7 @@
                                     <i data-lucide="star" class="w-4 h-4 fill-current"></i>
                                     <i data-lucide="star" class="w-4 h-4 fill-current"></i>
                                 </div>
-                                <p class="text-lg text-white/80 font-medium leading-relaxed italic">
+                                <p class="text-xl md:text-2xl text-white font-bebas tracking-wider leading-relaxed">
                                     "Quality is excellent and products are genuine Sivakasi crackers. Variety is impressive and prices are reasonable."
                                 </p>
                             </div>
@@ -620,7 +616,7 @@
                                     <i data-lucide="star" class="w-4 h-4 fill-current"></i>
                                     <i data-lucide="star" class="w-4 h-4 fill-current"></i>
                                 </div>
-                                <p class="text-lg text-white/80 font-medium leading-relaxed italic">
+                                <p class="text-xl md:text-2xl text-white font-bebas tracking-wider leading-relaxed">
                                     "Response was very quick, polite, and professional. They clearly explained the price list and options."
                                 </p>
                             </div>
@@ -647,7 +643,7 @@
                                     <i data-lucide="star" class="w-4 h-4 fill-current"></i>
                                     <i data-lucide="star" class="w-4 h-4 fill-current"></i>
                                 </div>
-                                <p class="text-lg text-white/80 font-medium leading-relaxed italic">
+                                <p class="text-xl md:text-2xl text-white font-bebas tracking-wider leading-relaxed">
                                     "Excellent place to buy crackers. Very satisfied with the overall experience!"
                                 </p>
                             </div>
@@ -674,7 +670,7 @@
                                     <i data-lucide="star" class="w-4 h-4 fill-current"></i>
                                     <i data-lucide="star" class="w-4 h-4 fill-current"></i>
                                 </div>
-                                <p class="text-lg text-white/80 font-medium leading-relaxed italic">
+                                <p class="text-xl md:text-2xl text-white font-bebas tracking-wider leading-relaxed">
                                     "Super quality and good products. Highly recommended for everyone!"
                                 </p>
                             </div>
@@ -701,7 +697,7 @@
                                     <i data-lucide="star" class="w-4 h-4 fill-current"></i>
                                     <i data-lucide="star" class="w-4 h-4 fill-current"></i>
                                 </div>
-                                <p class="text-lg text-white/80 font-medium leading-relaxed italic">
+                                <p class="text-xl md:text-2xl text-white font-bebas tracking-wider leading-relaxed">
                                     "Good quality products. Excellent service from the team!"
                                 </p>
                             </div>
@@ -728,7 +724,7 @@
                                     <i data-lucide="star" class="w-4 h-4 fill-current"></i>
                                     <i data-lucide="star" class="w-4 h-4 fill-current"></i>
                                 </div>
-                                <p class="text-lg text-white/80 font-medium leading-relaxed italic">
+                                <p class="text-xl md:text-2xl text-white font-bebas tracking-wider leading-relaxed">
                                     "Variety is amazing and items neatly packed. Prices are budget-friendly and supportive."
                                 </p>
                             </div>
@@ -755,7 +751,7 @@
                                     <i data-lucide="star" class="w-4 h-4 fill-current"></i>
                                     <i data-lucide="star" class="w-4 h-4 fill-current"></i>
                                 </div>
-                                <p class="text-lg text-white/80 font-medium leading-relaxed italic">
+                                <p class="text-xl md:text-2xl text-white font-bebas tracking-wider leading-relaxed">
                                     "Safe and long-lasting crackers. Delivery was super quick and prices reasonable."
                                 </p>
                             </div>
@@ -782,7 +778,7 @@
                                     <i data-lucide="star" class="w-4 h-4 fill-current"></i>
                                     <i data-lucide="star" class="w-4 h-4 fill-current"></i>
                                 </div>
-                                <p class="text-lg text-white/80 font-medium leading-relaxed italic">
+                                <p class="text-xl md:text-2xl text-white font-bebas tracking-wider leading-relaxed">
                                     "Good response and products. Very happy with the overall service!"
                                 </p>
                             </div>
@@ -809,7 +805,7 @@
                                     <i data-lucide="star" class="w-4 h-4 fill-current"></i>
                                     <i data-lucide="star" class="w-4 h-4 fill-current"></i>
                                 </div>
-                                <p class="text-lg text-white/80 font-medium leading-relaxed italic">
+                                <p class="text-xl md:text-2xl text-white font-bebas tracking-wider leading-relaxed">
                                     "Good products and quick delivery. Excellent service provided by Auraa."
                                 </p>
                             </div>
@@ -836,7 +832,7 @@
                                     <i data-lucide="star" class="w-4 h-4 fill-current"></i>
                                     <i data-lucide="star" class="w-4 h-4 fill-current"></i>
                                 </div>
-                                <p class="text-lg text-white/80 font-medium leading-relaxed italic">
+                                <p class="text-xl md:text-2xl text-white font-bebas tracking-wider leading-relaxed">
                                     "Low price, super quality thanks to auraa crackers for a great Deepavali."
                                 </p>
                             </div>
@@ -863,7 +859,7 @@
                                     <i data-lucide="star" class="w-4 h-4 fill-current"></i>
                                     <i data-lucide="star" class="w-4 h-4 fill-current"></i>
                                 </div>
-                                <p class="text-lg text-white/80 font-medium leading-relaxed italic">
+                                <p class="text-xl md:text-2xl text-white font-bebas tracking-wider leading-relaxed">
                                     "Very good products and very good crackers. Truly satisfied!"
                                 </p>
                             </div>
@@ -890,7 +886,7 @@
                                     <i data-lucide="star" class="w-4 h-4 fill-current"></i>
                                     <i data-lucide="star" class="w-4 h-4 fill-current"></i>
                                 </div>
-                                <p class="text-lg text-white/80 font-medium leading-relaxed italic">
+                                <p class="text-xl md:text-2xl text-white font-bebas tracking-wider leading-relaxed">
                                     "Quality crackers at low prices. Congratulations to the team!"
                                 </p>
                             </div>
@@ -917,7 +913,7 @@
                                     <i data-lucide="star" class="w-4 h-4 fill-current"></i>
                                     <i data-lucide="star" class="w-4 h-4 fill-current"></i>
                                 </div>
-                                <p class="text-lg text-white/80 font-medium leading-relaxed italic">
+                                <p class="text-xl md:text-2xl text-white font-bebas tracking-wider leading-relaxed">
                                     "One of the best prices in Sivakasi. Truly impressive quality."
                                 </p>
                             </div>
@@ -944,7 +940,7 @@
                                     <i data-lucide="star" class="w-4 h-4 fill-current"></i>
                                     <i data-lucide="star" class="w-4 h-4 fill-current"></i>
                                 </div>
-                                <p class="text-lg text-white/80 font-medium leading-relaxed italic">
+                                <p class="text-xl md:text-2xl text-white font-bebas tracking-wider leading-relaxed">
                                     "Good Quality Crackers with Affordable Price. Highly recommended!"
                                 </p>
                             </div>
@@ -971,7 +967,7 @@
                                     <i data-lucide="star" class="w-4 h-4 fill-current"></i>
                                     <i data-lucide="star" class="w-4 h-4 fill-current"></i>
                                 </div>
-                                <p class="text-lg text-white/80 font-medium leading-relaxed italic">
+                                <p class="text-xl md:text-2xl text-white font-bebas tracking-wider leading-relaxed">
                                     "Top notch quality. Safe and vibrant fireworks. Truly satisfied!"
                                 </p>
                             </div>
@@ -998,7 +994,7 @@
                                     <i data-lucide="star" class="w-4 h-4 fill-current"></i>
                                     <i data-lucide="star" class="w-4 h-4 opacity-20"></i>
                                 </div>
-                                <p class="text-lg text-white/80 font-medium leading-relaxed italic">
+                                <p class="text-xl md:text-2xl text-white font-bebas tracking-wider leading-relaxed">
                                     "Good experience shopping here. Service was polite and efficient."
                                 </p>
                             </div>
@@ -1025,7 +1021,7 @@
                                     <i data-lucide="star" class="w-4 h-4 fill-current"></i>
                                     <i data-lucide="star" class="w-4 h-4 fill-current"></i>
                                 </div>
-                                <p class="text-lg text-white/80 font-medium leading-relaxed italic">
+                                <p class="text-xl md:text-2xl text-white font-bebas tracking-wider leading-relaxed">
                                     "Excellent service and quality. Truly a professional team."
                                 </p>
                             </div>
@@ -1052,7 +1048,7 @@
                                     <i data-lucide="star" class="w-4 h-4 fill-current"></i>
                                     <i data-lucide="star" class="w-4 h-4 fill-current"></i>
                                 </div>
-                                <p class="text-lg text-white/80 font-medium leading-relaxed italic">
+                                <p class="text-xl md:text-2xl text-white font-bebas tracking-wider leading-relaxed">
                                     "Excellent products. Every single item exceeded our expectations!"
                                 </p>
                             </div>
@@ -1079,7 +1075,7 @@
                                     <i data-lucide="star" class="w-4 h-4 fill-current"></i>
                                     <i data-lucide="star" class="w-4 h-4 fill-current"></i>
                                 </div>
-                                <p class="text-lg text-white/80 font-medium leading-relaxed italic">
+                                <p class="text-xl md:text-2xl text-white font-bebas tracking-wider leading-relaxed">
                                     "Wide variety available in one place. Sparklers, pots, rockets are top quality."
                                 </p>
                             </div>
@@ -1149,25 +1145,25 @@
             <!-- Layered Offset Background (Atmospheric Glow) -->
             <div class="absolute -inset-6 bg-[#0A325A]/[0.05] border border-gray-100 rounded-[3rem] -rotate-1 scale-105 pointer-events-none group-hover/cta:rotate-0 transition-all duration-[1s]"></div>
 
-            <section class="relative bg-auraa-red py-16 md:py-32 text-center text-white shadow-[0_80px_150px_-30px_rgba(245,7,29,0.4)] overflow-hidden transition-all duration-700 group-hover:-translate-y-4 group-hover:shadow-[0_100px_180px_-40px_rgba(245,7,29,0.5)]"
+            <section class="relative bg-white py-16 md:py-32 text-center text-auraa-red shadow-[0_50px_100px_-20px_rgba(0,0,0,0.1)] overflow-hidden transition-all duration-700 group-hover:-translate-y-4 group-hover:shadow-[0_80px_150px_-30px_rgba(245,7,29,0.2)]"
                      style="border-radius: 3rem;">
                 
                 <!-- Inner 3D Glow Effects -->
-                <div class="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_0%_0%,_rgba(255,255,255,0.15)_0%,_transparent_50%)] pointer-events-none"></div>
+                <div class="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_0%_0%,_rgba(245,7,29,0.05)_0%,_transparent_50%)] pointer-events-none"></div>
 
                 <div class="max-w-4xl mx-auto px-8 space-y-12 relative z-10">
                     <div class="space-y-6">
-                        <h2 class="text-4xl md:text-8xl font-black text-white uppercase tracking-tighter leading-none">
+                        <h2 class="text-4xl md:text-8xl font-black text-auraa-red uppercase leading-none font-bebas" style="font-family: 'Bebas Neue', sans-serif; letter-spacing: 2px;">
                             Celebrate with <br />
-                            <span class="text-gray-900 selection:bg-white selection:text-auraa-red underline decoration-white/20 underline-offset-8">The Auraa</span>
+                            <span class="text-gray-900 selection:bg-auraa-red selection:text-white underline decoration-auraa-red/20 underline-offset-8">The Auraa</span>
                         </h2>
-                        <p class="text-xl text-white/80 font-medium max-w-2xl mx-auto leading-relaxed">
+                        <p class="text-xl text-auraa-red/80 font-medium max-w-2xl mx-auto leading-relaxed">
                             Join thousands of happy families who trust us for their celebrations. Quality, safety, and joy delivered.
                         </p>
                     </div>
                     
                     <div class="flex flex-wrap justify-center gap-6">
-                        <a href="/products" class="bg-white text-auraa-red px-14 py-6 rounded-[2.5rem] font-black uppercase tracking-widest text-sm hover:bg-gray-900 hover:text-white transition-all shadow-3xl hover:shadow-[0_20px_40px_rgba(0,0,0,0.3)] hover:-translate-y-2">
+                        <a href="/products" class="bg-auraa-red text-white px-14 py-6 rounded-[2.5rem] font-black uppercase tracking-widest text-sm hover:bg-gray-900 hover:text-white transition-all shadow-3xl hover:shadow-[0_20px_40px_rgba(0,0,0,0.3)] hover:-translate-y-2">
                             Start Your Enquiry
                         </a>
                     </div>
@@ -1210,58 +1206,58 @@
                     <!-- Advantage Grid -->
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
                         <!-- Customer Focused -->
-                        <div class="group/card relative p-8 sm:p-10 bg-auraa-red border border-white/10 rounded-[2.5rem] transition-all duration-500 hover:-translate-y-4 hover:shadow-3xl">
-                            <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mb-8 text-auraa-red transition-all">
+                        <div class="group/card relative p-8 sm:p-10 bg-white border border-auraa-red/10 rounded-[2.5rem] transition-all duration-500 hover:-translate-y-4 hover:shadow-3xl shadow-lg">
+                            <div class="w-16 h-16 bg-auraa-red rounded-2xl flex items-center justify-center mb-8 text-white transition-all shadow-xl">
                                 <i data-lucide="users" class="w-8 h-8"></i>
                             </div>
-                            <h4 class="text-xl sm:text-2xl font-black text-white uppercase tracking-tight mb-4">Customer <br/> Focused</h4>
-                            <p class="text-white/80 text-sm leading-relaxed">
+                            <h4 class="text-xl sm:text-2xl font-black text-auraa-red uppercase tracking-tight mb-4">Customer <br/> Focused</h4>
+                            <p class="text-auraa-red/80 text-sm font-medium leading-relaxed">
                                 Placing customers at the center of our ecosystem, ensuring unmatched satisfaction in every celebration.
                             </p>
                         </div>
 
                         <!-- Safety First -->
-                        <div class="group/card relative p-8 sm:p-10 bg-auraa-red border border-white/10 rounded-[2.5rem] transition-all duration-500 hover:-translate-y-4 hover:shadow-3xl">
-                            <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mb-8 text-auraa-red transition-all">
+                        <div class="group/card relative p-8 sm:p-10 bg-white border border-auraa-red/10 rounded-[2.5rem] transition-all duration-500 hover:-translate-y-4 hover:shadow-3xl shadow-lg">
+                            <div class="w-16 h-16 bg-auraa-red rounded-2xl flex items-center justify-center mb-8 text-white transition-all shadow-xl">
                                 <i data-lucide="shield-check" class="w-8 h-8"></i>
                             </div>
-                            <h4 class="text-xl sm:text-2xl font-black text-white uppercase tracking-tight mb-4">Safety <br/> Uncompromised</h4>
-                            <p class="text-white/80 text-sm leading-relaxed">
+                            <h4 class="text-xl sm:text-2xl font-black text-auraa-red uppercase tracking-tight mb-4">Safety <br/> Uncompromised</h4>
+                            <p class="text-auraa-red/80 text-sm font-medium leading-relaxed">
                                 Our core architecture is built on safety. We ensure every product meets rigorous global safety metrics.
                             </p>
                         </div>
 
                         <!-- Absolute Trust -->
-                        <div class="group/card relative p-8 sm:p-10 bg-auraa-red border border-white/10 rounded-[2.5rem] transition-all duration-500 hover:-translate-y-4 hover:shadow-3xl">
-                            <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mb-8 text-auraa-red transition-all">
+                        <div class="group/card relative p-8 sm:p-10 bg-white border border-auraa-red/10 rounded-[2.5rem] transition-all duration-500 hover:-translate-y-4 hover:shadow-3xl shadow-lg">
+                            <div class="w-16 h-16 bg-auraa-red rounded-2xl flex items-center justify-center mb-8 text-white transition-all shadow-xl">
                                 <i data-lucide="eye" class="w-8 h-8"></i>
                             </div>
-                            <h4 class="text-xl sm:text-2xl font-black text-white uppercase tracking-tight mb-4">Absolute <br/> Transparency</h4>
-                            <p class="text-white/80 text-sm leading-relaxed">
+                            <h4 class="text-xl sm:text-2xl font-black text-auraa-red uppercase tracking-tight mb-4">Absolute <br/> Transparency</h4>
+                            <p class="text-auraa-red/80 text-sm font-medium leading-relaxed">
                                 Total clarity in pricing, sourcing, and communication. Honesty is the Auraa promise.
                             </p>
                         </div>
 
                         <!-- Responsibility -->
-                        <div class="group/card relative p-8 sm:p-10 bg-auraa-red border border-white/10 rounded-[2.5rem] transition-all duration-500 hover:-translate-y-4 hover:shadow-3xl">
-                            <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mb-8 text-auraa-red transition-all">
+                        <div class="group/card relative p-8 sm:p-10 bg-white border border-auraa-red/10 rounded-[2.5rem] transition-all duration-500 hover:-translate-y-4 hover:shadow-3xl shadow-lg">
+                            <div class="w-16 h-16 bg-auraa-red rounded-2xl flex items-center justify-center mb-8 text-white transition-all shadow-xl">
                                 <i data-lucide="leaf" class="w-8 h-8"></i>
                             </div>
-                            <h4 class="text-2xl font-black text-white uppercase tracking-tight mb-4">Green <br/> Responsibility</h4>
-                            <p class="text-white/80 text-sm leading-relaxed">
+                            <h4 class="text-2xl font-black text-auraa-red uppercase tracking-tight mb-4">Green <br/> Responsibility</h4>
+                            <p class="text-auraa-red/80 text-sm font-medium leading-relaxed">
                                 Sustainable and ethical manufacturing. Balancing the thrill of joy with the peace of nature.
                             </p>
                         </div>
 
                         <!-- Innovation -->
-                        <div class="group/card relative p-8 sm:p-10 bg-auraa-red border border-white/10 rounded-[2.5rem] transition-all duration-500 hover:-translate-y-4 hover:shadow-3xl lg:col-span-2">
+                        <div class="group/card relative p-8 sm:p-10 bg-white border border-auraa-red/10 rounded-[2.5rem] transition-all duration-500 hover:-translate-y-4 hover:shadow-3xl shadow-lg lg:col-span-2">
                             <div class="flex flex-col lg:flex-row lg:items-center lg:gap-12">
-                                <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mb-8 lg:mb-0 text-auraa-red transition-all flex-shrink-0">
+                                <div class="w-16 h-16 bg-auraa-red rounded-2xl flex items-center justify-center mb-8 lg:mb-0 text-white transition-all flex-shrink-0 shadow-xl">
                                     <i data-lucide="sparkles" class="w-8 h-8"></i>
                                 </div>
                                 <div class="pt-4 lg:pt-0">
-                                    <h4 class="text-2xl font-black text-white uppercase tracking-tight mb-2">Future Innovation</h4>
-                                    <p class="text-white/80 text-sm leading-relaxed">
+                                    <h4 class="text-2xl font-black text-auraa-red uppercase tracking-tight mb-2">Future Innovation</h4>
+                                    <p class="text-auraa-red/80 text-sm font-medium leading-relaxed">
                                         The bridge between tradition and the future. We reinvent the firework experience every single year with smarter ways to ignite joy.
                                     </p>
                                 </div>

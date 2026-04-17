@@ -1,4 +1,19 @@
 services:
+  db:
+    image: postgres:15
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=${DB_NAME:-auraaBooksDB}
+      - POSTGRES_USER=${DB_USER:-auraauser}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-auraapass}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-auraauser} -d ${DB_NAME:-auraaBooksDB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: always
+
   redis:
     image: redis:7
     command: redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru
@@ -24,18 +39,18 @@ services:
       - DB_NAME=${DB_NAME:-auraaBooksDB}
       - DB_USER=${DB_USER:-auraauser}
       - DB_PASSWORD=${DB_PASSWORD:-auraapass}
-      - DB_HOST=host.docker.internal
+      - DB_HOST=db
       - DB_PORT=5432
-      - CELERY_BROKER_URL=redis://host.docker.internal:6379/0
-      - CELERY_RESULT_BACKEND=redis://host.docker.internal:6379/0
-      - CACHE_URL=redis://host.docker.internal:6379/1
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+      - CACHE_URL=redis://redis:6379/1
     ports:
       - "8000:8000"
     depends_on:
+      db:
+        condition: service_healthy
       redis:
         condition: service_healthy
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
     restart: always
 
   celery_worker:
@@ -48,16 +63,16 @@ services:
       - DB_NAME=${DB_NAME:-auraaBooksDB}
       - DB_USER=${DB_USER:-auraauser}
       - DB_PASSWORD=${DB_PASSWORD:-auraapass}
-      - DB_HOST=host.docker.internal
+      - DB_HOST=db
       - DB_PORT=5432
-      - CELERY_BROKER_URL=redis://host.docker.internal:6379/0
-      - CELERY_RESULT_BACKEND=redis://host.docker.internal:6379/0
-      - CACHE_URL=redis://host.docker.internal:6379/1
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+      - CACHE_URL=redis://redis:6379/1
     depends_on:
+      db:
+        condition: service_healthy
       redis:
         condition: service_healthy
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
     restart: always
 
   celery_beat:
@@ -70,16 +85,16 @@ services:
       - DB_NAME=${DB_NAME:-auraaBooksDB}
       - DB_USER=${DB_USER:-auraauser}
       - DB_PASSWORD=${DB_PASSWORD:-auraapass}
-      - DB_HOST=host.docker.internal
+      - DB_HOST=db
       - DB_PORT=5432
-      - CELERY_BROKER_URL=redis://host.docker.internal:6379/0
-      - CELERY_RESULT_BACKEND=redis://host.docker.internal:6379/0
-      - CACHE_URL=redis://host.docker.internal:6379/1
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+      - CACHE_URL=redis://redis:6379/1
     depends_on:
+      db:
+        condition: service_healthy
       redis:
         condition: service_healthy
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
     restart: always
 
   flower:
@@ -120,4 +135,5 @@ services:
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
 
 volumes:
+  postgres_data:
   redis_data:

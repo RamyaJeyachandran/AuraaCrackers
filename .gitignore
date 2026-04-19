@@ -25,3 +25,9 @@ setup_tables.sql
 # Logs
 logs/
 *.log
+
+# Workspace & Temp
+brain/
+scratch/
+*.sql
+category_names.txt

@@ -1,919 +1,222 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static custom_filters %}
 
 {% block title %}Customer Testimonials | Auraa Crackers{% endblock %}
 
 {% block extra_head %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-
 <style>
-    /* Testimonials Carousel Styles */
-    .testimonial-carousel-container {
-        position: relative;
+    :root {
+        --google-blue: #4285F4;
+        --google-red: #EA4335;
+        --google-yellow: #FBBC05;
+        --google-green: #34A853;
+        --star-gold: #FBC02D;
+    }
+    
+    .testimonials-bg {
+        background-color: #f8f9fa;
+    }
+
+    /* Carousel / Marquee Styles */
+    .marquee-container {
         width: 100%;
         overflow: hidden;
-        padding: 1.5rem 0;
+        position: relative;
     }
 
-    .text-110px {
-        font-size: 110px;
-    }
-
-    .testimonial-track {
+    .marquee-track {
         display: flex;
-        transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-        will-change: transform;
+        width: max-content;
     }
 
-    .testimonial-slide {
-        flex: 0 0 100%;
-        min-width: 100%;
+    .row-1 .marquee-track {
+        animation: scrollLeft 60s linear infinite;
+    }
+
+    .row-2 .marquee-track {
+        animation: scrollRight 70s linear infinite;
+    }
+
+    .marquee-container:hover .marquee-track {
+        animation-play-state: paused;
+    }
+
+    @keyframes scrollLeft {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+    }
+
+    @keyframes scrollRight {
+        0% { transform: translateX(-50%); }
+        100% { transform: translateX(0); }
+    }
+
+    .review-card-wrapper {
+        width: 350px;
         padding: 0 1rem;
-        opacity: 0.4;
-        scale: 0.9;
-        transition: all 0.6s ease;
+        flex-shrink: 0;
     }
 
-    .testimonial-slide.active {
-        opacity: 1;
-        scale: 1;
-    }
-
-    @media (min-width: 768px) {
-        .testimonial-slide {
-            flex: 0 0 100%;
-            min-width: 100%;
-        }
-    }
-
-    @media (min-width: 1024px) {
-        .testimonial-slide {
-            flex: 0 0 50%;
-            min-width: 50%;
-        }
-    }
-
-    .glass-testimonial-card {
-        background: white;
-        border: 1px solid rgba(0, 0, 0, 0.05);
-        border-radius: 2.5rem;
-        padding: 2rem;
+    .review-card {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 1.25rem;
+        padding: 1.5rem;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         height: 100%;
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
-        position: relative;
-        overflow: hidden;
-        box-shadow: 0 40px 100px -20px rgba(0,0,0,0.05);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
     }
 
-    @media (min-width: 1024px) {
-        .glass-testimonial-card {
-            border-radius: 3rem;
-            padding: 3rem 2.5rem;
-        }
+    .review-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.08);
+        border-color: #d1d5db;
     }
 
-    .glass-testimonial-card::after {
-        content: '"';
-        position: absolute;
-        top: 2rem;
-        right: 3rem;
-        font-size: 10rem;
-        font-family: serif;
-        color: rgba(245, 7, 29, 0.1);
-        line-height: 1;
-    }
-
-    .carousel-dot {
-        width: 10px;
-        height: 10px;
-        background: rgba(255, 255, 255, 0.2);
-        border-radius: 50%;
-        transition: all 0.3s ease;
-        cursor: pointer;
-    }
-
-    .carousel-dot.active {
+    .reviewer-avatar {
         width: 40px;
-        background: #f5071d;
-        border-radius: 5px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+        background: #f3f4f6;
+    }
+
+    .google-g-icon {
+        width: 18px;
+        height: 18px;
+    }
+
+    .star-rating-container {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+        margin-top: 0.5rem;
+    }
+
+    .star-icon {
+        width: 16px;
+        height: 16px;
+        fill: var(--star-gold);
+        color: var(--star-gold);
+    }
+
+    .star-icon.empty {
+        fill: #e5e7eb;
+        color: #e5e7eb;
+    }
+
+    .verified-check {
+        width: 14px;
+        height: 14px;
+        color: #1d9bf0;
+        fill: #1d9bf0;
+        margin-left: 4px;
+    }
+
+    .review-text-content {
+        font-size: 0.9375rem;
+        line-height: 1.6;
+        color: #4b5563;
+        margin-top: 1rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 4;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
     }
 
     /* Video section styles */
     .video-placeholder {
         background: #000;
-        border-radius: 2.5rem;
+        border-radius: 2rem;
         overflow: hidden;
         position: relative;
         display: flex;
         align-items: center;
         justify-content: center;
-        border: 1px solid rgba(255,255,255,0.05);
-        box-shadow: 0 50px 100px -30px rgba(0,0,0,0.8);
-        min-height: 500px;
+        border: 1px solid rgba(0,0,0,0.1);
+        box-shadow: 0 40px 100px -20px rgba(0,0,0,0.15);
+        min-height: 400px;
     }
 
-    @media (min-width: 1024px) {
-        .video-placeholder {
-            border-radius: 4rem;
-        }
-    }
-    
     .video-glow {
         position: absolute;
         width: 100%;
         height: 100%;
-        background: radial-gradient(circle at 50% 50%, rgba(245, 7, 29, 0.2), transparent 70%);
+        background: radial-gradient(circle at 50% 50%, rgba(245, 7, 29, 0.15), transparent 70%);
         pointer-events: none;
     }
 
-    .hero-glow {
+    /* Gradient Mask for fading edges */
+    .marquee-mask {
+        position: relative;
+    }
+    .marquee-mask::before, .marquee-mask::after {
+        content: "";
         position: absolute;
-        width: 1000px;
-        height: 1000px;
-        background: radial-gradient(circle, rgba(245, 7, 29, 0.08) 0%, transparent 70%);
-        top: -500px;
-        left: -500px;
+        top: 0;
+        width: 150px;
+        height: 100%;
+        z-index: 2;
         pointer-events: none;
+    }
+    .marquee-mask::before {
+        left: 0;
+        background: linear-gradient(to right, #f8f9fa, transparent);
+    }
+    .marquee-mask::after {
+        right: 0;
+        background: linear-gradient(to left, #f8f9fa, transparent);
     }
 </style>
 {% endblock %}
 
 {% block content %}
-<style>
-    .page-fade-in {
-        animation: fadeIn 1s ease-out forwards;
-        opacity: 0;
-    }
-
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-</style>
-
-<div class="bg-white min-h-screen text-gray-900 overflow-hidden selection:bg-auraa-red selection:text-white page-fade-in">
+<div class="testimonials-bg min-h-screen">
     <!-- Hero Section -->
-    <!-- Back Navigation -->
-    <div class="absolute top-6 md:top-12 left-6 md:left-10 z-[100] w-auto">
-        <div class="btn-3d-wrapper fade-up">
-            <a href="{% url 'about' %}#community" class="btn-3d-container group scale-75 md:scale-100 origin-left">
-                <span class="btn-3d-shadow"></span>
-                <span class="btn-3d-edge btn-3d-edge-navy"></span>
-                <span class="btn-3d-front btn-3d-front-navy px-4 py-2 space-x-2 md:space-x-3 md:px-6 md:py-3 border-none shadow-none">
-                    <i data-lucide="arrow-left" class="w-4 h-4 md:w-[18px] md:h-[18px] group-hover:-translate-x-2 transition-transform"></i>
-                    <span class="text-[10px] md:text-sm uppercase tracking-widest">Auraa Hub</span>
-                </span>
-            </a>
-        </div>
-    </div>
-
-    <section class="relative pt-24 md:pt-40 pb-20 md:pb-32 px-6 bg-auraa-red rounded-b-[4rem]">
-        <div class="hero-glow"></div>
+    <section class="relative pt-28 pb-20 md:pb-32 px-6 bg-auraa-red rounded-b-[4rem] overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-auraa-red via-red-600 to-auraa-navy opacity-50"></div>
         <div class="max-w-7xl mx-auto text-center space-y-6 md:space-y-12 relative z-10">
-            <div class="inline-flex items-center space-x-3 bg-white/20 border border-white/40 px-6 py-2 rounded-full">
-                <i data-lucide="heart" class="text-white w-4 h-4 fill-current"></i>
-                <span class="text-[10px] font-black text-white uppercase tracking-[0.3em]">Customer Love</span>
+            <div class="inline-flex items-center space-x-3 bg-white px-6 py-2 rounded-full shadow-xl">
+                <i data-lucide="mic-2" class="text-auraa-red w-4 h-4"></i>
+                <span class="text-[10px] font-black text-auraa-red uppercase tracking-[0.3em]">Customer Voice</span>
             </div>
             <h1 class="text-4xl md:text-7xl lg:text-[110px] font-black text-white leading-[0.9] uppercase tracking-tighter">
                 Real Voices <br />
                 Real <span class="italic underline decoration-white/20 underline-offset-[10px]">Joy</span>
             </h1>
             <p class="text-white/80 text-lg md:text-xl font-medium max-w-2xl mx-auto leading-relaxed px-4">
-                Celebrating life's brightest moments with families across the nation. Read what our valued community has to say about their Auraa experience.
+                Celebrating life's brightest moments with families across the nation. Experience the magic through their eyes.
             </p>
         </div>
     </section>
 
-    <!-- Large Featured Carousel -->
-    <section class="pb-32 px-6">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="testimonial-carousel-container group/carousel">
-                <div class="testimonial-track" id="testimonial-track">
-                    <!-- Slide 1: Senthamizh Chandran -->
-                    <div class="testimonial-slide active">
-                        <div class="glass-testimonial-card">
-                            <div class="space-y-8">
-                                <div class="flex items-center space-x-1 text-auraa-red">
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                </div>
-                                <p class="text-xl md:text-3xl text-gray-900 font-medium leading-[1.4] italic tracking-tight">
-                                    "I am extremely happy with my purchase from Auraa Crackers... bright, colorful effects and performed exactly as expected."
-                                </p>
-                            </div>
-                            <div class="flex items-center space-x-6 pt-12 mt-12 border-t border-white/5">
-                                <div class="w-20 h-20 rounded-[2rem] overflow-hidden border-2 border-auraa-red/30 shadow-2xl">
-                                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Jack" class="w-full h-full object-cover" alt="User">
-                                </div>
-                                <div>
-                                    <h4 class="text-lg md:text-xl font-black text-gray-900 uppercase tracking-wider">Senthamizh Chandran</h4>
-                                    <p class="text-[10px] md:text-xs font-bold text-white/80 uppercase tracking-widest mt-1">Verified Customer</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Slide 2: HARI HARI -->
-                    <div class="testimonial-slide">
-                        <div class="glass-testimonial-card">
-                            <div class="space-y-8">
-                                <div class="flex items-center space-x-1 text-auraa-red">
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                </div>
-                                <p class="text-xl md:text-3xl text-gray-900 font-medium leading-[1.4] italic tracking-tight">
-                                    "Auraa Crackers has proven to be a trusted brand for buying quality crackers at fair and reasonable prices."
-                                </p>
-                            </div>
-                            <div class="flex items-center space-x-6 pt-12 mt-12 border-t border-white/5">
-                                <div class="w-20 h-20 rounded-[2rem] overflow-hidden border-2 border-auraa-red/30 shadow-2xl">
-                                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Oliver" class="w-full h-full object-cover" alt="User">
-                                </div>
-                                <div>
-                                    <h4 class="text-lg md:text-xl font-black text-gray-900 uppercase tracking-wider">HARI HARI</h4>
-                                    <p class="text-[10px] md:text-xs font-bold text-white/80 uppercase tracking-widest mt-1">Verified Customer</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Slide 3: sathish kumar -->
-                    <div class="testimonial-slide">
-                        <div class="glass-testimonial-card">
-                            <div class="space-y-8">
-                                <div class="flex items-center space-x-1 text-auraa-red">
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                </div>
-                                <p class="text-xl md:text-3xl text-gray-900 font-medium leading-[1.4] italic tracking-tight">
-                                    "The crackers from Auraa Crackers performed exceptionally well, showing consistent quality across all items."
-                                </p>
-                            </div>
-                            <div class="flex items-center space-x-6 pt-12 mt-12 border-t border-white/5">
-                                <div class="w-20 h-20 rounded-[2rem] overflow-hidden border-2 border-auraa-red/30 shadow-2xl">
-                                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Leo" class="w-full h-full object-cover" alt="User">
-                                </div>
-                                <div>
-                                    <h4 class="text-lg md:text-xl font-black text-gray-900 uppercase tracking-wider">sathish kumar</h4>
-                                    <p class="text-[10px] md:text-xs font-bold text-white/80 uppercase tracking-widest mt-1">Verified Customer</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Slide 4: Ganesh venkatesan -->
-                    <div class="testimonial-slide">
-                        <div class="glass-testimonial-card">
-                            <div class="space-y-8">
-                                <div class="flex items-center space-x-1 text-auraa-red">
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                </div>
-                                <p class="text-xl md:text-3xl text-gray-900 font-medium leading-[1.4] italic tracking-tight">
-                                    "Excellent quality, vibrant effects and reliable performance. You can clearly see they are genuine Sivakasi products."
-                                </p>
-                            </div>
-                            <div class="flex items-center space-x-6 pt-12 mt-12 border-t border-white/5">
-                                <div class="w-20 h-20 rounded-[2rem] overflow-hidden border-2 border-auraa-red/30 shadow-2xl">
-                                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Max" class="w-full h-full object-cover" alt="User">
-                                </div>
-                                <div>
-                                    <h4 class="text-lg md:text-xl font-black text-gray-900 uppercase tracking-wider">Ganesh venkatesan</h4>
-                                    <p class="text-[10px] md:text-xs font-bold text-white/80 uppercase tracking-widest mt-1">Verified Customer</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Slide 5: VIMAL s -->
-                    <div class="testimonial-slide">
-                        <div class="glass-testimonial-card">
-                            <div class="space-y-8">
-                                <div class="flex items-center space-x-1 text-auraa-red">
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                </div>
-                                <p class="text-xl md:text-3xl text-gray-900 font-medium leading-[1.4] italic tracking-tight">
-                                    "Wide variety of high-quality, own & branded crackers at very competitive prices. Fantastic experience!"
-                                </p>
-                            </div>
-                            <div class="flex items-center space-x-6 pt-12 mt-12 border-t border-white/5">
-                                <div class="w-20 h-20 rounded-[2rem] overflow-hidden border-2 border-auraa-red/30 shadow-2xl">
-                                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Harry" class="w-full h-full object-cover" alt="User">
-                                </div>
-                                <div>
-                                    <h4 class="text-lg md:text-xl font-black text-gray-900 uppercase tracking-wider">VIMAL s</h4>
-                                    <p class="text-[10px] md:text-xs font-bold text-white/80 uppercase tracking-widest mt-1">Verified Customer</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Slide 6: Chaitanya Yadav -->
-                    <div class="testimonial-slide">
-                        <div class="glass-testimonial-card">
-                            <div class="space-y-8">
-                                <div class="flex items-center space-x-1 text-auraa-red">
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                </div>
-                                <p class="text-xl md:text-3xl text-gray-900 font-medium leading-[1.4] italic tracking-tight">
-                                    "I joined their chit scheme, and it honestly made things much easier for me. Instead of spending big at once during Deepavali."
-                                </p>
-                            </div>
-                            <div class="flex items-center space-x-6 pt-12 mt-12 border-t border-white/5">
-                                <div class="w-20 h-20 rounded-[2rem] overflow-hidden border-2 border-auraa-red/30 shadow-2xl">
-                                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=George" class="w-full h-full object-cover" alt="User">
-                                </div>
-                                <div>
-                                    <h4 class="text-lg md:text-xl font-black text-gray-900 uppercase tracking-wider">Chaitanya Yadav</h4>
-                                    <p class="text-[10px] md:text-xs font-bold text-white/80 uppercase tracking-widest mt-1">Verified Customer</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Slide 7: Pradeep Rx -->
-                    <div class="testimonial-slide">
-                        <div class="glass-testimonial-card">
-                            <div class="space-y-8">
-                                <div class="flex items-center space-x-1 text-auraa-red">
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                </div>
-                                <p class="text-xl md:text-3xl text-gray-900 font-medium leading-[1.4] italic tracking-tight">
-                                    "Quality is excellent, and products are genuine Sivakasi crackers. The variety and prices are very reasonable."
-                                </p>
-                            </div>
-                            <div class="flex items-center space-x-6 pt-12 mt-12 border-t border-white/5">
-                                <div class="w-20 h-20 rounded-[2rem] overflow-hidden border-2 border-auraa-red/30 shadow-2xl">
-                                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Noah" class="w-full h-full object-cover" alt="User">
-                                </div>
-                                <div>
-                                    <h4 class="text-lg md:text-xl font-black text-gray-900 uppercase tracking-wider">Pradeep Rx</h4>
-                                    <p class="text-[10px] md:text-xs font-bold text-white/80 uppercase tracking-widest mt-1">Verified Customer</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Slide 8: Pramod Kulal -->
-                    <div class="testimonial-slide">
-                        <div class="glass-testimonial-card">
-                            <div class="space-y-8">
-                                <div class="flex items-center space-x-1 text-auraa-red">
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                </div>
-                                <p class="text-xl md:text-3xl text-gray-900 font-medium leading-[1.4] italic tracking-tight">
-                                    "Response was very quick, polite, and professional. They clearly explained the price list and options."
-                                </p>
-                            </div>
-                            <div class="flex items-center space-x-6 pt-12 mt-12 border-t border-white/5">
-                                <div class="w-20 h-20 rounded-[2rem] overflow-hidden border-2 border-auraa-red/30 shadow-2xl">
-                                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=James" class="w-full h-full object-cover" alt="User">
-                                </div>
-                                <div>
-                                    <h4 class="text-lg md:text-xl font-black text-gray-900 uppercase tracking-wider">Pramod Kulal</h4>
-                                    <p class="text-[10px] md:text-xs font-bold text-white/80 uppercase tracking-widest mt-1">Verified Customer</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Slide 9: jagadeesh sammeta -->
-                    <div class="testimonial-slide">
-                        <div class="glass-testimonial-card">
-                            <div class="space-y-8">
-                                <div class="flex items-center space-x-1 text-auraa-red">
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                </div>
-                                <p class="text-xl md:text-3xl text-gray-900 font-medium leading-[1.4] italic tracking-tight">
-                                    "Excellent place to buy crackers. Very satisfied with the overall experience!"
-                                </p>
-                            </div>
-                            <div class="flex items-center space-x-6 pt-12 mt-12 border-t border-white/5">
-                                <div class="w-20 h-20 rounded-[2rem] overflow-hidden border-2 border-auraa-red/30 shadow-2xl">
-                                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Thomas" class="w-full h-full object-cover" alt="User">
-                                </div>
-                                <div>
-                                    <h4 class="text-lg md:text-xl font-black text-gray-900 uppercase tracking-wider">jagadeesh sammeta</h4>
-                                    <p class="text-[10px] md:text-xs font-bold text-white/80 uppercase tracking-widest mt-1">Verified Customer</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Slide 10: Jagadish -->
-                    <div class="testimonial-slide">
-                        <div class="glass-testimonial-card">
-                            <div class="space-y-8">
-                                <div class="flex items-center space-x-1 text-auraa-red">
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                </div>
-                                <p class="text-xl md:text-3xl text-gray-900 font-medium leading-[1.4] italic tracking-tight">
-                                    "Super quality and good products. Highly recommended for everyone!"
-                                </p>
-                            </div>
-                            <div class="flex items-center space-x-6 pt-12 mt-12 border-t border-white/5">
-                                <div class="w-20 h-20 rounded-[2rem] overflow-hidden border-2 border-auraa-red/30 shadow-2xl">
-                                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Ryan" class="w-full h-full object-cover" alt="User">
-                                </div>
-                                <div>
-                                    <h4 class="text-lg md:text-xl font-black text-gray-900 uppercase tracking-wider">Jagadish</h4>
-                                    <p class="text-[10px] md:text-xs font-bold text-white/80 uppercase tracking-widest mt-1">Verified Customer</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Slide 11: Nethan Louis -->
-                    <div class="testimonial-slide">
-                        <div class="glass-testimonial-card">
-                            <div class="space-y-8">
-                                <div class="flex items-center space-x-1 text-auraa-red">
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                </div>
-                                <p class="text-xl md:text-3xl text-gray-900 font-medium leading-[1.4] italic tracking-tight">
-                                    "Good quality products. Excellent service from the team!"
-                                </p>
-                            </div>
-                            <div class="flex items-center space-x-6 pt-12 mt-12 border-t border-white/5">
-                                <div class="w-20 h-20 rounded-[2rem] overflow-hidden border-2 border-auraa-red/30 shadow-2xl">
-                                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Liam" class="w-full h-full object-cover" alt="User">
-                                </div>
-                                <div>
-                                    <h4 class="text-lg md:text-xl font-black text-gray-900 uppercase tracking-wider">Nethan Louis</h4>
-                                    <p class="text-[10px] md:text-xs font-bold text-white/80 uppercase tracking-widest mt-1">Verified Customer</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Slide 12: Sulochana B -->
-                    <div class="testimonial-slide">
-                        <div class="glass-testimonial-card">
-                            <div class="space-y-8">
-                                <div class="flex items-center space-x-1 text-auraa-red">
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                </div>
-                                <p class="text-xl md:text-3xl text-gray-900 font-medium leading-[1.4] italic tracking-tight">
-                                    "Variety is amazing and items neatly packed. Prices are budget-friendly, and customer support was very helpful."
-                                </p>
-                            </div>
-                            <div class="flex items-center space-x-6 pt-12 mt-12 border-t border-white/5">
-                                <div class="w-20 h-20 rounded-[2rem] overflow-hidden border-2 border-auraa-red/30 shadow-2xl">
-                                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Mia&top=longHair" class="w-full h-full object-cover" alt="User">
-                                </div>
-                                <div>
-                                    <h4 class="text-lg md:text-xl font-black text-gray-900 uppercase tracking-wider">Sulochana B</h4>
-                                    <p class="text-[10px] md:text-xs font-bold text-white/80 uppercase tracking-widest mt-1">Verified Customer</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Slide 13: Vamsi Reddy -->
-                    <div class="testimonial-slide">
-                        <div class="glass-testimonial-card">
-                            <div class="space-y-8">
-                                <div class="flex items-center space-x-1 text-auraa-red">
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                </div>
-                                <p class="text-xl md:text-3xl text-gray-900 font-medium leading-[1.4] italic tracking-tight">
-                                    "Crackers are safe, colorful, and long-lasting. Delivery was super quick, and prices are very reasonable."
-                                </p>
-                            </div>
-                            <div class="flex items-center space-x-6 pt-12 mt-12 border-t border-white/5">
-                                <div class="w-20 h-20 rounded-[2rem] overflow-hidden border-2 border-auraa-red/30 shadow-2xl">
-                                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Caleb" class="w-full h-full object-cover" alt="User">
-                                </div>
-                                <div>
-                                    <h4 class="text-lg md:text-xl font-black text-gray-900 uppercase tracking-wider">Vamsi Reddy</h4>
-                                    <p class="text-[10px] md:text-xs font-bold text-white/80 uppercase tracking-widest mt-1">Verified Customer</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Slide 14: Surya Pj -->
-                    <div class="testimonial-slide">
-                        <div class="glass-testimonial-card">
-                            <div class="space-y-8">
-                                <div class="flex items-center space-x-1 text-auraa-red">
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                </div>
-                                <p class="text-xl md:text-3xl text-gray-900 font-medium leading-[1.4] italic tracking-tight">
-                                    "Good response and good products. Very happy with the overall service!"
-                                </p>
-                            </div>
-                            <div class="flex items-center space-x-6 pt-12 mt-12 border-t border-white/5">
-                                <div class="w-20 h-20 rounded-[2rem] overflow-hidden border-2 border-auraa-red/30 shadow-2xl">
-                                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Ethan" class="w-full h-full object-cover" alt="User">
-                                </div>
-                                <div>
-                                    <h4 class="text-lg md:text-xl font-black text-gray-900 uppercase tracking-wider">Surya Pj</h4>
-                                    <p class="text-[10px] md:text-xs font-bold text-white/80 uppercase tracking-widest mt-1">Verified Customer</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Slide 15: dhayu Yuvan -->
-                    <div class="testimonial-slide">
-                        <div class="glass-testimonial-card">
-                            <div class="space-y-8">
-                                <div class="flex items-center space-x-1 text-auraa-red">
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                </div>
-                                <p class="text-xl md:text-3xl text-gray-900 font-medium leading-[1.4] italic tracking-tight">
-                                    "Good products and quick delivery. Excellent service provided by Auraa." Blue sky effects are amazing!"
-                                </p>
-                            </div>
-                            <div class="flex items-center space-x-6 pt-12 mt-12 border-t border-white/5">
-                                <div class="w-20 h-20 rounded-[2rem] overflow-hidden border-2 border-auraa-red/30 shadow-2xl">
-                                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Finn" class="w-full h-full object-cover" alt="User">
-                                </div>
-                                <div>
-                                    <h4 class="text-lg md:text-xl font-black text-gray-900 uppercase tracking-wider">dhayu Yuvan</h4>
-                                    <p class="text-[10px] md:text-xs font-bold text-white/80 uppercase tracking-widest mt-1">Verified Customer</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Slide 16: RAMASUBRAMANIAN MANI -->
-                    <div class="testimonial-slide">
-                        <div class="glass-testimonial-card">
-                            <div class="space-y-8">
-                                <div class="flex items-center space-x-1 text-auraa-red">
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                </div>
-                                <p class="text-xl md:text-3xl text-gray-900 font-medium leading-[1.4] italic tracking-tight">
-                                    "Low price, super quality. Many thanks to Auraa crackers for making our celebration special."
-                                </p>
-                            </div>
-                            <div class="flex items-center space-x-6 pt-12 mt-12 border-t border-white/5">
-                                <div class="w-20 h-20 rounded-[2rem] overflow-hidden border-2 border-auraa-red/30 shadow-2xl">
-                                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Lucas" class="w-full h-full object-cover" alt="User">
-                                </div>
-                                <div>
-                                    <h4 class="text-lg md:text-xl font-black text-gray-900 uppercase tracking-wider">RAMASUBRAMANIAN</h4>
-                                    <p class="text-[10px] md:text-xs font-bold text-white/80 uppercase tracking-widest mt-1">Verified Customer</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Slide 17: Vijay Karthick -->
-                    <div class="testimonial-slide">
-                        <div class="glass-testimonial-card">
-                            <div class="space-y-8">
-                                <div class="flex items-center space-x-1 text-auraa-red">
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                </div>
-                                <p class="text-xl md:text-3xl text-gray-900 font-medium leading-[1.4] italic tracking-tight">
-                                    "Very good products and very good crackers. Truly satisfied with the performance!"
-                                </p>
-                            </div>
-                            <div class="flex items-center space-x-6 pt-12 mt-12 border-t border-white/5">
-                                <div class="w-20 h-20 rounded-[2rem] overflow-hidden border-2 border-auraa-red/30 shadow-2xl">
-                                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Mason" class="w-full h-full object-cover" alt="User">
-                                </div>
-                                <div>
-                                    <h4 class="text-lg md:text-xl font-black text-gray-900 uppercase tracking-wider">Vijay Karthick</h4>
-                                    <p class="text-[10px] md:text-xs font-bold text-white/80 uppercase tracking-widest mt-1">Verified Customer</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Slide 18: NARENDRAN S -->
-                    <div class="testimonial-slide">
-                        <div class="glass-testimonial-card">
-                            <div class="space-y-8">
-                                <div class="flex items-center space-x-1 text-auraa-red">
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                </div>
-                                <p class="text-xl md:text-3xl text-gray-900 font-medium leading-[1.4] italic tracking-tight">
-                                    "Many thanks and congratulations for providing us quality crackers at low prices."
-                                </p>
-                            </div>
-                            <div class="flex items-center space-x-6 pt-12 mt-12 border-t border-white/5">
-                                <div class="w-20 h-20 rounded-[2rem] overflow-hidden border-2 border-auraa-red/30 shadow-2xl">
-                                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Logan" class="w-full h-full object-cover" alt="User">
-                                </div>
-                                <div>
-                                    <h4 class="text-lg md:text-xl font-black text-gray-900 uppercase tracking-wider">NARENDRAN S</h4>
-                                    <p class="text-[10px] md:text-xs font-bold text-white/80 uppercase tracking-widest mt-1">Verified Customer</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Slide 19: Bala Boobalan -->
-                    <div class="testimonial-slide">
-                        <div class="glass-testimonial-card">
-                            <div class="space-y-8">
-                                <div class="flex items-center space-x-1 text-auraa-red">
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                </div>
-                                <p class="text-xl md:text-3xl text-gray-900 font-medium leading-[1.4] italic tracking-tight">
-                                    "One of the best prices in Sivakasi. Truly impressive quality and service."
-                                </p>
-                            </div>
-                            <div class="flex items-center space-x-6 pt-12 mt-12 border-t border-white/5">
-                                <div class="w-20 h-20 rounded-[2rem] overflow-hidden border-2 border-auraa-red/30 shadow-2xl">
-                                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" class="w-full h-full object-cover" alt="User">
-                                </div>
-                                <div>
-                                    <h4 class="text-lg md:text-xl font-black text-gray-900 uppercase tracking-wider">Bala Boobalan</h4>
-                                    <p class="text-[10px] md:text-xs font-bold text-white/80 uppercase tracking-widest mt-1">Verified Customer</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Slide 20: Santhosh S -->
-                    <div class="testimonial-slide">
-                        <div class="glass-testimonial-card">
-                            <div class="space-y-8">
-                                <div class="flex items-center space-x-1 text-auraa-red">
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                </div>
-                                <p class="text-xl md:text-3xl text-gray-900 font-medium leading-[1.4] italic tracking-tight">
-                                    "Good quality crackers with an affordable price. Highly recommended for everyone!"
-                                </p>
-                            </div>
-                            <div class="flex items-center space-x-6 pt-12 mt-12 border-t border-white/5">
-                                <div class="w-20 h-20 rounded-[2rem] overflow-hidden border-2 border-auraa-red/30 shadow-2xl">
-                                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alex" class="w-full h-full object-cover" alt="User">
-                                </div>
-                                <div>
-                                    <h4 class="text-lg md:text-xl font-black text-gray-900 uppercase tracking-wider">Santhosh S</h4>
-                                    <p class="text-[10px] md:text-xs font-bold text-white/80 uppercase tracking-widest mt-1">Verified Customer</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Slide 21: Siva -->
-                    <div class="testimonial-slide">
-                        <div class="glass-testimonial-card">
-                            <div class="space-y-8">
-                                <div class="flex items-center space-x-1 text-auraa-red">
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                </div>
-                                <p class="text-xl md:text-3xl text-gray-900 font-medium leading-[1.4] italic tracking-tight">
-                                    "Top notch quality. Truly the best fireworks I've purchased. Safe and vibrant!"
-                                </p>
-                            </div>
-                            <div class="flex items-center space-x-6 pt-12 mt-12 border-t border-white/5">
-                                <div class="w-20 h-20 rounded-[2rem] overflow-hidden border-2 border-auraa-red/30 shadow-2xl">
-                                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Adam" class="w-full h-full object-cover" alt="User">
-                                </div>
-                                <div>
-                                    <h4 class="text-lg md:text-xl font-black text-gray-900 uppercase tracking-wider">Siva</h4>
-                                    <p class="text-[10px] md:text-xs font-bold text-white/80 uppercase tracking-widest mt-1">Verified Customer</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Slide 22: mani kandan -->
-                    <div class="testimonial-slide">
-                        <div class="glass-testimonial-card">
-                            <div class="space-y-8">
-                                <div class="flex items-center space-x-1 text-auraa-red">
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 opacity-20"></i>
-                                </div>
-                                <p class="text-xl md:text-3xl text-gray-900 font-medium leading-[1.4] italic tracking-tight">
-                                    "Good experience shopping here. The service was polite and efficient."
-                                </p>
-                            </div>
-                            <div class="flex items-center space-x-6 pt-12 mt-12 border-t border-white/5">
-                                <div class="w-20 h-20 rounded-[2rem] overflow-hidden border-2 border-auraa-red/30 shadow-2xl">
-                                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Ben" class="w-full h-full object-cover" alt="User">
-                                </div>
-                                <div>
-                                    <h4 class="text-lg md:text-xl font-black text-gray-900 uppercase tracking-wider">mani kandan</h4>
-                                    <p class="text-[10px] md:text-xs font-bold text-white/80 uppercase tracking-widest mt-1">Verified Customer</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Slide 23: Balaji V -->
-                    <div class="testimonial-slide">
-                        <div class="glass-testimonial-card">
-                            <div class="space-y-8">
-                                <div class="flex items-center space-x-1 text-auraa-red">
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                </div>
-                                <p class="text-xl md:text-3xl text-gray-900 font-medium leading-[1.4] italic tracking-tight">
-                                    "Excellent service and quality. Truly a professional team behind Auraa Crackers."
-                                </p>
-                            </div>
-                            <div class="flex items-center space-x-6 pt-12 mt-12 border-t border-white/5">
-                                <div class="w-20 h-20 rounded-[2rem] overflow-hidden border-2 border-auraa-red/30 shadow-2xl">
-                                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Chris" class="w-full h-full object-cover" alt="User">
-                                </div>
-                                <div>
-                                    <h4 class="text-lg md:text-xl font-black text-gray-900 uppercase tracking-wider">Balaji V</h4>
-                                    <p class="text-[10px] md:text-xs font-bold text-white/80 uppercase tracking-widest mt-1">Verified Customer</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Slide 24: sathya prakash -->
-                    <div class="testimonial-slide">
-                        <div class="glass-testimonial-card">
-                            <div class="space-y-8">
-                                <div class="flex items-center space-x-1 text-auraa-red">
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                </div>
-                                <p class="text-xl md:text-3xl text-gray-900 font-medium leading-[1.4] italic tracking-tight">
-                                    "Excellent products. Every single item exceeded our expectations!"
-                                </p>
-                            </div>
-                            <div class="flex items-center space-x-6 pt-12 mt-12 border-t border-white/5">
-                                <div class="w-20 h-20 rounded-[2rem] overflow-hidden border-2 border-auraa-red/30 shadow-2xl">
-                                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Dan" class="w-full h-full object-cover" alt="User">
-                                </div>
-                                <div>
-                                    <h4 class="text-lg md:text-xl font-black text-gray-900 uppercase tracking-wider">sathya prakash</h4>
-                                    <p class="text-[10px] md:text-xs font-bold text-white/80 uppercase tracking-widest mt-1">Verified Customer</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Slide 25: kanniyappan rajendran -->
-                    <div class="testimonial-slide">
-                        <div class="glass-testimonial-card">
-                            <div class="space-y-8">
-                                <div class="flex items-center space-x-1 text-auraa-red">
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                    <i data-lucide="star" class="w-6 h-6 fill-current"></i>
-                                </div>
-                                <p class="text-xl md:text-3xl text-gray-900 font-medium leading-[1.4] italic tracking-tight">
-                                    "Very wide variety. Sparklers, flower pots, rockets are easily available in one place. Very convenient!"
-                                </p>
-                            </div>
-                            <div class="flex items-center space-x-6 pt-12 mt-12 border-t border-white/5">
-                                <div class="w-20 h-20 rounded-[2rem] overflow-hidden border-2 border-auraa-red/30 shadow-2xl">
-                                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Mike" class="w-full h-full object-cover" alt="User">
-                                </div>
-                                <div>
-                                    <h4 class="text-lg md:text-xl font-black text-gray-900 uppercase tracking-wider">kanniyappan rajendran</h4>
-                                    <p class="text-[10px] md:text-xs font-bold text-white/80 uppercase tracking-widest mt-1">Verified Customer</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Navigation Controls -->
-                <button onclick="prevSlide()" class="absolute left-4 top-1/2 -translate-y-1/2 w-20 h-20 bg-white shadow-2xl rounded-full flex items-center justify-center text-black hover:bg-auraa-red hover:text-white transition-all z-20 md:flex hidden">
-                    <i data-lucide="chevron-left" class="w-8 h-8"></i>
-                </button>
-                <button onclick="nextSlide()" class="absolute right-4 top-1/2 -translate-y-1/2 w-20 h-20 bg-white shadow-2xl rounded-full flex items-center justify-center text-black hover:bg-auraa-red hover:text-white transition-all z-20 md:flex hidden">
-                    <i data-lucide="chevron-right" class="w-8 h-8"></i>
-                </button>
-
-                <!-- Dots Indicators -->
-                <div class="flex justify-center space-x-4 mt-16" id="carousel-dots">
-                    <!-- Dots will be generated via JS -->
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Video Stories Section -->
-    <section class="py-40 bg-gradient-to-br from-[#0A325A] via-[#08294a] to-[#051829] border-t border-white/5 relative overflow-hidden">
-        <!-- Subtle Glow Layer -->
-        <div class="absolute top-0 right-0 w-[800px] h-[800px] bg-auraa-red/10 blur-[200px] rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="flex flex-col md:flex-row justify-between items-end gap-12 mb-32">
-                <div class="space-y-6">
-                    <h2 class="text-[10px] font-black text-white uppercase tracking-[0.5em]">Experience the Auraa</h2>
-                    <h3 class="text-4xl md:text-7xl font-black text-white uppercase tracking-tighter">Video Stories</h3>
-                </div>
-                <div class="max-w-md">
-                    <div class="bg-black/10 backdrop-blur-sm border-l-4 border-white/30 p-6 md:p-8 rounded-2xl">
-                        <p class="text-lg md:text-xl text-white font-bold leading-relaxed">
-                            Watch our community light up the sky. Real smiles caught on camera during India's biggest celebrations.
-                        </p>
-                    </div>
+    <!-- Video Section -->
+    <section class="py-20 md:py-32 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row items-end justify-between mb-16 space-y-6 md:space-y-0">
+                <div class="space-y-4 max-w-2xl">
+                    <h2 class="text-4xl md:text-6xl font-black text-gray-900 uppercase tracking-tighter leading-none">
+                        Community <br/><span class="text-auraa-red">Highlights</span>
+                    </h2>
+                    <p class="text-gray-500 text-lg font-medium">Watch our community light up the sky. Real smiles caught on camera during India's biggest celebrations.</p>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-20">
-                <div class="video-placeholder group relative overflow-hidden bg-black !aspect-auto min-h-[500px] flex items-center justify-center">
-                    <video class="w-full h-full max-h-[70vh] object-contain z-0 transition-opacity" controls preload="metadata">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
+                <!-- Video 1 -->
+                <div class="video-placeholder group relative overflow-hidden bg-black aspect-[9/16] max-w-[350px] mx-auto flex items-center justify-center rounded-[2rem] shadow-2xl">
+                    <video class="w-full h-full object-cover z-0" controls preload="metadata">
                         <source src="{% static 'images/review1.mp4' %}" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
                     <div class="video-glow pointer-events-none"></div>
                 </div>
 
-                <div class="video-placeholder group relative overflow-hidden bg-black !aspect-auto min-h-[500px] flex items-center justify-center">
-                    <video class="w-full h-full max-h-[70vh] object-contain z-0 transition-opacity" controls preload="metadata">
+                <!-- Video 2 -->
+                <div class="video-placeholder group relative overflow-hidden bg-black aspect-[9/16] max-w-[350px] mx-auto flex items-center justify-center rounded-[2rem] shadow-2xl">
+                    <video class="w-full h-full object-cover z-0" controls preload="metadata">
                         <source src="{% static 'images/review2.mp4' %}" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
@@ -923,121 +226,60 @@
         </div>
     </section>
 
-    <!-- Feedback CTA -->
-    <section class="py-24 md:py-40 relative px-6">
-        <div class="max-w-4xl mx-auto text-center space-y-12 bg-auraa-red p-10 md:p-20 rounded-[2.5rem] md:rounded-[5rem] relative overflow-hidden shadow-[0_50px_100px_-20px_rgba(245,7,29,0.3)]">
-            <div class="absolute inset-0 bg-white/5 blur-3xl rounded-full"></div>
-            <div class="relative z-10 space-y-6">
-                <h3 class="text-3xl md:text-6xl font-black text-white uppercase tracking-tighter">Share Your Story</h3>
-                <p class="text-lg md:text-xl text-white/80 leading-relaxed max-w-xl mx-auto font-medium px-4">
-                    Loved our products? We'd love to hear from you. Your feedback helps us illuminate more lives with safety and quality.
-                </p>
-                <div class="pt-8 flex justify-center">
-                    <div class="btn-3d-wrapper">
-                        <a href="https://www.google.com/maps/place/Auraa+Crackers+Sivakasi/@9.3992778,77.7821944,17z/data=!3m1!4b1!4m6!3m5!1s0x3b06c9aa9b9f4741:0xd082609f94bf72c!8m2!3d9.3992778!4d77.7821944!16s%2Fg%2F11l36k70mx?entry=ttu&g_ep=EgoyMDI2MDQwMS4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer" class="btn-3d-container group">
-                            <span class="btn-3d-shadow"></span>
-                            <span class="btn-3d-edge btn-3d-edge-navy"></span>
-                            <span class="btn-3d-front btn-3d-front-navy space-x-4">
-                                <span>Write Review</span>
-                                <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-2 transition-transform"></i>
-                            </span>
-                        </a>
+    <!-- Slideshow Customer Reviews Section -->
+    <section class="pb-32">
+        <div class="max-w-7xl mx-auto px-6 mb-12">
+            <header class="border-b border-gray-200 pb-8 flex flex-col md:flex-row md:items-end justify-between space-y-4 md:space-y-0">
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-900 tracking-tight">Google Reviews</h2>
+                    <div class="flex items-center mt-3 space-x-2">
+                        <div class="flex star-rating-container">
+                            <i data-lucide="star" class="star-icon"></i>
+                            <i data-lucide="star" class="star-icon"></i>
+                            <i data-lucide="star" class="star-icon"></i>
+                            <i data-lucide="star" class="star-icon"></i>
+                            <i data-lucide="star" class="star-icon"></i>
+                        </div>
+                        <span class="text-sm font-semibold text-gray-700">{{ avg_rating|floatformat:1 }} Average Rating</span>
+                        <span class="text-gray-300 mx-2">|</span>
+                        <span class="text-sm text-gray-500">{{ reviews_count }} Reviews</span>
                     </div>
+                </div>
+                <a href="https://www.google.com/maps/place/Auraa+Crackers+Sivakasi/@9.3992778,77.7821944,17z/data=!3m1!4b1!4m6!3m5!1s0x3b06c9aa9b9f4741:0xd082609f94bf72c!8m2!3d9.3992778!4d77.7821944!16s%2Fg%2F11l36k70mx?entry=ttu&g_ep=EgoyMDI2MDQxNS4wIKXMDSoASAFQAw%3D%3D" target="_blank" class="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white text-sm font-black uppercase tracking-widest rounded-full transition-all shadow-[0_10px_30px_-10px_rgba(37,99,235,0.5)] hover:shadow-[0_15px_35px_-10px_rgba(37,99,235,0.6)] hover:-translate-y-0.5 active:translate-y-0">
+                    <i data-lucide="pen-square" class="w-4 h-4 mr-2.5"></i>
+                    Write a Review
+                </a>
+            </header>
+        </div>
+
+        <!-- Automatic Sliding Rows -->
+        <div class="marquee-mask space-y-12">
+            <!-- Row 1: Moving Left -->
+            <div class="marquee-container row-1">
+                <div class="marquee-track">
+                    {% for testimonial in testimonials|slice:":25" %}
+                        {% include 'crackers/partials/testimonial_card.html' %}
+                    {% endfor %}
+                    <!-- Duplicate for infinite scroll -->
+                    {% for testimonial in testimonials|slice:":25" %}
+                        {% include 'crackers/partials/testimonial_card.html' %}
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Row 2: Moving Right -->
+            <div class="marquee-container row-2">
+                <div class="marquee-track">
+                    {% for testimonial in testimonials|slice:"25:" %}
+                        {% include 'crackers/partials/testimonial_card.html' %}
+                    {% endfor %}
+                    <!-- Duplicate for infinite scroll -->
+                    {% for testimonial in testimonials|slice:"25:" %}
+                        {% include 'crackers/partials/testimonial_card.html' %}
+                    {% endfor %}
                 </div>
             </div>
         </div>
     </section>
 </div>
-{% endblock %}
-
-{% block extra_js %}
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        lucide.createIcons();
-
-        // Carousel Logic
-        const track = document.getElementById('testimonial-track');
-        const slides = Array.from(track.children);
-        const dotsContainer = document.getElementById('carousel-dots');
-        let currentIdx = 0;
-        let autoScrollInterval;
-
-        function getSlidesPerView() {
-            if (window.innerWidth >= 1024) return 2;
-            return 1;
-        }
-
-        function setupDots() {
-            dotsContainer.innerHTML = '';
-            const perView = getSlidesPerView();
-            const count = slides.length - (perView - 1);
-            for (let i = 0; i < count; i++) {
-                const dot = document.createElement('div');
-                dot.className = `carousel-dot ${i === 0 ? 'active' : ''}`;
-                dot.onclick = () => goToSlide(i);
-                dotsContainer.appendChild(dot);
-            }
-        }
-
-        function updateCarousel() {
-            const perView = getSlidesPerView();
-            const slideWidth = 100 / perView;
-            track.style.transform = `translateX(-${currentIdx * slideWidth}%)`;
-
-            slides.forEach((slide, i) => {
-                slide.classList.remove('active');
-                if (i >= currentIdx && i < currentIdx + perView) {
-                    slide.classList.add('active');
-                }
-            });
-
-            const dots = Array.from(dotsContainer.children);
-            dots.forEach((dot, i) => {
-                dot.classList.toggle('active', i === currentIdx);
-            });
-        }
-
-        window.nextSlide = function() {
-            const perView = getSlidesPerView();
-            const maxIdx = slides.length - perView;
-            currentIdx = (currentIdx + 1) % (maxIdx + 1);
-            updateCarousel();
-        }
-
-        window.prevSlide = function() {
-            const perView = getSlidesPerView();
-            const maxIdx = slides.length - perView;
-            currentIdx = (currentIdx - 1 + (maxIdx + 1)) % (maxIdx + 1);
-            updateCarousel();
-        }
-
-        function goToSlide(idx) {
-            currentIdx = idx;
-            updateCarousel();
-            resetAutoScroll();
-        }
-
-        function startAutoScroll() {
-            autoScrollInterval = setInterval(nextSlide, 6000);
-        }
-
-        function resetAutoScroll() {
-            clearInterval(autoScrollInterval);
-            startAutoScroll();
-        }
-
-        setupDots();
-        updateCarousel();
-        startAutoScroll();
-
-        window.addEventListener('resize', () => {
-            setupDots();
-            updateCarousel();
-        });
-
-        // Hover pause
-        track.parentElement.addEventListener('mouseenter', () => clearInterval(autoScrollInterval));
-        track.parentElement.addEventListener('mouseleave', startAutoScroll);
-    });
-</script>
 {% endblock %}

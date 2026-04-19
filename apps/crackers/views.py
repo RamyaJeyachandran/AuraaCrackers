@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import TemplateView, ListView
-from .models import Category, Product, Cart, Coupon, Customer, CustomerAddress, OnlineSales, OnlineSalesItem, Country, State, City, SerialNo
-from django.db.models import Q, Sum, F, Min, IntegerField, Value, CharField
+from .models import Category, Product, Cart, Coupon, Customer, CustomerAddress, OnlineSales, OnlineSalesItem, Country, State, City, SerialNo, Testimonial
+from django.db.models import Q, Sum, F, Min, IntegerField, Value, CharField, Avg
 from django.db.models.functions import Length, Cast, Coalesce, LPad
 from django.http import JsonResponse
 from django.views import View
@@ -28,6 +28,13 @@ class HomeView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.filter(is_active=True).order_by('order')[:6]
+        
+        # Add testimonials for the "What They Say" section
+        testimonials = list(Testimonial.objects.filter(is_active=True).order_by('-created_at'))
+        context['testimonials'] = testimonials
+        context['avg_rating'] = Testimonial.objects.filter(is_active=True).aggregate(Avg('rating'))['rating__avg'] or 0
+        context['reviews_count'] = len(testimonials)
+        
         return context
 
 class ProductListView(ListView):
@@ -464,8 +471,30 @@ class OrderEditView(LoginRequiredMixin, TemplateView):
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
 
+from django.core.cache import cache
+
 class TestimonialsView(TemplateView):
     template_name = "crackers/testimonials.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        cache_key = 'testimonials_data_fragment'
+        cached_data = cache.get(cache_key)
+        
+        if not cached_data:
+            testimonials = list(Testimonial.objects.filter(is_active=True).order_by('-created_at'))
+            avg_rating = Testimonial.objects.filter(is_active=True).aggregate(Avg('rating'))['rating__avg'] or 0
+            cached_data = {
+                'testimonials': testimonials,
+                'avg_rating': avg_rating,
+                'reviews_count': len(testimonials)
+            }
+            # Cache for 1 hour
+            cache.set(cache_key, cached_data, 3600)
+            
+        context.update(cached_data)
+        return context
 
 class StateListAPIView(View):
     def get(self, request):

@@ -4,11 +4,11 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     environment:
-      - POSTGRES_DB=${DB_NAME:-auraaBooksDB}
+      - POSTGRES_DB=${DB_NAME:-auraacrackers}
       - POSTGRES_USER=${DB_USER:-auraauser}
       - POSTGRES_PASSWORD=${DB_PASSWORD:-auraapass}
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-auraauser} -d ${DB_NAME:-auraaBooksDB}"]
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-auraauser} -d ${DB_NAME:-auraacrackers}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -36,7 +36,7 @@ services:
     environment:
       - DEBUG=True
       - PYTHONPATH=/app
-      - DB_NAME=${DB_NAME:-auraaBooksDB}
+      - DB_NAME=${DB_NAME:-auraacrackers}
       - DB_USER=${DB_USER:-auraauser}
       - DB_PASSWORD=${DB_PASSWORD:-auraapass}
       - DB_HOST=db
@@ -44,6 +44,7 @@ services:
       - CELERY_BROKER_URL=redis://redis:6379/0
       - CELERY_RESULT_BACKEND=redis://redis:6379/0
       - CACHE_URL=redis://redis:6379/1
+      - APIFY_TOKEN=${APIFY_TOKEN}
     ports:
       - "8000:8000"
     depends_on:
@@ -60,7 +61,7 @@ services:
     command: sh -c "celery -A config.celery worker --loglevel=info --concurrency=4"
     environment:
       - PYTHONPATH=/app
-      - DB_NAME=${DB_NAME:-auraaBooksDB}
+      - DB_NAME=${DB_NAME:-auraacrackers}
       - DB_USER=${DB_USER:-auraauser}
       - DB_PASSWORD=${DB_PASSWORD:-auraapass}
       - DB_HOST=db
@@ -68,6 +69,7 @@ services:
       - CELERY_BROKER_URL=redis://redis:6379/0
       - CELERY_RESULT_BACKEND=redis://redis:6379/0
       - CACHE_URL=redis://redis:6379/1
+      - APIFY_TOKEN=${APIFY_TOKEN}
     depends_on:
       db:
         condition: service_healthy
@@ -82,7 +84,7 @@ services:
     command: sh -c "celery -A config.celery beat --loglevel=info"
     environment:
       - PYTHONPATH=/app
-      - DB_NAME=${DB_NAME:-auraaBooksDB}
+      - DB_NAME=${DB_NAME:-auraacrackers}
       - DB_USER=${DB_USER:-auraauser}
       - DB_PASSWORD=${DB_PASSWORD:-auraapass}
       - DB_HOST=db
@@ -90,6 +92,7 @@ services:
       - CELERY_BROKER_URL=redis://redis:6379/0
       - CELERY_RESULT_BACKEND=redis://redis:6379/0
       - CACHE_URL=redis://redis:6379/1
+      - APIFY_TOKEN=${APIFY_TOKEN}
     depends_on:
       db:
         condition: service_healthy

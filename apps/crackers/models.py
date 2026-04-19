@@ -453,3 +453,22 @@ class SerialNo(models.Model):
 
     def __str__(self):
         return f"{self.table_name} - {self.prefix_no}{self.next_no}"
+
+class Testimonial(models.Model):
+    """
+    Stores customer reviews fetched from Google Maps or other sources.
+    """
+    name = models.CharField(max_length=200, db_column='reviewerName')
+    profile_image = models.URLField(max_length=1000, blank=True, null=True, db_column='reviewerImage')
+    rating = models.IntegerField(default=5, db_column='rating')
+    text = models.TextField(db_column='reviewText')
+    review_date = models.CharField(max_length=100, db_column='reviewDate')
+    is_active = models.BooleanField(default=True, db_column='isActive')
+    created_at = models.DateTimeField(auto_now_add=True, db_column='createdDt')
+
+    class Meta:
+        db_table = 'tbl_testimonials'
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"{self.name} - {self.rating} stars"

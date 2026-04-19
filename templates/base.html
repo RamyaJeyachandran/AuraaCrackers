@@ -233,9 +233,11 @@
         {% include 'includes/navbar.html' %}
     {% endif %}
 
-    <main class="flex-grow {% if user.is_authenticated and user.role.name in 'Admin,Super Admin' %}pt-16 lg:pt-36{% elif request.resolver_match.url_name == 'login' %}pt-16 lg:pt-24{% elif request.resolver_match.url_name == 'product_list' %}pt-0{% else %}pt-16 lg:pt-40{% endif %}">
+    {% with url_name=request.resolver_match.url_name %}
+    <main class="flex-grow {% if user.is_authenticated and user.role.name in 'Admin,Super Admin' %}pt-16 lg:pt-36{% elif url_name == 'login' %}pt-16 lg:pt-24{% elif url_name == 'product_list' or url_name == 'testimonials' %}pt-0{% else %}pt-16 lg:pt-40{% endif %}">
         {% block content %}{% endblock %}
     </main>
+    {% endwith %}
 
     {% with url_name=request.resolver_match.url_name %}
     {% if url_name != 'login' and 'dashboard_' not in url_name and 'admin_' not in url_name %}

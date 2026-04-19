@@ -149,6 +149,14 @@ CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
 CELERY_TIMEZONE = TIME_ZONE
 
+from celery.schedules import crontab
+CELERY_BEAT_SCHEDULE = {
+    'fetch-google-reviews-every-12-hours': {
+        'task': 'apps.crackers.tasks.fetch_google_reviews_task',
+        'schedule': crontab(hour='*/12', minute=0),
+    },
+}
+
 # Cache
 CACHES = {
     "default": {

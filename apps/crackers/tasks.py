@@ -2,7 +2,10 @@ from celery import shared_task
 from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from .models import OnlineSales
+from .models import OnlineSales, Testimonial
+import os
+from apify_client import ApifyClient
+from django.core.cache import cache
 
 User = get_user_model()
 
@@ -44,3 +47,60 @@ def send_order_error_emails_task(user_id, error_msg):
             send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, admin_emails, fail_silently=True)
     except Exception as e:
         print(f"Error sending order error emails: {str(e)}")
+
+@shared_task
+def fetch_google_reviews_task():
+    """
+    Automated task to fetch reviews from Google Maps via Apify.
+    Runs periodically via Celery Beat.
+    """
+    apify_token = os.environ.get('APIFY_TOKEN')
+    if not apify_token:
+        return "APIFY_TOKEN not found in environment."
+
+    try:
+        client = ApifyClient(apify_token)
+        run_input = {
+            "startUrls": [
+                {
+                    "url": "https://www.google.com/maps/place/Auraa+Crackers+Sivakasi/@9.3992778,77.7821944,17z/data=!3m1!4b1!4m6!3m5!1s0x3b06c9aa9b9f4741:0xd082609f94bf72c!8m2!3d9.3992778!4d77.7821944!16s%2Fg%2F11l36k70mx"
+                }
+            ],
+            "maxReviews": 50,
+            "reviewsSort": "newest"
+        }
+
+        # Run the actor
+        run = client.actor("compass/google-maps-reviews-scraper").call(run_input=run_input)
+        
+        reviews_count = 0
+        for item in client.dataset(run["defaultDatasetId"]).iterate_items():
+            rating = item.get("stars") or item.get("rating")
+            
+            if rating and rating >= 4:
+                name = item.get("name") or "Anonymous Reviewer"
+                text = item.get("text") or ""
+                profile_image = item.get("reviewerPhotoUrl")
+                if not profile_image:
+                    profile_image = f"https://api.dicebear.com/7.x/initials/svg?seed={name}"
+                
+                review_date = item.get("publishedAtDate") or item.get("relativeTime") or "Recent"
+                
+                Testimonial.objects.update_or_create(
+                    name=name,
+                    text=text,
+                    defaults={
+                        'profile_image': profile_image,
+                        'rating': int(rating),
+                        'review_date': str(review_date),
+                        'isActive': True
+                    }
+                )
+                reviews_count += 1
+
+        # Clear cache
+        cache.delete('testimonials_data_fragment')
+        return f"Successfully processed {reviews_count} reviews."
+        
+    except Exception as e:
+        return f"Error in fetch_google_reviews_task: {str(e)}"

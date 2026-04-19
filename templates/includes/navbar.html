@@ -124,6 +124,9 @@
                             </div>
                         </div>
                         <div class="space-y-1">
+                            {% if user.role.name in 'Admin,Super Admin' %}
+                            <a href="{% url 'admin_dashboard' %}" class="block px-4 py-3 rounded-xl text-[11px] font-black uppercase tracking-widest text-blue-600 hover:bg-blue-50">Dashboard</a>
+                            {% endif %}
                             <a href="{% url 'profile' %}" class="block px-4 py-3 rounded-xl text-[11px] font-black uppercase tracking-widest text-gray-600 hover:bg-red-50 hover:text-auraa-red">My Profile</a>
                             <a href="{% url 'order_history' %}" class="block px-4 py-3 rounded-xl text-[11px] font-black uppercase tracking-widest text-gray-600 hover:bg-red-50 hover:text-auraa-red">My Orders</a>
                             <a href="{% url 'order_status' %}" class="block px-4 py-3 rounded-xl text-[11px] font-black uppercase tracking-widest text-gray-600 hover:bg-red-50 hover:text-auraa-red">Order Status</a>

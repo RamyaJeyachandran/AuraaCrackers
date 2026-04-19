@@ -8,7 +8,7 @@
     <!-- Welcome Header -->
     <div class="mb-12 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
         <div>
-            <h1 class="text-4xl font-black text-gray-900 tracking-tight uppercase mb-2">Admin <span class="text-auraa-red">Dashboard</span></h1>
+            <h1 class="text-2xl md:text-4xl font-black text-gray-900 tracking-tight uppercase mb-2">Admin <span class="text-auraa-red">Dashboard</span></h1>
             <p class="text-gray-500 font-bold uppercase tracking-widest text-[10px]">Overall platform control and monitoring</p>
         </div>
         <div class="flex items-center space-x-4">
@@ -64,7 +64,7 @@
         </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8 mb-12">
         <!-- Metric Cards -->
         <div class="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-xl group hover:shadow-2xl transition-all duration-500">
             <div class="flex justify-between items-start mb-6">
@@ -112,13 +112,13 @@
     </div>
 
     <!-- Quick Actions / Navigation Board -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-        <div class="bg-auraa-red text-white p-12 rounded-[3.5rem] shadow-2xl shadow-auraa-red/30 relative overflow-hidden group">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
+        <div class="bg-auraa-red text-white p-6 md:p-12 rounded-[2rem] md:rounded-[3.5rem] shadow-2xl shadow-auraa-red/30 relative overflow-hidden group">
             <div class="absolute -top-20 -right-20 w-80 h-80 bg-white/10 rounded-full blur-[100px] group-hover:bg-white/20 transition-all duration-1000"></div>
             
             <div class="relative z-10 space-y-10">
                 <h3 class="text-[11px] font-black uppercase tracking-[0.3em] text-white">Management Center</h3>
-                <div class="grid grid-cols-2 gap-6">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
                     <a href="{% url 'admin_active_categories' %}" class="p-6 bg-white rounded-3xl shadow-lg border border-white/10 hover:bg-gray-50 text-gray-900 transition-all transform hover:-translate-y-2 group/btn relative overflow-hidden">
                         <div class="absolute -right-2 -bottom-2 opacity-5 transform rotate-12 group-hover:scale-110 transition-transform">
                             <i data-lucide="tag" class="w-16 h-16"></i>
@@ -173,7 +173,7 @@
             </div>
         </div>
 
-        <div class="bg-white p-12 rounded-[3.5rem] border border-gray-100 shadow-xl overflow-hidden relative">
+        <div class="bg-white p-6 md:p-12 rounded-[2rem] md:rounded-[3.5rem] border border-gray-100 shadow-xl overflow-hidden relative">
             <h3 class="text-[11px] font-black uppercase tracking-[0.3em] text-gray-400 mb-10">Recent Orders</h3>
             <div class="space-y-6">
                 {% for ro in recent_orders %}

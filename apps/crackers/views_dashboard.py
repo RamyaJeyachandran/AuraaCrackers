@@ -136,6 +136,81 @@ class DashboardOrderDetailView(LoginRequiredMixin, AdminRequiredMixin, DetailVie
         context['total_qty'] = items.aggregate(Sum('qty'))['qty__sum'] or 0
         return context
 
+from django.utils.decorators import method_decorator
+from django.views.decorators.clickjacking import xframe_options_exempt
+
+@method_decorator(xframe_options_exempt, name='dispatch')
+class DashboardOrderEstimateView(LoginRequiredMixin, AdminRequiredMixin, DetailView):
+    model = OnlineSales
+    template_name = 'dashboard/order_estimate.html'
+    context_object_name = 'order'
+    slug_field = 'trans_no'
+    slug_url_kwarg = 'trans_no'
+    
+    def get_context_data(self, **kwargs):
+        from django.db.models import Sum
+        context = super().get_context_data(**kwargs)
+        items = self.object.items.all().select_related('product').order_by('item_code')
+        
+        # Pre-calculate values for the template to match the image columns
+        for item in items:
+            item.unit_rate = item.rate
+            # Image shows Discount per unit? Let's check: 540 rate, 270 disc, 270 final, 540 amt for 2 qty.
+            # (540 - 270) * 2 = 540. So yes, discount in image is per unit.
+            if item.qty > 0:
+                item.unit_discount = item.discount_amt / item.qty
+                item.final_rate = item.item_total / item.qty
+            else:
+                item.unit_discount = 0
+                item.final_rate = 0
+        
+        context['items'] = items
+        context['total_qty'] = items.aggregate(Sum('qty'))['qty__sum'] or 0
+        context['total_items'] = items.count()
+        return context
+
+class DashboardOrderDownloadView(LoginRequiredMixin, AdminRequiredMixin, DetailView):
+    model = OnlineSales
+    slug_field = 'trans_no'
+    slug_url_kwarg = 'trans_no'
+    
+    def get(self, request, *args, **kwargs):
+        from django.template.loader import get_template
+        from xhtml2pdf import pisa
+        from io import BytesIO
+        from django.http import HttpResponse
+        from django.db.models import Sum
+        
+        self.object = self.get_object()
+        template = get_template('dashboard/order_estimate_pdf.html')
+        
+        items = self.object.items.all().select_related('product').order_by('item_code')
+        for item in items:
+            item.unit_rate = item.rate
+            if item.qty > 0:
+                item.unit_discount = item.discount_amt / item.qty
+                item.final_rate = item.item_total / item.qty
+            else:
+                item.unit_discount = 0
+                item.final_rate = 0
+
+        context = {
+            'order': self.object,
+            'items': items,
+            'total_qty': items.aggregate(Sum('qty'))['qty__sum'] or 0,
+            'total_items': items.count(),
+        }
+        
+        html = template.render(context)
+        result = BytesIO()
+        pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), result)
+        
+        if not pdf.err:
+            response = HttpResponse(result.getvalue(), content_type='application/pdf')
+            response['Content-Disposition'] = f'attachment; filename="Estimate_{self.object.trans_no}.pdf"'
+            return response
+        return HttpResponse('Error generating PDF', status=400)
+
 class DashboardCustomerListView(LoginRequiredMixin, AdminRequiredMixin, ListView):
     model = Customer
     template_name = 'dashboard/customers.html'
@@ -144,7 +219,7 @@ class DashboardCustomerListView(LoginRequiredMixin, AdminRequiredMixin, ListView
     
     def get_queryset(self):
         from django.db.models import Count
-        qs = Customer.objects.all().prefetch_related('addresses', 'addresses__state').annotate(
+        qs = Customer.objects.all().prefetch_related('addresses', 'addresses__state', 'users').annotate(
             order_count=Count('sales')
         )
         
@@ -206,15 +281,17 @@ class DashboardCustomerExportView(DashboardCustomerListView):
         response['Content-Disposition'] = 'attachment; filename="customers_full_report.csv"'
         
         writer = csv.writer(response)
-        writer.writerow(['S.No', 'Name', 'Phone', 'Email', 'Address', 'City', 'State', 'Pincode', 'Orders Count', 'Status'])
+        writer.writerow(['S.No', 'Name', 'Phone', 'Password', 'Email', 'Address', 'City', 'State', 'Pincode', 'Orders Count', 'Status'])
         
         queryset = self.get_queryset()
         for i, customer in enumerate(queryset, 1):
             addr = customer.addresses.first()
+            user = customer.users.first()
             writer.writerow([
                 i,
                 customer.name,
                 addr.phone if addr else customer.contact_person_no,
+                user.password if user else '-',
                 addr.email if addr else '',
                 f"{addr.address1} {addr.address2}" if addr else '',
                 addr.city_name if addr else '',

@@ -23,8 +23,6 @@ class HomeView(TemplateView):
     template_name = 'crackers/home.html'
 
     def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated and request.user.role and request.user.role.name in ['Admin', 'Super Admin']:
-            return redirect('/admin/dashboard/')
         return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
@@ -233,7 +231,25 @@ class OrderProcessingView(LoginRequiredMixin, TemplateView):
         
         # Check if customer profile exists
         if not hasattr(user, 'online_customer') or not user.online_customer:
-            return redirect('home')
+            if user.role and user.role.name in ['Admin', 'Super Admin']:
+                # Auto-create customer profile for Admin so they can place orders
+                from django.db import transaction
+                try:
+                    with transaction.atomic():
+                        customer = Customer.objects.create(
+                            name=user.full_name,
+                            contact_person=user.full_name,
+                            contact_person_no=user.phone_number,
+                            is_online=True,
+                            is_active=True,
+                            created_by_id=settings.ADMIN_USER_ID
+                        )
+                        user.online_customer = customer
+                        user.save()
+                except:
+                    return redirect('home')
+            else:
+                return redirect('home')
 
         # Check cart status
         cart_items = Cart.objects.filter(user=user).select_related('product')

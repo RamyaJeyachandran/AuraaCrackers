@@ -44,12 +44,19 @@
                     <a href="{% url 'dashboard_pricelists' %}" class="text-[10px] font-black uppercase tracking-widest transition-all px-4 py-2 rounded-xl {% if 'pricelist' in request.resolver_match.url_name %}text-auraa-red bg-white shadow-lg{% else %}text-white hover:text-white hover:bg-white/10{% endif %}">Price List</a>
                     <a href="{% url 'dashboard_coupons' %}" class="text-[10px] font-black uppercase tracking-widest transition-all px-4 py-2 rounded-xl {% if 'coupon' in request.resolver_match.url_name %}text-auraa-red bg-white shadow-lg{% else %}text-white hover:text-white hover:bg-white/10{% endif %}">Coupons</a>
 
+                    <div class="h-4 w-[1px] bg-white/20 mx-2"></div>
+                    
+                    <a href="{% url 'home' %}" class="text-[10px] font-black uppercase tracking-widest transition-all flex items-center space-x-2 px-4 py-2 rounded-xl bg-green-600 text-white shadow-lg hover:bg-green-700">
+                        <i data-lucide="external-link" class="w-4 h-4"></i>
+                        <span>View Shop</span>
+                    </a>
+
 
                 </div>
 
                 <!-- Profile & Logout -->
                 <div class="flex items-center space-x-6">
-                    <a href="{% url 'profile' %}" class="flex items-center space-x-3 px-5 py-2.5 rounded-2xl border border-white/20 hover:opacity-90 transition-all group" style="background: linear-gradient(135deg, #c0000f 0%, #f5071d 50%, #ff3344 100%);">
+                    <a href="{% url 'profile' %}" class="flex items-center space-x-3 px-5 py-2.5 rounded-2xl border border-white/20 hover:opacity-90 transition-all group shadow-lg" style="background: linear-gradient(135deg, #051829 0%, #0A325A 50%, #154270 100%);">
                         <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-auraa-red text-[11px] font-black shadow-lg">
                             {{ request.user.username|slice:":1"|upper }}
                         </div>

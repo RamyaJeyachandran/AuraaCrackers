@@ -140,6 +140,8 @@
                             Name
                         </th>
                         <th class="py-6 px-6 text-[10px] font-black uppercase tracking-widest text-white/90 whitespace-nowrap">Contact</th>
+                        <th class="py-6 px-6 text-[10px] font-black uppercase tracking-widest text-white/90 whitespace-nowrap">Mobile No</th>
+                        <th class="py-6 px-6 text-[10px] font-black uppercase tracking-widest text-white/90 whitespace-nowrap">Password</th>
                         <th class="py-6 px-6 text-[10px] font-black uppercase tracking-widest text-white/90 text-center cursor-pointer hover:bg-gray-800 transition-all group/sort whitespace-nowrap w-32" onclick="applySort('orders')">
                             <div class="flex items-center justify-center space-x-1.5">
                                 <span>Orders Count</span>
@@ -167,19 +169,28 @@
                                             {{ addr.address1 }}{% if addr.address2 %}, {{ addr.address2 }}{% endif %}, 
                                             {{ addr.city_name }}, {{ addr.state.name }} - {{ addr.pincode }}
                                         </p>
+                                        {% if addr.email %}
                                         <div class="flex items-center space-x-2">
-                                            <span class="text-sm font-black text-auraa-red">{{ addr.phone }}</span>
-                                            {% if addr.email %}
-                                                <span class="text-gray-300">|</span>
-                                                <span class="text-[10px] font-bold text-blue-900 lowercase tracking-widest">{{ addr.email }}</span>
-                                            {% endif %}
+                                            <span class="text-[10px] font-bold text-blue-900 lowercase tracking-widest">{{ addr.email }}</span>
                                         </div>
+                                        {% endif %}
                                     {% else %}
-                                        <span class="text-sm font-bold text-gray-600 uppercase">{{ customer.contact_person_no }}</span>
                                         <span class="text-[9px] font-bold text-gray-400 uppercase tracking-widest">No detailed address</span>
                                     {% endif %}
                                 {% endwith %}
                             </div>
+                        </td>
+                        <td class="py-6 px-6">
+                            {% with u=customer.users.first %}
+                                <span class="text-sm font-black text-auraa-red">{{ u.phone_number|default:customer.contact_person_no }}</span>
+                            {% endwith %}
+                        </td>
+                        <td class="py-6 px-6">
+                            {% with u=customer.users.first %}
+                                <div class="text-sm font-black text-gray-700" title="{{ u.password }}">
+                                    {{ u.password|default:"-" }}
+                                </div>
+                            {% endwith %}
                         </td>
                         <td class="py-6 px-6 text-center">
                             <span class="px-4 py-1.5 bg-gray-100 text-sm font-black uppercase tracking-widest text-gray-700 rounded-xl">

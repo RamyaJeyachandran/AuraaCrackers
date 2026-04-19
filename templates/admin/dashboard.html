@@ -119,25 +119,55 @@
             <div class="relative z-10 space-y-10">
                 <h3 class="text-[11px] font-black uppercase tracking-[0.3em] text-white">Management Center</h3>
                 <div class="grid grid-cols-2 gap-6">
-                    <a href="{% url 'admin_active_categories' %}" class="p-6 bg-white/10 rounded-3xl border border-white/10 hover:bg-white hover:text-gray-900 transition-all transform hover:-translate-y-2 group/btn">
-                        <i data-lucide="tag" class="w-6 h-6 mb-4 group-hover/btn:text-auraa-red"></i>
-                        <span class="block text-[10px] font-black uppercase tracking-widest text-white/70 group-hover/btn:text-gray-900 mb-1">Stock</span>
-                        <span class="block text-sm font-black uppercase">Category</span>
+                    <a href="{% url 'admin_active_categories' %}" class="p-6 bg-white rounded-3xl shadow-lg border border-white/10 hover:bg-gray-50 text-gray-900 transition-all transform hover:-translate-y-2 group/btn relative overflow-hidden">
+                        <div class="absolute -right-2 -bottom-2 opacity-5 transform rotate-12 group-hover:scale-110 transition-transform">
+                            <i data-lucide="tag" class="w-16 h-16"></i>
+                        </div>
+                        <i data-lucide="tag" class="w-6 h-6 mb-4 text-auraa-red"></i>
+                        <span class="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">Stock</span>
+                        <div class="flex justify-between items-end">
+                            <span class="block text-sm font-black uppercase">Category</span>
+                            <span class="text-xl font-black text-auraa-red">{{ total_categories }}</span>
+                        </div>
                     </a>
-                    <a href="{% url 'dashboard_products' %}" class="p-6 bg-white/10 rounded-3xl border border-white/10 hover:bg-white hover:text-gray-900 transition-all transform hover:-translate-y-2 group/btn">
-                        <i data-lucide="package" class="w-6 h-6 mb-4 group-hover/btn:text-auraa-red"></i>
-                        <span class="block text-[10px] font-black uppercase tracking-widest text-white/70 group-hover/btn:text-gray-900 mb-1">Stock</span>
-                        <span class="block text-sm font-black uppercase">Product</span>
+                    <a href="{% url 'dashboard_products' %}" class="p-6 bg-white rounded-3xl shadow-lg border border-white/10 hover:bg-gray-50 text-gray-900 transition-all transform hover:-translate-y-2 group/btn relative overflow-hidden">
+                        <div class="absolute -right-2 -bottom-2 opacity-5 transform rotate-12 group-hover:scale-110 transition-transform">
+                            <i data-lucide="package" class="w-16 h-16"></i>
+                        </div>
+                        <i data-lucide="package" class="w-6 h-6 mb-4 text-auraa-red"></i>
+                        <span class="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">Stock</span>
+                        <div class="flex justify-between items-end">
+                            <span class="block text-sm font-black uppercase">Product</span>
+                            <span class="text-xl font-black text-auraa-red">{{ total_products }}</span>
+                        </div>
                     </a>
-                    <a href="{% url 'dashboard_orders' %}" class="p-6 bg-white/10 rounded-3xl border border-white/10 hover:bg-white hover:text-gray-900 transition-all transform hover:-translate-y-2 group/btn">
-                        <i data-lucide="shopping-cart" class="w-6 h-6 mb-4 group-hover/btn:text-auraa-red"></i>
-                        <span class="block text-[10px] font-black uppercase tracking-widest text-white/70 group-hover/btn:text-gray-900 mb-1">Process</span>
-                        <span class="block text-sm font-black uppercase">Orders</span>
+                    <a href="{% url 'dashboard_orders' %}" class="p-6 bg-white rounded-3xl shadow-lg border border-white/10 hover:bg-gray-50 text-gray-900 transition-all transform hover:-translate-y-2 group/btn relative overflow-hidden">
+                        <div class="absolute -right-2 -bottom-2 opacity-5 transform rotate-12 group-hover:scale-110 transition-transform">
+                            <i data-lucide="shopping-cart" class="w-16 h-16"></i>
+                        </div>
+                        <i data-lucide="shopping-cart" class="w-6 h-6 mb-4 text-auraa-red"></i>
+                        <span class="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">Process</span>
+                        <div class="flex justify-between items-end">
+                            <div>
+                                <span class="block text-sm font-black uppercase leading-tight">Orders</span>
+                                <span class="text-[8px] font-black uppercase text-green-600 tracking-tighter">Completed</span>
+                            </div>
+                            <span class="text-xl font-black text-auraa-red">{{ total_completed_orders }}</span>
+                        </div>
                     </a>
-                    <a href="{% url 'dashboard_customers' %}" class="p-6 bg-white/10 rounded-3xl border border-white/10 hover:bg-white hover:text-gray-900 transition-all transform hover:-translate-y-2 group/btn">
-                        <i data-lucide="users" class="w-6 h-6 mb-4 group-hover/btn:text-auraa-red"></i>
-                        <span class="block text-[10px] font-black uppercase tracking-widest text-white/70 group-hover/btn:text-gray-900 mb-1">Clientele</span>
-                        <span class="block text-sm font-black uppercase">Customers</span>
+                    <a href="{% url 'dashboard_customers' %}" class="p-6 bg-white rounded-3xl shadow-lg border border-white/10 hover:bg-gray-50 text-gray-900 transition-all transform hover:-translate-y-2 group/btn relative overflow-hidden">
+                        <div class="absolute -right-2 -bottom-2 opacity-5 transform rotate-12 group-hover:scale-110 transition-transform">
+                            <i data-lucide="users" class="w-16 h-16"></i>
+                        </div>
+                        <i data-lucide="users" class="w-6 h-6 mb-4 text-auraa-red"></i>
+                        <span class="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">Clientele</span>
+                        <div class="flex justify-between items-end">
+                            <div>
+                                <span class="block text-sm font-black uppercase leading-tight">Customers</span>
+                                <span class="text-[8px] font-black uppercase text-blue-600 tracking-tighter">Active</span>
+                            </div>
+                            <span class="text-xl font-black text-auraa-red">{{ total_active_customers }}</span>
+                        </div>
                     </a>
                 </div>
             </div>

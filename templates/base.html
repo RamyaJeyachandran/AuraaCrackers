@@ -223,8 +223,12 @@
 <body class="min-h-screen flex flex-col bg-white selection:bg-auraa-red selection:text-white overflow-x-hidden w-full relative">
     <span id="auth-status" class="hidden">{% if user.is_authenticated %}true{% else %}false{% endif %}</span>
     
-    {% if user.is_authenticated and user.role and user.role.name == 'Admin' or user.role.name == 'Super Admin' %}
-        {% include 'includes/admin_navbar.html' %}
+    {% if user.is_authenticated and user.role.name in 'Admin,Super Admin' %}
+        {% if '/admin/' in request.path or '/dashboard/' in request.path %}
+            {% include 'includes/admin_navbar.html' %}
+        {% else %}
+            {% include 'includes/navbar.html' %}
+        {% endif %}
     {% else %}
         {% include 'includes/navbar.html' %}
     {% endif %}

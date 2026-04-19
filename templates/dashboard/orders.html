@@ -103,7 +103,7 @@
                             YEAR
                         </div>
                         {% for y in years %}
-                        <div onclick="selectAdminYear('{{ y }}', '{{ y }}')" class="w-full px-6 py-3 text-center text-[10px] font-black uppercase tracking-widest cursor-pointer transition-colors border-b border-gray-50 last:border-0 {% if selected_year == y %}bg-auraa-red text-white{% else %}text-gray-600 hover:bg-red-50 hover:text-auraa-red{% endif %}">
+                        <div onclick="selectAdminYear('{{ y|escapejs }}', '{{ y|escapejs }}')" class="w-full px-6 py-3 text-center text-[10px] font-black uppercase tracking-widest cursor-pointer transition-colors border-b border-gray-50 last:border-0 {% if selected_year == y %}bg-auraa-red text-white{% else %}text-gray-600 hover:bg-red-50 hover:text-auraa-red{% endif %}">
                             {{ y }}
                         </div>
                         {% endfor %}
@@ -157,10 +157,10 @@
                             <span class="text-xs font-bold text-gray-500 uppercase">{{ order.trans_dt|date:"M d, Y" }}</span>
                         </td>
                         <td class="py-6 px-8 text-center">
-                            {% if order.status == 'New' %}
-                                <span class="inline-flex items-center space-x-2 px-3 py-1.5 bg-blue-500 text-white shadow-md shadow-blue-500/30 text-[9px] font-black uppercase tracking-widest rounded-full w-fit">
+                            {% if order.status == 'New' or order.status == 'Ordered' %}
+                                <span class="inline-flex items-center space-x-2 px-3 py-1.5 bg-slate-900 text-white shadow-md shadow-slate-900/30 text-[9px] font-black uppercase tracking-widest rounded-full w-fit">
                                     <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
-                                    <span>New</span>
+                                    <span>{{ order.status }}</span>
                                 </span>
                             {% elif order.status == 'Progressing' %}
                                 <span class="inline-flex items-center space-x-2 px-3 py-1.5 bg-orange-500 text-white shadow-md shadow-orange-500/30 text-[9px] font-black uppercase tracking-widest rounded-full w-fit">
@@ -189,9 +189,17 @@
                             {% endif %}
                         </td>
                         <td class="py-6 px-8 text-center">
-                            <a href="{% url 'dashboard_order_detail' order.trans_no %}" class="inline-block p-2 bg-auraa-red text-white shadow-md shadow-red-500/30 rounded-xl hover:bg-red-600 hover:shadow-lg hover:shadow-red-500/40 transition-all transform hover:-translate-y-0.5">
-                                <i data-lucide="eye" class="w-4 h-4"></i>
-                            </a>
+                            <div class="flex items-center justify-center space-x-2">
+                                <a href="{% url 'dashboard_order_detail' order.trans_no %}" title="View Order" class="p-2 bg-auraa-red text-white rounded-xl hover:bg-red-700 transition-all transform hover:-translate-y-0.5 shadow-sm">
+                                    <i data-lucide="eye" class="w-4 h-4"></i>
+                                </a>
+                                <button onclick="directPrint('{% url 'dashboard_order_estimate' order.trans_no %}')" title="Print Estimate" class="p-2 bg-emerald-500 text-white rounded-xl hover:bg-emerald-600 transition-all transform hover:-translate-y-0.5 shadow-sm">
+                                    <i data-lucide="printer" class="w-4 h-4"></i>
+                                </button>
+                                <a href="{% url 'dashboard_order_download' order.trans_no %}" title="Download Estimate" class="p-2 bg-blue-500 text-white rounded-xl hover:bg-blue-600 transition-all transform hover:-translate-y-0.5 shadow-sm">
+                                    <i data-lucide="download" class="w-4 h-4"></i>
+                                </a>
+                            </div>
                         </td>
                     </tr>
                     {% empty %}
@@ -209,98 +217,151 @@
                     {% endfor %}
                 </tbody>
             </table>
+        </div>
     </div>
 
     {% include 'includes/pagination.html' %}
 </div>
 
+<!-- Hidden Iframe for Direct Printing -->
+<iframe id="print-iframe" style="display:none;"></iframe>
+
 <script>
-// Custom Dropdown Logic
+// Dropdown Toggle Logic
 function toggleAdminCatDropdown(e) {
     if (e) e.stopPropagation();
     const options = document.getElementById('admin-cat-options');
     const chevron = document.getElementById('admin-cat-chevron');
-    options.classList.toggle('hidden');
-    chevron.classList.toggle('rotate-180');
+    
+    // Close others
+    const opt2 = document.getElementById('admin-cat-options2');
+    const chev2 = document.getElementById('admin-cat-chevron2');
+    const opt3 = document.getElementById('admin-year-options');
+    const chev3 = document.getElementById('admin-year-chevron');
+    
+    if (opt2) opt2.classList.add('hidden');
+    if (chev2) chev2.classList.remove('rotate-180');
+    if (opt3) opt3.classList.add('hidden');
+    if (chev3) chev3.classList.remove('rotate-180');
+
+    if (options) options.classList.toggle('hidden');
+    if (chevron) chevron.classList.toggle('rotate-180');
 }
 
-function selectAdminCat(val, labelText) {
-    document.getElementById('status-input').value = val;
-    document.getElementById('status-input').closest('form').submit();
+function toggleAdminCatDropdown2(e) {
+    if (e) e.stopPropagation();
+    const options = document.getElementById('admin-cat-options2');
+    const chevron = document.getElementById('admin-cat-chevron2');
+    
+    // Close others
+    const opt1 = document.getElementById('admin-cat-options');
+    const chev1 = document.getElementById('admin-cat-chevron');
+    const opt3 = document.getElementById('admin-year-options');
+    const chev3 = document.getElementById('admin-year-chevron');
+    
+    if (opt1) opt1.classList.add('hidden');
+    if (chev1) chev1.classList.remove('rotate-180');
+    if (opt3) opt3.classList.add('hidden');
+    if (chev3) chev3.classList.remove('rotate-180');
+
+    if (options) options.classList.toggle('hidden');
+    if (chevron) chevron.classList.toggle('rotate-180');
 }
 
-window.addEventListener('click', () => {
-    const options1 = document.getElementById('admin-cat-options');
-    const chevron1 = document.getElementById('admin-cat-chevron');
-    if (options1 && !options1.classList.contains('hidden')) {
-        options1.classList.add('hidden');
-        chevron1.classList.remove('rotate-180');
-    }
-
-    const options2 = document.getElementById('admin-cat-options2');
-    const chevron2 = document.getElementById('admin-cat-chevron2');
-    if (options2 && !options2.classList.contains('hidden')) {
-        options2.classList.add('hidden');
-        chevron2.classList.remove('rotate-180');
-    }
-
-    const options3 = document.getElementById('admin-year-options');
-    const chevron3 = document.getElementById('admin-year-chevron');
-    if (options3 && !options3.classList.contains('hidden')) {
-        options3.classList.add('hidden');
-        chevron3.classList.remove('rotate-180');
-    }
-});
-
-// Year Dropdown Logic
 function toggleAdminYearDropdown(e) {
     if (e) e.stopPropagation();
     const options = document.getElementById('admin-year-options');
     const chevron = document.getElementById('admin-year-chevron');
     
     // Close others
-    document.getElementById('admin-cat-options').classList.add('hidden');
-    document.getElementById('admin-cat-chevron').classList.remove('rotate-180');
-    document.getElementById('admin-cat-options2').classList.add('hidden');
-    document.getElementById('admin-cat-chevron2').classList.remove('rotate-180');
+    const opt1 = document.getElementById('admin-cat-options');
+    const chev1 = document.getElementById('admin-cat-chevron');
+    const opt2 = document.getElementById('admin-cat-options2');
+    const chev2 = document.getElementById('admin-cat-chevron2');
+    
+    if (opt1) opt1.classList.add('hidden');
+    if (chev1) chev1.classList.remove('rotate-180');
+    if (opt2) opt2.classList.add('hidden');
+    if (chev2) chev2.classList.remove('rotate-180');
 
-    options.classList.toggle('hidden');
-    chevron.classList.toggle('rotate-180');
+    if (options) options.classList.toggle('hidden');
+    if (chevron) chevron.classList.toggle('rotate-180');
 }
 
-function selectAdminYear(val, labelText) {
-    document.getElementById('year-input').value = val;
-    document.getElementById('year-input').closest('form').submit();
-}
-
-// Category Dropdown Logic
-function toggleAdminCatDropdown2(e) {
-    if (e) e.stopPropagation();
-    const options = document.getElementById('admin-cat-options2');
-    const chevron = document.getElementById('admin-cat-chevron2');
-    options.classList.toggle('hidden');
-    chevron.classList.toggle('rotate-180');
+// Selection Logic
+function selectAdminCat(val, labelText) {
+    const input = document.getElementById('status-input');
+    if (input) {
+        input.value = val;
+        const form = input.closest('form');
+        if (form) form.submit();
+    }
 }
 
 function selectAdminCat2(val, labelText) {
-    document.getElementById('category-input').value = val;
-    document.getElementById('category-input').closest('form').submit();
+    const input = document.getElementById('category-input');
+    if (input) {
+        input.value = val;
+        const form = input.closest('form');
+        if (form) form.submit();
+    }
 }
 
-// Search Clear Logic
+function selectAdminYear(val, labelText) {
+    const input = document.getElementById('year-input');
+    if (input) {
+        input.value = val;
+        const form = input.closest('form');
+        if (form) form.submit();
+    }
+}
+
+// Global Click to Close
+window.addEventListener('click', () => {
+    ['admin-cat-options', 'admin-cat-options2', 'admin-year-options'].forEach(id => {
+        const opt = document.getElementById(id);
+        if (opt) opt.classList.add('hidden');
+    });
+    ['admin-cat-chevron', 'admin-cat-chevron2', 'admin-year-chevron'].forEach(id => {
+        const chev = document.getElementById(id);
+        if (chev) chev.classList.remove('rotate-180');
+    });
+});
+
+// Search Logic
 function toggleClearSearchBtn() {
     const input = document.getElementById('search-input');
     const btn = document.getElementById('clear-search-btn');
-    if (input.value.length > 0) {
-        btn.classList.remove('hidden');
-    } else {
-        btn.classList.add('hidden');
+    if (input && btn) {
+        if (input.value.length > 0) {
+            btn.classList.remove('hidden');
+        } else {
+            btn.classList.add('hidden');
+        }
     }
 }
 
 function clearSearch() {
-    document.getElementById('search-input').value = '';
-    document.getElementById('search-input').closest('form').submit();
+    const input = document.getElementById('search-input');
+    if (input) {
+        input.value = '';
+        const form = input.closest('form');
+        if (form) form.submit();
+    }
+}
+
+// Print Logic
+function directPrint(url) {
+    const iframe = document.getElementById('print-iframe');
+    if (!iframe) return;
+    
+    iframe.onload = function() {
+        if (iframe.contentWindow) {
+            iframe.contentWindow.focus();
+            iframe.contentWindow.print();
+        }
+    };
+    iframe.src = url + '?print=true&t=' + new Date().getTime();
 }
 </script>
 {% endblock %}

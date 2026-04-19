@@ -24,6 +24,7 @@
                 <th class="py-4 px-2 border border-gray-200 text-[10px] font-black uppercase tracking-widest text-gray-600 text-center w-[40px]">S.No.</th>
                 <th class="py-4 px-3 border border-gray-200 text-[10px] font-black uppercase tracking-widest text-gray-600 w-1/4">Company Name</th>
                 <th class="py-4 px-3 border border-gray-200 text-[10px] font-black uppercase tracking-widest text-gray-600">Contact Details</th>
+                <th class="py-4 px-3 border border-gray-200 text-[10px] font-black uppercase tracking-widest text-gray-600">Password</th>
                 <th class="py-4 px-2 border border-gray-200 text-[10px] font-black uppercase tracking-widest text-gray-600 text-center w-[60px]">Orders</th>
                 <th class="py-4 px-2 border border-gray-200 text-[10px] font-black uppercase tracking-widest text-gray-600 text-center w-[80px]">Status</th>
             </tr>
@@ -46,6 +47,11 @@
                             {% endif %}
                         {% endwith %}
                     </div>
+                </td>
+                <td class="py-4 px-3 border border-gray-100 text-xs font-black">
+                    {% with u=customer.users.first %}
+                        {{ u.password|default:"-" }}
+                    {% endwith %}
                 </td>
                 <td class="py-4 px-2 border border-gray-100 text-center text-xs font-black">{{ customer.order_count }}</td>
                 <td class="py-4 px-2 border border-gray-100 text-center">

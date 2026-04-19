@@ -41,11 +41,12 @@ class SignupAPIView(View):
             user.backend = 'apps.users.backends.MobileBackend'
             login(request, user)
             
-            # Determine redirect
+            # Redirection logic
             next_url = request.POST.get('next', '/')
             if not next_url or next_url == 'null': next_url = '/'
             
-            if user.role and user.role.name in ['Admin', 'Super Admin']:
+            # Note: Admins can now also access front-end, so we only redirect if no specific next_url is set
+            if user.role and user.role.name in ['Admin', 'Super Admin'] and next_url == '/':
                 next_url = '/admin/dashboard/'
 
             return JsonResponse({
@@ -65,6 +66,8 @@ class LoginAPIView(View):
         try:
             mobile = request.POST.get('mobile', '').strip()
             password = request.POST.get('password', '').strip()
+            
+            logger.info(f"Login attempt for: {mobile}")
 
             if not mobile or not password:
                 return JsonResponse({'status': 'error', 'message': 'Mobile No and Password are required.'}, status=400)
@@ -78,11 +81,12 @@ class LoginAPIView(View):
                     # Success - determine role and redirect
                     display_name = user.full_name or user.username
                     
-                    # Determine redirect
+                    # Redirection logic
                     next_url = request.POST.get('next', '/')
                     if not next_url or next_url == 'null': next_url = '/'
                     
-                    if user.role and user.role.name in ['Admin', 'Super Admin']:
+                    # Note: Admins can now also access front-end, so we only redirect if no specific next_url is set
+                    if user.role and user.role.name in ['Admin', 'Super Admin'] and next_url == '/':
                         next_url = '/admin/dashboard/'
                     
                     return JsonResponse({
@@ -113,7 +117,7 @@ class ForgotPasswordAPIView(View):
                 import random
                 # Reset password to a random 6 digit code for temporary access
                 temp_pass = str(random.randint(100000, 999999))
-                user.set_password(temp_pass)
+                user.password = temp_pass
                 user.save()
                 
                 # Log reset PIN for internal use temporarily 
@@ -189,8 +193,19 @@ class AdminRegistrationAPIView(View):
 
         try:
             with transaction.atomic():
+                # Ensure Role exists
                 role, _ = Role.objects.get_or_create(name='Admin', defaults={'company_id': settings.COMPANY_ID, 'branch_id': settings.BRANCH_ID})
                 
+                # Create a Customer record for the Admin so they can place orders on the front-end
+                customer = Customer.objects.create(
+                    name=full_name,
+                    contact_person=full_name,
+                    contact_person_no=mobile,
+                    is_online=True,
+                    is_active=True,
+                    created_by_id=settings.ADMIN_USER_ID
+                )
+
                 # Create user
                 User.objects.create_user(
                     username=username,
@@ -199,7 +214,7 @@ class AdminRegistrationAPIView(View):
                     full_name=full_name,
                     phone_number=mobile,
                     role=role,
-                    online_customer=None,
+                    online_customer=customer,
                     company_id=settings.COMPANY_ID,
                     branch_id=settings.BRANCH_ID,
                     created_by=settings.ADMIN_USER_ID
@@ -281,8 +296,11 @@ class AdminDashboardView(LoginRequiredMixin, TemplateView):
         # Real statistics
         context['total_sales'] = sales_qs.aggregate(total=Sum('grand_amt'))['total'] or 0
         context['total_orders'] = orders_qs.count()
+        context['total_completed_orders'] = OnlineSales.objects.filter(status='Delivered').count()
         context['total_customers'] = customers_qs.count()
-        context['total_products'] = Product.objects.count()
+        context['total_active_customers'] = Customer.objects.filter(is_active=True).count()
+        context['total_products'] = Product.objects.filter(is_active=True).count()
+        context['total_categories'] = Category.objects.filter(is_active=True).count()
         
         # Recent orders (Overall last 3 for live feed)
         context['recent_orders'] = OnlineSales.objects.all().order_by('-trans_dt')[:3].select_related('customer')

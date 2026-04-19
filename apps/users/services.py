@@ -69,18 +69,26 @@ class AuthService:
                 )
 
                 # 4. Create Authentication User
-                user = User.objects.create_user(
-                    username=mobile,
-                    email=email,
-                    password=password,
-                    full_name=full_name,
-                    phone_number=mobile,
-                    role=role,
-                    online_customer=customer,
-                    company_id=settings.COMPANY_ID,
-                    branch_id=settings.BRANCH_ID,
-                    created_by=settings.ADMIN_USER_ID
-                )
+                user = User.objects.filter(phone_number=mobile).first()
+                if not user:
+                    user = User.objects.create_user(
+                        username=mobile,
+                        email=email,
+                        password=password,
+                        full_name=full_name,
+                        phone_number=mobile,
+                        role=role,
+                        online_customer=customer,
+                        company_id=settings.COMPANY_ID,
+                        branch_id=settings.BRANCH_ID,
+                        created_by=settings.ADMIN_USER_ID
+                    )
+                else:
+                    # Sync existing user with new details if needed
+                    user.full_name = full_name
+                    user.email = email
+                    user.online_customer = customer
+                    user.save()
                 
                 logger.info(f"New customer registered: {mobile} ({full_name})")
                 return user
@@ -109,7 +117,7 @@ class AuthService:
                 user.full_name = name
                 user.email = email
                 if new_password:
-                    user.set_password(new_password)
+                    user.password = new_password
                 user.save()
 
                 # Update Linked Customer

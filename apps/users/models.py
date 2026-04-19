@@ -25,7 +25,7 @@ class UserManager(BaseUserManager):
             raise ValueError('The Mobile Number must be set')
         user = self.model(username=username, phone_number=phone_number, **extra_fields)
         if password:
-            user.set_password(password)
+            user.password = password
         else:
             user.set_unusable_password()
         user.save(using=self._db)

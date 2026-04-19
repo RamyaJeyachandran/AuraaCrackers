@@ -136,12 +136,46 @@
 
         // Sidebar Summary Updates
         const packing = subTotal * 0.03;
-        const overall = subTotal + packing;
+        const exactOverall = subTotal + packing;
+        const roundedOverall = Math.round(exactOverall);
+        const roundOff = roundedOverall - exactOverall;
+
+        const sidebarPacking = document.getElementById('cart-packing');
+        const sidebarRoundOff = document.getElementById('cart-roundoff');
+        const sidebarPromoDiscount = document.getElementById('cart-promo-discount');
 
         if (sidebarNetTotal) sidebarNetTotal.innerText = `₹${totalNet.toFixed(2)}`;
         if (sidebarDiscountTotal) sidebarDiscountTotal.innerText = `₹${totalDiscount.toFixed(2)}`;
         if (sidebarSubTotal) sidebarSubTotal.innerText = `₹${subTotal.toFixed(2)}`;
-        if (sidebarOverallTotal) sidebarOverallTotal.innerText = `₹${overall.toFixed(2)}`;
+        if (sidebarPacking) sidebarPacking.innerText = `₹${packing.toFixed(2)}`;
+        if (sidebarRoundOff) sidebarRoundOff.innerText = `₹${roundOff.toFixed(2)}`;
+        if (sidebarOverallTotal) sidebarOverallTotal.innerText = `₹${roundedOverall.toFixed(2)}`;
+        if (sidebarPromoDiscount) sidebarPromoDiscount.innerText = `- ₹ ${promoDiscount.toFixed(2)}`;
+
+        // Sidebar Button Disabling & Error Logic
+        const sidebarCheckoutBtn = document.getElementById('confirm-estimate-btn');
+        const minOrderError = document.getElementById('cart-min-order-error');
+        const minOrderDiff = document.getElementById('cart-min-order-diff');
+
+        if (sidebarCheckoutBtn) {
+            const MIN_ORDER = 3000;
+            if (roundedOverall < MIN_ORDER) {
+                sidebarCheckoutBtn.disabled = true;
+                sidebarCheckoutBtn.classList.add('opacity-50', 'cursor-not-allowed', 'grayscale');
+                sidebarCheckoutBtn.classList.remove('hover:bg-gray-900', 'shadow-2xl', 'shadow-auraa-red/30');
+                
+                if (minOrderError && minOrderDiff) {
+                    minOrderError.classList.remove('hidden');
+                    minOrderDiff.innerText = (MIN_ORDER - roundedOverall).toFixed(2);
+                }
+            } else {
+                sidebarCheckoutBtn.disabled = false;
+                sidebarCheckoutBtn.classList.remove('opacity-50', 'cursor-not-allowed', 'grayscale');
+                sidebarCheckoutBtn.classList.add('hover:bg-gray-900', 'shadow-2xl', 'shadow-auraa-red/30');
+                
+                if (minOrderError) minOrderError.classList.add('hidden');
+            }
+        }
 
         // Page specific summary updates
         if (typeof updatePageSummaryUI === 'function') {
@@ -151,6 +185,43 @@
             });
         }
     }
+
+    // Sidebar Promo Logic
+    window.showSidebarPromoInput = () => {
+        const container = document.getElementById('sidebar-promo-input-container');
+        if (container) container.classList.toggle('hidden');
+    };
+
+    window.applySidebarPromoCode = async () => {
+        const input = document.getElementById('sidebar-promo-code-input');
+        const code = input.value.trim();
+        if (!code) return;
+
+        const formData = new FormData();
+        formData.append('code', code);
+        try {
+            const res = await fetch("{% url 'api_coupon_verify' %}", {
+                method: 'POST',
+                body: formData,
+                headers: { 'X-CSRFToken': '{{ csrf_token }}' }
+            });
+            const data = await res.json();
+            if (data.status === 'success') {
+                window.currentPromoPer = data.discount_per;
+                window.currentPromoCode = code;
+                if (typeof showModal === 'function') {
+                    showModal('Promo Applied!', `${data.discount_per}% discount applied to your order.`, 'success');
+                }
+                updateUI();
+            } else {
+                if (typeof showModal === 'function') {
+                    showModal('Invalid Code', data.message || 'The promotion code you entered is invalid.', 'error');
+                }
+            }
+        } catch (err) {
+            console.error("Promo error", err);
+        }
+    };
 
     function renderCartSidebar() {
         if (!cartItemsContainer) return;
@@ -217,12 +288,9 @@
         const MIN_ORDER = 3000;
 
         if (overall < MIN_ORDER) {
-            const diff = MIN_ORDER - overall;
-            if (typeof showModal === 'function') {
-                showModal('Minimum Order Required', `The minimum order for your location is ₹${MIN_ORDER.toFixed(2)}. You need ₹${diff.toFixed(2)} more to place the order.`, 'warning');
-            } else {
-                alert(`Minimum order ₹${MIN_ORDER} required. You need ₹${diff.toFixed(2)} more.`);
-            }
+            // Button is disabled, but if reached somehow, show error in sidebar
+            const minOrderError = document.getElementById('cart-min-order-error');
+            if (minOrderError) minOrderError.classList.remove('hidden');
             return;
         }
         window.location.href = "{% url 'checkout' %}";

@@ -141,7 +141,6 @@
                         </th>
                         <th class="py-6 px-6 text-[10px] font-black uppercase tracking-widest text-white/90 whitespace-nowrap">Contact</th>
                         <th class="py-6 px-6 text-[10px] font-black uppercase tracking-widest text-white/90 whitespace-nowrap">Mobile No</th>
-                        <th class="py-6 px-6 text-[10px] font-black uppercase tracking-widest text-white/90 whitespace-nowrap">Password</th>
                         <th class="py-6 px-6 text-[10px] font-black uppercase tracking-widest text-white/90 text-center cursor-pointer hover:bg-gray-800 transition-all group/sort whitespace-nowrap w-32" onclick="applySort('orders')">
                             <div class="flex items-center justify-center space-x-1.5">
                                 <span>Orders Count</span>
@@ -183,13 +182,6 @@
                         <td class="py-6 px-6">
                             {% with u=customer.users.first %}
                                 <span class="text-sm font-black text-auraa-red">{{ u.phone_number|default:customer.contact_person_no }}</span>
-                            {% endwith %}
-                        </td>
-                        <td class="py-6 px-6">
-                            {% with u=customer.users.first %}
-                                <div class="text-sm font-black text-gray-700" title="{{ u.password }}">
-                                    {{ u.password|default:"-" }}
-                                </div>
                             {% endwith %}
                         </td>
                         <td class="py-6 px-6 text-center">

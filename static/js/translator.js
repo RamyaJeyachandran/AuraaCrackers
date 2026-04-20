@@ -301,14 +301,17 @@ setTimeout(() => {
         
         domains.forEach(domain => {
             paths.forEach(path => {
-                // Clear existing
+                // Clear with domain
                 document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=${domain}; path=${path || '/'};`;
-                // Set explicit English
                 document.cookie = `googtrans=/en/en; domain=${domain}; path=${path || '/'};`;
             });
         });
 
-        // 4. Final safety reload
+        // 4. CLEAR WITHOUT DOMAIN (Browser default)
+        document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        document.cookie = "googtrans=/en/en; path=/;";
+
+        // 5. Final safety reload
         setTimeout(() => {
             // Add a timestamp to prevent caching the translated version
             const url = new URL(window.location.href);

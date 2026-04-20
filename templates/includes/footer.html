@@ -27,7 +27,7 @@
                         <a href="{% url 'home' %}" class="relative w-[7.8rem] h-[7.8rem] bg-white rounded-[2.2rem] shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] flex items-center justify-center p-0 overflow-hidden transform transition-all duration-500 group-hover/logo-hub:-translate-y-3 group-hover/logo-hub:rotate-3 active:scale-95 border-none outline-none">
                              <!-- Dynamic Shine -->
                              <div class="absolute inset-0 bg-gradient-to-tr from-transparent via-white/40 to-transparent -translate-x-[200%] group-hover/logo-hub:translate-x-[200%] transition-transform duration-1000 ease-in-out"></div>
-                             <img src="{% static 'images/logo.png' %}" class="w-full h-full object-cover border-none outline-none scale-[1.25] transition-transform duration-500 group-hover/logo-hub:scale-[1.4]" alt="Auraa Logo">
+                             <img src="{% static 'images/logo.png' %}" class="w-full h-full object-cover border-none outline-none scale-[1.25] transition-transform duration-500 group-hover/logo-hub:scale-[1.4] notranslate" alt="Auraa Logo">
                         </a>
                     </div>
                     <p class="text-white/50 text-base font-medium leading-relaxed max-w-sm">
@@ -41,7 +41,7 @@
                         <a href="https://www.instagram.com/auraacrackers?igsh=MW5qenVkYms3bWdzNQ==" target="_blank" class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#F9CE34] via-[#EE2A7B] to-[#6228D7] border border-white/20 flex items-center justify-center text-white shadow-xl shadow-[#EE2A7B]/20 hover:-translate-y-2 transition-all duration-500 group/social">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" x2="17.51" y1="6.5" y2="6.51"></line></svg>
                         </a>
-                        <a href="https://wa.me/919080560340" target="_blank" class="w-12 h-12 rounded-2xl bg-[#25D366] border border-[#25D366]/20 flex items-center justify-center text-white shadow-xl shadow-[#25D366]/20 hover:-translate-y-2 transition-all duration-500 group/social">
+                        <a href="https://wa.me/919080560340" target="_blank" class="w-12 h-12 rounded-2xl bg-[#25D366] border border-[#25D366]/20 flex items-center justify-center text-white shadow-xl shadow-[#25D366]/20 hover:-translate-y-2 transition-all duration-500 group/social notranslate">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
                         </a>
                         <a href="https://www.youtube.com/@auraacrackers" target="_blank" class="w-12 h-12 rounded-2xl bg-[#FF0000] border border-[#FF0000]/20 flex items-center justify-center text-white shadow-xl shadow-[#FF0000]/20 hover:-translate-y-2 transition-all duration-500 group/social">
@@ -117,11 +117,11 @@
                             </div>
                             <div>
                                 <h5 class="text-[10px] font-black uppercase tracking-widest text-white/40 mb-2">Connect</h5>
-                                <p class="text-sm font-bold text-white/70 leading-relaxed">
-                                    +91 90805 60340 <br />
-                                    +91 96775 70276 <br />
-                                    +91 63814 26206 <br />
-                                    +91 94894 35625
+                                <p class="text-sm font-bold text-white/70 leading-relaxed notranslate flex flex-col gap-2">
+                                    <a href="tel:+919080560340" class="auraa-phone hover:text-white transition-colors" data-wp-number="919080560340" data-wp-message="Hello Auraa Crackers! I would like to know how to make the payment for my order. Could you please guide me?" data-phone-label="Payment Confirm">+91 90805 60340</a>
+                                    <a href="tel:+919677570276" class="auraa-phone hover:text-white transition-colors" data-wp-number="919677570276" data-wp-message="Hello Auraa Crackers! I would like to know the dispatch and delivery status of my order. Please update me." data-phone-label="Dispatch Details">+91 96775 70276</a>
+                                    <a href="tel:+916381426206" class="auraa-phone hover:text-white transition-colors" data-wp-number="916381426206" data-wp-message="Hello Auraa Crackers! I need direct support regarding my order. Could you please help me?" data-phone-label="Direct Support">+91 63814 26206</a>
+                                    <a href="tel:+919489435625" class="auraa-phone hover:text-white transition-colors" data-wp-number="919489435625" data-wp-message="Hello Auraa Crackers! I need assistance with my order. Could you please help me?" data-phone-label="Customer Support">+91 94894 35625</a>
                                 </p>
                             </div>
                         </div>

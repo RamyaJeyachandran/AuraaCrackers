@@ -1,0 +1,525 @@
+/*
+ * File: translator.css
+ * Purpose: Custom styling for Auraa Crackers Indian Language Translator
+ * Placement: /static/css/translator.css
+ * Dependencies: Noto Sans fonts (loaded in base.html)
+ */
+
+/* Hide Google Translate Default UI */
+.goog-te-banner-frame, 
+.goog-te-balloon-frame, 
+.skiptranslate,
+#goog-gt-tt,
+.goog-te-spinner-pos {
+    display: none !important;
+}
+
+body {
+    top: 0 !important;
+}
+
+/* Translator Container */
+.auraa-translator-container {
+    position: relative;
+    display: inline-block;
+    font-family: 'Inter', 'Poppins', sans-serif;
+}
+
+/* Custom Trigger Button */
+.auraa-translator-trigger {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #0A325A; /* Default Dark Background */
+    border: 1px solid #FFD700; /* Gold Border */
+    color: #FFFFFF !important; /* Force white text */
+    padding: 6px 12px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    height: auto;
+    min-height: 36px;
+}
+
+.auraa-translator-trigger span {
+    color: #FFFFFF !important;
+}
+
+.auraa-translator-trigger .chevron {
+    color: #FFFFFF !important;
+    fill: none !important;
+    stroke: currentColor !important;
+}
+
+.auraa-translator-trigger svg {
+    width: 16px;
+    height: 16px;
+    fill: #FFD700; /* Gold Icon */
+}
+
+.auraa-translator-trigger .chevron {
+    width: 10px;
+    height: 10px;
+    transition: transform 0.3s ease;
+}
+
+.auraa-translator-container.active .chevron {
+    transform: rotate(180deg);
+}
+
+/* Dropdown Panel */
+.auraa-translator-dropdown {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    width: 280px;
+    background: #0A325A;
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    display: none;
+    flex-direction: column;
+    z-index: 100000;
+    overflow: hidden;
+    animation: fadeInDropdown 0.2s ease-out;
+}
+
+@keyframes fadeInDropdown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.auraa-translator-container.active .auraa-translator-dropdown {
+    display: flex;
+}
+
+/* Mobile Bottom Sheet Architecture */
+@media (max-width: 1024px) {
+    .auraa-translator-container.active .auraa-translator-dropdown {
+        position: fixed !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        top: auto !important;
+        width: 100% !important;
+        max-height: 80vh !important;
+        border-radius: 30px 30px 0 0 !important;
+        transform: translateY(0) !important;
+        margin: 0 !important;
+        box-shadow: 0 -10px 40px rgba(0,0,0,0.5) !important;
+        z-index: 2147483647 !important; /* Maximum possible z-index */
+        animation: auraaSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+
+    /* Fixed backdrop for focus */
+    .auraa-translator-container.active::after {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(4px);
+        z-index: 2147483646;
+        animation: auraaFadeIn 0.3s ease;
+    }
+
+    .auraa-language-list {
+        max-height: 60vh !important;
+    }
+
+    /* Hide global floating buttons when translator is active to prevent overlaps */
+    .auraa-translator-container.active ~ #mobile-buy-products-wrapper,
+    .auraa-translator-container.active ~ #scrollToTop,
+    body:has(.auraa-translator-container.active) #mobile-buy-products-wrapper,
+    body:has(.auraa-translator-container.active) #scrollToTop {
+        display: none !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+    }
+}
+
+@keyframes auraaSlideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+}
+
+@keyframes auraaFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Search Header */
+.auraa-translator-search {
+    padding: 12px;
+    border-bottom: 1px solid rgba(255, 215, 0, 0.1);
+    position: sticky;
+    top: 0;
+    background: #0A325A;
+    z-index: 1;
+}
+
+.auraa-translator-search input {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    border-radius: 6px;
+    padding: 8px 12px;
+    color: #FFFFFF;
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.auraa-translator-search input:focus {
+    border-color: #FFD700;
+}
+
+.auraa-translator-search input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+/* Language List */
+.auraa-language-list {
+    max-height: 350px;
+    overflow-y: auto;
+    padding: 8px 0;
+}
+
+.auraa-language-list::-webkit-scrollbar {
+    width: 4px;
+}
+
+.auraa-language-list::-webkit-scrollbar-thumb {
+    background: #FFD700;
+    border-radius: 10px;
+}
+
+.auraa-language-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 16px;
+    cursor: pointer;
+    transition: background 0.2s;
+    color: #FFFFFF;
+    font-size: 14px;
+}
+
+.auraa-language-item:hover {
+    background: rgba(255, 215, 0, 0.1);
+}
+
+.auraa-language-item.active {
+    background: rgba(255, 215, 0, 0.15);
+    color: #FFD700;
+    font-weight: 600;
+}
+
+.auraa-language-item .native-script {
+    font-size: 13px;
+    opacity: 0.8;
+}
+
+/* Priority Section Divider */
+.auraa-priority-divider {
+    padding: 8px 16px;
+    font-size: 10px;
+    color: rgba(255, 215, 0, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+}
+
+/* Reset Button */
+.auraa-translator-footer {
+    padding: 12px;
+    border-top: 1px solid rgba(255, 215, 0, 0.1);
+}
+
+.auraa-reset-btn {
+    width: 100%;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #FFFFFF;
+    padding: 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.auraa-reset-btn:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: #FFFFFF;
+}
+
+/* Loading Overlay */
+#auraa-translator-loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(10, 50, 90, 0.8);
+    backdrop-filter: blur(4px);
+    z-index: 1000000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.auraa-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(255, 215, 0, 0.1);
+    border-top: 4px solid #FFD700;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+#auraa-translator-loading span {
+    color: #FFD700;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 1024px) {
+    .auraa-translator-dropdown {
+        width: 300px;
+    }
+}
+
+@media (max-width: 768px) {
+    .auraa-translator-dropdown {
+        position: fixed;
+        top: auto;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        width: 100%;
+        border-radius: 24px 24px 0 0;
+        max-height: 70vh;
+        box-shadow: 0 -10px 40px rgba(0,0,0,0.4);
+        border: none;
+        border-top: 1px solid rgba(255, 215, 0, 0.3);
+    }
+    
+    .auraa-translator-trigger span {
+        display: none; /* Icon only on mobile to save space */
+    }
+    
+    .auraa-translator-trigger {
+        padding: 0;
+        width: 40px;
+        height: 40px;
+        justify-content: center;
+        border-radius: 12px;
+    }
+
+    .auraa-translator-trigger .chevron {
+        display: none;
+    }
+
+    /* Mobile specific list adjustments */
+    .auraa-language-list {
+        max-height: 50vh;
+    }
+
+    .auraa-language-item {
+        padding: 14px 20px;
+        border-bottom: 1px solid rgba(255, 215, 0, 0.05);
+    }
+
+    .auraa-translator-search {
+        padding: 16px 20px;
+    }
+
+    .auraa-translator-footer {
+        padding: 16px 20px 30px; /* Extra bottom padding for safe areas */
+    }
+}
+
+/* specific styling for high-res (Mac/Retina) and better readability */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .auraa-translator-trigger, .auraa-language-item {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        letter-spacing: 0.02em;
+    }
+}
+
+/* Ensure translated text doesn't break the layout too much */
+.notranslate {
+    white-space: nowrap;
+}
+
+/* Prevent Google Translate from adding margin to the top of the body */
+html, body {
+    top: 0 !important;
+    position: relative !important;
+}
+
+.goog-te-banner-frame.skiptranslate, 
+.goog-te-banner-frame {
+    display: none !important;
+}
+
+/* -------------------------------------------------------------------------
+   TRANSLATION STATE FIXES (Targeting Google's injected classes)
+   ------------------------------------------------------------------------- */
+
+/* Detect if page is translated */
+html.translated-ltr, 
+html.translated-rtl {
+    /* Reduce massive hero font sizes for long Indian scripts */
+    --hero-h1-size: 80px;
+    --hero-h1-md: 60px;
+}
+
+/* Target the Hero H1 in home.html */
+html.translated-ltr .animate-hero.text-4xl,
+html.translated-rtl .animate-hero.text-4xl {
+    font-size: 2.5rem !important; /* Mobile */
+    line-height: 1.2 !important;
+}
+
+@media (min-width: 768px) {
+    html.translated-ltr .animate-hero.md\:text-7xl,
+    html.translated-rtl .animate-hero.md\:text-7xl {
+        font-size: 4rem !important; /* Tablet */
+    }
+}
+
+@media (min-width: 1024px) {
+    html.translated-ltr .lg\:text-\[120px\],
+    html.translated-rtl .lg\:text-\[120px\] {
+        font-size: 75px !important; /* Large Screens - significantly reduced from 120px */
+        line-height: 1.1 !important;
+    }
+}
+
+/* Fix Hero Sliding Text (Premium Sivakasi Quality) */
+html.translated-ltr .hero-sliding-text div,
+html.translated-rtl .hero-sliding-text div {
+    font-size: 2rem !important;
+    line-height: 1.2 !important;
+}
+
+/* General Typography Adjustments for Indian Scripts */
+html.translated-ltr *, 
+html.translated-rtl * {
+    /* Indian scripts (Tamil, Hindi, etc.) are naturally taller than Latin.
+       They need slightly more line-height to avoid clipping. */
+    line-height: 1.4;
+}
+
+/* -------------------------------------------------------------------------
+   GLOBAL TRANSLATION REFINEMENTS (Optimized & Consolidated)
+   ------------------------------------------------------------------------- */
+
+html.translated-ltr, 
+html.translated-rtl {
+    word-wrap: break-word;
+}
+
+/* Adjust font metrics for Indian scripts */
+html.translated-ltr body, 
+html.translated-rtl body {
+    line-height: 1.5 !important;
+}
+
+/* 1. TOP BAR CROWDING FIX */
+html.translated-ltr .lg\:block.bg-gradient-to-b .max-w-7xl > div,
+html.translated-rtl .lg\:block.bg-gradient-to-b .max-w-7xl > div {
+    flex-wrap: nowrap !important;
+    gap: 8px !important;
+}
+
+/* 2. NAVIGATION & HERO SCALING */
+html.translated-ltr h1, 
+html.translated-rtl h1 {
+    font-size: clamp(2rem, 8vw, 4.5rem) !important;
+    line-height: 1.1 !important;
+}
+
+@media (max-width: 640px) {
+    html.translated-ltr h1, html.translated-rtl h1 {
+        font-size: 1.8rem !important;
+    }
+    html.translated-ltr h2, html.translated-rtl h2 {
+        font-size: 1.4rem !important;
+    }
+    html.translated-ltr .text-4xl, html.translated-rtl .text-4xl {
+        font-size: 1.4rem !important;
+    }
+}
+
+/* 3. BUTTON & ACTION TEXT FIXES */
+html.translated-ltr .btn-3d-front,
+html.translated-rtl .btn-3d-front {
+    padding: 0.75rem 1.25rem !important;
+    font-size: 11px !important;
+}
+
+/* 4. VERTICAL BAR FIX */
+html.translated-ltr .hidden.sm\:flex.flex-col.items-center.space-y-1,
+html.translated-rtl .hidden.sm\:flex.flex-col.items-center.space-y-1 {
+    display: none !important;
+}
+
+/* 5. SMALL LABEL & PILL FIXES (Aggressive) */
+html.translated-ltr *[class*="tracking-"],
+html.translated-rtl *[class*="tracking-"] {
+    letter-spacing: normal !important;
+    text-transform: none !important;
+}
+
+html.translated-ltr .auraa-pill-label,
+html.translated-rtl .auraa-pill-label {
+    padding: 6px 14px !important;
+    width: fit-content !important;
+    max-width: 80vw !important;
+    margin: 0 auto 15px auto !important;
+    display: inline-flex !important;
+    align-items: center !important;
+}
+
+html.translated-ltr .auraa-pill-label h2,
+html.translated-rtl .auraa-pill-label h2,
+html.translated-ltr .auraa-pill-label span,
+html.translated-rtl .auraa-pill-label span {
+    font-size: 7.5px !important;
+    letter-spacing: normal !important;
+    line-height: 1.2 !important;
+    text-transform: none !important;
+    white-space: nowrap !important;
+}
+
+/* 6. REVIEW SECTION HARDENING */
+html.translated-ltr .review-card, html.translated-rtl .review-card {
+    height: auto !important;
+    min-height: 250px;
+}
+
+/* 7. SAFARI STABILITY */
+@supports (-webkit-touch-callout: none) {
+    html.translated-ltr body, html.translated-rtl body {
+        position: relative;
+        top: 0 !important;
+    }
+}

@@ -64,6 +64,11 @@
     
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari&family=Noto+Sans+Tamil&family=Noto+Sans+Telugu&family=Noto+Sans+Kannada&family=Noto+Sans+Malayalam&family=Noto+Sans+Bengali&family=Noto+Sans+Gujarati&family=Noto+Sans+Gurmukhi&display=swap" rel="stylesheet">
+    
+    <!-- Translator CSS -->
+    <link rel="stylesheet" href="{% static 'css/translator.css' %}">
+    <link rel="stylesheet" href="{% static 'css/phone-handler.css' %}">
     
     <!-- GSAP for advanced animations (Premium requirement) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
@@ -335,6 +340,19 @@
         }
     </script>
     
+    <!-- Translator Loading Spinner -->
+    <div id="auraa-translator-loading">
+        <div class="auraa-spinner"></div>
+        <span>Translating...</span>
+    </div>
+
+    <!-- Google Translate Widget (Hidden but accessible to scripts) -->
+    <div id="google_translate_element" style="position:fixed; top:-1000px; left:-1000px; opacity:0; pointer-events:none;"></div>
+    
+    <script src="{% static 'js/translator.js' %}"></script>
+    <script src="{% static 'js/phone-handler.js' %}"></script>
+    <script type="text/javascript" src="https://translate.googleapis.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
+
     {% include 'includes/cart_scripts.html' %}
     {% block extra_js %}{% endblock %}
 </body>

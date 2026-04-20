@@ -30,7 +30,11 @@
                         <i data-lucide="credit-card" class="w-5 h-5"></i>
                     </div>
                     <div class="flex flex-col">
-                        <a href="tel:+919080560340" class="text-xs font-extrabold text-white leading-none tracking-tight mb-1">+91 90805 60340</a>
+                        <a href="tel:+919080560340" 
+                           class="auraa-phone text-xs font-extrabold text-white leading-none tracking-tight mb-1 notranslate"
+                           data-wp-number="919080560340"
+                           data-wp-message="Hello Auraa Crackers! I would like to know how to make the payment for my order. Could you please guide me?"
+                           data-phone-label="Payment Confirm">+91 90805 60340</a>
                         <span class="inline-block px-4 py-1 rounded-full bg-white text-[10px] font-black text-auraa-red uppercase tracking-widest whitespace-nowrap w-full text-center shadow-lg">Payment Confirm</span>
                     </div>
                 </div>
@@ -41,7 +45,11 @@
                         <i data-lucide="truck" class="w-5 h-5"></i>
                     </div>
                     <div class="flex flex-col">
-                        <a href="tel:+919677570276" class="text-xs font-extrabold text-white leading-none tracking-tight mb-1">+91 96775 70276</a>
+                        <a href="tel:+919677570276" 
+                           class="auraa-phone text-xs font-extrabold text-white leading-none tracking-tight mb-1 notranslate"
+                           data-wp-number="919677570276"
+                           data-wp-message="Hello Auraa Crackers! I would like to know the dispatch and delivery status of my order. Please update me."
+                           data-phone-label="Dispatch Details">+91 96775 70276</a>
                         <span class="inline-block px-4 py-1 rounded-full bg-white text-[10px] font-black text-auraa-red uppercase tracking-widest whitespace-nowrap w-full text-center shadow-lg">Dispatch Details</span>
                     </div>
                 </div>
@@ -52,7 +60,11 @@
                         <i data-lucide="phone" class="w-5 h-5"></i>
                     </div>
                     <div class="flex flex-col">
-                        <a href="tel:+916381426206" class="text-xs font-extrabold text-white leading-none tracking-tight mb-1">+91 63814 26206</a>
+                        <a href="tel:+916381426206" 
+                           class="auraa-phone text-xs font-extrabold text-white leading-none tracking-tight mb-1 notranslate"
+                           data-wp-number="916381426206"
+                           data-wp-message="Hello Auraa Crackers! I need direct support regarding my order. Could you please help me?"
+                           data-phone-label="Direct Support">+91 63814 26206</a>
                         <span class="inline-block px-4 py-1 rounded-full bg-white text-[10px] font-black text-auraa-red uppercase tracking-widest whitespace-nowrap w-full text-center shadow-lg">Direct Support</span>
                     </div>
                 </div>
@@ -63,8 +75,41 @@
                         <i data-lucide="headphones" class="w-5 h-5"></i>
                     </div>
                     <div class="flex flex-col">
-                        <a href="tel:+919489435625" class="text-xs font-extrabold text-white leading-none tracking-tight mb-1">+91 94894 35625</a>
+                        <a href="tel:+919489435625" 
+                           class="auraa-phone text-xs font-extrabold text-white leading-none tracking-tight mb-1 notranslate"
+                           data-wp-number="919489435625"
+                           data-wp-message="Hello Auraa Crackers! I need assistance with my order. Could you please help me?"
+                           data-phone-label="Customer Support">+91 94894 35625</a>
                         <span class="inline-block px-4 py-1 rounded-full bg-white text-[10px] font-black text-auraa-red uppercase tracking-widest whitespace-nowrap w-full text-center shadow-lg">Customer Support</span>
+                    </div>
+                </div>
+
+                <!-- Language Selector (New Location) -->
+                <div class="auraa-translator-container notranslate">
+                    <button class="auraa-translator-trigger flex items-center space-x-3 bg-[#0A325A] hover:bg-[#0F457A] px-5 py-3 rounded-2xl border border-white/20 shadow-[0_10px_25px_rgba(0,0,0,0.3)] transition-all duration-300 group">
+                        <div class="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center text-[#FFD700] shadow-inner">
+                            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"></circle>
+                                <line x1="2" y1="12" x2="22" y2="12" stroke="currentColor" stroke-width="2"></line>
+                                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" stroke="currentColor" stroke-width="2"></path>
+                            </svg>
+                        </div>
+                        <div class="flex flex-col items-start">
+                            <span class="text-[10px] font-black text-white/60 uppercase tracking-widest leading-none mb-1">Language</span>
+                            <span class="auraa-current-lang text-[11px] font-black text-white uppercase tracking-tighter">Translate</span>
+                        </div>
+                        <i data-lucide="chevron-down" class="chevron w-3 h-3 text-white ml-2"></i>
+                    </button>
+                    <div class="auraa-translator-dropdown">
+                        <div class="auraa-translator-search">
+                            <input type="text" placeholder="Search language...">
+                        </div>
+                        <div class="auraa-language-list" id="auraa-language-list-topbar">
+                            <!-- Populated by JS -->
+                        </div>
+                        <div class="auraa-translator-footer">
+                            <button class="auraa-reset-btn">Show Original (English)</button>
+                        </div>
                     </div>
                 </div>
             </div>

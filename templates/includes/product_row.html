@@ -8,7 +8,7 @@
     
     <!-- Code -->
     <td class="py-1 lg:py-1.5 px-2 lg:px-3" data-label="Code">
-        <span class="text-[10px] font-black text-gray-900 border-b-2 border-auraa-red/30 group-hover:border-auraa-red transition-all">{{ product.code|default:'-' }}</span>
+        <span class="text-[10px] font-black text-gray-900 border-b-2 border-auraa-red/30 group-hover:border-auraa-red transition-all notranslate">{{ product.code|default:'-' }}</span>
     </td>
 
     <!-- Image -->
@@ -29,7 +29,7 @@
 
     <!-- Actual Price -->
     <td class="py-1 lg:py-1.5 px-4 lg:px-6 text-center lg:text-center" data-label="Actual Price">
-        <span class="text-xs text-gray-400 line-through font-bold">
+        <span class="text-xs text-gray-400 line-through font-bold notranslate">
             {% if product.purchase_rate %}₹{{ product.purchase_rate }}{% else %}-{% endif %}
         </span>
     </td>
@@ -37,7 +37,7 @@
     <!-- Price -->
     <td class="py-1 lg:py-1.5 px-2 lg:px-3 text-center lg:text-center" data-label="Price">
         <div class="bg-gray-50 px-3 lg:px-4 py-2.5 rounded-xl inline-block border border-gray-100 group-hover:bg-gray-100 group-hover:border-auraa-red/20 transition-all">
-            <span class="text-sm font-black text-gray-900">₹{{ product.price }}</span>
+            <span class="text-sm font-black text-gray-900 notranslate">₹{{ product.price }}</span>
         </div>
     </td>
 
@@ -57,7 +57,7 @@
     <!-- Total -->
     <td class="py-1 lg:py-1.5 px-2 lg:px-4 text-right min-w-[120px]" data-label="Total">
         <div class="flex items-center justify-end space-x-6">
-            <span class="text-sm font-black text-gray-900" id="total-{{ product.id }}">{% if product.is_disabled %}₹0{% else %}₹0{% endif %}</span>
+            <span class="text-sm font-black text-gray-900 notranslate" id="total-{{ product.id }}">{% if product.is_disabled %}₹0{% else %}₹0{% endif %}</span>
             <button id="remove-btn-{{ product.id }}" onclick="removeFromCart('{{ product.id }}')" 
                     class="hidden p-3 text-white bg-auraa-red hover:bg-white hover:text-auraa-red rounded-2xl transition-all shadow-lg hover:-rotate-12">
                 <i data-lucide="trash-2" class="w-4 h-4"></i>

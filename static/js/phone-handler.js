@@ -77,10 +77,15 @@
 
         // Event Delegation for clicks
         document.addEventListener('click', function(e) {
-            const phoneLink = e.target.closest('a[href^="tel:"]');
+            // Support both a[href^="tel:"] and elements with .auraa-phone class
+            const phoneLink = e.target.closest('a[href^="tel:"]') || e.target.closest('.auraa-phone');
             
             if (phoneLink) {
-                e.preventDefault();
+                // Only prevent default if we have the popup data or it's a tel link
+                if (phoneLink.tagName === 'A' || phoneLink.classList.contains('auraa-phone')) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
                 
                 const data = {
                     number: getCleanNumber(phoneLink),
@@ -91,14 +96,15 @@
 
                 // If it's a "raw" tel link without data attributes, we provide defaults
                 if (!data.wpNumber) {
-                    data.wpNumber = phoneLink.href.replace('tel:', '').replace(/\+/g, '').replace(/\s/g, '');
+                    const rawTel = (phoneLink.getAttribute('href') || '').replace('tel:', '');
+                    data.wpNumber = rawTel.replace(/\+/g, '').replace(/\s/g, '') || '919080560340';
                     data.message = "Hello Auraa Crackers! I need assistance.";
-                    data.label = "Customer Support";
+                    data.label = phoneLink.textContent.includes('+') ? "Support" : phoneLink.textContent.trim();
                 }
 
                 openPopup(data);
             }
-        });
+        }, true); // Use capture to intercept before other handlers
 
         // Close handlers
         closeBtn.addEventListener('click', closePopup);
@@ -132,12 +138,47 @@
 
     // Helper to get clean number (no labels)
     function getCleanNumber(link) {
-        // Clone the link to remove child elements (spans) for text retrieval
-        const clone = link.cloneNode(true);
-        const spans = clone.querySelectorAll('span');
-        spans.forEach(s => s.remove());
-        return clone.textContent.trim();
+        // 1. Get raw text
+        let text = link.textContent.trim();
+        
+        // 2. Remove any text that looks like a label (anything after a space or a '+' not at the start)
+        // We only want digits, spaces, and the leading +
+        const match = text.match(/\+?[0-9\s-]+/);
+        return match ? match[0].trim() : text;
     }
+
+    // Toast System for Clipboard Feedback
+    function showToast(message) {
+        const existing = document.getElementById('auraa-toast');
+        if (existing) existing.remove();
+
+        const toast = document.createElement('div');
+        toast.id = 'auraa-toast';
+        toast.innerHTML = `
+            <div style="background: #0A325A; color: white; padding: 12px 24px; border-radius: 50px; border: 1px solid #FFD700; box-shadow: 0 10px 30px rgba(0,0,0,0.3); font-weight: 800; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 8px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                ${message}
+            </div>
+        `;
+        toast.style.cssText = "position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%) translateY(20px); opacity: 0; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 100002; pointer-events: none;";
+        document.body.appendChild(toast);
+
+        // Animate in
+        requestAnimationFrame(() => {
+            toast.style.transform = "translateX(-50%) translateY(0)";
+            toast.style.opacity = "1";
+        });
+
+        // Animate out
+        setTimeout(() => {
+            toast.style.transform = "translateX(-50%) translateY(-20px)";
+            toast.style.opacity = "0";
+            setTimeout(() => toast.remove(), 400);
+        }, 2500);
+    }
+
+    // Expose toast to window for use in other scripts (like Bank Copy)
+    window.auraaShowToast = showToast;
 
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);

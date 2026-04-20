@@ -138,8 +138,9 @@
 <script>
     function copyToClipboard(text) {
         navigator.clipboard.writeText(text).then(() => {
-            // Optional: User feedback could be added here (e.g., a toast or alert)
-            alert('Copied to clipboard: ' + text);
+            if (window.auraaShowToast) {
+                window.auraaShowToast('Copied to Clipboard!');
+            }
         }).catch(err => {
             console.error('Failed to copy: ', err);
         });

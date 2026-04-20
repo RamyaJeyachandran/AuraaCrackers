@@ -274,32 +274,47 @@ setTimeout(() => {
      * Reset Translation and clear cookies
      */
     function resetTranslation() {
+        console.log('Auraa Translator: Resetting to English...');
+        
+        // 1. Clear our local state
         localStorage.removeItem('auraa_selected_lang');
         
-        // 1. Try to set the combo box back to English first
-        const combo = document.querySelector('.goog-te-combo');
-        if (combo) {
-            combo.value = ''; // Google uses empty string for original
-            combo.dispatchEvent(new Event('change'));
-        }
+        // 2. Try to interact with the widget if it exists
+        try {
+            const combo = document.querySelector('.goog-te-combo');
+            if (combo) {
+                combo.value = 'en'; // Force English
+                combo.dispatchEvent(new Event('change'));
+            }
+        } catch(e) {}
 
-        // 2. Clear Google Translate Cookies aggressively
+        // 3. FORCEFUL Cookie Clearing & Overwriting
+        // We set it to /en/en which means "from English to English"
         const domains = [
             window.location.hostname, 
             '.' + window.location.hostname,
-            window.location.host,
-            '.' + window.location.host
+            'auraazenai.com',
+            '.auraazenai.com'
         ];
         
-        domains.forEach(domain => {
-            document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=${domain}; path=/;`;
-            document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=${domain};`;
-        });
+        const paths = ['/', ''];
         
-        // 3. Force reload to restore original English
+        domains.forEach(domain => {
+            paths.forEach(path => {
+                // Clear existing
+                document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=${domain}; path=${path || '/'};`;
+                // Set explicit English
+                document.cookie = `googtrans=/en/en; domain=${domain}; path=${path || '/'};`;
+            });
+        });
+
+        // 4. Final safety reload
         setTimeout(() => {
-            window.location.reload();
-        }, 100);
+            // Add a timestamp to prevent caching the translated version
+            const url = new URL(window.location.href);
+            url.searchParams.delete('lang'); // Remove any language params if they exist
+            window.location.href = url.origin + url.pathname; 
+        }, 150);
     }
 
     /**

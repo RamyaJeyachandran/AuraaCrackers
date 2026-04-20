@@ -276,16 +276,30 @@ setTimeout(() => {
     function resetTranslation() {
         localStorage.removeItem('auraa_selected_lang');
         
-        // Clear Google Translate Cookies
-        const domains = [window.location.hostname, '.' + window.location.hostname];
-        const paths = ['/', '/'];
+        // 1. Try to set the combo box back to English first
+        const combo = document.querySelector('.goog-te-combo');
+        if (combo) {
+            combo.value = ''; // Google uses empty string for original
+            combo.dispatchEvent(new Event('change'));
+        }
+
+        // 2. Clear Google Translate Cookies aggressively
+        const domains = [
+            window.location.hostname, 
+            '.' + window.location.hostname,
+            window.location.host,
+            '.' + window.location.host
+        ];
         
         domains.forEach(domain => {
             document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=${domain}; path=/;`;
+            document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=${domain};`;
         });
         
-        // Reload to restore original English
-        window.location.reload();
+        // 3. Force reload to restore original English
+        setTimeout(() => {
+            window.location.reload();
+        }, 100);
     }
 
     /**

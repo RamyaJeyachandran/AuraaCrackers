@@ -33,16 +33,16 @@ body {
     background: #0A325A; /* Default Dark Background */
     border: 1px solid #FFD700; /* Gold Border */
     color: #FFFFFF !important; /* Force white text */
-    padding: 6px 12px;
+    padding: 4px 10px;
     border-radius: 50px;
     cursor: pointer;
     transition: all 0.3s ease;
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     height: auto;
-    min-height: 36px;
+    min-height: 30px;
 }
 
 .auraa-translator-trigger span {
@@ -74,9 +74,9 @@ body {
 /* Dropdown Panel */
 .auraa-translator-dropdown {
     position: absolute;
-    top: calc(100% + 10px);
+    top: calc(100% + 8px);
     right: 0;
-    width: 280px;
+    width: 240px;
     background: #0A325A;
     border: 1px solid rgba(255, 215, 0, 0.2);
     border-radius: 12px;
@@ -166,9 +166,9 @@ body {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 215, 0, 0.2);
     border-radius: 6px;
-    padding: 8px 12px;
+    padding: 6px 10px;
     color: #FFFFFF;
-    font-size: 13px;
+    font-size: 12px;
     outline: none;
     transition: border-color 0.3s;
 }
@@ -201,11 +201,11 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 16px;
+    padding: 8px 12px;
     cursor: pointer;
     transition: background 0.2s;
     color: #FFFFFF;
-    font-size: 14px;
+    font-size: 13px;
 }
 
 .auraa-language-item:hover {
@@ -219,8 +219,8 @@ body {
 }
 
 .auraa-language-item .native-script {
-    font-size: 13px;
-    opacity: 0.8;
+    font-size: 12px;
+    opacity: 0.7;
 }
 
 /* Priority Section Divider */
@@ -244,9 +244,9 @@ body {
     background: transparent;
     border: 1px solid rgba(255, 255, 255, 0.2);
     color: #FFFFFF;
-    padding: 8px;
+    padding: 6px;
     border-radius: 6px;
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 700;
     text-transform: uppercase;
     cursor: pointer;

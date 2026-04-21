@@ -1,6 +1,6 @@
 /*
  * File: phone-handler.js
- * Purpose: Intercept phone clicks and show Auraa 'Open with' System Popup
+ * Purpose: Intercept phone clicks. Desktop: Show 'Open with' Modal. Mobile: Direct Action.
  * Placement: /static/js/phone-handler.js
  */
 
@@ -49,9 +49,7 @@
 
         function openPopup(data) {
             const { wpNumber, message } = data;
-            
-            const isMobile = window.innerWidth < 768;
-            const wpBase = isMobile ? 'https://api.whatsapp.com/send' : 'https://web.whatsapp.com/send';
+            const wpBase = 'https://web.whatsapp.com/send'; // Modal only used on Desktop
             const wpUrl = `${wpBase}?phone=${wpNumber}&text=${encodeURIComponent(message)}`;
             
             whatsappBtn.href = wpUrl;
@@ -68,26 +66,37 @@
 
         document.addEventListener('click', function(e) {
             const phoneLink = e.target.closest('a[href^="tel:"]') || e.target.closest('.auraa-phone');
+            if (!phoneLink) return;
+
+            const isMobile = window.innerWidth < 1024; // Tablets and Mobile
             
-            if (phoneLink) {
-                if (phoneLink.tagName === 'A' || phoneLink.classList.contains('auraa-phone')) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                }
-                
-                const data = {
-                    wpNumber: phoneLink.getAttribute('data-wp-number'),
-                    message: phoneLink.getAttribute('data-wp-message')
-                };
+            // Get Data
+            const wpNumber = phoneLink.getAttribute('data-wp-number');
+            const message = phoneLink.getAttribute('data-wp-message') || "Hello Auraa Crackers!";
+            const label = (phoneLink.getAttribute('data-phone-label') || '').toLowerCase();
 
-                if (!data.wpNumber) {
-                    const rawTel = (phoneLink.getAttribute('href') || '').replace('tel:', '');
-                    data.wpNumber = rawTel.replace(/\+/g, '').replace(/\s/g, '') || '919080560340';
-                    data.message = "Hello Auraa Crackers! I need assistance.";
+            if (isMobile) {
+                // BYPASS MODAL ON MOBILE/TABLET
+                if (label.includes('whatsapp')) {
+                    window.location.href = `https://api.whatsapp.com/send?phone=${wpNumber}&text=${encodeURIComponent(message)}`;
+                } else {
+                    // Default to Call if it's a tel link or a call card
+                    const rawTel = wpNumber || (phoneLink.getAttribute('href') || '').replace('tel:', '').replace(/\+/g, '').replace(/\s/g, '');
+                    window.location.href = `tel:+${rawTel}`;
                 }
-
-                openPopup(data);
+                return;
             }
+
+            // DESKTOP: INTERCEPT AND SHOW MODAL
+            e.preventDefault();
+            e.stopPropagation();
+
+            const data = {
+                wpNumber: wpNumber || (phoneLink.getAttribute('href') || '').replace('tel:', '').replace(/\+/g, '').replace(/\s/g, ''),
+                message: message
+            };
+
+            openPopup(data);
         }, true);
 
         closeBtn.addEventListener('click', closePopup);

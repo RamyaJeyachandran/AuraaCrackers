@@ -31,3 +31,5 @@ brain/
 scratch/
 *.sql
 category_names.txt
+celerybeat-schedule
+

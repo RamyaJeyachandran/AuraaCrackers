@@ -141,7 +141,7 @@
                     {% regroup products by category as category_list %}
                     {% for category_group in category_list %}
                         <tbody class="group transition-all">
-                            <tr class="bg-auraa-red shadow-lg cursor-pointer hover:bg-red-600 transition-colors" onclick="toggleCategory('admin-cat-{{ category_group.grouper.id }}')">
+                            <tr class="bg-auraa-red shadow-lg cursor-pointer transition-colors" onclick="toggleCategory('admin-cat-{{ category_group.grouper.id }}')">
                                 <td class="py-5 px-4 text-center">
                                     <i data-lucide="chevron-down" id="icon-admin-cat-{{ category_group.grouper.id }}" class="w-5 h-5 text-white transition-transform duration-300"></i>
                                 </td>
@@ -158,7 +158,7 @@
                         <tr class="hover:bg-gray-50/50 transition-colors group">
                             <td class="py-4 px-4"></td>
                             <td class="py-4 px-8">
-                                <span class="text-sm font-black text-gray-900 uppercase">{{ product.code|default:"-" }}</span>
+                                <span class="text-sm font-normal text-gray-900 uppercase">{{ product.code|default:"-" }}</span>
                             </td>
                             <td class="py-4 px-4">
                                 {% if product.image %}
@@ -175,12 +175,12 @@
                             </td>
                             <td class="py-4 px-4">
                                 <div>
-                                    <p class="text-sm font-black text-gray-900 uppercase tracking-tight">{{ product.name }}</p>
-                                    <p class="text-[9px] font-bold text-gray-400 uppercase tracking-widest">{{ product.category.name }}</p>
+                                    <p class="text-sm font-normal text-gray-900 uppercase tracking-tight">{{ product.name }}</p>
+                                    <p class="text-[9px] font-normal text-gray-400 uppercase tracking-widest">{{ product.category.name }}</p>
                                 </div>
                             </td>
                             <td class="py-4 px-4 text-center">
-                                <span class="text-sm font-black text-gray-900 uppercase">{{ product.content|default:"-" }}</span>
+                                <span class="text-sm font-normal text-gray-900 uppercase">{{ product.content|default:"-" }}</span>
                             </td>
                             <td class="py-4 px-4 text-center">
                                 {% if product.original_price %}
@@ -190,7 +190,7 @@
                                 {% endif %}
                             </td>
                             <td class="py-4 px-4 text-center">
-                                <span class="text-sm font-black text-auraa-red uppercase">₹ {{ product.price }}</span>
+                                <span class="text-sm font-normal text-auraa-red uppercase">₹ {{ product.price }}</span>
                             </td>
                             <td class="py-4 px-8 flex justify-center items-center">
                                 <button onclick="toggleProduct(this, '{{ product.id }}')" 

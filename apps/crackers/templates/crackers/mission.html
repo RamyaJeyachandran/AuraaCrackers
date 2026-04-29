@@ -4,6 +4,20 @@
 {% block title %}Our Mission | Auraa Profile - Auraa Crackers{% endblock %}
 
 {% block content %}
+<!-- Back Navigation -->
+<div class="fixed top-32 md:top-60 left-6 md:left-10 z-[100000] w-auto">
+    <div class="btn-3d-wrapper fade-up">
+        <a href="{% url 'about' %}#mission" class="btn-3d-container group scale-75 md:scale-100 origin-left">
+            <span class="btn-3d-shadow"></span>
+            <span class="btn-3d-edge btn-3d-edge-red"></span>
+            <span class="btn-3d-front btn-3d-front-red px-4 py-2 space-x-2 md:space-x-3 md:px-6 md:py-3 border-none shadow-none">
+                <i data-lucide="arrow-left" class="w-4 h-4 md:w-[18px] md:h-[18px] group-hover:-translate-x-2 transition-transform"></i>
+                <span class="text-[10px] md:text-sm uppercase tracking-widest">Auraa Hub</span>
+            </span>
+        </a>
+    </div>
+</div>
+
 <div class="bg-white min-h-screen">
     <!-- Dynamic Header -->
     <section class="relative pt-12 md:pt-32 pb-16 md:pb-32 overflow-hidden bg-gray-900">
@@ -14,18 +28,6 @@
             <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-black/20"></div>
         </div>
 
-        <!-- Back Navigation -->
-    <div class="absolute top-6 md:top-12 left-6 md:left-10 z-[100] w-auto">
-        <div class="btn-3d-wrapper fade-up">
-            <a href="{% url 'about' %}#mission" class="btn-3d-container group scale-75 md:scale-100 origin-left">
-                <span class="btn-3d-shadow"></span>
-                <span class="btn-3d-edge btn-3d-edge-red"></span>
-                <span class="btn-3d-front btn-3d-front-red px-4 py-2 space-x-2 md:space-x-3 md:px-6 md:py-3 border-none shadow-none">
-                    <i data-lucide="arrow-left" class="w-4 h-4 md:w-[18px] md:h-[18px] group-hover:-translate-x-2 transition-transform"></i>
-                    <span class="text-[10px] md:text-sm uppercase tracking-widest">Auraa Hub</span>
-                </span>
-            </a>
-        </div>
     </div>
 
     <div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-20 flex flex-col items-center justify-center text-center mb-16 md:mb-40 mt-10 relative pt-20 md:pt-0">

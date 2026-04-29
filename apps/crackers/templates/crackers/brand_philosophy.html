@@ -109,6 +109,20 @@
 {% endblock %}
 
 {% block content %}
+<!-- Back Navigation -->
+<div class="fixed top-32 md:top-60 left-6 md:left-10 z-[100000] w-auto">
+    <div class="btn-3d-wrapper fade-up">
+        <a href="{% url 'about' %}#philosophy" class="btn-3d-container group scale-75 md:scale-100 origin-left">
+            <span class="btn-3d-shadow"></span>
+            <span class="btn-3d-edge btn-3d-edge-red"></span>
+            <span class="btn-3d-front btn-3d-front-red px-4 py-2 space-x-2 md:space-x-3 md:px-6 md:py-3 border-none shadow-none">
+                <i data-lucide="arrow-left" class="w-4 h-4 md:w-[18px] md:h-[18px] group-hover:-translate-x-2 transition-transform"></i>
+                <span class="text-[10px] md:text-sm uppercase tracking-widest">Auraa Hub</span>
+            </span>
+        </a>
+    </div>
+</div>
+
 <!-- Progress Bar -->
 <div class="progress-wrap">
     <div id="scroll-progress" class="progress-bar"></div>
@@ -125,19 +139,7 @@
         <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-auraa-red/20 blur-[150px] rounded-full translate-x-1/2 -translate-y-1/2"></div>
     </div>
 
-    <!-- Back Navigation -->
-    <div class="absolute top-6 md:top-12 left-6 md:left-10 z-[100] w-auto">
-        <div class="btn-3d-wrapper fade-up">
-            <a href="{% url 'about' %}#philosophy" class="btn-3d-container group scale-75 md:scale-100 origin-left">
-                <span class="btn-3d-shadow"></span>
-                <span class="btn-3d-edge btn-3d-edge-red"></span>
-                <span class="btn-3d-front btn-3d-front-red px-4 py-2 space-x-2 md:space-x-3 md:px-6 md:py-3 border-none shadow-none">
-                    <i data-lucide="arrow-left" class="w-4 h-4 md:w-[18px] md:h-[18px] group-hover:-translate-x-2 transition-transform"></i>
-                    <span class="text-[10px] md:text-sm uppercase tracking-widest">Auraa Hub</span>
-                </span>
-            </a>
-        </div>
-    </div>
+
 
     <div class="container mx-auto px-6 text-center relative z-10 pt-40 md:pt-0 space-y-8 md:space-y-12">
         <div class="inline-flex items-center space-x-3 bg-white border border-white/20 px-6 py-2 rounded-full fade-up shadow-lg">

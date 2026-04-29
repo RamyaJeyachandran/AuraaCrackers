@@ -153,6 +153,20 @@
 {% endblock %}
 
 {% block content %}
+<!-- Back Navigation -->
+<div class="fixed top-32 md:top-60 left-6 md:left-10 z-[100000] w-auto">
+    <div class="btn-3d-wrapper fade-up">
+        <a href="{% url 'about' %}#promise" class="btn-3d-container group scale-75 md:scale-100 origin-left">
+            <span class="btn-3d-shadow"></span>
+            <span class="btn-3d-edge btn-3d-edge-navy"></span>
+            <span class="btn-3d-front btn-3d-front-navy px-4 py-2 space-x-2 md:space-x-3 md:px-6 md:py-3 border-none shadow-none">
+                <i data-lucide="arrow-left" class="w-4 h-4 md:w-[18px] md:h-[18px] group-hover:-translate-x-2 transition-transform"></i>
+                <span class="text-[10px] md:text-sm uppercase tracking-widest">Auraa Hub</span>
+            </span>
+        </a>
+    </div>
+</div>
+
 <!-- Progress Bar -->
 <div class="progress-wrap">
     <div id="scroll-progress" class="progress-bar"></div>
@@ -171,20 +185,7 @@
     <div class="absolute top-[-10%] right-[-10%] w-full max-w-[300px] md:max-w-[800px] aspect-square bg-white/10 blur-[80px] md:blur-[180px] rounded-full animate-pulse-slow opacity-60"></div>
     <div class="absolute bottom-[-5%] left-[-5%] w-full max-w-[250px] md:max-w-[600px] aspect-square bg-black/5 blur-[60px] md:blur-[150px] rounded-full animate-pulse-slow delay-1000"></div>
 
-    <!-- Back Navigation -->
-    <!-- Back Navigation -->
-    <div class="absolute top-6 md:top-12 left-6 md:left-10 z-[100] w-auto">
-        <div class="btn-3d-wrapper fade-up">
-            <a href="{% url 'about' %}#promise" class="btn-3d-container group scale-75 md:scale-100 origin-left">
-                <span class="btn-3d-shadow"></span>
-                <span class="btn-3d-edge btn-3d-edge-navy"></span>
-                <span class="btn-3d-front btn-3d-front-navy px-4 py-2 space-x-2 md:space-x-3 md:px-6 md:py-3 border-none shadow-none">
-                    <i data-lucide="arrow-left" class="w-4 h-4 md:w-[18px] md:h-[18px] group-hover:-translate-x-2 transition-transform"></i>
-                    <span class="text-[10px] md:text-sm uppercase tracking-widest">Auraa Hub</span>
-                </span>
-            </a>
-        </div>
-    </div>
+
 
     <div class="container mx-auto px-6 relative z-10 space-y-12 text-center items-center flex flex-col pt-12 md:pt-0">
         <div class="inline-flex items-center space-x-3 bg-white border border-white/20 px-8 py-3 rounded-full fade-up shadow-xl shadow-black/10">

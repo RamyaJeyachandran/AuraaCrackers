@@ -24,7 +24,7 @@
                 <tbody>
                     <tr id="header-{{ category_group.grouper.name|slugify }}" class="cursor-pointer group relative category-sep-row z-10" onclick="toggleCategory('cat-{{ category_group.grouper.id }}')">
                         <td colspan="{% if sort_by and sort_by != 'featured' %}9{% else %}8{% endif %}" class="p-0 border-b border-white">
-                            <div class="bg-auraa-red pr-4 py-3 lg:py-4 transition-all duration-500 relative flex justify-center items-center group-hover:bg-red-600 category-div-wrap">
+                            <div class="bg-auraa-red pr-4 py-3 lg:py-4 transition-all duration-500 relative flex justify-center items-center category-div-wrap">
                                 <div class="absolute left-4 flex items-center">
                                     <i data-lucide="minus" id="icon-cat-{{ category_group.grouper.id }}" class="w-4 h-4 text-white transition-all duration-500"></i>
                                 </div>

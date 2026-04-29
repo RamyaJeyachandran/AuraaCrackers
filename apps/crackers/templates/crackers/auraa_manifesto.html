@@ -96,7 +96,7 @@
     .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 
     .principle-item {
-        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        border-bottom: 2px solid rgba(10, 50, 90, 0.25);
         padding: 2.5rem 0;
         display: grid;
         grid-template-columns: 1fr;
@@ -104,6 +104,10 @@
         align-items: start;
         opacity: 0;
         transform: translateY(40px);
+    }
+
+    .principle-item:last-child {
+        border-bottom: none;
     }
 
     @media (min-width: 1024px) {
@@ -206,6 +210,20 @@
 {% endblock %}
 
 {% block content %}
+<!-- Back Navigation -->
+<div class="fixed top-32 md:top-60 left-6 md:left-10 z-[100000] w-auto">
+    <div class="btn-3d-wrapper fade-up">
+        <a href="{% url 'about' %}#manifesto" class="btn-3d-container group scale-75 md:scale-100 origin-left">
+            <span class="btn-3d-shadow"></span>
+            <span class="btn-3d-edge btn-3d-edge-red"></span>
+            <span class="btn-3d-front btn-3d-front-red px-4 py-2 space-x-2 md:space-x-3 md:px-6 md:py-3 border-none shadow-none">
+                <i data-lucide="arrow-left" class="w-4 h-4 md:w-[18px] md:h-[18px] group-hover:-translate-x-2 transition-transform"></i>
+                <span class="text-[10px] md:text-sm uppercase tracking-widest">Auraa Hub</span>
+            </span>
+        </a>
+    </div>
+</div>
+
 <!-- Hero / Intro -->
 <section class="bg-gray-900 pt-16 pb-32 text-white relative overflow-hidden min-h-[90vh] flex items-center">
     <!-- Cinematic Background -->
@@ -215,20 +233,7 @@
         <div class="absolute inset-0 bg-auraa-red/5 mix-blend-color"></div>
     </div>
 
-    <!-- Back Navigation -->
-    <!-- Back Navigation -->
-    <div class="absolute top-6 md:top-12 left-6 md:left-10 z-[100] w-auto">
-        <div class="btn-3d-wrapper fade-up">
-            <a href="{% url 'about' %}#manifesto" class="btn-3d-container group scale-75 md:scale-100 origin-left">
-                <span class="btn-3d-shadow"></span>
-                <span class="btn-3d-edge btn-3d-edge-red"></span>
-                <span class="btn-3d-front btn-3d-front-red px-4 py-2 space-x-2 md:space-x-3 md:px-6 md:py-3 border-none shadow-none">
-                    <i data-lucide="arrow-left" class="w-4 h-4 md:w-[18px] md:h-[18px] group-hover:-translate-x-2 transition-transform"></i>
-                    <span class="text-[10px] md:text-sm uppercase tracking-widest">Auraa Hub</span>
-                </span>
-            </a>
-        </div>
-    </div>
+
 
     <div class="container mx-auto px-6 text-center relative z-10 space-y-12">
 

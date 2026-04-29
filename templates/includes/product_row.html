@@ -16,13 +16,13 @@
 
     <!-- Product Code -->
     <td class="py-3 lg:py-4 px-1 lg:px-2 text-center border-r border-white border-b border-white" data-label="Product Code">
-        <span class="text-sm font-black text-white transition-colors notranslate">{{ product.code|default:'-' }}</span>
+        <span class="text-sm font-normal text-white transition-colors notranslate">{{ product.code|default:'-' }}</span>
     </td>
 
     <!-- Product Name -->
     <td class="py-3 lg:py-4 px-2 lg:px-3 text-center border-r border-white border-b border-white" data-label="Product Name">
         <div class="flex flex-col items-center">
-            <h3 class="text-sm font-black text-white tracking-wide uppercase transition-colors duration-300 notranslate">
+            <h3 class="text-sm font-normal text-white tracking-wide uppercase transition-colors duration-300 notranslate">
                 {{ product.name }}
             </h3>
         </div>
@@ -31,18 +31,18 @@
     <!-- Category (Optional) -->
     {% if show_category %}
     <td class="py-3 lg:py-4 px-1 lg:px-2 text-center border-r border-white border-b border-white" data-label="Category">
-        <span class="text-[10px] font-black text-white uppercase tracking-wider notranslate">{{ product.category.name }}</span>
+        <span class="text-[10px] font-normal text-white uppercase tracking-wider notranslate">{{ product.category.name }}</span>
     </td>
     {% endif %}
 
     <!-- Content -->
     <td class="py-3 lg:py-4 px-1 lg:px-2 text-center border-r border-white border-b border-white" data-label="Content">
-        <span class="text-[11px] font-bold text-white uppercase tracking-wider">{% if product.unit.description %}{{ product.unit.description }}{% elif product.unit.name %}{{ product.unit.name }}{% else %}-{% endif %}</span>
+        <span class="text-[11px] font-normal text-white uppercase tracking-wider">{% if product.unit.description %}{{ product.unit.description }}{% elif product.unit.name %}{{ product.unit.name }}{% else %}-{% endif %}</span>
     </td>
 
     <!-- Actual Price -->
     <td class="py-3 lg:py-4 px-2 lg:px-4 text-center border-r border-white border-b border-white" data-label="Actual Price">
-        <span class="product-actual-price-value text-sm text-white/70 line-through font-bold notranslate">
+        <span class="product-actual-price-value text-sm text-white/70 line-through font-normal notranslate">
             {% if product.purchase_rate %}₹{{ product.purchase_rate }}{% else %}₹{{ product.price }}{% endif %}
         </span>
     </td>
@@ -50,7 +50,7 @@
     <!-- Price -->
     <td class="py-3 lg:py-4 px-1 lg:px-2 text-center border-r border-white border-b border-white" data-label="Price">
         <div class="bg-white px-2 lg:px-3 py-2 rounded-xl inline-block border border-white transition-all">
-            <span class="product-price-value text-xs lg:text-sm font-black text-[#0A325A] notranslate">₹{{ product.price }}</span>
+            <span class="product-price-value text-xs lg:text-sm font-normal text-[#0A325A] notranslate">₹{{ product.price }}</span>
         </div>
     </td>
 
@@ -58,11 +58,11 @@
     <td class="py-3 lg:py-4 px-2 lg:px-4 text-center border-r border-white border-b border-white" data-label="Quantity">
         <div class="flex items-center justify-center">
             <div class="flex items-center bg-white border-2 border-white focus-within:border-auraa-red rounded-xl lg:rounded-2xl p-0.5 lg:p-1 shadow-sm transition-all {% if product.is_disabled %}opacity-30 grayscale{% endif %}">
-                <button {% if product.is_disabled %}disabled{% endif %} onclick="updateQty('{{ product.id }}', -1)" class="w-8 h-8 rounded-lg bg-transparent flex items-center justify-center text-[#0A325A] hover:bg-[#0A325A]/10 transition-colors font-black">-</button>
+                <button {% if product.is_disabled %}disabled{% endif %} onclick="updateQty('{{ product.id }}', -1)" class="w-8 h-8 rounded-lg bg-transparent flex items-center justify-center text-[#0A325A] hover:bg-[#0A325A]/10 transition-colors font-normal">-</button>
                 <input type="number" id="qty-{{ product.id }}" value="0" min="0" onchange="calculateTotal('{{ product.id }}')" 
                        {% if product.is_disabled %}disabled{% endif %}
-                       class="w-12 bg-white rounded-lg mx-1 h-8 text-center text-sm font-black text-[#0A325A] focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
-                <button {% if product.is_disabled %}disabled{% endif %} onclick="updateQty('{{ product.id }}', 1)" class="w-8 h-8 rounded-lg bg-transparent flex items-center justify-center text-[#0A325A] hover:bg-[#0A325A]/10 transition-colors font-black">+</button>
+                       class="w-12 bg-white rounded-lg mx-1 h-8 text-center text-sm font-normal text-[#0A325A] focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+                <button {% if product.is_disabled %}disabled{% endif %} onclick="updateQty('{{ product.id }}', 1)" class="w-8 h-8 rounded-lg bg-transparent flex items-center justify-center text-[#0A325A] hover:bg-[#0A325A]/10 transition-colors font-normal">+</button>
             </div>
         </div>
     </td>
@@ -70,7 +70,7 @@
     <!-- Total -->
     <td class="py-3 lg:py-4 px-2 lg:px-4 text-center border-b border-white" data-label="Total">
         <div class="flex items-center justify-center space-x-2">
-            <span class="text-lg font-black text-white notranslate" id="total-{{ product.id }}">₹0</span>
+            <span class="text-lg font-normal text-white notranslate" id="total-{{ product.id }}">₹0</span>
         </div>
     </td>
 </tr>

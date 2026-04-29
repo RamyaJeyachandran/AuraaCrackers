@@ -145,7 +145,7 @@
         const sidebarPromoDiscount = document.getElementById('cart-promo-discount');
 
         if (sidebarNetTotal) sidebarNetTotal.innerText = `₹${totalNet.toFixed(2)}`;
-        if (sidebarDiscountTotal) sidebarDiscountTotal.innerText = `₹${totalDiscount.toFixed(2)}`;
+        if (sidebarDiscountTotal) sidebarDiscountTotal.innerText = `₹${(totalDiscount + promoDiscount).toFixed(2)}`;
         if (sidebarSubTotal) sidebarSubTotal.innerText = `₹${subTotal.toFixed(2)}`;
         if (sidebarPacking) sidebarPacking.innerText = `₹${packing.toFixed(2)}`;
         if (sidebarRoundOff) sidebarRoundOff.innerText = `₹${roundOff.toFixed(2)}`;
@@ -223,6 +223,31 @@
         }
     };
 
+    async function updateCartQty(productId, qty) {
+        if (!authStatus) return;
+        if (qty <= 0) {
+            removeFromCart(productId);
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('product_id', productId);
+        formData.append('quantity', qty);
+
+        try {
+            const res = await fetch("{% url 'api_cart_add' %}", {
+                method: 'POST',
+                body: formData,
+                headers: { 'X-CSRFToken': '{{ csrf_token }}' }
+            });
+            const data = await res.json();
+            if (data.status === 'success') {
+                await fetchCart();
+                renderCartSidebar();
+            }
+        } catch (err) { console.error("Sync error", err); }
+    }
+
     function renderCartSidebar() {
         if (!cartItemsContainer) return;
         cartItemsContainer.innerHTML = '';
@@ -247,24 +272,47 @@
         pids.forEach((pid, index) => {
             const item = cart[pid];
             const div = document.createElement('div');
-            div.className = "flex items-center space-x-4 p-4 bg-gray-50 rounded-2xl border border-gray-100 group/item relative";
+            div.className = "p-4 bg-gray-50 rounded-2xl border border-gray-100 group/item relative";
             div.innerHTML = `
                 <span class="absolute -top-2 -left-2 w-6 h-6 bg-gray-900 text-white text-[10px] font-black rounded-lg flex items-center justify-center shadow-lg border border-white/20 z-10">
                     ${index + 1}
                 </span>
-                <div class="w-16 h-16 bg-white rounded-xl border border-gray-100 flex-shrink-0 overflow-hidden">
-                    ${item.image ? `<img src="${item.image}" class="w-full h-full object-cover">` : `<div class="w-full h-full flex items-center justify-center text-gray-200"><i data-lucide="package" class="w-6 h-6"></i></div>`}
-                </div>
-                <div class="flex-grow min-w-0">
-                    <h4 class="text-[11px] font-black text-gray-900 truncate uppercase tracking-tight">${item.name}</h4>
-                    <div class="mt-2 flex items-center justify-between">
-                        <span class="px-2.5 py-1 bg-auraa-red/10 text-auraa-red text-[10px] font-bold rounded-md border border-auraa-red/10 flex items-center space-x-1">
-                            <span>${item.qty}</span><span class="opacity-50">x</span><span>₹${item.price.toFixed(2)}</span>
-                        </span>
-                        <span class="text-[11px] font-black text-gray-900">₹${(item.qty * item.price).toFixed(2)}</span>
+                <div class="flex items-start gap-4">
+                    <!-- Image -->
+                    <div class="w-[85px] h-[85px] bg-white rounded-[1.25rem] border-2 border-white flex-shrink-0 overflow-hidden shadow-[0_8px_25px_rgba(0,0,0,0.15)] flex items-center justify-center">
+                        ${item.image ? `<img src="${item.image}" class="w-full h-full object-contain scale-[3.5] transition-transform">` : `<div class="w-full h-full flex items-center justify-center text-gray-200"><i data-lucide="package" class="w-6 h-6"></i></div>`}
+                    </div>
+                    
+                    <!-- Content Area -->
+                    <div class="flex-grow min-w-0 flex flex-col gap-3">
+                        <!-- Top Row: Name & Delete -->
+                        <div class="flex justify-between items-start gap-2">
+                            <h4 class="text-[11px] font-black text-gray-900 leading-tight uppercase tracking-tight">${item.name}</h4>
+                            <button onclick="removeFromCart('${pid}')" class="w-8 h-8 flex-shrink-0 bg-auraa-red text-white hover:bg-gray-900 rounded-lg transition-all shadow-md shadow-auraa-red/20 flex items-center justify-center -mt-1 -mr-1">
+                                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                            </button>
+                        </div>
+                        
+                        <!-- Bottom Row: Qty & Amount -->
+                        <div class="flex items-center justify-between">
+                            <!-- Quantity -->
+                            <div class="flex items-center bg-white rounded-lg border border-[#0A325A] p-0.5">
+                                <button onclick="updateCartQty('${pid}', ${item.qty - 1})" class="p-1 hover:bg-red-50 text-auraa-red transition-colors">
+                                    <i data-lucide="minus" class="w-3 h-3"></i>
+                                </button>
+                                <span class="w-7 text-center text-[10px] font-black text-[#0A325A]">${item.qty}</span>
+                                <button onclick="updateCartQty('${pid}', ${item.qty + 1})" class="p-1 hover:bg-green-50 text-green-600 transition-colors">
+                                    <i data-lucide="plus" class="w-3 h-3"></i>
+                                </button>
+                            </div>
+                            
+                            <!-- Amount -->
+                            <div class="text-right">
+                                <span class="text-[11px] font-black text-auraa-red bg-white px-2 py-1 rounded-md border border-gray-100 whitespace-nowrap shadow-sm">₹${(item.qty * item.price).toFixed(2)}</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <button onclick="removeFromCart('${pid}')" class="p-2.5 text-gray-400 hover:text-auraa-red hover:bg-red-50 rounded-xl transition-all"><i data-lucide="trash-2" class="w-4.5 h-4.5"></i></button>
             `;
             cartItemsContainer.appendChild(div);
         });

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import TemplateView, ListView
 from .models import Category, Product, Cart, Coupon, Customer, CustomerAddress, OnlineSales, OnlineSalesItem, Country, State, City, SerialNo, Testimonial
-from django.db.models import Q, Sum, F, Min, IntegerField, Value, CharField, Avg
+from django.db.models import Q, Sum, F, Min, IntegerField, Value, CharField, Avg, DecimalField
 from django.db.models.functions import Length, Cast, Coalesce, LPad
 from django.http import JsonResponse
 from django.views import View
@@ -16,6 +16,7 @@ from django.contrib.auth import get_user_model
 import decimal
 from .tasks import send_order_success_emails_task, send_order_error_emails_task
 from .services import OrderService
+from django.utils.text import slugify
 
 User = get_user_model()
 
@@ -66,6 +67,8 @@ class ProductListView(ListView):
 
         # Note: Category filtering removed as per user request to show all categories 
         # and simply scroll to the selected one.
+        # Note: Category filtering removed as per user request to show all categories 
+        # and simply scroll to the selected one.
         # if category_name and category_name != 'All':
         #     queryset = queryset.filter(category__name=category_name)
         
@@ -77,15 +80,27 @@ class ProductListView(ListView):
             )
 
         if sort == 'price-low':
-            queryset = queryset.order_by('category__order', 'price', 'padded_code')
+            queryset = queryset.order_by('price', 'padded_code')
         elif sort == 'price-high':
-            queryset = queryset.order_by('category__order', '-price', 'padded_code')
+            queryset = queryset.order_by('-price', 'padded_code')
+        elif sort == 'name-asc':
+            queryset = queryset.order_by('name', 'padded_code')
+        elif sort == 'name-desc':
+            queryset = queryset.order_by('-name', 'padded_code')
+        elif sort == 'most-ordered':
+            queryset = queryset.annotate(
+                order_count=Coalesce(Sum('onlinesalesitem__qty'), 0, output_field=DecimalField())
+            ).order_by('-order_count', 'padded_code')
         elif sort == 'name':
-            queryset = queryset.order_by('category__order', 'padded_code')
+            queryset = queryset.order_by('padded_code')
         else:
             # Default ordering: By category order, then by the LPAD result
             queryset = queryset.order_by('category__order', 'padded_code')
         
+        # If it's an AJAX request (using HX-Request or a custom header), return the partial
+        if self.request.headers.get('x-requested-with') == 'XMLHttpRequest' or self.request.GET.get('ajax') == '1':
+            self.template_name = 'crackers/partials/product_table_partial.html'
+            
         return queryset
 
     def get_context_data(self, **kwargs):
@@ -95,6 +110,33 @@ class ProductListView(ListView):
         context['search_query'] = self.request.GET.get('q', '')
         context['sort_by'] = self.request.GET.get('sort', 'featured')
         return context
+
+class ProductSearchAPIView(View):
+    def get(self, request):
+        query = request.GET.get('q', '').strip()
+        if len(query) < 3:
+            return JsonResponse({'status': 'success', 'results': []})
+            
+        products = Product.objects.filter(is_active=True, category__is_active=True)
+        products = products.filter(
+            Q(name__icontains=query) | 
+            Q(code__icontains=query) | 
+            Q(description__icontains=query)
+        ).select_related('category')[:15]
+        
+        results = []
+        for p in products:
+            results.append({
+                'id': p.id,
+                'name': p.name,
+                'code': p.code,
+                'price': float(p.price),
+                'category_id': p.category_id,
+                'category_name': p.category.name,
+                'category_slug': slugify(p.category.name)
+            })
+            
+        return JsonResponse({'status': 'success', 'results': results})
 
 class AboutView(TemplateView):
     template_name = 'crackers/about.html'
@@ -198,7 +240,7 @@ class CartListAPIView(View):
             'product_id': item.product.id,
             'name': item.product.name,
             'price': float(item.product.price),
-            'original_price': float(item.product.original_price or item.product.price),
+            'original_price': float(item.product.original_price or item.product.purchase_rate or item.product.price),
             'quantity': item.quantity,
             'total': float(item.product.price * item.quantity),
             'image': item.product.image
@@ -278,7 +320,7 @@ class OrderProcessingView(LoginRequiredMixin, TemplateView):
         cart_items = Cart.objects.filter(user=user).select_related('product')
         
         # Calculate totals
-        total_net = sum(item.product.original_price * item.quantity if item.product.original_price else item.product.price * item.quantity for item in cart_items)
+        total_net = sum((item.product.original_price or item.product.purchase_rate or item.product.price) * item.quantity for item in cart_items)
         promo_per = self.request.session.get('promo_per', 0)
         totals = OrderService.calculate_order_totals(cart_items, promo_per)
         

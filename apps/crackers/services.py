@@ -125,7 +125,7 @@ class OrderService:
                         item_name=item.product.name,
                         item_code=item.product.code,
                         rate=item.product.price,
-                        mrp=item.product.original_price or item.product.price,
+                        mrp=item.product.original_price or item.product.purchase_rate or item.product.price,
                         qty=item.quantity,
                         item_total=item.product.price * item.quantity,
                         is_active=True,

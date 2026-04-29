@@ -24,21 +24,20 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 bg-white shadow-[0_64px_128px_-32px_rgba(0,0,0,0.15)] rounded-none sm:rounded-[3rem] lg:rounded-tr-[15rem] lg:rounded-bl-[15rem] overflow-hidden border border-white/50 relative">
             
             <!-- Left Panel: Interactive Auth -->
-            <div class="px-6 py-10 sm:p-8 md:px-16 md:py-12 flex flex-col justify-center space-y-8 relative bg-white transition-all duration-700">
+            <div class="px-6 py-2 sm:p-4 md:px-16 md:py-4 pb-12 flex flex-col justify-center space-y-2 relative bg-white transition-all duration-700">
                 <!-- Loading Overlay -->
                 <div id="loading-overlay" class="hidden absolute inset-0 bg-white/60 backdrop-blur-md z-50 flex flex-col items-center justify-center space-y-4">
                     <div class="w-10 h-10 md:w-14 md:h-14 border-4 border-auraa-red border-t-transparent rounded-full animate-spin"></div>
                     <p class="text-[10px] font-black uppercase tracking-[0.3em] text-gray-900 animate-pulse">Wait...</p>
                 </div>
 
-                <div class="space-y-4 animate-item text-center md:text-left">
+                <div class="space-y-2 animate-item text-center md:text-left">
                     <div class="space-y-2">
                         <h1 id="auth-title" class="text-4xl sm:text-5xl md:text-6xl font-black text-gray-900 uppercase tracking-tighter leading-none">
                             Welcome Back
                         </h1>
                         <div class="w-20 h-2 bg-gradient-to-r from-auraa-red to-red-400 rounded-full mx-auto md:mx-0 shadow-[0_4px_12px_rgba(227,30,36,0.3)]"></div>
-                        <p id="auth-desc" class="text-gray-500 text-base md:text-lg font-medium leading-relaxed max-w-sm pt-2 mx-auto md:mx-0">
-                            Please enter your mobile number and password to login.
+                        <p id="auth-desc" class="text-gray-500 text-base md:text-lg font-medium leading-relaxed max-w-sm mx-auto md:mx-0">
                         </p>
                     </div>
                 </div>
@@ -61,15 +60,18 @@
                             <label class="block text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-4 transition-colors group-focus-within/input:text-auraa-red">Password</label>
                             <div class="relative">
                                 <i data-lucide="lock" class="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5 transition-transform group-focus-within/input:scale-110 group-focus-within/input:text-auraa-red"></i>
-                                <input required type="password" name="password" placeholder="••••••••" 
-                                       class="w-full pl-16 pr-8 py-5 bg-gray-50 border-2 border-transparent rounded-full text-base font-bold text-gray-900 shadow-inner transition-all hover:bg-white hover:border-gray-200 focus:bg-white focus:border-auraa-red outline-none placeholder:text-gray-300">
+                                <input required type="password" name="password" id="login-password" placeholder="••••••••" 
+                                       class="w-full pl-16 pr-14 py-5 bg-gray-50 border-2 border-transparent rounded-full text-base font-bold text-gray-900 shadow-inner transition-all hover:bg-white hover:border-gray-200 focus:bg-white focus:border-auraa-red outline-none placeholder:text-gray-300">
+                                <button type="button" onclick="togglePasswordVisibility('login-password', this)" class="absolute right-6 top-1/2 -translate-y-1/2 text-gray-400 hover:text-auraa-red transition-colors focus:outline-none">
+                                    <i data-lucide="eye" class="w-5 h-5"></i>
+                                </button>
                             </div>
                             <div class="flex justify-end px-6">
                                 <button type="button" onclick="showForgotPassword()" class="text-[9px] font-black uppercase tracking-widest text-auraa-red hover:underline decoration-2 underline-offset-4">Forgot Password?</button>
                             </div>
                         </div>
 
-                        <div class="btn-3d-wrapper pt-4">
+                        <div class="btn-3d-wrapper pt-4 px-12 mb-6">
                             <button type="submit" class="btn-3d-container btn-3d-glow-red group/btn">
                                 <span class="btn-3d-shadow"></span>
                                 <span class="btn-3d-edge btn-3d-edge-red"></span>
@@ -95,7 +97,7 @@
                             </div>
                         </div>
                         <div class="space-y-4 pt-4">
-                            <div class="btn-3d-wrapper">
+                            <div class="btn-3d-wrapper px-12 mb-6">
                                 <button type="submit" class="btn-3d-container btn-3d-glow-red">
                                     <span class="btn-3d-shadow"></span>
                                     <span class="btn-3d-edge btn-3d-edge-red"></span>
@@ -153,7 +155,7 @@
                             <input required type="text" name="pincode" placeholder="Pin *" maxlength="6" class="w-full px-6 py-4 bg-gray-50 border-2 border-transparent rounded-full text-sm font-bold shadow-inner focus:bg-white focus:border-auraa-red outline-none transition-all">
                         </div>
                         <input type="hidden" name="country_id" value="1">
-                        <div class="btn-3d-wrapper pt-4">
+                        <div class="btn-3d-wrapper pt-4 px-12 mb-6">
                             <button type="submit" class="btn-3d-container btn-3d-glow-red">
                                 <span class="btn-3d-shadow"></span>
                                 <span class="btn-3d-edge btn-3d-edge-red"></span>
@@ -186,7 +188,7 @@
                 <!-- Gradient Overlay -->
                 <div class="absolute inset-0 bg-gradient-to-tr from-[#8B0000] via-transparent to-transparent"></div>
                 
-                <div class="relative h-full w-full flex flex-col justify-end p-16 text-white space-y-8 z-10">
+                <div class="relative h-full w-full flex flex-col justify-center p-8 text-white space-y-6 z-10">
                     <div class="space-y-4">
                         <div class="inline-flex px-6 py-2 bg-white/10 backdrop-blur-xl border border-white/20 rounded-full animate-bounce-slow">
                             <span class="text-[9px] font-black uppercase tracking-[0.4em] text-white/90">Premium Collection 2025</span>
@@ -382,7 +384,7 @@
         signupForm.classList.add('hidden');
         forgotForm.classList.add('hidden');
         title.innerText = 'Welcome Back';
-        subtitle.innerText = 'Please enter your mobile number and password to login.';
+        subtitle.innerText = '';
         toggleText.innerText = "Don't have an account?";
         toggleBtnText.innerText = 'Register';
         lucide.createIcons();
@@ -394,7 +396,7 @@
         signupForm.classList.remove('hidden');
         forgotForm.classList.add('hidden');
         title.innerText = 'Join Auraa';
-        subtitle.innerText = 'Create an account to track orders and save favorites.';
+        subtitle.innerText = '';
         toggleText.innerText = 'Already a member?';
         toggleBtnText.innerText = 'Login Now';
         lucide.createIcons();
@@ -611,6 +613,20 @@
 
     // Load initial data
     loadStates();
+    
+    function togglePasswordVisibility(inputId, btn) {
+        const input = document.getElementById(inputId);
+        const icon = btn.querySelector('i');
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.setAttribute('data-lucide', 'eye-off');
+        } else {
+            input.type = 'password';
+            icon.setAttribute('data-lucide', 'eye');
+        }
+        if (window.lucide) lucide.createIcons();
+    }
+
     lucide.createIcons();
 </script>
 {% endblock %}

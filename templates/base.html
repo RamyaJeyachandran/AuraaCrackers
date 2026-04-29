@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en" class="overflow-x-hidden">
+<html lang="en" class="overflow-x-clip">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -225,7 +225,7 @@
 
     {% block extra_head %}{% endblock %}
 </head>
-<body class="min-h-screen flex flex-col bg-white selection:bg-auraa-red selection:text-white overflow-x-hidden w-full relative">
+<body class="min-h-screen flex flex-col bg-white selection:bg-auraa-red selection:text-white overflow-x-clip w-full relative">
     <span id="auth-status" class="hidden">{% if user.is_authenticated %}true{% else %}false{% endif %}</span>
     
     {% if user.is_authenticated and user.role.name in 'Admin,Super Admin' %}
@@ -239,7 +239,7 @@
     {% endif %}
 
     {% with url_name=request.resolver_match.url_name %}
-    <main class="flex-grow {% if user.is_authenticated and user.role.name in 'Admin,Super Admin' %}pt-16 lg:pt-36{% elif url_name == 'login' %}pt-16 lg:pt-24{% elif url_name == 'product_list' or url_name == 'testimonials' %}pt-0{% else %}pt-16 lg:pt-40{% endif %}">
+    <main class="flex-grow {% if url_name == 'product_list' or url_name == 'testimonials' %}pt-0{% elif user.is_authenticated and user.role.name in 'Admin,Super Admin' %}pt-16 lg:pt-36{% elif url_name == 'login' %}pt-16 lg:pt-24{% else %}pt-16 lg:pt-40{% endif %}">
         {% block content %}{% endblock %}
     </main>
     {% endwith %}
@@ -266,7 +266,7 @@
             <div class="relative bg-white/20 p-0.5 sm:p-0.5 rounded-full sm:rounded-none sm:rounded-l-[1.9rem] shadow-[0_8px_16px_rgba(0,0,0,0.3)] backdrop-blur-md transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:-translate-y-3 group-hover:scale-110 group-hover:shadow-[0_20px_40px_rgba(255,215,0,0.4),0_0_30px_rgba(255,255,255,0.6)] group-active:translate-y-[2px] group-active:scale-95">
                 
                 <!-- The Yellow Surface with Glow Border -->
-                <div class="relative bg-[#FFD700] rounded-full sm:rounded-none sm:rounded-l-[1.7rem] flex sm:flex-col items-center justify-center p-2 sm:py-5 sm:px-3 border-2 border-white/80 group-hover:border-white transition-colors duration-500">
+                <div class="relative bg-[#FFD700] rounded-full sm:rounded-none sm:rounded-l-[1.7rem] flex sm:flex-col items-center justify-center p-2 sm:py-5 sm:px-3 border-2 border-[#0A325A] group-hover:border-[#0A325A]/80 transition-colors duration-500">
                     
                     <!-- 3D Red Icon Container with Pulsing Glow -->
                     <div class="relative w-9 h-9 flex items-center justify-center bg-[#f5071d] rounded-lg sm:mb-5 shadow-[0_3px_0_#990000] group-hover:shadow-[0_0_12px_#f5071d] transition-all duration-500">

@@ -6,7 +6,8 @@ from .views import (
     CartAddAPIView, CartRemoveAPIView, CartListAPIView,
     CouponVerifyAPIView, OrderProcessingView, AddressAddAPIView, PlaceOrderAPIView,
     OrderHistoryListView, OrderDetailView, OrderStatusListView, OrderDeleteAPIView, OrderEditView,
-    TestimonialsView, StateListAPIView, CityListAPIView, PrivacyView, ComplianceView
+    TestimonialsView, StateListAPIView, CityListAPIView, PrivacyView, ComplianceView,
+    ProductSearchAPIView
 )
 from .views_dashboard import (
     DashboardCategoryListView, DashboardProductListView, 
@@ -49,6 +50,7 @@ urlpatterns = [
 
     path('', HomeView.as_view(), name='home'),
     path('products/', ProductListView.as_view(), name='product_list'),
+    path('api/product/search/', ProductSearchAPIView.as_view(), name='api_product_search'),
     path('orders/', OrderHistoryListView.as_view(), name='order_history'),
     path('order-status/', OrderStatusListView.as_view(), name='order_status'),
     path('order/<str:trans_no>/', OrderDetailView.as_view(), name='order_detail'),

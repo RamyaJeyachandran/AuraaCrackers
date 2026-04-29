@@ -65,6 +65,18 @@
     .custom-scrollbar::-webkit-scrollbar-thumb { background: #f5071d; border-radius: 10px; }
     .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #d4061a; }
 
+    /* Table Header Rounded Edges */
+    #table-header-sticky tr {
+        border-radius: 1.5rem 1.5rem 0 0 !important;
+        overflow: hidden !important;
+    }
+    #table-header-sticky th:first-child {
+        border-top-left-radius: 1.5rem !important;
+    }
+    #table-header-sticky th:last-child {
+        border-top-right-radius: 1.5rem !important;
+    }
+
     /* Unified Item Count Pill (Global Base) */
     .items-count-pill {
         height: 28px; 
@@ -118,13 +130,13 @@
             align-items: center !important;
             justify-content: center !important;
         }
-        .category-sep-row td[colspan="7"] {
+        .category-sep-row td[colspan="8"] {
             flex-grow: 1 !important;
         }
         .category-sep-row td div.category-div-wrap {
             width: 100% !important;
             border-radius: 0 !important;
-            padding-left: 0.5rem !important;
+            padding-left: 2.5rem !important; /* Increased to avoid icon overlap */
             padding-right: 1rem !important;
             min-height: 3.5rem !important;
             height: auto !important;
@@ -164,45 +176,33 @@
             line-height: 1 !important;
         }
 
-        /* Mobile Dynamic State */
+        /* Mobile Dynamic State - Background color change removed as per user request */
         .category-sep-row.collapsed {
-            background: #ffffff !important;
             border: 2.5px solid #ef4444 !important;
-        }
-        .category-sep-row.collapsed .category-icon-td {
-            background: #ffffff !important;
-        }
-        .category-sep-row.collapsed td div.category-div-wrap {
-            background: #ffffff !important;
-        }
-        .category-sep-row.collapsed h2,
-        .category-sep-row.collapsed i,
-        .category-sep-row.collapsed svg {
-            color: #ef4444 !important;
-            stroke: #ef4444 !important;
-        }
-        .category-sep-row.collapsed .items-count-pill {
-            background-color: #ef4444 !important;
-        }
-        .category-sep-row.collapsed .items-count-pill span {
-            color: #ffffff !important;
         }
 
         /* Column-balanced grid */
         .product-row {
             display: grid !important;
-            grid-template-columns: 1fr 100px;
-            column-gap: 1rem;
-            margin-bottom: 2rem !important;
-            padding: 1.5rem 1rem !important; /* Slightly more side room */
+            grid-template-columns: minmax(0, 1fr) 100px; /* Allocated 100px for image area */
+            grid-template-rows: auto auto auto auto; /* Explicit auto rows to prevent vertical overlap */
+            column-gap: 0.75rem;
+            row-gap: 0.25rem;
+            margin-bottom: 0 !important; 
+            padding: 1.5rem 0.75rem !important;
             position: relative;
+            background: #0A325A !important;
+            border-bottom: 2px solid rgba(255,255,255,0.4) !important;
+            border-radius: 0 !important;
         }
+
         /* Row 1: Code and Name */
-        .responsive-table td[data-label="Code"], .responsive-table .product-name-cell {
+        .responsive-table td[data-label="Product Code"], .responsive-table td[data-label="Product Name"] {
             grid-column: 1;
             grid-row: 1;
             padding: 0 !important;
             border-bottom: none !important;
+            border-right: none !important;
             min-height: auto !important;
             display: flex !important;
             flex-direction: row !important;
@@ -210,88 +210,199 @@
             justify-content: flex-start !important;
         }
 
-        .responsive-table td[data-label="Code"] {
-            width: fit-content;
-            margin-right: 0.5rem;
-            margin-top: 0.15rem;
+        .responsive-table td[data-label="Product Code"] {
+            grid-column: 1;
+            grid-row: 1;
+            width: auto !important;
+            min-width: 28px !important;
+            margin-right: 0.5rem !important;
+            z-index: 20 !important;
+            display: flex !important;
+            align-items: flex-start !important;
+            justify-content: flex-start !important;
+            padding: 0 !important;
+            padding-top: 0.1rem !important;
+            border: none !important;
         }
-        .responsive-table td[data-label="Code"]:before { display: none !important; }
+        .responsive-table td[data-label="Product Code"] span {
+            color: #ffffff !important;
+            border-bottom: 3px solid #ef4444 !important; /* Highlight on bottom */
+            padding-bottom: 1px;
+            font-weight: 900 !important;
+        }
+        .responsive-table td[data-label="Product Code"]:before { display: none !important; }
 
-        .responsive-table .product-name-cell {
-            margin-left: 2.5rem; 
+        .responsive-table td[data-label="Product Name"] {
+            grid-column: 1;
+            grid-row: 1;
+            margin-left: 2rem !important;
+            width: auto !important;
+            max-width: 100% !important;
+            overflow-wrap: break-word !important;
+            word-wrap: break-word !important;
+            word-break: break-word !important;
+            padding-right: 0.5rem !important; 
+            display: flex !important;
+            align-items: flex-start !important;
+            justify-content: flex-start !important;
+            border: none !important;
+            min-width: 0 !important; /* Critical for wrapping */
         }
-        .responsive-table .product-name-cell:before { display: none !important; }
-        .responsive-table .product-name-cell span {
-            font-size: 16px !important;
+        .responsive-table td[data-label="Product Name"]:before { display: none !important; }
+        .responsive-table td[data-label="Product Name"] h3 {
+            font-size: 14px !important; 
             font-weight: 800 !important;
             white-space: normal !important;
-            line-clamp: 2;
-            -webkit-line-clamp: 2;
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            text-align: left !important;
-            line-height: 1.2 !important;
+            line-height: 1.3 !important;
             margin: 0 !important;
+            display: block !important;
         }
 
-        /* Row 2: Prices */
-        .responsive-table td[data-label="Actual Price"], .responsive-table td[data-label="Price"] {
+        /* Row 2: Category */
+        .responsive-table td[data-label="Category"] {
             grid-column: 1;
             grid-row: 2;
-            margin-top: 0.75rem !important;
             padding: 0 !important;
             border-bottom: none !important;
+            border-right: none !important;
+            margin-top: 0.25rem !important;
+            margin-left: 2rem !important; /* Aligned with Name */
+            display: flex !important;
+            align-items: center !important;
+            min-width: 0 !important;
+            max-width: 100% !important;
+        }
+        .responsive-table td[data-label="Category"]:before { display: none !important; }
+
+        /* Row 3: Content */
+        .responsive-table td[data-label="Content"] {
+            grid-column: 1;
+            grid-row: 3;
+            padding: 0 !important;
+            border-bottom: none !important;
+            border-right: none !important;
+            margin-top: 0.25rem !important;
+            margin-left: 2rem !important; /* Aligned with Name */
+            display: flex !important;
+            align-items: center !important;
+            min-width: 0 !important;
+            max-width: 100% !important;
+        }
+        .responsive-table td[data-label="Content"]:before { display: none !important; }
+ 
+        /* Row 4: Prices */
+        .responsive-table td[data-label="Actual Price"], .responsive-table td[data-label="Price"] {
+            grid-column: 1;
+            grid-row: 4;
+            margin-top: 1rem !important;
+            padding: 0 !important;
+            border-bottom: none !important;
+            border-right: none !important;
             min-height: auto !important;
             display: flex !important;
-            align-items: baseline !important;
+            align-items: center !important;
         }
         .responsive-table td[data-label="Actual Price"]:before, .responsive-table td[data-label="Price"]:before { display: none !important; }
-
+ 
         .responsive-table td[data-label="Actual Price"] {
             justify-content: flex-start !important;
         }
         .responsive-table td[data-label="Price"] {
-            margin-left: 3.5rem !important;
+            margin-left: 5rem !important;
             justify-content: flex-start !important;
         }
         .responsive-table td[data-label="Actual Price"] span {
             font-size: 11px !important;
             text-decoration: line-through;
-            color: rgba(0,0,0,0.4) !important;
+            color: rgba(255,255,255,0.6) !important;
         }
         .responsive-table td[data-label="Price"] span {
             font-size: 18px !important;
             color: #ef4444 !important;
             font-weight: 900 !important;
         }
-
-        /* Image Hub (Right Column) */
-        .responsive-table .product-image-cell {
+ 
+        /* Row 5: Image and Quantity/Total */
+        .responsive-table td[data-label="Image"] {
             grid-column: 2;
-            grid-row: 1 / 4; /* Spans multiple detail rows */
-            display: flex !important;
-            justify-content: center !important;
-            align-items: center !important;
+            grid-row: 1 / 5; /* Spans across text rows */
             padding: 0 !important;
+            border-bottom: none !important;
+            border-right: none !important;
+            display: flex !important;
+            width: 100px !important;
+            height: 125px !important; 
+            align-items: center !important;
+            justify-content: center !important;
+            margin-top: 0 !important;
+            z-index: 50;
+            visibility: visible !important;
+            opacity: 1 !important;
         }
-        .responsive-table .product-image-cell > div {
-            width: 80px !important;
-            height: 80px !important;
-            background: white !important;
+        .responsive-table td[data-label="Image"]:before { display: none !important; }
+        .responsive-table td[data-label="Image"] div {
+            width: 100px !important;
+            height: 125px !important; 
+            min-width: 100px !important;
+            min-height: 125px !important; 
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            background: #ffffff !important;
             border-radius: 1.25rem !important;
-            padding: 0.5rem !important;
+            padding: 0 !important;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
+            border: 2px solid #ffffff !important;
+            overflow: hidden !important;
+            visibility: visible !important;
+            margin: 0 !important;
         }
-
-        /* COMPREHENSIVE QUANTITY SCALE UP - MEGA PILL */
+        .responsive-table td[data-label="Image"] img {
+            width: 100% !important;
+            height: 100% !important;
+            min-width: 100% !important;
+            min-height: 100% !important;
+            max-width: none !important;
+            object-fit: contain !important;
+            display: block !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: scale(2.0) !important; /* Balanced scale to ensure visibility and prominence */
+            transition: transform 0.3s ease !important;
+        }
+ 
         .responsive-table td[data-label="Quantity"] {
             grid-column: 1;
-            grid-row: 3;
+            grid-row: 5; /* Bottom row */
+            margin-top: 1.5rem !important;
             padding: 0 !important;
-            margin-top: 1.25rem !important;
+            border-bottom: none !important;
+            border-right: none !important;
             display: flex !important;
-            justify-content: flex-start !important;
             align-items: center !important;
+            justify-content: flex-start !important;
         }
+        .responsive-table td[data-label="Quantity"]:before { display: none !important; }
+ 
+        .responsive-table td[data-label="Total"] {
+            grid-column: 2;
+            grid-row: 5; /* Bottom row */
+            padding: 0 !important;
+            border-bottom: none !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: flex-end !important;
+            margin-top: 1.5rem !important;
+        }
+        .responsive-table td[data-label="Total"]:before { display: none !important; }
+        .responsive-table td[data-label="Total"] span {
+            font-size: 20px !important;
+            color: #ffffff !important;
+            font-weight: 900 !important;
+        }
+
+        .no-scrollbar-style::-webkit-scrollbar { display: none; }
+        .no-scrollbar-style { -ms-overflow-style: none; scrollbar-width: none; }
 
         /* 1. Reset ALL internal components */
         .responsive-table td[data-label="Quantity"] * {
@@ -343,211 +454,246 @@
             -webkit-appearance: none !important;
         }
 
-        /* Total (Hidden on mobile or subtle) */
-        .responsive-table td[data-label="Total"] {
-            display: none !important;
+        #reset-filters-btn[data-tooltip]:hover:before,
+        #reset-filters-btn[data-tooltip]:hover:after,
+        button[onclick="toggleAllCategories()"][data-tooltip]:hover:before,
+        button[onclick="toggleAllCategories()"][data-tooltip]:hover:after {
+            transform: translateY(0);
         }
     }
+    /* Category Collapsed Styles removed as per user request to keep background red */
+    
+    /* 4. PREMIUM 2026 3D TOOLTIPS */
+    [data-tooltip] {
+        position: relative;
+        cursor: pointer;
+    }
+    [data-tooltip]:before {
+        content: attr(data-tooltip);
+        position: absolute;
+        top: calc(100% + 12px); /* Better spacing */
+        left: 50%;
+        transform: translateX(-50%) translateY(-15px) scale(0.95);
+        padding: 10px 16px; /* Improved spacing */
+        background: linear-gradient(135deg, rgba(15, 65, 115, 0.98), rgba(10, 50, 90, 0.98));
+        backdrop-filter: blur(12px);
+        color: white;
+        font-size: 10px; /* Slightly larger for hierarchy */
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 0.18em; /* Refined hierarchy */
+        border-radius: 12px;
+        white-space: nowrap;
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Spring animation */
+        box-shadow: 
+            0 15px 35px rgba(0,0,0,0.3), 
+            0 5px 15px rgba(0,0,0,0.2),
+            inset 0 1px 0 rgba(255,255,255,0.2); /* 3D Top highlight */
+        z-index: 10000;
+        border: 1px solid rgba(255,255,255,0.05);
+    }
+    [data-tooltip]:after {
+        content: '';
+        position: absolute;
+        top: calc(100% + 4px); /* Perfectly aligned */
+        left: 50%;
+        transform: translateX(-50%) translateY(-15px);
+        border: 8px solid transparent; /* Larger arrow */
+        border-bottom-color: rgba(15, 65, 115, 0.98); /* Matching gradient start */
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        pointer-events: none;
+        z-index: 10000;
+    }
+    [data-tooltip]:hover:before, [data-tooltip]:hover:after {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(0) scale(1);
+    }
 
-    /* Desktop Dynamic State */
-    .category-sep-row.collapsed td.category-icon-td {
-        background-color: #ffffff !important;
-        border: 2px solid var(--auraa-red) !important;
-        border-right: none !important;
+    /* Specific alignment for right-most buttons */
+    #reset-filters-btn[data-tooltip]:before, 
+    button[onclick="toggleAllCategories()"][data-tooltip]:before {
+        left: auto;
+        right: 0;
+        transform: translateX(0) translateY(-15px) scale(0.95);
     }
-    .category-sep-row.collapsed td div.category-div-wrap {
-        background-color: #ffffff !important;
-        border: 2px solid var(--auraa-red) !important;
-        border-left: none !important;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.05) !important;
+    #reset-filters-btn[data-tooltip]:after,
+    button[onclick="toggleAllCategories()"][data-tooltip]:after {
+        left: auto;
+        right: 18px;
+        transform: translateX(0) translateY(-15px);
     }
-    .category-sep-row.collapsed h2,
-    .category-sep-row.collapsed i[data-lucide],
-    .category-sep-row.collapsed svg {
-        color: var(--auraa-red) !important;
-        stroke: var(--auraa-red) !important;
-    }
-    .category-sep-row.collapsed .items-count-pill {
-        background-color: var(--auraa-red) !important;
-    }
-    .category-sep-row.collapsed .items-count-pill span {
-        color: #ffffff !important;
+    #reset-filters-btn[data-tooltip]:hover:before,
+    #reset-filters-btn[data-tooltip]:hover:after,
+    button[onclick="toggleAllCategories()"][data-tooltip]:hover:before,
+    button[onclick="toggleAllCategories()"][data-tooltip]:hover:after {
+        transform: translateY(0) scale(1);
     }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="max-w-full mx-auto px-2 lg:px-8 pt-6 lg:pt-12 pb-32 lg:pb-16 overflow-x-hidden">
-    <div class="flex flex-col gap-8">
+<div class="max-w-full mx-auto px-2 lg:px-8 pt-2 lg:pt-4 pb-32 lg:pb-16">
+    <div class="flex flex-col gap-4">
         <!-- Main Content (Now Full Width) -->
-        <main class="flex-grow space-y-8">
+        <main class="flex-grow space-y-4">
 
 
             <!-- Controls -->
-            <div class="bg-auraa-red p-3 sm:p-4 rounded-[1.5rem] shadow-xl relative z-[100] group">
+            <div id="filter-controls-bar" class="bg-auraa-red p-3 sm:p-4 rounded-[1.5rem] shadow-xl sticky top-0 z-[9999] group">
                 <div class="absolute inset-0 overflow-hidden rounded-[2.5rem] pointer-events-none">
                     <div class="absolute -top-24 -right-24 w-48 h-48 bg-white/10 rounded-full blur-[60px] group-hover:bg-white/20 transition-all duration-1000"></div>
                 </div>
-                <div class="relative z-30 flex flex-col lg:flex-row gap-6 lg:gap-8 justify-between lg:items-center w-full">
-                    <!-- Search Form -->
-                    <form method="GET" class="relative w-full lg:w-96 order-1">
-                        {% if selected_category %}<input type="hidden" name="category" value="{{ selected_category }}">{% endif %}
-                        <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 text-[#0A325A] w-[18px] h-[18px] z-10"></i>
-                        <input type="text" name="q" id="search-input" placeholder="Search products..." value="{{ search_query|default:'' }}" 
-                               class="w-full pl-12 pr-12 py-3 bg-white border-none rounded-xl text-[13px] font-bold text-[#0A325A] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white/40 transition-all shadow-md"
-                               oninput="toggleClearSearch()">
-                        <button type="button" id="clear-search" onclick="clearSearch()" 
-                                class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#0A325A] transition-all {% if not search_query %}hidden{% endif %}">
-                            <i data-lucide="x" class="w-4 h-4"></i>
-                        </button>
-                    </form>
-
-                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 sm:gap-6 w-full lg:w-auto mt-4 lg:mt-0 order-2">
-                        <!-- Category Dropdown -->
-                        <div class="flex items-center space-x-3 text-[10px] font-black uppercase tracking-[0.2em] text-white shrink-0">
-                            <i data-lucide="layers" class="w-4 h-4 text-white"></i>
-                            <span>Category:</span>
-                        </div>
-
-                        <div class="relative w-full sm:w-64" id="category-dropdown-container">
-                            <button onclick="toggleCategoryDropdown(event)" 
-                                    class="w-full bg-white border-2 border-white rounded-2xl px-6 py-4 text-xs font-black uppercase tracking-widest text-[#0A325A] flex items-center justify-between group hover:bg-white/90 transition-all shadow-lg">
-                                <span id="current-category-label">
-                                    {{ selected_category|default:"All Products" }}
-                                </span>
-                                <i data-lucide="chevron-down" id="category-chevron" class="w-4 h-4 text-[#0A325A] transition-transform"></i>
-                            </button>
-                            
-                            <div id="category-options" class="luxury-dropdown-menu absolute top-full left-0 right-0 mt-3 bg-white/95 backdrop-blur-xl border border-gray-100 rounded-[2.5rem] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.2)] overflow-hidden">
-                                <div class="px-5 py-4 border-b border-gray-50 bg-gray-50/50">
-                                    <div class="relative">
-                                        <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400"></i>
-                                        <input type="text" id="cat-search" placeholder="Search category..." 
-                                               class="w-full pl-10 pr-4 py-3 bg-white border border-gray-100 rounded-xl text-[10px] font-black uppercase tracking-widest text-[#0A325A] outline-none focus:ring-2 focus:ring-auraa-red/10 transition-all">
+                <div class="relative z-30 flex flex-col xl:flex-row gap-3 lg:gap-4 justify-between xl:items-center w-full">
+                    
+                    <!-- Left: Category + Search Group -->
+                    <div class="flex items-center w-full xl:w-[22rem] flex-shrink-0 order-1">
+                        <div class="flex w-full bg-white overflow-visible h-10 lg:h-12 order-1 shadow-[0_2px_10px_rgba(0,0,0,0.1)] rounded-xl relative">
+                            <!-- Category Dropdown inside Search Bar -->
+                            <div class="relative h-full flex-shrink-0" id="category-dropdown-container">
+                                <button onclick="toggleCategoryDropdown(event)" type="button" data-tooltip="Select Category" class="h-full bg-[#0A325A] text-white px-4 sm:px-6 flex items-center gap-2 text-xs lg:text-sm font-semibold whitespace-nowrap hover:bg-[#072442] transition-colors rounded-l-xl max-w-[200px] xl:max-w-[240px]">
+                                    <span id="current-category-label" class="truncate">{% if selected_category and selected_category != 'All' %}{{ selected_category }}{% else %}Category{% endif %}</span>
+                                    <i data-lucide="chevron-down" id="category-chevron" class="w-3.5 h-3.5 flex-shrink-0 transition-transform"></i>
+                                </button>
+                                <!-- Category options dropdown -->
+                                <div id="category-options" class="luxury-dropdown-menu absolute top-full left-0 mt-2 w-64 bg-white/95 backdrop-blur-xl border border-gray-100 rounded-2xl shadow-xl overflow-hidden z-50">
+                                    <div class="px-5 py-4 border-b border-gray-50 bg-gray-50/50">
+                                        <div class="relative">
+                                            <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400"></i>
+                                            <input type="text" id="cat-search" placeholder="Search category..." 
+                                                class="w-full pl-10 pr-4 py-3 bg-white border border-gray-100 rounded-xl text-[10px] font-black uppercase tracking-widest text-[#0A325A] outline-none focus:ring-2 focus:ring-auraa-red/10 transition-all">
+                                        </div>
+                                    </div>
+                                    <div id="cat-options-list" class="max-h-64 overflow-y-auto custom-scrollbar">
+                                        <button onclick="scrollToCategory('all', 'Category')" class="luxury-dropdown-option block w-full px-6 py-4 text-left text-[10px] font-black uppercase tracking-widest {% if not selected_category or selected_category == 'All' %}selected{% else %}text-[#0A325A]/70 hover:text-[#0A325A]{% endif %} transition-all border-b border-gray-50 flex items-center justify-between">
+                                            <span>Category</span>
+                                        </button>
+                                        {% for cat in categories %}
+                                        <button onclick="scrollToCategory('{{ cat.name|slugify }}', '{{ cat.name|escapejs }}')" class="luxury-dropdown-option block w-full px-6 py-4 text-left text-[10px] font-black uppercase tracking-widest {% if selected_category == cat.name %}selected{% else %}text-[#0A325A]/70 hover:text-[#0A325A]{% endif %} transition-all border-b border-gray-50 flex items-center justify-between">
+                                            <span>{{ cat.name }}</span>
+                                        </button>
+                                        {% endfor %}
                                     </div>
                                 </div>
-                                <div id="cat-options-list" class="max-h-64 overflow-y-auto custom-scrollbar">
-                                    <button onclick="scrollToCategory('all', 'All Products')" class="luxury-dropdown-option block w-full px-6 py-4 text-left text-[10px] font-black uppercase tracking-widest {% if not selected_category or selected_category == 'All' %}selected{% else %}text-[#0A325A]/70 hover:text-[#0A325A]{% endif %} transition-all border-b border-gray-50 flex items-center justify-between">
-                                        <span>All Products</span>
-                                        {% if not selected_category or selected_category == 'All' %}<i data-lucide="check" class="w-3 h-3 text-[#0A325A]"></i>{% endif %}
-                                    </button>
-                                    {% for cat in categories %}
-                                    <button onclick="scrollToCategory('{{ cat.name|slugify }}', '{{ cat.name|escapejs }}')" class="luxury-dropdown-option block w-full px-6 py-4 text-left text-[10px] font-black uppercase tracking-widest {% if selected_category == cat.name %}selected{% else %}text-[#0A325A]/70 hover:text-[#0A325A]{% endif %} transition-all border-b border-gray-50 flex items-center justify-between">
-                                        <span>{{ cat.name }}</span>
-                                        {% if selected_category == cat.name %}<i data-lucide="check" class="w-3 h-3 text-[#0A325A]"></i>{% endif %}
-                                    </button>
-                                    {% endfor %}
+                            </div>
+                            <!-- Search Input -->
+                            <div class="flex-grow relative h-full flex items-center bg-white rounded-r-xl">
+                                {% if selected_category %}<input type="hidden" name="category" id="category-hidden-input" value="{{ selected_category }}">{% endif %}
+                                <input type="text" name="q" id="search-input" placeholder="Search for a product" value="{{ search_query|default:'' }}" autocomplete="off"
+                                    class="w-full h-full px-4 text-xs lg:text-sm font-medium text-gray-700 border-none outline-none focus:ring-0 rounded-r-xl"
+                                    oninput="handleSearchInput(event)" onfocus="handleSearchFocus()">
+                                
+                                <button type="button" id="clear-search" onclick="clearAutocompleteSearch()" 
+                                        class="absolute right-4 text-gray-400 hover:text-gray-600 transition-colors {% if not search_query %}hidden{% endif %} z-10">
+                                    <i data-lucide="x" class="w-4 h-4"></i>
+                                </button>
+                                
+                                <!-- Loading Spinner -->
+                                <div id="search-loading" class="absolute right-10 hidden z-10">
+                                    <i data-lucide="loader-2" class="w-4 h-4 text-gray-400 animate-spin"></i>
+                                </div>
+                                
+                            </div>
+                            
+                            <!-- Full-Width Autocomplete Dropdown -->
+                            <div id="autocomplete-dropdown" class="absolute top-[calc(100%+0.5rem)] left-0 right-0 bg-white rounded-xl shadow-2xl border border-gray-100 hidden z-[200] max-h-[400px] overflow-y-auto flex-col divide-y divide-gray-50">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Center: Stats/Totals Row -->
+                    <div class="flex items-center overflow-x-auto custom-scrollbar no-scrollbar-style py-1 px-2 gap-2 text-white text-[9px] lg:text-[13px] font-bold whitespace-nowrap order-2 flex-grow w-full xl:w-auto">
+                        <div class="flex items-center">
+                                <div class="flex items-center gap-1.5 lg:gap-2 bg-[#0A325A] px-2 py-1 rounded-lg shadow-inner">
+                                    <i data-lucide="shopping-cart" class="w-3.5 h-3.5 lg:w-4 lg:h-4 text-white"></i>
+                                    <span id="filter-selected-count" class="text-[#ffcc00] font-black notranslate">0</span>
                                 </div>
                             </div>
-                        </div>
-
-                        <!-- Sort Dropdown -->
-                        <div class="flex items-center space-x-3 text-[10px] font-black uppercase tracking-[0.2em] text-white shrink-0">
-                            <i data-lucide="filter" class="w-4 h-4 text-white"></i>
-                            <span>Sort:</span>
-                        </div>
-
-                        <div class="relative w-full sm:w-64" id="custom-sort-container">
-                            <button onclick="toggleSortDropdown(event)" 
-                                    class="w-full bg-white border-2 border-white rounded-2xl px-6 py-4 text-xs font-black uppercase tracking-widest text-[#0A325A] flex items-center justify-between group hover:bg-white/90 transition-all shadow-lg">
-                                <span id="current-sort-label">
-                                    {% if sort_by == 'price-low' %}Price: Low to High
-                                    {% elif sort_by == 'price-high' %}Price: High to Low
-                                    {% elif sort_by == 'name' %}Code: Ascending
-                                    {% else %}Featured{% endif %}
-                                </span>
-                                <i data-lucide="chevron-down" id="sort-chevron" class="w-4 h-4 text-[#0A325A] transition-transform"></i>
-                            </button>
-                            
-                            <div id="sort-options" class="luxury-dropdown-menu absolute top-full left-0 right-0 mt-3 bg-white/95 backdrop-blur-xl border border-gray-100 rounded-[2.5rem] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.2)] overflow-hidden">
-                                <button onclick="updateSort('featured')" class="luxury-dropdown-option w-full px-6 py-4 text-left text-[10px] font-black uppercase tracking-widest {% if sort_by == 'featured' or not sort_by %}selected{% else %}text-[#0A325A]/70{% endif %} transition-all border-b border-gray-50 flex items-center justify-between">
-                                    <span>Featured</span>
-                                    {% if sort_by == 'featured' or not sort_by %}<i data-lucide="check" class="w-3 h-3 text-[#0A325A]"></i>{% endif %}
-                                </button>
-                                <button onclick="updateSort('price-low')" class="luxury-dropdown-option w-full px-6 py-4 text-left text-[10px] font-black uppercase tracking-widest {% if sort_by == 'price-low' %}selected{% else %}text-[#0A325A]/70{% endif %} transition-all border-b border-gray-50 flex items-center justify-between">
-                                    <span>Price: Low to High</span>
-                                    {% if sort_by == 'price-low' %}<i data-lucide="check" class="w-3 h-3 text-[#0A325A]"></i>{% endif %}
-                                </button>
-                                <button onclick="updateSort('price-high')" class="luxury-dropdown-option w-full px-6 py-4 text-left text-[10px] font-black uppercase tracking-widest {% if sort_by == 'price-high' %}selected{% else %}text-[#0A325A]/70{% endif %} transition-all border-b border-gray-50 flex items-center justify-between">
-                                    <span>Price: High to Low</span>
-                                    {% if sort_by == 'price-high' %}<i data-lucide="check" class="w-3 h-3 text-[#0A325A]"></i>{% endif %}
-                                </button>
-                                <button onclick="updateSort('name')" class="luxury-dropdown-option w-full px-6 py-4 text-left text-[10px] font-black uppercase tracking-widest {% if sort_by == 'name' %}selected{% else %}text-[#0A325A]/70{% endif %} transition-all flex items-center justify-between">
-                                    <span>Code: Ascending</span>
-                                    {% if sort_by == 'name' %}<i data-lucide="check" class="w-3 h-3 text-[#0A325A]"></i>{% endif %}
-                                </button>
+                            <div class="flex items-center gap-1.5 lg:gap-2">
+                                <span>Net Total :</span>
+                                <span id="filter-net-total" class="bg-[#0A325A] text-[#ffcc00] px-2 py-1 rounded-lg notranslate font-black shadow-inner">₹ 0</span>
                             </div>
-                        </div>
-
-                        <!-- Reset Filters Button -->
-                        {% if search_query or selected_category and selected_category != 'All' or sort_by and sort_by != 'featured' %}
-                        <a href="{% url 'product_list' %}" class="flex items-center justify-center px-6 py-4 bg-[#0A325A] hover:bg-gray-900 text-white rounded-2xl transition-all shadow-lg group shrink-0" title="Clear All Filters">
-                            <i data-lucide="rotate-ccw" class="w-4 h-4 group-hover:rotate-[-90deg] transition-transform"></i>
-                            <span class="ml-2 text-[10px] font-black uppercase tracking-widest">Reset All</span>
-                        </a>
-                        {% endif %}
+                            <div class="flex items-center gap-1.5 lg:gap-2">
+                                <span>You Save:</span>
+                                <span id="filter-discount-total" class="bg-[#0A325A] text-[#ffcc00] px-2 py-1 rounded-lg notranslate font-black shadow-inner">₹ 0</span>
+                            </div>
+                            <div class="flex items-center gap-1.5 lg:gap-2">
+                                <span>Sub Total :</span>
+                                <span id="filter-sub-total" class="bg-[#0A325A] text-[#ffcc00] px-2 py-1 rounded-lg notranslate font-black shadow-inner">₹ 0</span>
+                            </div>
+                            <div class="flex items-center gap-1.5 lg:gap-2">
+                                <span>Overall Total :</span>
+                                <span id="filter-overall-total" class="bg-[#0A325A] text-[#ffcc00] px-2 py-1 rounded-lg notranslate font-black shadow-inner">₹ 0</span>
+                            </div>
                     </div>
+
+                    <!-- Right: Sort & Reset -->
+                    <div class="flex items-center justify-center lg:justify-end gap-1.5 lg:gap-2 order-3 w-full xl:w-auto flex-shrink-0">
+                        <!-- Sort Dropdown -->
+                        <div class="relative z-40" id="custom-sort-container">
+                                <button onclick="toggleSortDropdown(event)" data-tooltip="Sort Products"
+                                        class="bg-[#0A325A] hover:bg-[#072442] border border-white/20 text-white rounded-lg px-3 h-10 lg:h-12 flex items-center gap-2 text-xs font-bold transition-all whitespace-nowrap shadow-inner">
+                                    <i data-lucide="arrow-up-down" id="sort-chevron" class="w-3.5 h-3.5 transition-transform"></i>
+                                    <span id="current-sort-label" class="hidden sm:inline">
+                                        {% if sort_by == 'price-low' %}Price: Low to High
+                                        {% elif sort_by == 'price-high' %}Price: High to Low
+                                        {% elif sort_by == 'name' %}Code: Ascending
+                                        {% elif sort_by == 'name-asc' %}Name: Ascending
+                                        {% elif sort_by == 'name-desc' %}Name: Descending
+                                        {% elif sort_by == 'most-ordered' %}Most Ordered
+                                        {% else %}Category{% endif %}
+                                    </span>
+                                </button>
+                                <div id="sort-options" class="luxury-dropdown-menu absolute top-full left-1/2 -translate-x-1/2 lg:left-auto lg:right-0 lg:translate-x-0 mt-2 w-48 lg:w-56 bg-white/95 backdrop-blur-xl border border-gray-100 rounded-2xl shadow-xl overflow-hidden z-[200]">
+                                    <button onclick="updateSort('featured')" class="luxury-dropdown-option w-full px-6 py-4 text-left text-[10px] font-black uppercase tracking-widest {% if sort_by == 'featured' or not sort_by %}selected{% else %}text-[#0A325A]/70{% endif %} transition-all border-b border-gray-50 flex items-center justify-between">
+                                        <span>Category</span>
+                                    </button>
+                                    <button onclick="updateSort('price-low')" class="luxury-dropdown-option w-full px-6 py-4 text-left text-[10px] font-black uppercase tracking-widest {% if sort_by == 'price-low' %}selected{% else %}text-[#0A325A]/70{% endif %} transition-all border-b border-gray-50 flex items-center justify-between">
+                                        <span>Price: Low to High</span>
+                                    </button>
+                                    <button onclick="updateSort('price-high')" class="luxury-dropdown-option w-full px-6 py-4 text-left text-[10px] font-black uppercase tracking-widest {% if sort_by == 'price-high' %}selected{% else %}text-[#0A325A]/70{% endif %} transition-all border-b border-gray-50 flex items-center justify-between">
+                                        <span>Price: High to Low</span>
+                                    </button>
+                                    <button onclick="updateSort('name')" class="luxury-dropdown-option w-full px-6 py-4 text-left text-[10px] font-black uppercase tracking-widest {% if sort_by == 'name' %}selected{% else %}text-[#0A325A]/70{% endif %} transition-all border-b border-gray-50 flex items-center justify-between">
+                                        <span>Code: Ascending</span>
+                                    </button>
+                                    <button onclick="updateSort('name-asc')" class="luxury-dropdown-option w-full px-6 py-4 text-left text-[10px] font-black uppercase tracking-widest {% if sort_by == 'name-asc' %}selected{% else %}text-[#0A325A]/70{% endif %} transition-all border-b border-gray-50 flex items-center justify-between">
+                                        <span>Name: Ascending</span>
+                                    </button>
+                                    <button onclick="updateSort('name-desc')" class="luxury-dropdown-option w-full px-6 py-4 text-left text-[10px] font-black uppercase tracking-widest {% if sort_by == 'name-desc' %}selected{% else %}text-[#0A325A]/70{% endif %} transition-all border-b border-gray-50 flex items-center justify-between">
+                                        <span>Name: Descending</span>
+                                    </button>
+                                    <button onclick="updateSort('most-ordered')" class="luxury-dropdown-option w-full px-6 py-4 text-left text-[10px] font-black uppercase tracking-widest {% if sort_by == 'most-ordered' %}selected{% else %}text-[#0A325A]/70{% endif %} transition-all flex items-center justify-between">
+                                        <span>Most Ordered</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- Expand/Collapse All Categories -->
+                            <button onclick="toggleAllCategories()" class="flex items-center justify-center w-10 h-10 lg:w-12 lg:h-12 bg-[#0A325A] hover:bg-[#072442] border border-white/20 text-white rounded-lg transition-all shadow-inner group" data-tooltip="Expand/Collapse All Categories">
+                                <i data-lucide="layers-2" class="w-4 h-4 group-hover:scale-110 transition-transform"></i>
+                            </button>
+
+                            <!-- Reset Filters Button -->
+                            <button id="reset-filters-btn" onclick="resetAllFilters()" class="{% if not search_query and selected_category == 'All' and sort_by == 'featured' %}hidden{% endif %} flex items-center justify-center w-10 h-10 lg:w-12 lg:h-12 bg-[#0A325A] border border-white/20 text-white rounded-lg transition-all shadow-inner group" data-tooltip="Reset All Filters">
+                                <i data-lucide="rotate-ccw" class="w-4 h-4 group-hover:-rotate-90 transition-transform"></i>
+                            </button>
+                        </div>
                 </div>
             </div>
 
             <!-- Product List Advanced Layout (2026 Futuristic Card Table) -->
-            <div id="product-list" class="space-y-8">
+            <div id="product-list" class="mt-0">
                 {% if products %}
                 <!-- Asymmetric Floating Container -->
-                <div class="relative bg-gray-900 rounded-[2rem] p-2 lg:p-4 shadow-2xl transition-all border border-white/5">
+                <div class="relative bg-[#0A325A] rounded-t-3xl p-0 shadow-2xl transition-all border-2 border-white overflow-visible">
                     
-                    <div class="overflow-visible">
-                        <table class="w-full text-left responsive-table">
-                            <!-- Pill-Shaped Floating Header -->
-                            <thead>
-                                <tr class="bg-gray-900 shadow-2xl relative z-20">
-                                    <th class="py-2 px-2 lg:px-3 text-center first:rounded-l-full">
-                                        <button onclick="toggleAllCategories()" class="text-white hover:text-auraa-red transition-colors" title="Expand/Collapse All">
-                                            <i data-lucide="layers-2" class="w-4 h-4"></i>
-                                        </button>
-                                    </th>
-                                    <th class="py-2 px-2 lg:px-3 text-[11px] font-black uppercase tracking-[0.2em] text-white">Code</th>
-                                    <th class="py-2 px-2 lg:px-3 text-[11px] font-black uppercase tracking-[0.2em] text-white">Image</th>
-                                    <th class="py-2 px-2 lg:px-3 text-[11px] font-black uppercase tracking-[0.2em] text-white">Product</th>
-                                    <th class="py-2 px-2 lg:px-3 text-[11px] font-black uppercase tracking-[0.2em] text-white text-center">Actual Price</th>
-                                    <th class="py-2 px-2 lg:px-3 text-[11px] font-black uppercase tracking-[0.2em] text-white text-center">Price</th>
-                                    <th class="py-2 px-2 lg:px-3 text-[11px] font-black uppercase tracking-[0.2em] text-white text-center">Quantity</th>
-                                    <th class="py-2 px-2 lg:px-3 text-[11px] font-black uppercase tracking-[0.2em] text-white text-right min-w-[120px] last:rounded-r-full">Total</th>
-                                </tr>
-                            </thead>
-                            
-                            {% regroup products by category as category_list %}
-                            {% for category_group in category_list %}
-                                <!-- Category Separator Pill -->
-                                <tbody>
-                                    <tr id="header-{{ category_group.grouper.name|slugify }}" class="cursor-pointer group relative category-sep-row" onclick="toggleCategory('cat-{{ category_group.grouper.id }}')">
-                                        <td class="bg-auraa-red p-0 rounded-l-xl category-icon-td transition-colors duration-500">
-                                            <div class="h-full flex items-center justify-center py-2 px-2">
-                                                <i data-lucide="minus" id="icon-cat-{{ category_group.grouper.id }}" class="w-4 h-4 text-white transition-all duration-500"></i>
-                                            </div>
-                                        </td>
-                                        <td colspan="7" class="p-0">
-                                            <div class="bg-auraa-red pr-4 py-2 rounded-r-xl shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-500 relative flex justify-between items-center group-hover:bg-red-600 category-div-wrap">
-                                                <div class="flex items-center space-x-3">
-                                                    <h2 class="text-sm md:text-base font-black uppercase tracking-[0.3em] text-white">{{ category_group.grouper.name }}</h2>
-                                                </div>
-                                                <div class="flex items-center space-x-3">
-                                                    <div class="items-count-pill transition-colors duration-500">
-                                                        <span class="text-[11px] font-black text-[#0A325A] uppercase tracking-widest">{{ category_group.list|length }} Items</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                                
-                                <tbody id="cat-{{ category_group.grouper.id }}" class="divide-y-0 transition-all duration-700">
-                                    {% for product in category_group.list %}
-                                        {% include 'includes/product_row.html' %}
-                                    {% endfor %}
-                                </tbody>
-                            {% endfor %}
-                        </table>
+                    <div class="overflow-visible" id="product-table-container">
+                        {% include 'crackers/partials/product_table_partial.html' %}
                     </div>
                 </div>
 
@@ -687,15 +833,7 @@
 
     // Selection Tracking - Hoisted at top for row onclick handlers
     function selectProductRow(pid, event) {
-        // Remove selection from all rows
-        document.querySelectorAll('.product-row').forEach(row => {
-            row.classList.remove('bg-red-50', 'ring-2', 'ring-auraa-red', 'z-[50]', 'shadow-2xl', '-translate-y-0.5');
-        });
-        
-        const row = document.getElementById(`product-row-${pid}`);
-        if (row) {
-            row.classList.add('bg-red-50', 'ring-2', 'ring-auraa-red', 'z-[50]', 'shadow-2xl', '-translate-y-0.5');
-        }
+        // Selection highlight removed as per user request
     }
 
     // Page-specific Sort Logic
@@ -944,6 +1082,24 @@
         if (summaryRoundOff) summaryRoundOff.innerText = `₹${roundOff.toFixed(2)}`;
         if (summaryOverall) summaryOverall.innerText = `₹${roundedOverall.toFixed(2)}`;
 
+        // NEW LOGIC FOR FILTER TOTALS
+        const filterNet = document.getElementById('filter-net-total');
+        const filterDiscount = document.getElementById('filter-discount-total');
+        const filterSubTotal = document.getElementById('filter-sub-total');
+        const filterOverall = document.getElementById('filter-overall-total');
+        const filterSelectedCount = document.getElementById('filter-selected-count');
+
+        if (filterNet) filterNet.innerText = `₹ ${totals.totalNet.toFixed(2)}`;
+        if (filterDiscount) filterDiscount.innerText = `₹ ${(totals.totalDiscount + totals.promoDiscount).toFixed(2)}`;
+        if (filterSubTotal) filterSubTotal.innerText = `₹ ${totals.subTotal.toFixed(2)}`;
+        if (filterOverall) filterOverall.innerText = `₹ ${roundedOverall.toFixed(2)}`;
+
+        let filterItemsCount = 0;
+        if (typeof cart !== 'undefined') {
+            Object.values(cart).forEach(item => filterItemsCount += item.qty);
+        }
+        if (filterSelectedCount) filterSelectedCount.innerText = filterItemsCount;
+
         // Mobile Sticky Bar Updates
         const stickyBar = document.getElementById('mobile-sticky-bar');
         const stickyCount = document.getElementById('mobile-sticky-count');
@@ -981,7 +1137,9 @@
             showModal('Invalid Quantity', 'Quantity cannot be negative.', 'warning');
         }
 
-        const price = parseFloat(row.querySelector('.text-auraa-red').innerText.replace('₹', ''));
+        const priceSpan = row.querySelector('.product-price-value');
+        if (!priceSpan) return;
+        const price = parseFloat(priceSpan.innerText.replace('₹', '')) || 0;
         totalLabel.innerText = `₹${(price * qty).toFixed(2)}`;
         
         const removeBtn = document.getElementById(`remove-btn-${productId}`);
@@ -1093,42 +1251,94 @@
     function toggleClearSearch() {
         const input = document.getElementById('search-input');
         const btn = document.getElementById('clear-search');
-        if (input.value.length > 0) btn.classList.remove('hidden');
-        else btn.classList.add('hidden');
+        const resetBtn = document.getElementById('reset-filters-btn');
+        
+        const hasSearch = input && input.value.length > 0;
+        const urlParams = new URLSearchParams(window.location.search);
+        
+        // Only consider it filtered if it's NOT the default 'Category' or 'All'
+        const catParam = urlParams.get('category');
+        const hasCategory = catParam && catParam !== 'Category' && catParam !== 'All';
+        
+        const hasSort = urlParams.has('sort') && urlParams.get('sort') !== 'featured';
+
+        if (btn) {
+            if (hasSearch) btn.classList.remove('hidden');
+            else btn.classList.add('hidden');
+        }
+
+        if (resetBtn) {
+            if (hasSearch || hasCategory || hasSort) {
+                resetBtn.classList.remove('hidden');
+                resetBtn.classList.add('flex');
+            } else {
+                resetBtn.classList.add('hidden');
+                resetBtn.classList.remove('flex');
+            }
+        }
     }
 
     function clearSearch() {
         const input = document.getElementById('search-input');
-        input.value = '';
-        input.closest('form').submit();
+        if (input) input.value = '';
+        
+        const url = new URL(window.location.pathname, window.location.origin);
+        // Keep sort if any
+        const currentUrl = new URL(window.location.href);
+        if (currentUrl.searchParams.has('sort')) {
+            url.searchParams.set('sort', currentUrl.searchParams.get('sort'));
+        }
+        
+        fetchPartialProducts(url.toString());
+        window.history.pushState({}, '', url.toString());
     }
 
-    function updateSort(val) {
-        const urlParams = new URLSearchParams(window.location.search);
-        urlParams.set('sort', val);
-        window.location.search = urlParams.toString();
-    }
+    function resetAllFilters() {
+        // Clear search input
+        const input = document.getElementById('search-input');
+        if (input) input.value = '';
+        
+        // Reset Category Label
+        const catLabel = document.getElementById('current-category-label');
+        if (catLabel) catLabel.innerText = 'Category';
 
+        // Reset Sort Label
+        const sortLabel = document.getElementById('current-sort-label');
+        if (sortLabel) sortLabel.innerText = 'Category';
 
+        // Clear highlights
+        document.querySelectorAll('.category-sep-row div.bg-auraa-red').forEach(d => {
+            d.classList.remove('ring-4', 'ring-white/50', 'scale-[1.01]', 'shadow-2xl', 'relative', 'z-40');
+        });
 
-    function scrollToCategory(slug, name) {
-        // Update URL without reload
-        const url = new URL(window.location);
-        if (slug === 'all') url.searchParams.delete('category');
-        else url.searchParams.set('category', name);
+        // Use AJAX to load base list
+        const url = "{% url 'product_list' %}";
+        fetchPartialProducts(url);
         window.history.pushState({}, '', url);
+    }
 
-        // Update Label
+    function clearAutocompleteSearch() {
+        const input = document.getElementById('search-input');
+        input.value = '';
+        toggleClearSearch();
+        hideAutocomplete();
+        
+        // Reset category label
         const label = document.getElementById('current-category-label');
-        if (label) label.innerText = name;
-
-        // Update Selected Class in Dropdown
+        if (label) label.innerText = 'Category';
+        
+        // Clear custom dropdown highlights
+        document.querySelectorAll('#category-dropdown-menu button').forEach(btn => {
+            btn.classList.remove('bg-gray-100', 'text-auraa-red');
+        });
+        
+        // Reset luxury category options
         document.querySelectorAll('#cat-options-list .luxury-dropdown-option').forEach(opt => {
             opt.classList.remove('selected');
             const check = opt.querySelector('i[data-lucide="check"]');
             if (check) check.remove();
             
-            if (opt.innerText.trim() === name.trim()) {
+            if (opt.innerText.trim() === 'Category') {
                 opt.classList.add('selected');
                 const i = document.createElement('i');
                 i.setAttribute('data-lucide', 'check');
@@ -1136,42 +1346,382 @@
                 opt.appendChild(i);
             }
         });
+        
+        // Show all category tables
+        document.querySelectorAll('tbody[id^="cat-"]').forEach(el => {
+            el.style.display = '';
+            const icon = document.getElementById('icon-' + el.id);
+            if (icon) {
+                icon.setAttribute('data-lucide', 'minus');
+                icon.classList.remove('rotate-90');
+            }
+        });
+        
+        // Remove product focus rings
+        document.querySelectorAll('tr[id^="product-row-"]').forEach(row => {
+            // row highlight clearing logic removed
+        });
+        
         if (window.lucide) lucide.createIcons();
+        
+        // Update URL to remove query params without reload
+        const url = new URL(window.location);
+        url.searchParams.delete('category');
+        url.searchParams.delete('q');
+        window.history.pushState({}, '', url);
+        
+        // Scroll to top smoothly
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
 
-        // Close Dropdown
-        const menu = document.getElementById('category-options');
-        if (menu) menu.classList.remove('active');
-        const chevron = document.getElementById('category-chevron');
-        if (chevron) chevron.classList.remove('rotate-180');
+    // Autocomplete Logic
+    let searchDebounceTimer;
+    
+    function handleSearchInput(e) {
+        const query = e.target.value.trim();
+        toggleClearSearch();
+        
+        clearTimeout(searchDebounceTimer);
+        
+        if (query.length >= 3) {
+            document.getElementById('search-loading').classList.remove('hidden');
+            searchDebounceTimer = setTimeout(() => {
+                performSearch(query);
+            }, 500);
+        } else {
+            hideAutocomplete();
+            document.getElementById('search-loading').classList.add('hidden');
+        }
+    }
+    
+    function handleSearchFocus() {
+        const query = document.getElementById('search-input').value.trim();
+        if (query.length >= 3) {
+            const dropdown = document.getElementById('autocomplete-dropdown');
+            if (dropdown.innerHTML.trim() !== '') {
+                dropdown.classList.remove('hidden');
+                dropdown.classList.add('flex');
+            } else {
+                performSearch(query);
+            }
+        }
+    }
+    
+    async function performSearch(query) {
+        try {
+            const response = await fetch(`/api/product/search/?q=${encodeURIComponent(query)}`);
+            const data = await response.json();
+            document.getElementById('search-loading').classList.add('hidden');
+            
+            if (data.status === 'success') {
+                renderAutocompleteResults(data.results);
+            }
+        } catch (error) {
+            console.error("Search failed:", error);
+            document.getElementById('search-loading').classList.add('hidden');
+        }
+    }
+    
+    function renderAutocompleteResults(results) {
+        const dropdown = document.getElementById('autocomplete-dropdown');
+        dropdown.innerHTML = '';
+        
+        if (results.length === 0) {
+            dropdown.innerHTML = `
+                <div class="px-6 py-4 text-sm text-gray-500 text-center font-medium">
+                    No products found
+                </div>
+            `;
+        } else {
+            results.forEach(product => {
+                const item = document.createElement('div');
+                item.className = 'px-6 py-4 hover:bg-auraa-red cursor-pointer transition-colors flex items-center group/item w-full';
+                item.innerHTML = `
+                    <span class="text-[13px] md:text-sm font-black uppercase tracking-widest text-gray-900 group-hover/item:text-white transition-colors">${product.name}</span>
+                `;
+                item.onclick = () => selectAutocompleteProduct(product);
+                dropdown.appendChild(item);
+            });
+        }
+        
+        dropdown.classList.remove('hidden');
+        dropdown.classList.add('flex');
+    }
+    
+    function hideAutocomplete() {
+        const dropdown = document.getElementById('autocomplete-dropdown');
+        if (dropdown) {
+            dropdown.classList.add('hidden');
+            dropdown.classList.remove('flex');
+        }
+    }
+    
+    function selectAutocompleteProduct(product) {
+        hideAutocomplete();
+        document.getElementById('search-input').value = product.name;
+        toggleClearSearch();
+        
+        // Use the existing toggleCategory logic but bypass opening the dropdown
+        const catId = 'cat-' + product.category_id;
+        
+        // Change button text
+        document.getElementById('current-category-label').innerText = product.category_name;
+        
+        // Ensure the selected category is visible (if it was somehow collapsed manually)
+        const catTable = document.getElementById(catId);
+        if (catTable) {
+            catTable.style.display = '';
+            const icon = document.getElementById('icon-' + catId);
+            if (icon) {
+                icon.setAttribute('data-lucide', 'minus');
+                icon.classList.remove('rotate-90');
+            }
+            if (window.lucide) lucide.createIcons();
+        }
+        
+        // Highlight active category in custom dropdown
+        document.querySelectorAll('#category-dropdown-menu button').forEach(btn => {
+            if (btn.innerText.trim() === product.category_name) {
+                btn.classList.add('bg-gray-100', 'text-auraa-red');
+            } else {
+                btn.classList.remove('bg-gray-100', 'text-auraa-red');
+            }
+        });
+        
+        // Scroll to the specific product row
+        setTimeout(() => {
+            const productRow = document.getElementById('product-row-' + product.id);
+            if (productRow) {
+                // Focus styling removed
+                
+                // Calculate scroll position considering the fixed sticky headers
+                const offset = window.innerWidth < 1024 ? 140 : 180; 
+                const bodyRect = document.body.getBoundingClientRect().top;
+                const elementRect = productRow.getBoundingClientRect().top;
+                const offsetPosition = (elementRect - bodyRect) - offset;
+                
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+                
+                // Remove focus styling after 2 seconds
+                setTimeout(() => {
+                    // logic removed
+                }, 2000);
+            }
+        }, 100);
+    }
+    
+    // Close dropdown on outside click
+    document.addEventListener('click', (e) => {
+        const searchInput = document.getElementById('search-input');
+        const dropdown = document.getElementById('autocomplete-dropdown');
+        if (searchInput && dropdown) {
+            if (!searchInput.contains(e.target) && !dropdown.contains(e.target)) {
+                hideAutocomplete();
+            }
+        }
+    });
 
-        // Scroll
-        if (slug === 'all') {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            return;
+    async function fetchPartialProducts(url) {
+        // Show loading indicator
+        const container = document.getElementById('product-table-container');
+        if (container) {
+            container.classList.add('opacity-50', 'pointer-events-none');
+            // Add a temporary spinner
+            const loader = document.createElement('div');
+            loader.id = 'table-loader-overlay';
+            loader.className = 'absolute inset-0 z-[9999] flex items-center justify-center';
+            loader.innerHTML = `
+                <div class="flex flex-col items-center gap-4 bg-white/80 backdrop-blur-md p-8 rounded-3xl shadow-2xl border border-white/50">
+                    <div class="w-12 h-12 border-4 border-auraa-red border-t-transparent rounded-full animate-spin"></div>
+                    <span class="text-[10px] font-black uppercase tracking-[0.2em] text-[#0A325A]">Updating Products...</span>
+                </div>
+            `;
+            container.parentElement.style.position = 'relative';
+            container.parentElement.appendChild(loader);
         }
 
-        const target = document.getElementById('header-' + slug);
-        if (target) {
-            const offset = window.innerWidth < 1024 ? 160 : 180;
-            const bodyRect = document.body.getBoundingClientRect().top;
-            const elementRect = target.getBoundingClientRect().top;
-            const elementPosition = elementRect - bodyRect;
-            const offsetPosition = elementPosition - offset;
+        try {
+            const ajaxUrl = new URL(url, window.location.origin);
+            ajaxUrl.searchParams.set('ajax', '1');
+            const res = await fetch(ajaxUrl.toString());
+            const html = await res.text();
+            
+            if (container) {
+                container.innerHTML = html;
+                // Re-initialize Lucide icons
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+                // Restore quantities from cart state
+                if (typeof updateUI === 'function') updateUI();
+                // Update Reset button visibility
+                toggleClearSearch();
+                // Re-calculate sticky header position
+                setTimeout(updateStickyHeader, 50);
+            }
+        } catch (err) {
+            console.error("AJAX Sort failed", err);
+            // Fallback to full page load if AJAX fails
+            window.location.href = url;
+        } finally {
+            if (container) {
+                container.classList.remove('opacity-50', 'pointer-events-none');
+                const loader = document.getElementById('table-loader-overlay');
+                if (loader) loader.remove();
+            }
+        }
+    }
 
-            window.scrollTo({
-                top: offsetPosition,
-                behavior: 'smooth'
-            });
+    function updateSort(sortValue) {
+        const url = new URL(window.location.href);
+        const oldSort = url.searchParams.get('sort') || 'featured';
+        url.searchParams.set('sort', sortValue);
+        
+        // If changing FROM category to something else, or if just changing sort, clear filters
+        if (sortValue !== 'featured') {
+            url.searchParams.delete('q');
+            url.searchParams.delete('category');
+            
+            // Update UI elements
+            const searchInput = document.getElementById('search-input');
+            if (searchInput) searchInput.value = '';
+            
+            const catLabel = document.getElementById('current-category-label');
+            if (catLabel) catLabel.innerText = 'Category';
 
-            // Highlight focus
+            // Clear any active highlight
             document.querySelectorAll('.category-sep-row div.bg-auraa-red').forEach(d => {
                 d.classList.remove('ring-4', 'ring-white/50', 'scale-[1.01]', 'shadow-2xl', 'relative', 'z-40');
             });
-            const mainDiv = target.querySelector('div.bg-auraa-red');
-            if (mainDiv) {
-                mainDiv.classList.add('ring-4', 'ring-white/50', 'scale-[1.01]', 'shadow-2xl', 'relative', 'z-40');
+        }
+        
+        // Update Sort Label UI immediately for better UX
+        const label = document.getElementById('current-sort-label');
+        if (label) {
+            const labels = {
+                'featured': 'Category',
+                'price-low': 'Price: Low to High',
+                'price-high': 'Price: High to Low',
+                'name': 'Code: Ascending',
+                'name-asc': 'Name: Ascending',
+                'name-desc': 'Name: Descending',
+                'most-ordered': 'Most Ordered'
+            };
+            label.innerText = labels[sortValue] || 'Category';
+        }
+        
+        // Update selected state in dropdown
+        document.querySelectorAll('#custom-sort-container .luxury-dropdown-option').forEach(btn => {
+            const onclick = btn.getAttribute('onclick') || '';
+            if (onclick.includes(`updateSort('${sortValue}')`)) {
+                btn.classList.add('selected');
+                btn.classList.remove('text-[#0A325A]/70');
+            } else if (onclick.includes('updateSort')) {
+                btn.classList.remove('selected');
+                btn.classList.add('text-[#0A325A]/70');
+            }
+        });
+
+        // Use AJAX to update table
+        fetchPartialProducts(url.toString());
+        
+        // Push state to history
+        window.history.pushState({}, '', url.toString());
+        
+        // Close dropdown
+        const options = document.getElementById('sort-options');
+        if (options) options.classList.remove('active');
+        const chevron = document.getElementById('sort-chevron');
+        if (chevron) chevron.classList.remove('rotate-180');
+
+        if (window.lucide) lucide.createIcons();
+    }
+
+    function scrollToCategory(slug, name) {
+        const url = new URL(window.location.href);
+        const currentSort = url.searchParams.get('sort') || 'featured';
+        
+        // If we are not in 'featured' (Category) mode, we MUST switch to it to show separators
+        if (currentSort !== 'featured') {
+            url.searchParams.set('sort', 'featured');
+            url.searchParams.delete('category'); // Clean up to avoid filter logic if any
+            
+            // We need to fetch the whole table in Category mode first
+            fetchPartialProducts(url.toString());
+            
+            // After load, we scroll (handled by the timeout inside fetchPartialProducts if we add it there, 
+            // but let's do it here with a longer delay or use a promise)
+            setTimeout(() => {
+                const target = document.getElementById('header-' + slug);
+                if (target) {
+                    const offset = window.innerWidth < 1024 ? 160 : 180;
+                    const bodyRect = document.body.getBoundingClientRect().top;
+                    const elementRect = target.getBoundingClientRect().top;
+                    const offsetPosition = (elementRect - bodyRect) - offset;
+                    window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                    
+                    // Focus Highlight
+                    document.querySelectorAll('.category-sep-row div.bg-auraa-red').forEach(d => {
+                        d.classList.remove('ring-4', 'ring-white/50', 'scale-[1.01]', 'shadow-2xl', 'relative', 'z-40');
+                    });
+                    const mainDiv = target.querySelector('div.bg-auraa-red');
+                    if (mainDiv) mainDiv.classList.add('ring-4', 'ring-white/50', 'scale-[1.01]', 'shadow-2xl', 'relative', 'z-40');
+                }
+            }, 800);
+        } else {
+            // Already in category mode, just scroll
+            const target = document.getElementById('header-' + slug);
+            if (target) {
+                const offset = window.innerWidth < 1024 ? 160 : 180;
+                const bodyRect = document.body.getBoundingClientRect().top;
+                const elementRect = target.getBoundingClientRect().top;
+                const offsetPosition = (elementRect - bodyRect) - offset;
+                window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                
+                // Focus Highlight
+                document.querySelectorAll('.category-sep-row div.bg-auraa-red').forEach(d => {
+                    d.classList.remove('ring-4', 'ring-white/50', 'scale-[1.01]', 'shadow-2xl', 'relative', 'z-40');
+                });
+                const mainDiv = target.querySelector('div.bg-auraa-red');
+                if (mainDiv) mainDiv.classList.add('ring-4', 'ring-white/50', 'scale-[1.01]', 'shadow-2xl', 'relative', 'z-40');
             }
         }
+        
+        // Update URL
+        if (slug === 'all') {
+            url.searchParams.delete('category');
+        } else {
+            url.searchParams.set('category', name);
+        }
+        window.history.pushState({}, '', url.toString());
+
+        // UI state update
+        const catLabel = document.getElementById('current-category-label');
+        if (catLabel) catLabel.innerText = name || 'Category';
+        
+        // Update Sort Label if we switched
+        if (currentSort !== 'featured') {
+            const sortLabel = document.getElementById('current-sort-label');
+            if (sortLabel) sortLabel.innerText = 'Category';
+        }
+        
+        // Update Selected Class in Category Dropdown
+        document.querySelectorAll('#cat-options-list .luxury-dropdown-option').forEach(opt => {
+            opt.classList.remove('selected');
+            
+            if (opt.innerText.trim() === name.trim() || (slug === 'all' && opt.innerText.trim() === 'Category')) {
+                opt.classList.add('selected');
+            }
+        });
+
+        toggleClearSearch();
+        const options = document.getElementById('category-options');
+        if (options) options.classList.remove('active');
+        const chevron = document.getElementById('category-chevron');
+        if (chevron) chevron.classList.remove('rotate-180');
+
+        if (window.lucide) lucide.createIcons();
     }
 
     // Initialize
@@ -1228,5 +1778,38 @@
             });
         });
     });
+    // Table header stickiness is now handled via CSS top-0 within the overflow container
+    // Dynamically update the sticky table header offset based on the filter bar height
+    // Dynamically update the sticky table header offset based on the filter bar height
+    function updateStickyHeader() {
+        const filterBar = document.getElementById('filter-controls-bar');
+        const ths = document.querySelectorAll('.sticky-th');
+        
+        if (filterBar && ths.length > 0) {
+            const height = filterBar.offsetHeight;
+            
+            ths.forEach(th => {
+                th.style.position = 'sticky';
+                th.style.top = height + 'px';
+                th.style.zIndex = '100';
+                th.style.backgroundColor = '#f5071d'; // Maintain Auraa Red
+            });
+            
+            // Re-apply negative margin to the product-list to remove the gap
+            const productList = document.getElementById('product-list');
+            if (productList) {
+                // Adjust margin to bring table exactly under filter bar
+                productList.style.marginTop = '2rem'; // Reset to a reasonable spacing
+            }
+        }
+    }
+
+    // Run on scroll, load and resize for real-time positioning
+    window.addEventListener('scroll', updateStickyHeader, { passive: true });
+    window.addEventListener('load', updateStickyHeader);
+    window.addEventListener('resize', updateStickyHeader);
+    
+    // Also run immediately just in case
+    updateStickyHeader();
 </script>
 {% endblock %}

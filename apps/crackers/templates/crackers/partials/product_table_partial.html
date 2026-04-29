@@ -1,0 +1,69 @@
+<div class="overflow-visible" id="product-table-container">
+    <table class="w-full text-left responsive-table border-collapse">
+        <!-- Pill-Shaped Floating Header -->
+        <thead id="table-header-sticky" class="z-[100]">
+            <tr class="bg-auraa-red relative z-20 border-b border-white">
+                <th class="sticky-th py-3 px-1 lg:px-2 text-[10px] font-black uppercase tracking-[0.1em] text-white text-center border-r border-white">Image</th>
+                <th class="sticky-th py-3 px-1 lg:px-2 text-[10px] font-black uppercase tracking-[0.1em] text-white text-center border-r border-white">Product Code</th>
+                <th class="sticky-th py-3 px-1 lg:px-2 text-[10px] font-black uppercase tracking-[0.1em] text-white text-center border-r border-white">Product Name</th>
+                {% if sort_by and sort_by != 'featured' %}
+                <th class="sticky-th py-3 px-1 lg:px-2 text-[10px] font-black uppercase tracking-[0.1em] text-white text-center border-r border-white">Category</th>
+                {% endif %}
+                <th class="sticky-th py-3 px-1 lg:px-2 text-[10px] font-black uppercase tracking-[0.1em] text-white text-center border-r border-white">Content</th>
+                <th class="sticky-th py-3 px-1 lg:px-2 text-[10px] font-black uppercase tracking-[0.1em] text-white text-center border-r border-white">Actual Price</th>
+                <th class="sticky-th py-3 px-1 lg:px-2 text-[10px] font-black uppercase tracking-[0.1em] text-white text-center border-r border-white">Price</th>
+                <th class="sticky-th py-3 px-1 lg:px-2 text-[10px] font-black uppercase tracking-[0.1em] text-white text-center border-r border-white">Quantity</th>
+                <th class="sticky-th py-3 px-1 lg:px-2 text-[10px] font-black uppercase tracking-[0.1em] text-white text-center min-w-[100px]">Total</th>
+            </tr>
+        </thead>
+        
+        {% if sort_by == 'featured' or not sort_by %}
+            {% regroup products by category as category_list %}
+            {% for category_group in category_list %}
+                <!-- Category Separator Pill -->
+                <tbody>
+                    <tr id="header-{{ category_group.grouper.name|slugify }}" class="cursor-pointer group relative category-sep-row z-10" onclick="toggleCategory('cat-{{ category_group.grouper.id }}')">
+                        <td colspan="{% if sort_by and sort_by != 'featured' %}9{% else %}8{% endif %}" class="p-0 border-b border-white">
+                            <div class="bg-auraa-red pr-4 py-3 lg:py-4 transition-all duration-500 relative flex justify-center items-center group-hover:bg-red-600 category-div-wrap">
+                                <div class="absolute left-4 flex items-center">
+                                    <i data-lucide="minus" id="icon-cat-{{ category_group.grouper.id }}" class="w-4 h-4 text-white transition-all duration-500"></i>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <h2 class="text-sm md:text-base font-black uppercase tracking-[0.3em] text-white text-center">{{ category_group.grouper.name }}</h2>
+                                </div>
+                                <div class="absolute right-4 flex items-center space-x-3">
+                                    <div class="items-count-pill transition-colors duration-500">
+                                        <span class="text-[11px] font-black text-[#0A325A] uppercase tracking-widest">{{ category_group.list|length }} Items</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+                
+                <tbody id="cat-{{ category_group.grouper.id }}" class="transition-all duration-700 lg:[content-visibility:auto]">
+                    {% for product in category_group.list %}
+                        {% include 'includes/product_row.html' %}
+                    {% endfor %}
+                </tbody>
+            {% endfor %}
+        {% else %}
+            <!-- Flat list for non-category sorting -->
+            <tbody>
+                {% for product in products %}
+                    {% include 'includes/product_row.html' with show_category=True %}
+                {% endfor %}
+            </tbody>
+        {% endif %}
+    </table>
+    <!-- Include Lucide Icons update script for the partial -->
+    <script>
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+        // Restore quantities from local storage/state if needed
+        if (typeof restoreQuantities === 'function') {
+            restoreQuantities();
+        }
+    </script>
+</div>

@@ -61,6 +61,20 @@
             }
         }
     </script>
+    <style>
+        .dropdown-active { background-color: #EF4444 !important; color: white !important; }
+        .dropdown-active span { color: white !important; }
+        .autocomplete-item:hover { background-color: #EF4444 !important; color: white !important; }
+        .autocomplete-item:hover span { color: white !important; }
+        
+        /* Toastr Premium Customization */
+        #toast-container > .toast-success {
+            background-color: #065f46 !important; /* Dark Green */
+            opacity: 1 !important;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+            border-radius: 12px !important;
+        }
+    </style>
     
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&family=Bebas+Neue&display=swap" rel="stylesheet">
@@ -69,6 +83,9 @@
     <!-- Translator CSS -->
     <link rel="stylesheet" href="{% static 'css/translator.css' %}">
     <link rel="stylesheet" href="{% static 'css/phone-handler.css' %}">
+    
+    <!-- Toastr for Notifications -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     
     <!-- GSAP for advanced animations (Premium requirement) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
@@ -255,7 +272,7 @@
 
     <!-- Modern 3D/Tactile Floating Buy Products Button -->
     {% with url_name=request.resolver_match.url_name %}
-    {% if not url_name or url_name not in "login,product_list,order_history,order_status,order_detail,profile,checkout,admin_dashboard,dashboard_categories,dashboard_products,dashboard_orders,dashboard_order_detail,dashboard_customers,dashboard_customers_print,dashboard_analysis,dashboard_report_create,dashboard_pricelists,dashboard_pricelist_create,dashboard_pricelist_detail,dashboard_pricelist_edit,admin_active_categories,admin_register" %}
+    {% if not url_name or url_name not in "login,product_list,order_history,order_status,order_detail,profile,checkout,admin_dashboard,dashboard_categories,dashboard_products,dashboard_orders,dashboard_order_edit,dashboard_order_detail,dashboard_customers,dashboard_customers_print,dashboard_analysis,dashboard_report_create,dashboard_pricelists,dashboard_pricelist_create,dashboard_pricelist_detail,dashboard_pricelist_edit,admin_active_categories,admin_register" %}
     <div id="mobile-buy-products-wrapper" class="fixed bottom-6 left-1/2 -translate-x-1/2 sm:left-auto sm:right-0 sm:translate-x-0 sm:bottom-auto sm:top-[30%] w-auto z-[99999] perspective-[1000px]">
         <a href="{% url 'product_list' %}" class="relative block group transform-gpu perspective-[1000px]">
             
@@ -352,8 +369,93 @@
     <script src="{% static 'js/translator.js' %}?v=1.0.2"></script>
     <script src="{% static 'js/phone-handler.js' %}"></script>
     <script type="text/javascript" src="https://translate.googleapis.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
+    
+    <!-- Toastr JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script>
+        toastr.options = {
+            "closeButton": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "timeOut": "3000"
+        };
+
+        // Global Custom Dropdown Keyboard Navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp' && e.key !== 'Enter' && e.key !== 'Escape') return;
+
+            // Don't interfere if typing in an input (except for autocomplete)
+            if (e.target.tagName === 'INPUT' && e.target.id !== 'search-input') return;
+
+            const openDropdown = document.querySelector('[id$="-options"]:not(.hidden), #autocomplete-results:not(.hidden)');
+            
+            if (!openDropdown) {
+                const activeBtn = document.activeElement;
+                if (activeBtn && (activeBtn.tagName === 'BUTTON' || activeBtn.tagName === 'A')) {
+                    const hasClick = activeBtn.getAttribute('onclick')?.includes('Dropdown') || activeBtn.hasAttribute('data-dropdown-btn');
+                    if (hasClick && e.key === 'ArrowDown') {
+                        e.preventDefault();
+                        activeBtn.click();
+                    }
+                }
+                return;
+            }
+
+            const options = Array.from(openDropdown.querySelectorAll('div[onclick], .autocomplete-item, [data-dropdown-item]'));
+            if (!options.length) return;
+
+            // 3. Find current highlight (prioritize the temporary keyboard highlight over the permanent selection)
+            let currentIndex = options.findIndex(opt => opt.classList.contains('dropdown-active'));
+            if (currentIndex === -1) {
+                currentIndex = options.findIndex(opt => 
+                    opt.classList.contains('bg-auraa-red') || 
+                    opt.classList.contains('ring-2')
+                );
+            }
+            
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                currentIndex = (currentIndex + 1) % options.length;
+                highlightOption(options, currentIndex);
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                currentIndex = (currentIndex - 1 + options.length) % options.length;
+                highlightOption(options, currentIndex);
+            } else if (e.key === 'Enter') {
+                e.preventDefault();
+                if (currentIndex >= 0) options[currentIndex].click();
+            } else if (e.key === 'Escape') {
+                e.preventDefault();
+                if (openDropdown.id === 'autocomplete-results') {
+                    openDropdown.classList.add('hidden');
+                } else {
+                    // Try to find the button that opened it to toggle it closed
+                    const dropdownId = openDropdown.id.replace('-options', '');
+                    const btn = document.querySelector(`[onclick*="${dropdownId}"]`);
+                    if (btn) btn.click();
+                    else openDropdown.classList.add('hidden');
+                }
+            }
+        });
+
+        function highlightOption(options, index) {
+            options.forEach((opt, i) => {
+                if (i === index) {
+                    opt.classList.add('dropdown-active');
+                    // Ensure it stands out even if it was already red
+                    opt.classList.add('ring-2', 'ring-white', 'ring-inset'); 
+                    opt.scrollIntoView({ block: 'nearest' });
+                } else {
+                    opt.classList.remove('dropdown-active');
+                    opt.classList.remove('ring-2', 'ring-white', 'ring-inset');
+                }
+            });
+        }
+    </script>
 
     {% include 'includes/cart_scripts.html' %}
     {% block extra_js %}{% endblock %}
+    {% include 'includes/scroll_to_top.html' %}
 </body>
 </html>

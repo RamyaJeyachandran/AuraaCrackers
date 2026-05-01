@@ -526,16 +526,26 @@
     }
 
     /* Specific alignment for right-most buttons */
-    #reset-filters-btn[data-tooltip]:before, 
-    button[onclick="toggleAllCategories()"][data-tooltip]:before {
+    #reset-filters-btn[data-tooltip]:before {
         left: auto;
         right: 0;
         transform: translateX(0) translateY(-15px) scale(0.95);
     }
-    #reset-filters-btn[data-tooltip]:after,
-    button[onclick="toggleAllCategories()"][data-tooltip]:after {
+    #reset-filters-btn[data-tooltip]:after {
         left: auto;
         right: 18px;
+        transform: translateX(0) translateY(-15px);
+    }
+
+    /* Specific alignment for left-most buttons (Toggle in Table) */
+    .table-header-toggle[data-tooltip]:before {
+        left: 0;
+        right: auto;
+        transform: translateX(0) translateY(-15px) scale(0.95);
+    }
+    .table-header-toggle[data-tooltip]:after {
+        left: 14px;
+        right: auto;
         transform: translateX(0) translateY(-15px);
     }
     @media (hover: hover) {
@@ -568,7 +578,7 @@
                         <div class="flex w-full bg-white overflow-visible h-10 lg:h-12 order-1 shadow-[0_2px_10px_rgba(0,0,0,0.1)] rounded-xl relative">
                             <!-- Category Dropdown inside Search Bar -->
                             <div class="relative h-full flex-shrink-0" id="category-dropdown-container">
-                                <button onclick="toggleCategoryDropdown(event)" type="button" data-tooltip="Select Category" class="h-full bg-[#0A325A] text-white px-4 sm:px-6 flex items-center gap-2 text-xs lg:text-sm font-semibold whitespace-nowrap hover:bg-[#072442] transition-colors rounded-l-xl max-w-[200px] xl:max-w-[240px]">
+                                <button onclick="toggleCategoryDropdown(event)" type="button" class="h-full bg-[#0A325A] text-white px-4 sm:px-6 flex items-center gap-2 text-xs lg:text-sm font-semibold whitespace-nowrap hover:bg-[#072442] transition-colors rounded-l-xl max-w-[200px] xl:max-w-[240px]">
                                     <span id="current-category-label" class="truncate">{% if selected_category and selected_category != 'All' %}{{ selected_category }}{% else %}Category{% endif %}</span>
                                     <i data-lucide="chevron-down" id="category-chevron" class="w-3.5 h-3.5 flex-shrink-0 transition-transform"></i>
                                 </button>
@@ -578,7 +588,8 @@
                                         <div class="relative">
                                             <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400"></i>
                                             <input type="text" id="cat-search" placeholder="Search category..." 
-                                                class="w-full pl-10 pr-4 py-3 bg-white border border-gray-100 rounded-xl text-[10px] font-black uppercase tracking-widest text-[#0A325A] outline-none focus:ring-2 focus:ring-auraa-red/10 transition-all">
+                                                class="w-full pl-10 pr-4 py-3 bg-white border border-gray-100 rounded-xl text-[10px] font-black uppercase tracking-widest text-[#0A325A] outline-none focus:ring-2 focus:ring-auraa-red/10 transition-all"
+                                                onkeydown="handleCatSearchKeydown(event)">
                                         </div>
                                     </div>
                                     <div id="cat-options-list" class="max-h-64 overflow-y-auto custom-scrollbar">
@@ -598,7 +609,7 @@
                                 {% if selected_category %}<input type="hidden" name="category" id="category-hidden-input" value="{{ selected_category }}">{% endif %}
                                 <input type="text" name="q" id="search-input" placeholder="Search for a product" value="{{ search_query|default:'' }}" autocomplete="off"
                                     class="w-full h-full px-4 text-xs lg:text-sm font-medium text-gray-700 border-none outline-none focus:ring-0 rounded-r-xl"
-                                    oninput="handleSearchInput(event)" onfocus="handleSearchFocus()">
+                                    oninput="handleSearchInput(event)" onfocus="handleSearchFocus()" onkeydown="handleSearchKeydown(event)">
                                 
                                 <button type="button" id="clear-search" onclick="clearAutocompleteSearch()" 
                                         class="absolute right-4 text-gray-400 hover:text-gray-600 transition-colors {% if not search_query %}hidden{% endif %} z-10">
@@ -685,10 +696,6 @@
                                     </button>
                                 </div>
                             </div>
-                            <!-- Expand/Collapse All Categories -->
-                            <button onclick="toggleAllCategories()" class="flex items-center justify-center w-10 h-10 lg:w-12 lg:h-12 bg-[#0A325A] hover:bg-[#072442] border border-white/20 text-white rounded-lg transition-all shadow-inner group" data-tooltip="Expand/Collapse All Categories">
-                                <i data-lucide="layers-2" class="w-4 h-4 group-hover:scale-110 transition-transform"></i>
-                            </button>
 
                             <!-- Reset Filters Button -->
                             <button id="reset-filters-btn" onclick="resetAllFilters()" class="{% if not search_query and selected_category == 'All' and sort_by == 'featured' %}hidden{% endif %} flex items-center justify-center w-10 h-10 lg:w-12 lg:h-12 bg-[#0A325A] border border-white/20 text-white rounded-lg transition-all shadow-inner group" data-tooltip="Reset All Filters">
@@ -1031,10 +1038,13 @@
 
     // Luxury Category Search Logic
     const catSearch = document.getElementById('cat-search');
+    window.currentCatDropdownIndex = -1;
+
     if (catSearch) {
         catSearch.oninput = (e) => {
             const query = e.target.value.toLowerCase();
-            document.querySelectorAll('.luxury-dropdown-option').forEach(opt => {
+            window.currentCatDropdownIndex = -1; // Reset on filter
+            document.querySelectorAll('#cat-options-list .luxury-dropdown-option').forEach(opt => {
                 const text = opt.querySelector('span').innerText.toLowerCase();
                 if (text.includes(query)) {
                     opt.style.display = 'flex';
@@ -1042,7 +1052,53 @@
                     opt.style.display = 'none';
                 }
             });
+            updateCatDropdownHighlight();
         };
+    }
+
+    function handleCatSearchKeydown(e) {
+        const optionsList = document.getElementById('cat-options-list');
+        if (!optionsList) return;
+
+        const visibleOptions = Array.from(optionsList.querySelectorAll('.luxury-dropdown-option'))
+            .filter(opt => opt.style.display !== 'none');
+
+        if (visibleOptions.length === 0) return;
+
+        if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            window.currentCatDropdownIndex = (window.currentCatDropdownIndex + 1) % visibleOptions.length;
+            updateCatDropdownHighlight(visibleOptions);
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            window.currentCatDropdownIndex = (window.currentCatDropdownIndex - 1 + visibleOptions.length) % visibleOptions.length;
+            updateCatDropdownHighlight(visibleOptions);
+        } else if (e.key === 'Enter') {
+            if (window.currentCatDropdownIndex >= 0) {
+                e.preventDefault();
+                visibleOptions[window.currentCatDropdownIndex].click();
+            }
+        }
+    }
+
+    function updateCatDropdownHighlight(visibleOptions) {
+        if (!visibleOptions) {
+            visibleOptions = Array.from(document.querySelectorAll('#cat-options-list .luxury-dropdown-option'))
+                .filter(opt => opt.style.display !== 'none');
+        }
+
+        visibleOptions.forEach((opt, idx) => {
+            if (idx === window.currentCatDropdownIndex) {
+                opt.classList.add('bg-auraa-red', 'text-white', 'pl-8');
+                opt.classList.remove('text-[#0A325A]/70', 'hover:text-[#0A325A]');
+                opt.scrollIntoView({ block: 'nearest' });
+            } else {
+                opt.classList.remove('bg-auraa-red', 'text-white', 'pl-8');
+                if (!opt.classList.contains('selected')) {
+                    opt.classList.add('text-[#0A325A]/70');
+                }
+            }
+        });
     }
 
 
@@ -1394,6 +1450,7 @@
         toggleClearSearch();
         
         clearTimeout(searchDebounceTimer);
+        window.currentAutocompleteIndex = -1; // Reset index on new input
         
         if (query.length >= 3) {
             document.getElementById('search-loading').classList.remove('hidden');
@@ -1404,6 +1461,46 @@
             hideAutocomplete();
             document.getElementById('search-loading').classList.add('hidden');
         }
+    }
+
+    function handleSearchKeydown(e) {
+        const dropdown = document.getElementById('autocomplete-dropdown');
+        if (!dropdown || dropdown.classList.contains('hidden')) return;
+
+        const items = dropdown.querySelectorAll('div.cursor-pointer');
+        if (items.length === 0) return;
+
+        if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            window.currentAutocompleteIndex = (window.currentAutocompleteIndex + 1) % items.length;
+            updateAutocompleteHighlight(items);
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            window.currentAutocompleteIndex = (window.currentAutocompleteIndex - 1 + items.length) % items.length;
+            updateAutocompleteHighlight(items);
+        } else if (e.key === 'Enter') {
+            if (window.currentAutocompleteIndex >= 0) {
+                e.preventDefault();
+                items[window.currentAutocompleteIndex].click();
+            }
+        } else if (e.key === 'Escape') {
+            hideAutocomplete();
+        }
+    }
+
+    function updateAutocompleteHighlight(items) {
+        items.forEach((item, idx) => {
+            if (idx === window.currentAutocompleteIndex) {
+                item.classList.add('bg-auraa-red', 'text-white');
+                item.querySelector('span').classList.remove('text-gray-900');
+                item.querySelector('span').classList.add('text-white');
+                item.scrollIntoView({ block: 'nearest' });
+            } else {
+                item.classList.remove('bg-auraa-red', 'text-white');
+                item.querySelector('span').classList.add('text-gray-900');
+                item.querySelector('span').classList.remove('text-white');
+            }
+        });
     }
     
     function handleSearchFocus() {
@@ -1479,10 +1576,13 @@
         // Change button text
         document.getElementById('current-category-label').innerText = product.category_name;
         
-        // Ensure the selected category is visible (if it was somehow collapsed manually)
+        // Ensure the selected category is visible
         const catTable = document.getElementById(catId);
+        const headerRow = document.querySelector(`.category-sep-row[onclick*="${catId}"]`);
         if (catTable) {
-            catTable.style.display = '';
+            catTable.classList.remove('hidden');
+            catTable.style.display = window.innerWidth < 1024 ? 'block' : 'table-row-group';
+            if (headerRow) headerRow.classList.remove('collapsed');
             const icon = document.getElementById('icon-' + catId);
             if (icon) {
                 icon.setAttribute('data-lucide', 'minus');
@@ -1691,6 +1791,20 @@
                 const offsetPosition = (elementRect - bodyRect) - offset;
                 window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
                 
+                // --- ADDED: Auto-expand logic ---
+                // Get the catId from the onclick attribute of the header row
+                const onclickAttr = target.getAttribute('onclick') || '';
+                const match = onclickAttr.match(/toggleCategory\('([^']+)'\)/);
+                if (match && match[1]) {
+                    const catId = match[1];
+                    const catTable = document.getElementById(catId);
+                    if (catTable && (catTable.classList.contains('hidden') || catTable.style.display === 'none')) {
+                        // Use the existing toggleCategory function to expand it properly
+                        toggleCategory(catId);
+                    }
+                }
+                // --------------------------------
+
                 // Focus Highlight
                 document.querySelectorAll('.category-sep-row div.bg-auraa-red').forEach(d => {
                     d.classList.remove('ring-4', 'ring-white/50', 'scale-[1.01]', 'shadow-2xl', 'relative', 'z-40');

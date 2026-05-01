@@ -16,7 +16,11 @@ from .views_dashboard import (
     DashboardAnalysisView, DashboardReportCreateView, DashboardPricelistListView, PricelistToggleActiveView,
     DashboardPricelistCreateView, PricelistSaveView, DashboardPricelistDetailView, DashboardPricelistEditView,
     PricelistUpdateView, DashboardCouponListView, CouponToggleActiveView,
-    PricelistCheckNameAPIView, PricelistVersionDetailAPIView, PricelistListAPIView
+    PricelistCheckNameAPIView, PricelistVersionDetailAPIView, PricelistListAPIView,
+    CustomerToggleActiveView, CustomerDetailAPIView, CustomerUpdateAPIView, CustomerAutocompleteAPIView,
+    CustomerResetPasswordAPIView, ProductAutocompleteAPIView, CategoryAutocompleteAPIView, OrderAutocompleteAPIView,
+    PricelistAutocompleteAPIView, DashboardOrderUpdateStatusAPIView, DashboardOrderEditView, DashboardOrderUpdateAPIView,
+    DashboardCustomerImpersonateView
 )
 
 urlpatterns = [
@@ -29,9 +33,18 @@ urlpatterns = [
     path('dashboard/order/<str:trans_no>/', DashboardOrderDetailView.as_view(), name='dashboard_order_detail'),
     path('dashboard/order/<str:trans_no>/estimate/', DashboardOrderEstimateView.as_view(), name='dashboard_order_estimate'),
     path('dashboard/order/<str:trans_no>/download/', DashboardOrderDownloadView.as_view(), name='dashboard_order_download'),
+    path('dashboard/order/<str:trans_no>/status/update/', DashboardOrderUpdateStatusAPIView.as_view(), name='api_order_status_update'),
+    path('dashboard/order/<str:trans_no>/edit/', DashboardOrderEditView.as_view(), name='dashboard_order_edit'),
+    path('dashboard/order/<str:trans_no>/update/', DashboardOrderUpdateAPIView.as_view(), name='api_order_update'),
     path('dashboard/customers/', DashboardCustomerListView.as_view(), name='dashboard_customers'),
     path('dashboard/customers/export/', DashboardCustomerExportView.as_view(), name='dashboard_customers_export'),
     path('dashboard/customers/print/', DashboardCustomerPrintView.as_view(), name='dashboard_customers_print'),
+    path('dashboard/customers/<int:pk>/toggle/', CustomerToggleActiveView.as_view(), name='api_customer_toggle'),
+    path('dashboard/customers/<int:pk>/detail/', CustomerDetailAPIView.as_view(), name='api_customer_detail'),
+    path('dashboard/customers/<int:pk>/update/', CustomerUpdateAPIView.as_view(), name='api_customer_update'),
+    path('dashboard/customers/autocomplete/', CustomerAutocompleteAPIView.as_view(), name='api_customer_autocomplete'),
+    path('dashboard/customers/<int:pk>/reset-password/', CustomerResetPasswordAPIView.as_view(), name='api_customer_reset_password'),
+    path('dashboard/customers/<int:pk>/impersonate/', DashboardCustomerImpersonateView.as_view(), name='dashboard_customer_impersonate'),
     path('dashboard/analysis/', DashboardAnalysisView.as_view(), name='dashboard_analysis'),
     path('dashboard/reports/create/', DashboardReportCreateView.as_view(), name='dashboard_report_create'),
     path('dashboard/pricelists/', DashboardPricelistListView.as_view(), name='dashboard_pricelists'),
@@ -47,6 +60,12 @@ urlpatterns = [
     path('dashboard/coupons/', DashboardCouponListView.as_view(), name='dashboard_coupons'),
     path('dashboard/coupons/<int:pk>/toggle/', CouponToggleActiveView.as_view(), name='api_coupon_toggle'),
     path('admin/category/', AdminActiveCategoryListView.as_view(), name='admin_active_categories'),
+    
+    # Autocomplete APIs
+    path('dashboard/products/autocomplete/', ProductAutocompleteAPIView.as_view(), name='api_product_autocomplete'),
+    path('dashboard/categories/autocomplete/', CategoryAutocompleteAPIView.as_view(), name='api_category_autocomplete'),
+    path('dashboard/orders/autocomplete/', OrderAutocompleteAPIView.as_view(), name='api_order_autocomplete'),
+    path('dashboard/pricelists/autocomplete/', PricelistAutocompleteAPIView.as_view(), name='api_pricelist_autocomplete'),
 
     path('', HomeView.as_view(), name='home'),
     path('products/', ProductListView.as_view(), name='product_list'),

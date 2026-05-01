@@ -46,21 +46,34 @@
         <p class="text-[11px] font-black uppercase tracking-[0.3em] text-gray-500 mt-4">Generated on {% now "F d, Y H:i" %}</p>
     </div>
 
-    <!-- Controls -->
-    <div class="mb-8 bg-auraa-red p-6 rounded-[2.5rem] shadow-xl relative group no-print">
+    <div class="mb-8 bg-auraa-red p-6 rounded-[2.5rem] shadow-xl relative group no-print sticky top-[114px] z-[50]">
         <div class="absolute inset-0 overflow-hidden rounded-[2.5rem] pointer-events-none">
             <div class="absolute -top-24 -right-24 w-48 h-48 bg-white/10 rounded-full blur-[60px] group-hover:bg-white/20 transition-all duration-1000"></div>
         </div>
-        <div class="relative z-10 w-full">
+        <div class="relative z-10 w-full flex flex-col md:flex-row gap-4">
             <form method="GET" class="relative w-full max-w-2xl flex items-center">
-                <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 text-white w-[18px] h-[18px]"></i>
+                <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-[18px] h-[18px]"></i>
                 <input type="text" name="q" id="search-input" placeholder="Search categories..." value="{{ search_query|default:'' }}" 
-                       class="w-full pl-12 pr-12 py-3.5 bg-white/10 border border-white/20 rounded-2xl text-sm font-bold text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-white/40 transition-all"
+                       class="w-full pl-12 pr-12 py-3.5 bg-white border border-gray-100 rounded-2xl text-sm font-bold text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white/40 transition-all"
                        oninput="toggleClearSearchBtn()">
-                <button type="button" id="clear-search-btn" onclick="clearSearch()" class="absolute right-4 top-1/2 -translate-y-1/2 text-white hover:text-white transition-colors {% if not search_query %}hidden{% endif %}">
+                <button type="button" id="clear-search-btn" onclick="clearSearch()" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors {% if not search_query %}hidden{% endif %}">
                     <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
+                <!-- Autocomplete Dropdown -->
+                <div id="autocomplete-results" class="hidden absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-y-auto max-h-64 z-[100] animate-in fade-in slide-in-from-top-2 duration-200">
+                </div>
             </form>
+            <div class="flex items-center gap-2">
+                <button type="submit" form="search-form" class="bg-green-600 hover:bg-green-700 text-white border border-green-500/20 rounded-2xl px-8 py-3.5 text-[12px] font-black uppercase tracking-widest transition-all shadow-lg hover:shadow-xl active:scale-95 flex items-center gap-2">
+                    <i data-lucide="play" class="w-3 h-3 fill-current"></i>
+                    <span>GO</span>
+                </button>
+
+                <button type="button" onclick="resetFilters()" class="bg-blue-900 hover:bg-blue-800 text-white border border-blue-800/20 rounded-2xl px-8 py-3.5 text-[12px] font-black uppercase tracking-widest transition-all shadow-lg hover:shadow-xl active:scale-95 flex items-center gap-2">
+                    <i data-lucide="rotate-ccw" class="w-3 h-3"></i>
+                    <span>RESET</span>
+                </button>
+            </div>
         </div>
     </div>
 
@@ -175,6 +188,80 @@
     function clearSearch() {
         document.getElementById('search-input').value = '';
         document.getElementById('search-input').closest('form').submit();
+    }
+
+    function resetFilters() {
+        document.getElementById('search-input').value = '';
+        window.location.href = window.location.pathname;
+    }
+
+    // Autocomplete Logic
+    const searchInput = document.getElementById('search-input');
+    const autocompleteResults = document.getElementById('autocomplete-results');
+    let debounceTimer;
+
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            const query = this.value.trim();
+            clearTimeout(debounceTimer);
+            
+            // Immediately clear and hide previous results while typing
+            autocompleteResults.innerHTML = '';
+            autocompleteResults.classList.add('hidden');
+            
+            if (query.length < 2) return;
+
+            debounceTimer = setTimeout(async () => {
+                // Show a clear loading state
+                autocompleteResults.innerHTML = `
+                    <div class="px-6 py-8 text-center bg-white rounded-xl" style="background-color: white !important;">
+                        <div class="inline-block w-8 h-8 border-[3px] border-red-600 border-t-transparent rounded-full animate-spin" style="border-color: #ef4444; border-top-color: transparent;"></div>
+                        <p style="color: #ef4444 !important;" class="text-[10px] font-black uppercase tracking-widest mt-3">Fetching Results...</p>
+                    </div>
+                `;
+                autocompleteResults.classList.remove('hidden');
+
+                try {
+                    const response = await fetch(`/dashboard/categories/autocomplete/?q=${encodeURIComponent(query)}`);
+                    const result = await response.json();
+                    
+                    if (result.status === 'success' && result.results.length > 0) {
+                        autocompleteResults.innerHTML = result.results.map(item => {
+                            const escapedName = item.name.replace(/'/g, "\\'");
+                            return `
+                                <div onclick="selectAutocomplete('${escapedName}')" 
+                                     style="background-color: white; color: black;"
+                                     class="autocomplete-item px-6 py-4 border-b border-gray-100 last:border-0 hover:bg-red-600 hover:text-white group cursor-pointer transition-colors bg-white">
+                                    <div class="flex flex-col">
+                                        <span style="color: #111827;" class="text-sm font-black uppercase tracking-tight group-hover:text-white">${item.name}</span>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('');
+                        autocompleteResults.classList.remove('hidden');
+                    } else {
+                        autocompleteResults.innerHTML = '';
+                        autocompleteResults.classList.add('hidden');
+                    }
+                } catch (error) {
+                    console.error('Autocomplete error:', error);
+                }
+            }, 150);
+        });
+    }
+
+    // Close autocomplete when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!searchInput || !autocompleteResults) return;
+        if (!searchInput.contains(e.target) && !autocompleteResults.contains(e.target)) {
+            autocompleteResults.classList.add('hidden');
+        }
+    });
+
+    window.selectAutocomplete = function(name) {
+        searchInput.value = name;
+        autocompleteResults.classList.add('hidden');
+        searchInput.form.submit();
     }
 </script>
 {% endblock %}

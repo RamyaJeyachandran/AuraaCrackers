@@ -34,6 +34,41 @@
             </button>
         </div>
     </div>
+
+    <!-- Controls -->
+    <div class="m-6 bg-auraa-red p-6 rounded-[2.5rem] shadow-xl relative group no-print sticky top-[114px] z-[50]">
+        <div class="absolute inset-0 overflow-hidden rounded-[2.5rem] pointer-events-none">
+            <div class="absolute -top-24 -right-24 w-48 h-48 bg-white/10 rounded-full blur-[60px] group-hover:bg-white/20 transition-all duration-1000"></div>
+        </div>
+        <div class="relative z-10 flex flex-col md:flex-row gap-4 w-full">
+            <form method="GET" class="relative w-full flex flex-col md:flex-row items-center gap-4">
+                <div class="relative w-full md:w-96 flex-shrink-0">
+                    <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-[18px] h-[18px]"></i>
+                    <input type="text" name="q" id="search-input" placeholder="Search Categories..." value="{{ search_query|default:'' }}" 
+                           class="w-full pl-12 pr-12 py-3.5 bg-white border border-gray-100 rounded-2xl text-sm font-bold text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white/40 transition-all">
+                    <button type="button" id="clear-search-btn" onclick="clearSearch()" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors {% if not search_query %}hidden{% endif %}">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                    <!-- Autocomplete Dropdown -->
+                    <div id="autocomplete-results" class="hidden absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-y-auto max-h-64 z-[100] animate-in fade-in slide-in-from-top-2 duration-200">
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <button type="submit" class="bg-green-600 hover:bg-green-700 text-white border border-green-500/20 rounded-2xl px-8 py-3.5 text-[12px] font-black uppercase tracking-widest transition-all shadow-lg hover:shadow-xl active:scale-95 flex items-center gap-2">
+                        <i data-lucide="play" class="w-3 h-3 fill-current"></i>
+                        <span>GO</span>
+                    </button>
+
+                    <button type="button" onclick="resetFilters()" class="bg-blue-900 hover:bg-blue-800 text-white border border-blue-800/20 rounded-2xl px-8 py-3.5 text-[12px] font-black uppercase tracking-widest transition-all shadow-lg hover:shadow-xl active:scale-95 flex items-center gap-2">
+                        <i data-lucide="rotate-ccw" class="w-3 h-3"></i>
+                        <span>RESET</span>
+                    </button>
+                </div>
+                <noscript><button type="submit" class="hidden">Search</button></noscript>
+            </form>
+        </div>
+    </div>
     
     <!-- Print Only Header -->
     <div class="hidden print-only p-8 text-center border-b-2 border-gray-900 mb-8">
@@ -44,18 +79,18 @@
     <div class="overflow-x-auto">
         <table class="w-full text-left border-collapse">
             <thead>
-                <tr class="bg-white border-b border-gray-50">
-                    <th class="py-5 px-8 text-[10px] font-black uppercase tracking-widest text-gray-400">#</th>
-                    <th class="py-5 px-8 text-[10px] font-black uppercase tracking-widest text-gray-400">Category Name</th>
-                    <th class="py-5 px-8 text-[10px] font-black uppercase tracking-widest text-gray-400">Order/Rank</th>
-                    <th class="py-5 px-8 text-[10px] font-black uppercase tracking-widest text-gray-400">Status</th>
+                <tr class="bg-gray-900 text-white border-b border-gray-800">
+                    <th class="py-5 px-8 text-[10px] font-black uppercase tracking-widest text-white/90 border border-gray-800">#</th>
+                    <th class="py-5 px-8 text-[10px] font-black uppercase tracking-widest text-white/90 border border-gray-800">Category Name</th>
+                    <th class="py-5 px-8 text-[10px] font-black uppercase tracking-widest text-white/90 border border-gray-800">Order/Rank</th>
+                    <th class="py-5 px-8 text-[10px] font-black uppercase tracking-widest text-white/90 border border-gray-800">Status</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-50">
                 {% for category in categories %}
                 <tr class="hover:bg-gray-50 transition-colors group">
-                    <td class="py-6 px-8 text-xs font-bold text-gray-400 italic">#{{ category.id }}</td>
-                    <td class="py-6 px-8">
+                    <td class="py-6 px-8 text-xs font-bold text-gray-900 italic border border-gray-800">#{{ category.id }}</td>
+                    <td class="py-6 px-8 border border-gray-800">
                         <div class="flex items-center space-x-4">
                             {% if category.image %}
                                 <img src="{{ category.image }}" class="w-10 h-10 rounded-xl object-cover bg-gray-100" />
@@ -67,12 +102,12 @@
                             <span class="text-sm font-black text-gray-900 uppercase tracking-tight">{{ category.name }}</span>
                         </div>
                     </td>
-                    <td class="py-6 px-8">
+                    <td class="py-6 px-8 border border-gray-800">
                         <span class="px-3 py-1 bg-gray-100 text-[10px] font-black uppercase tracking-widest text-gray-500 rounded-lg">
                             {{ category.order }}
                         </span>
                     </td>
-                    <td class="py-6 px-8">
+                    <td class="py-6 px-8 border border-gray-800">
                         <span class="px-3 py-1 bg-green-100 text-green-600 border border-green-200 text-[9px] font-black uppercase tracking-widest rounded-full">
                             Active
                         </span>
@@ -97,6 +132,86 @@
 
 {% block extra_js %}
 <script>
+    function clearSearch() {
+        document.getElementById('search-input').value = '';
+        document.getElementById('search-input').closest('form').submit();
+    }
+
+    function resetFilters() {
+        document.getElementById('search-input').value = '';
+        window.location.href = window.location.pathname;
+    }
+
+    // Autocomplete Logic
+    const searchInput = document.getElementById('search-input');
+    const autocompleteResults = document.getElementById('autocomplete-results');
+    let debounceTimer;
+
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            const query = this.value.trim();
+            clearTimeout(debounceTimer);
+            
+            // Immediately clear and hide previous results while typing
+            autocompleteResults.innerHTML = '';
+            autocompleteResults.classList.add('hidden');
+            
+            if (query.length < 2) return;
+
+            debounceTimer = setTimeout(async () => {
+                // Show a clear loading state
+                autocompleteResults.innerHTML = `
+                    <div class="px-6 py-8 text-center bg-white rounded-xl" style="background-color: white !important;">
+                        <div class="inline-block w-8 h-8 border-[3px] border-red-600 border-t-transparent rounded-full animate-spin" style="border-color: #ef4444; border-top-color: transparent;"></div>
+                        <p style="color: #ef4444 !important;" class="text-[10px] font-black uppercase tracking-widest mt-3">Fetching Results...</p>
+                    </div>
+                `;
+                autocompleteResults.classList.remove('hidden');
+
+                try {
+                    const response = await fetch(`/dashboard/categories/autocomplete/?q=${encodeURIComponent(query)}`);
+                    const result = await response.json();
+                    
+                    if (result.status === 'success' && result.results.length > 0) {
+                        autocompleteResults.innerHTML = result.results.map(item => {
+                            const escapedName = item.name.replace(/'/g, "\\'");
+                            return `
+                                <div onclick="selectAutocomplete('${escapedName}')" 
+                                     style="background-color: white; color: black;"
+                                     class="autocomplete-item px-6 py-4 border-b border-gray-100 last:border-0 hover:bg-red-600 hover:text-white group cursor-pointer transition-colors bg-white">
+                                    <div class="flex flex-col">
+                                        <span style="color: #111827;" class="text-sm font-black uppercase tracking-tight group-hover:text-white">${item.name}</span>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('');
+                        autocompleteResults.classList.remove('hidden');
+                    } else {
+                        autocompleteResults.innerHTML = '';
+                        autocompleteResults.classList.add('hidden');
+                    }
+                } catch (error) {
+                    console.error('Autocomplete error:', error);
+                }
+            }, 150);
+        });
+    }
+
+
+    // Close autocomplete when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!searchInput || !autocompleteResults) return;
+        if (!searchInput.contains(e.target) && !autocompleteResults.contains(e.target)) {
+            autocompleteResults.classList.add('hidden');
+        }
+    });
+
+    window.selectAutocomplete = function(name) {
+        searchInput.value = name;
+        autocompleteResults.classList.add('hidden');
+        searchInput.form.submit();
+    }
+
     function downloadCSV(csv, filename) {
         let csvFile;
         let downloadLink;

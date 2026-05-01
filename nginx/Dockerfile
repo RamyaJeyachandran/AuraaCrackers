@@ -1,7 +1,7 @@
 FROM nginx:latest
 
-# Remove default configuration if any
-# RUN rm /etc/nginx/conf.d/default.conf
+# Remove default configuration to prevent conflicts
+RUN rm -f /etc/nginx/conf.d/default.conf
 
 # Copy custom configuration
 COPY nginx/nginx.conf /etc/nginx/nginx.conf

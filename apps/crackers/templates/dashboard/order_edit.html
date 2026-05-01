@@ -1,0 +1,727 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block title %}Edit Order {{ order.trans_no }} | Auraa Crackers{% endblock %}
+
+{% block extra_head %}
+<style>
+    :root {
+        --auraa-red: #f5071d;
+        --glass: rgba(255, 255, 255, 0.08);
+        --glass-border: rgba(255, 255, 255, 0.15);
+    }
+    .float-section {
+        background-color: var(--auraa-red);
+        border-radius: 4rem;
+        margin: 2.5rem 1.5rem;
+        box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.3);
+        position: relative;
+        overflow: hidden;
+        transform-style: preserve-3d;
+    }
+    .luxury-dropdown-menu {
+        transform: scaleY(0);
+        opacity: 0;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        pointer-events: none;
+        z-index: 999;
+    }
+    .luxury-dropdown-menu.active {
+        transform: scaleY(1);
+        opacity: 1;
+        pointer-events: auto;
+    }
+    .luxury-dropdown-option:hover {
+        background: #fff5f5;
+        color: var(--auraa-red) !important;
+    }
+    .luxury-dropdown-option.selected {
+        background: var(--auraa-red);
+        color: white !important;
+    }
+    .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #f5071d; border-radius: 10px; }
+    
+    #table-header-sticky th:first-child { border-top-left-radius: 1.5rem !important; }
+    #table-header-sticky th:last-child { border-top-right-radius: 1.5rem !important; }
+
+    .items-count-pill {
+        height: 28px; 
+        min-width: 80px;
+        padding: 0 16px;
+        border-radius: 999px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #ffffff;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .items-count-pill span {
+        font-size: 11px;
+        color: #0A325A;
+        font-weight: 900;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+    }
+
+    @media (max-width: 1024px) {
+        .responsive-table thead { display: none; }
+        .responsive-table, .responsive-table tbody, .responsive-table tr, .responsive-table td { display: block; width: 100%; }
+        .product-row {
+            display: grid !important;
+            grid-template-columns: minmax(0, 1fr) 100px;
+            padding: 1.5rem 0.75rem !important;
+            background: #0A325A !important;
+            border-bottom: 2px solid rgba(255,255,255,0.4) !important;
+        }
+        /* Mobile specific grid logic from products.html would go here if needed */
+    }
+
+    /* 3D Button Styles */
+    .btn-3d-container {
+        position: relative;
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        outline-offset: 4px;
+        transition: filter 250ms;
+        user-select: none;
+        width: 100%;
+    }
+    .btn-3d-shadow {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 12px;
+        background: hsl(0deg 0% 0% / 0.25);
+        will-change: transform;
+        transform: translateY(2px);
+        transition: transform 600ms cubic-bezier(.3, .7, .4, 1);
+    }
+    .btn-3d-edge {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 12px;
+    }
+    .btn-3d-edge-red { background: linear-gradient(to left, hsl(340deg 100% 16%) 0%, hsl(340deg 100% 32%) 8%, hsl(340deg 100% 32%) 92%, hsl(340deg 100% 16%) 100%); }
+    .btn-3d-front {
+        display: block;
+        position: relative;
+        padding: 12px 24px;
+        border-radius: 12px;
+        color: white;
+        font-weight: 900;
+        text-transform: uppercase;
+        font-size: 1.1rem;
+        transform: translateY(-4px);
+        will-change: transform;
+        transition: transform 600ms cubic-bezier(.3, .7, .4, 1);
+    }
+    .btn-3d-front-red { background: var(--auraa-red); }
+    .btn-3d-container:hover .btn-3d-front { transform: translateY(-6px); transition: transform 250ms cubic-bezier(.3, .7, .4, 1.5); }
+    .btn-3d-container:active .btn-3d-front { transform: translateY(-2px); transition: transform 34ms; }
+    .btn-3d-container:hover .btn-3d-shadow { transform: translateY(4px); transition: transform 250ms cubic-bezier(.3, .7, .4, 1.5); }
+    .btn-3d-container:active .btn-3d-shadow { transform: translateY(1px); transition: transform 34ms; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="max-w-full mx-auto px-2 lg:px-8 pt-2 lg:pt-4 pb-32 lg:pb-16">
+    <!-- Header Section -->
+    <div class="flex items-center justify-between mb-6 bg-[#0A325A] p-6 rounded-[2rem] text-white">
+        <div>
+            <h1 class="text-2xl font-black uppercase tracking-widest">Edit Order</h1>
+            <p class="text-xs font-bold text-white/70 uppercase tracking-widest mt-1">Order No: {{ order.trans_no }} | {{ order.customer.name }}</p>
+        </div>
+        <div class="flex items-center gap-3">
+            <button onclick="handleUpdateOrder()" class="flex items-center gap-2 bg-auraa-red hover:bg-red-700 text-white px-6 py-2.5 rounded-xl transition-all text-xs font-black uppercase tracking-widest shadow-lg">
+                <i data-lucide="save" class="w-4 h-4"></i>
+                Update Order
+            </button>
+            <a href="{% url 'dashboard_orders' %}" class="flex items-center gap-2 bg-white hover:bg-gray-100 text-[#0A325A] px-6 py-2.5 rounded-xl transition-all text-xs font-black uppercase tracking-widest border border-white/20 shadow-lg">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                Back to Orders
+            </a>
+        </div>
+    </div>
+
+    <div class="flex flex-col gap-4">
+        <main class="flex-grow space-y-4">
+            <!-- Controls (Sticky Filter Bar) -->
+            <div id="filter-controls-bar" class="bg-auraa-red p-3 sm:p-4 rounded-[1.5rem] shadow-xl sticky top-0 z-[9999] group mt-4">
+                <div class="relative z-30 flex flex-col xl:flex-row gap-3 lg:gap-4 justify-between xl:items-center w-full">
+                    
+                    <!-- Left: Category + Search Group -->
+                    <div class="flex items-center w-full xl:w-[22rem] flex-shrink-0 order-1">
+                        <div class="flex w-full bg-white overflow-visible h-10 lg:h-12 order-1 shadow-[0_2px_10px_rgba(0,0,0,0.1)] rounded-xl relative">
+                            <div class="relative h-full flex-shrink-0">
+                                <button onclick="toggleCategoryDropdown(event)" type="button" class="h-full bg-[#0A325A] text-white px-4 sm:px-6 flex items-center gap-2 text-xs lg:text-sm font-semibold whitespace-nowrap hover:bg-[#072442] transition-colors rounded-l-xl">
+                                    <span id="current-category-label">Category</span>
+                                    <i data-lucide="chevron-down" id="category-chevron" class="w-3.5 h-3.5 transition-transform"></i>
+                                </button>
+                                <div id="category-options" class="luxury-dropdown-menu absolute top-full left-0 mt-2 w-64 bg-white border border-gray-100 rounded-2xl shadow-xl overflow-hidden z-50">
+                                    <div id="cat-options-list" class="max-h-64 overflow-y-auto custom-scrollbar">
+                                        <button onclick="scrollToCategory('all', 'Category')" class="luxury-dropdown-option block w-full px-6 py-4 text-left text-[10px] font-black uppercase tracking-widest text-[#0A325A]/70 hover:text-[#0A325A] transition-all border-b border-gray-50">
+                                            <span>All Categories</span>
+                                        </button>
+                                        {% for cat in categories %}
+                                        <button onclick="scrollToCategory('{{ cat.name|slugify }}', '{{ cat.name|escapejs }}')" class="luxury-dropdown-option block w-full px-6 py-4 text-left text-[10px] font-black uppercase tracking-widest text-[#0A325A]/70 hover:text-[#0A325A] transition-all border-b border-gray-50">
+                                            <span>{{ cat.name }}</span>
+                                        </button>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex-grow relative h-full flex items-center bg-white rounded-r-xl">
+                                <input type="text" id="search-input" placeholder="Search for a product" 
+                                    class="w-full h-full px-4 text-xs lg:text-sm font-medium text-gray-700 border-none outline-none focus:ring-0 rounded-r-xl"
+                                    oninput="handleSearchInput(event)">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Center: Stats Dashboard (Image 1 Style) -->
+                    <div class="flex items-center overflow-x-auto py-1 px-2 gap-3 text-white text-[10px] lg:text-[12px] font-bold whitespace-nowrap order-2 flex-grow w-full xl:w-auto custom-scrollbar">
+                        <div class="flex items-center gap-1.5 bg-[#0A325A] px-3 py-2 rounded-lg border border-white/10">
+                            <i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i>
+                            <span id="edit-filter-selected-count" class="text-[#ffff00] font-black">0</span>
+                        </div>
+                        
+                        <div class="flex items-center gap-2">
+                            <span>Net Total :</span>
+                            <span id="edit-filter-net-total" class="bg-[#0A325A] text-[#ffff00] px-3 py-2 rounded-lg font-black border border-white/10">₹ 0.00</span>
+                        </div>
+
+                        <div class="flex items-center gap-2">
+                            <span>You Save :</span>
+                            <span id="edit-filter-discount-total" class="bg-[#0A325A] text-[#ffff00] px-3 py-2 rounded-lg font-black border border-white/10">₹ 0.00</span>
+                        </div>
+
+                        <div class="flex items-center gap-2">
+                            <span>Sub Total :</span>
+                            <span id="edit-filter-sub-total" class="bg-[#0A325A] text-[#ffff00] px-3 py-2 rounded-lg font-black border border-white/10">₹ 0.00</span>
+                        </div>
+
+                        <div class="flex items-center gap-2">
+                            <span>Overall Total :</span>
+                            <span id="edit-filter-overall-total" class="bg-[#0A325A] text-[#ffff00] px-3 py-2 rounded-lg font-black border border-white/10">₹ 0.00</span>
+                        </div>
+                    </div>
+
+                    <!-- Right: Actions (Empty since toggle moved) -->
+                    <div class="flex items-center justify-end gap-2 order-3 w-10">
+                    </div>
+                </div>
+            </div>
+            <div id="product-list" class="mt-0">
+                <div class="relative bg-[#0A325A] rounded-3xl p-0 shadow-2xl border-2 border-white overflow-visible">
+                    <div class="overflow-visible" id="product-table-container">
+                        <table class="w-full text-left responsive-table border-collapse">
+                            <thead id="table-header-sticky" class="z-[100]">
+                                <tr class="bg-auraa-red border-b border-white">
+                                    <th class="sticky-th py-3 px-4 text-[13px] font-black uppercase text-white border-r border-white">
+                                        <div class="flex items-center gap-3">
+                                            <button onclick="toggleAllCategories()" class="w-6 h-6 bg-[#0A325A] text-white rounded flex items-center justify-center hover:bg-white hover:text-[#0A325A] transition-all flex-shrink-0">
+                                                <i data-lucide="layers-2" class="w-3.5 h-3.5"></i>
+                                            </button>
+                                            <span>Image</span>
+                                        </div>
+                                    </th>
+                                    <th class="sticky-th py-3 px-2 text-[13px] font-black uppercase text-white text-center border-r border-white">Product Code</th>
+                                    <th class="sticky-th py-3 px-2 text-[13px] font-black uppercase text-white text-center border-r border-white">Product Name</th>
+                                    <th class="sticky-th py-3 px-2 text-[13px] font-black uppercase text-white text-center border-r border-white">Content</th>
+                                    <th class="sticky-th py-3 px-2 text-[13px] font-black uppercase text-white text-center border-r border-white">Actual Price</th>
+                                    <th class="sticky-th py-3 px-2 text-[13px] font-black uppercase text-white text-center border-r border-white">Discounted Price</th>
+                                    <th class="sticky-th py-3 px-2 text-[13px] font-black uppercase text-white text-center border-r border-white">Quantity</th>
+                                    <th class="sticky-th py-3 px-2 text-[13px] font-black uppercase text-white text-center">Total</th>
+                                </tr>
+                            </thead>
+                            {% regroup products by category as category_list %}
+                            {% for category_group in category_list %}
+                                <tbody class="category-body">
+                                    <tr id="header-{{ category_group.grouper.name|slugify }}" class="cursor-pointer category-sep-row" onclick="toggleCategory('cat-{{ category_group.grouper.id }}')">
+                                        <td colspan="8" class="p-0 border-b border-white">
+                                            <div class="bg-auraa-red px-6 py-4 flex items-center relative">
+                                                <i data-lucide="minus" id="icon-cat-{{ category_group.grouper.id }}" class="w-4 h-4 text-white absolute left-6"></i>
+                                                <div class="flex-grow text-center">
+                                                    <h2 class="text-sm font-black uppercase tracking-[0.2em] text-white">{{ category_group.grouper.name }}</h2>
+                                                </div>
+                                                <div class="items-count-pill absolute right-6">
+                                                    <span>{{ category_group.list|length }} Items</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tbody id="cat-{{ category_group.grouper.id }}">
+                                    {% for product in category_group.list %}
+                                        <tr class="product-row bg-[#0A325A] border-b border-white" id="product-row-{{ product.id }}">
+                                            <td class="py-3 px-2 text-center border-r border-white">
+                                                <img src="{% if product.image %}{{ product.image }}{% else %}{% static 'images/no-image.png' %}{% endif %}" class="w-10 h-10 object-contain mx-auto" onerror="this.src='{% static 'images/no-image.png' %}'">
+                                            </td>
+                                            <td class="py-3 px-2 text-center border-r border-white text-white text-sm font-bold uppercase">{{ product.code }}</td>
+                                            <td class="py-3 px-2 text-center border-r border-white text-white text-sm font-bold uppercase">
+                                                <h3 class="hidden">{{ product.name }}</h3>
+                                                {{ product.name }}
+                                            </td>
+                                            <td class="py-3 px-2 text-center border-r border-white text-white text-sm font-bold uppercase">{{ product.unit.description|default:product.unit.name|default:'-' }}</td>
+                                            <td class="py-3 px-2 text-center border-r border-white text-white text-sm font-bold uppercase">
+                                                ₹{{ product.initial_mrp|floatformat:2 }}
+                                            </td>
+                                            <td class="py-3 px-2 text-center border-r border-white text-white text-sm font-bold uppercase">
+                                                ₹{{ product.initial_rate|floatformat:2 }}
+                                            </td>
+                                            <td class="py-3 px-2 text-center border-r border-white">
+                                                <div class="flex items-center justify-center bg-white rounded-xl p-1 w-fit mx-auto shadow-inner">
+                                                    <button onclick="updateQty('{{ product.id }}', -1)" class="w-8 h-8 text-[#0A325A] font-black hover:bg-gray-100 rounded-lg">-</button>
+                                                    <input type="number" id="qty-{{ product.id }}" value="{{ product.initial_qty }}" min="0" onchange="calculateTotal('{{ product.id }}')" class="w-10 text-center font-black text-[#0A325A] border-none focus:ring-0 [appearance:textfield]">
+                                                    <button onclick="updateQty('{{ product.id }}', 1)" class="w-8 h-8 text-[#0A325A] font-black hover:bg-gray-100 rounded-lg">+</button>
+                                                </div>
+                                            </td>
+                                            <td class="py-3 px-2 text-center text-white text-sm font-bold uppercase" id="total-{{ product.id }}">
+                                                ₹{{ product.initial_total|floatformat:2 }}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Summary Section (Bottom - Redesigned & Aligned Right) -->
+            <div class="mt-8 flex justify-end">
+                <div class="bg-white rounded-[2rem] border border-gray-100 shadow-2xl p-8 lg:p-12 w-full lg:w-[450px] space-y-8">
+                    <!-- Details Area -->
+                    <div class="space-y-6">
+                        <div class="space-y-4">
+                            <!-- Net Total -->
+                            <div class="flex justify-between items-center text-[11px] font-bold uppercase tracking-wider text-gray-500">
+                                <span>Net Total</span>
+                                <span id="edit-summary-net-total" class="text-[#0A325A]">₹ 0.00</span>
+                            </div>
+                            <!-- Discount Total -->
+                            <div class="flex justify-between items-center text-[11px] font-bold uppercase tracking-wider text-gray-500">
+                                <span>Discount Total</span>
+                                <span id="edit-summary-discount-total" class="text-green-600">₹ 0.00</span>
+                            </div>
+                            <!-- Sub Total -->
+                            <div class="flex justify-between items-center text-[11px] font-black uppercase tracking-widest text-[#0A325A] pt-2 border-t border-gray-50">
+                                <span>Sub Total</span>
+                                <span id="edit-summary-sub-total">₹ 0.00</span>
+                            </div>
+                        </div>
+
+                        <!-- Promo Section -->
+                        <div class="pt-4 border-t border-gray-50 space-y-3">
+                            <div class="flex justify-between items-center">
+                                <button onclick="showPromoInput()" class="flex items-center space-x-2 text-[10px] font-black uppercase tracking-widest text-auraa-red hover:underline">
+                                    <i data-lucide="ticket" class="w-3 h-3"></i>
+                                    <span>Have Promotion Code?</span>
+                                </button>
+                                <span id="edit-summary-promo-label" class="text-[10px] font-black text-auraa-red">- ₹ 0.00</span>
+                            </div>
+                            <div id="promo-input-container" class="hidden mt-3 flex items-center gap-2">
+                                <input type="text" id="promo-code-input" placeholder="CODE" class="flex-grow px-4 py-2 bg-gray-50 border border-gray-100 rounded-xl text-[10px] font-bold uppercase focus:outline-none focus:border-auraa-red">
+                                <button onclick="applyPromoCode()" class="px-4 py-2 bg-gray-900 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-auraa-red transition-all">Apply</button>
+                            </div>
+                            <div class="flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-auraa-red italic">
+                                <span>Min.Order Amount</span>
+                                <span>₹ 3000.00</span>
+                            </div>
+                        </div>
+
+                        <!-- Charges Section -->
+                        <div class="pt-4 border-t border-gray-50 space-y-3">
+                            <div class="flex justify-between items-center text-[11px] font-bold uppercase tracking-wider text-gray-500">
+                                <span>Packing Charges (3%)</span>
+                                <span id="edit-summary-packing" class="text-[#0A325A]">₹ 0.00</span>
+                            </div>
+                            <div class="flex justify-between items-center text-[11px] font-bold uppercase tracking-wider text-gray-500">
+                                <span>Round Off</span>
+                                <span id="edit-summary-roundoff" class="text-[#0A325A]">₹ 0.00</span>
+                            </div>
+                        </div>
+
+                        <!-- Overall Section -->
+                        <div class="pt-4 border-t-2 border-[#0A325A]">
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm font-black uppercase tracking-[0.2em] text-[#0A325A]">Overall Amount</span>
+                                <span id="edit-summary-overall" class="text-2xl font-black text-auraa-red">₹ 0.00</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Area (Below Overall) -->
+                    <div class="pt-4">
+                        <button id="update-order-btn-bottom" onclick="handleUpdateOrder()" class="w-full bg-auraa-red text-white py-6 rounded-[2rem] font-black uppercase tracking-widest text-sm shadow-2xl shadow-auraa-red/30 hover:bg-gray-900 transition-all active:scale-[0.98]">
+                            Update Order
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<!-- Modal for messages -->
+<div id="modal-overlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[10000] hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-[2.5rem] max-w-md w-full p-8 shadow-2xl transform scale-95 opacity-0 transition-all duration-300" id="modal-container">
+        <div id="modal-icon" class="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6"></div>
+        <h3 id="modal-title" class="text-xl font-black text-gray-900 text-center uppercase tracking-widest mb-2"></h3>
+        <p id="modal-message" class="text-sm font-bold text-gray-500 text-center mb-8"></p>
+        <button id="modal-close" onclick="hideModal()" class="w-full py-4 bg-[#0A325A] text-white rounded-xl font-black uppercase tracking-widest hover:bg-gray-900 transition-all">OK</button>
+    </div>
+</div>
+
+    {{ order_items_data|json_script:"current-items-data" }}
+    <script>
+    // Configuration
+    const transNo = "{{ order.trans_no }}";
+    let promoPer = parseFloat("{{ order.promo_per|default:0 }}") || 0;
+    const productData = {
+        {% for p in products %}
+        "{{ p.id }}": { 
+            price: parseFloat("{{ p.order_rate|default:0 }}") || 0, 
+            mrp: parseFloat("{{ p.order_mrp|default:0 }}") || 0 
+        },
+        {% endfor %}
+    };
+    const initialItems = JSON.parse(document.getElementById('current-items-data').textContent);
+    const quantities = {};
+    
+    // Ensure all initial keys are handled as strings and values as numbers
+    Object.keys(initialItems).forEach(key => {
+        quantities[String(key)] = parseInt(initialItems[key].qty) || 0;
+    });
+
+    // Initialize UI on Load: Sync quantities to inputs
+    document.addEventListener('DOMContentLoaded', () => {
+        // Sync initial quantities to inputs and update row totals
+        Object.keys(quantities).forEach(id => {
+            const input = document.getElementById('qty-' + id);
+            if (input) {
+                input.value = quantities[id];
+                
+                const price = productData[id]?.price || 0;
+                const total = quantities[id] * price;
+                const totalEl = document.getElementById('total-' + id);
+                if (totalEl) totalEl.innerText = '₹ ' + total.toLocaleString();
+            }
+        });
+        
+        updateOrderEditUI();
+        if (typeof updateStickyHeader === 'function') updateStickyHeader();
+    });
+
+    function updateQty(id, delta) {
+        const input = document.getElementById('qty-' + id);
+        if (!input) return;
+        let val = parseInt(input.value) || 0;
+        val = Math.max(0, val + delta);
+        input.value = val;
+        calculateTotal(id);
+    }
+
+    function calculateTotal(id) {
+        const input = document.getElementById('qty-' + id);
+        if (!input) return;
+
+        let qty = parseInt(input.value);
+        if (isNaN(qty)) {
+            qty = 0;
+            input.value = 0;
+        }
+        
+        const sid = String(id);
+        if (qty > 0) {
+            quantities[sid] = qty;
+        } else {
+            delete quantities[sid];
+        }
+        
+        const price = productData[sid]?.price || 0;
+        const total = qty * price;
+        const totalEl = document.getElementById('total-' + id);
+        if (totalEl) totalEl.innerText = '₹ ' + total.toLocaleString();
+        updateOrderEditUI();
+    }
+
+    function updateOrderEditUI() {
+        let grossTotalMRP = 0;
+        let productSavingsTotal = 0;
+        let distinctProductCount = 0;
+        
+        Object.keys(quantities).forEach(id => {
+            const qty = quantities[id];
+            const data = productData[id];
+            if (qty > 0 && data) {
+                const mrp = data.mrp || data.price || 0;
+                const price = data.price || 0;
+                
+                // Rule 2: Net Total = sum of Actual Price (MRP)
+                grossTotalMRP += qty * mrp;
+                
+                // Intermediate: sum of product discounts
+                productSavingsTotal += qty * (Math.max(0, mrp - price));
+                
+                // Rule 1: Cart icon Count = count of rows where quantity > 0
+                distinctProductCount++;
+            }
+        });
+
+        // Rule 3: You Save = sum of Product Discounts + Promo Discount
+        const netPriceTotal = grossTotalMRP - productSavingsTotal;
+        const promoDiscount = netPriceTotal * (promoPer / 100);
+        const totalYouSave = productSavingsTotal + promoDiscount;
+        
+        // Rule 4: SUB TOTAL = Net Total - You Save
+        const subTotal = grossTotalMRP - totalYouSave;
+        
+        // Rule 5: OVERALL AMOUNT = Sub Total + Packing Charges -> Rounded
+        const packingCharges = subTotal * 0.03;
+        const exactDecimalTotal = subTotal + packingCharges;
+        const roundedOverallAmount = Math.round(exactDecimalTotal);
+        
+        // Rule 6: ROUND OFF = Difference between Rounded and Exact decimal total
+        const roundOff = roundedOverallAmount - exactDecimalTotal;
+
+        const safeUpdate = (id, val) => {
+            const el = document.getElementById(id);
+            if (el) el.innerText = val;
+        };
+
+        // Update Sticky Bar (Rule 1, 2, 3, 4)
+        safeUpdate('edit-filter-selected-count', distinctProductCount);
+        safeUpdate('edit-filter-net-total', '₹ ' + grossTotalMRP.toFixed(2));
+        safeUpdate('edit-filter-discount-total', '₹ ' + totalYouSave.toFixed(2));
+        safeUpdate('edit-filter-sub-total', '₹ ' + subTotal.toFixed(2));
+        safeUpdate('edit-filter-overall-total', '₹ ' + roundedOverallAmount.toFixed(2));
+
+        // Update Summary Section
+        safeUpdate('edit-summary-net-total', '₹ ' + grossTotalMRP.toFixed(2));
+        safeUpdate('edit-summary-discount-total', '₹ ' + totalYouSave.toFixed(2));
+        safeUpdate('edit-summary-sub-total', '₹ ' + subTotal.toFixed(2));
+        safeUpdate('edit-summary-promo-label', '- ₹ ' + promoDiscount.toFixed(2));
+        safeUpdate('edit-summary-packing', '₹ ' + packingCharges.toFixed(2));
+        safeUpdate('edit-summary-roundoff', '₹ ' + roundOff.toFixed(2));
+        safeUpdate('edit-summary-overall', '₹ ' + roundedOverallAmount.toFixed(2));
+    }
+
+    function showPromoInput() {
+        const container = document.getElementById('promo-input-container');
+        container.classList.toggle('hidden');
+    }
+
+    async function applyPromoCode() {
+        const code = document.getElementById('promo-code-input').value;
+        if (!code) return;
+
+        try {
+            const response = await fetch(`{% url 'api_coupon_verify' %}?code=${code}`);
+            const data = await response.json();
+            if (data.status === 'success') {
+                promoPer = parseFloat(data.discount_per);
+                updateOrderEditUI();
+                showModal('Applied', `Promo code applied: ${data.discount_per}% discount`, 'success');
+            } else {
+                showModal('Invalid', data.message || 'Invalid promo code', 'error');
+            }
+        } catch (error) {
+            console.error('Error applying promo:', error);
+            showModal('Error', 'Failed to validate promo code', 'error');
+        }
+    }
+
+    async function handleUpdateOrder() {
+        const items = Object.keys(quantities).map(id => ({
+            product_id: id,
+            quantity: quantities[id]
+        })).filter(i => i.quantity > 0);
+
+        if (items.length === 0) {
+            showModal('Empty Order', 'Please select at least one item.', 'warning');
+            return;
+        }
+
+        const buttons = document.querySelectorAll('[onclick="handleUpdateOrder()"]');
+        buttons.forEach(btn => {
+            btn.style.pointerEvents = 'none';
+            btn.style.opacity = '0.5';
+            btn.innerText = 'UPDATING...';
+        });
+
+        try {
+            const response = await fetch(`{% url 'api_order_update' order.trans_no %}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({ items: items, promo_per: promoPer })
+            });
+
+            const data = await response.json();
+            if (data.status === 'success') {
+                showModal('Success', 'Order updated successfully!', 'success', 'View Order', () => {
+                    window.location.href = "{% url 'dashboard_order_detail' order.trans_no %}";
+                });
+            } else {
+                showModal('Error', data.message || 'Failed to update order.', 'error');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            showModal('Error', 'An unexpected error occurred.', 'error');
+        } finally {
+            buttons.forEach(btn => {
+                btn.style.pointerEvents = 'auto';
+                btn.style.opacity = '1';
+                btn.innerText = 'Update Order';
+            });
+        }
+    }
+
+    // Modal helpers
+    function showModal(title, message, type = 'info', btnText = 'OK', callback = null) {
+        const overlay = document.getElementById('modal-overlay');
+        const container = document.getElementById('modal-container');
+        const icon = document.getElementById('modal-icon');
+        const titleEl = document.getElementById('modal-title');
+        const msgEl = document.getElementById('modal-message');
+        const closeBtn = document.getElementById('modal-close');
+
+        titleEl.innerText = title;
+        msgEl.innerText = message;
+        closeBtn.innerText = btnText;
+
+        // Icon and Colors
+        icon.innerHTML = '';
+        if (type === 'success') {
+            icon.className = 'w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 bg-green-100 text-green-600';
+            icon.innerHTML = '<i data-lucide="check-circle" class="w-8 h-8"></i>';
+        } else if (type === 'error') {
+            icon.className = 'w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 bg-red-100 text-red-600';
+            icon.innerHTML = '<i data-lucide="alert-circle" class="w-8 h-8"></i>';
+        } else {
+            icon.className = 'w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 bg-blue-100 text-blue-600';
+            icon.innerHTML = '<i data-lucide="info" class="w-8 h-8"></i>';
+        }
+        
+        if (window.lucide) lucide.createIcons();
+
+        overlay.classList.remove('hidden');
+        setTimeout(() => {
+            container.classList.remove('scale-95', 'opacity-0');
+            container.classList.add('scale-100', 'opacity-100');
+        }, 10);
+
+        closeBtn.onclick = () => {
+            hideModal();
+            if (callback) callback();
+        };
+    }
+
+    function hideModal() {
+        const overlay = document.getElementById('modal-overlay');
+        const container = document.getElementById('modal-container');
+        container.classList.add('scale-95', 'opacity-0');
+        container.classList.remove('scale-100', 'opacity-100');
+        setTimeout(() => overlay.classList.add('hidden'), 300);
+    }
+
+    // Navbar and sticky logic
+    function toggleCategoryDropdown(e) {
+        if (e) e.stopPropagation();
+        document.getElementById('category-options').classList.toggle('active');
+        document.getElementById('category-chevron').classList.toggle('rotate-180');
+    }
+
+    function toggleCategory(id) {
+        const tbody = document.getElementById(id);
+        const icon = document.getElementById('icon-' + id);
+        if (tbody.style.display === 'none') {
+            tbody.style.display = '';
+            icon.setAttribute('data-lucide', 'minus');
+        } else {
+            tbody.style.display = 'none';
+            icon.setAttribute('data-lucide', 'plus');
+        }
+        if (window.lucide) lucide.createIcons();
+    }
+
+    function toggleAllCategories() {
+        const tbodies = document.querySelectorAll('tbody[id^="cat-"]');
+        const firstVisible = Array.from(tbodies).find(b => b.style.display !== 'none');
+        const newState = firstVisible ? 'none' : '';
+        tbodies.forEach(b => {
+            b.style.display = newState;
+            const icon = document.getElementById('icon-' + b.id);
+            if (icon) icon.setAttribute('data-lucide', newState === 'none' ? 'plus' : 'minus');
+        });
+        if (window.lucide) lucide.createIcons();
+    }
+
+    function scrollToCategory(slug, name) {
+        document.getElementById('current-category-label').innerText = name;
+        document.getElementById('category-options').classList.remove('active');
+        document.getElementById('category-chevron').classList.remove('rotate-180');
+
+        if (slug === 'all') {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            return;
+        }
+
+        const target = document.getElementById('header-' + slug);
+        if (target) {
+            const offset = 180;
+            const top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+            window.scrollTo({ top, behavior: 'smooth' });
+            
+            // Highlight
+            const row = target.querySelector('.bg-auraa-red');
+            row.classList.add('ring-4', 'ring-white/50');
+            setTimeout(() => row.classList.remove('ring-4', 'ring-white/50'), 2000);
+        }
+    }
+
+    function handleSearchInput(e) {
+        const query = e.target.value.toLowerCase();
+        const rows = document.querySelectorAll('.product-row');
+        rows.forEach(row => {
+            const name = row.querySelector('h3').innerText.toLowerCase();
+            const code = row.cells[1].innerText.toLowerCase();
+            if (name.includes(query) || code.includes(query)) {
+                row.style.display = '';
+                row.closest('tbody').style.display = ''; // Ensure category is visible
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    }
+
+    function updateStickyHeader() {
+        const bar = document.getElementById('filter-controls-bar');
+        const ths = document.querySelectorAll('.sticky-th');
+        if (bar && ths.length > 0) {
+            const h = bar.offsetHeight;
+            ths.forEach(th => th.style.top = h + 'px');
+        }
+    }
+
+    window.addEventListener('resize', updateStickyHeader);
+    document.addEventListener('click', () => {
+        document.getElementById('category-options').classList.remove('active');
+        document.getElementById('category-chevron').classList.remove('rotate-180');
+    });
+</script>
+{% endblock %}

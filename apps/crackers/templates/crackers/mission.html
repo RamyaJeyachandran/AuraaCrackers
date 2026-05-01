@@ -3,6 +3,16 @@
 
 {% block title %}Our Mission | Auraa Profile - Auraa Crackers{% endblock %}
 
+{% block extra_head %}
+<!-- GSAP for advanced animations -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+<style>
+    .fade-up { opacity: 0; }
+</style>
+{% endblock %}
+
 {% block content %}
 <!-- Back Navigation -->
 <div class="fixed top-32 md:top-60 left-6 md:left-10 z-[100000] w-auto">
@@ -28,7 +38,6 @@
             <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-black/20"></div>
         </div>
 
-    </div>
 
     <div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-20 flex flex-col items-center justify-center text-center mb-16 md:mb-40 mt-10 relative pt-20 md:pt-0">
         <div class="space-y-6 md:space-y-8 order-2 lg:order-1 flex flex-col items-center">
@@ -39,7 +48,7 @@
                 The Auraa <br />
                 Purpose
             </h1>
-            <div class="mt-6 md:mt-8 inline-flex items-center space-x-3 bg-white border border-white/20 px-6 py-3 md:px-8 md:py-4 rounded-2xl animate-float-in opacity-0">
+            <div class="mt-6 md:mt-8 inline-flex items-center space-x-3 bg-white border border-white/20 px-6 py-3 md:px-8 md:py-4 rounded-2xl fade-up">
                 <p class="text-auraa-red text-base md:text-xl font-bold italic tracking-wide">
                     "Igniting Celebrations, Strengthening Traditions"
                 </p>
@@ -200,4 +209,31 @@
         </div>
     </section>
 </div>
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Sequential Entrance Animations
+        gsap.utils.toArray('.fade-up').forEach((elem) => {
+            gsap.fromTo(elem, 
+                { opacity: 0, y: 100, rotateX: -10 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    rotateX: 0,
+                    duration: 1.5,
+                    ease: "power4.out",
+                    scrollTrigger: {
+                        trigger: elem,
+                        start: "top 90%",
+                        toggleActions: "play none none none"
+                    }
+                }
+            );
+        });
+    });
+</script>
+{% endblock %}
 {% endblock %}

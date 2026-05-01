@@ -77,6 +77,10 @@ class LoginAPIView(View):
 
             if user is not None:
                 if user.is_active:
+                    # Check if associated customer is active
+                    if hasattr(user, 'online_customer') and user.online_customer and not user.online_customer.is_active:
+                        return JsonResponse({'status': 'error', 'message': 'Your account has been deactivated. Please contact support.'}, status=403)
+
                     login(request, user)
                     # Success - determine role and redirect
                     display_name = user.full_name or user.username

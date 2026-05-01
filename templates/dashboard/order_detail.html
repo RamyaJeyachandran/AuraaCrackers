@@ -18,15 +18,26 @@
             <p class="text-gray-500 font-bold uppercase tracking-widest text-[10px] ml-9">Order detailed history and contents page</p>
         </div>
         <div class="flex items-center space-x-3">
-            <!-- Status Badge -->
-            <div class="px-5 py-2.5 rounded-full shadow-lg flex items-center space-x-2 border 
-                        {% if order.status == 'Delivered' %}bg-green-600 shadow-green-600/30 border-green-500/30
-                        {% elif order.status == 'Cancelled' %}bg-red-600 shadow-red-600/30 border-red-500/20
-                        {% elif order.status == 'Shipped' %}bg-purple-600 shadow-purple-600/30 border-purple-500/30
-                        {% elif order.status == 'Progressing' %}bg-orange-600 shadow-orange-600/30 border-orange-500/30
-                        {% else %}bg-blue-600 shadow-blue-600/30 border-blue-500/30{% endif %}">
-                <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
-                <span class="text-[10px] font-black text-white uppercase tracking-widest">Status: {{ order.status }}</span>
+            <!-- Status Dropdown -->
+            <div class="relative group">
+                <select onchange="updateOrderStatus('{{ order.trans_no }}', this.value)" 
+                        class="px-5 py-2.5 rounded-full shadow-lg flex items-center space-x-2 border outline-none appearance-none cursor-pointer pr-10 text-[10px] font-black text-white uppercase tracking-widest
+                        {% if order.status|lower == 'deliveryed' %}bg-green-600 shadow-green-600/30 border-green-500/30
+                        {% elif order.status|lower == 'cancelled' or order.status|lower == 'onhold' %}bg-red-600 shadow-red-600/30 border-red-500/20
+                        {% elif order.status|lower == 'distached' or order.status|lower == 'intransit' %}bg-blue-600 shadow-blue-600/30 border-blue-500/30
+                        {% elif order.status|lower == 'packed' %}bg-orange-600 shadow-orange-600/30 border-orange-500/30
+                        {% else %}bg-slate-900 shadow-slate-900/30 border-slate-700{% endif %}">
+                    <option value="ordered" {% if order.status|lower == 'ordered' or order.status == 'New' %}selected{% endif %}>Ordered</option>
+                    <option value="packed" {% if order.status|lower == 'packed' or order.status == 'Progressing' %}selected{% endif %}>Packed</option>
+                    <option value="distached" {% if order.status|lower == 'distached' or order.status == 'Shipped' %}selected{% endif %}>Dispatched</option>
+                    <option value="inTransit" {% if order.status|lower == 'intransit' %}selected{% endif %}>In Transit</option>
+                    <option value="deliveryed" {% if order.status|lower == 'deliveryed' or order.status == 'Delivered' %}selected{% endif %}>Delivered</option>
+                    <option value="onhold" {% if order.status|lower == 'onhold' %}selected{% endif %}>On Hold</option>
+                    <option value="cancelled" {% if order.status|lower == 'cancelled' %}selected{% endif %}>Cancelled</option>
+                </select>
+                <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-white">
+                    <i data-lucide="chevron-down" class="w-3.5 h-3.5"></i>
+                </div>
             </div>
 
             <div class="px-5 py-2.5 bg-auraa-red rounded-full shadow-lg shadow-auraa-red/30 flex items-center space-x-2 border border-red-500/30">
@@ -168,4 +179,33 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+async function updateOrderStatus(transNo, newStatus) {
+    try {
+        const formData = new FormData();
+        formData.append('status', newStatus);
+        
+        const response = await fetch(`/dashboard/order/${transNo}/status/update/`, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        });
+        
+        const result = await response.json();
+        if (result.status === 'success') {
+            location.reload(); 
+        } else {
+            alert('Error updating status: ' + result.message);
+        }
+    } catch (error) {
+        console.error('Update status error:', error);
+        alert('An error occurred while updating status.');
+    }
+}
+</script>
 {% endblock %}

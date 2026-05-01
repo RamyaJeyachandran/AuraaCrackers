@@ -1,13 +1,18 @@
 from django.views.generic import ListView, DetailView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.shortcuts import redirect
+from django.contrib.auth import login, logout
+from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.http import HttpResponse, JsonResponse
 import csv
+import json
+import decimal
 from django.views import View
+from django.db import transaction
 from django.db.models import Q, Prefetch, IntegerField, Value, Min, Case, When, Sum, Count
 from django.db.models.functions import Cast, Coalesce, LPad
-from .models import Category, Product, OnlineSales, Customer, Pricelist, PricelistItem, Coupon
+from .models import Category, Product, OnlineSales, OnlineSalesItem, Customer, Pricelist, PricelistItem, Coupon, CustomerAddress
+from .services import OrderService
 from apps.users.models import User
 
 class AdminRequiredMixin(UserPassesTestMixin):
@@ -21,7 +26,17 @@ class DashboardCategoryListView(LoginRequiredMixin, AdminRequiredMixin, ListView
     paginate_by = 30
     
     def get_queryset(self):
-        return Category.objects.filter(is_active=True).order_by('order')
+        qs = Category.objects.filter(is_active=True).order_by('order')
+        query = self.request.GET.get('q')
+        if query:
+            qs = qs.filter(name__icontains=query)
+        return qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['search_query'] = self.request.GET.get('q', '')
+        return context
+
 
 class DashboardProductListView(LoginRequiredMixin, AdminRequiredMixin, ListView):
     model = Product
@@ -52,7 +67,7 @@ class DashboardProductListView(LoginRequiredMixin, AdminRequiredMixin, ListView)
             
         query = self.request.GET.get('q')
         if query:
-            qs = qs.filter(name__icontains=query)
+            qs = qs.filter(Q(name__icontains=query) | Q(code__icontains=query))
         return qs
 
     def get_context_data(self, **kwargs):
@@ -84,21 +99,32 @@ class DashboardOrderListView(LoginRequiredMixin, AdminRequiredMixin, ListView):
         qs = OnlineSales.objects.all().select_related('customer', 'customer_address').order_by('-trans_dt')
         status = self.request.GET.get('status')
         if status and status != 'All':
-            qs = qs.filter(status=status)
+            if status == 'ordered':
+                qs = qs.filter(Q(status='ordered') | Q(status='New'))
+            elif status == 'packed':
+                qs = qs.filter(Q(status='packed') | Q(status='Progressing'))
+            elif status == 'distached':
+                qs = qs.filter(Q(status='distached') | Q(status='Shipped'))
+            elif status == 'deliveryed':
+                qs = qs.filter(Q(status='deliveryed') | Q(status='Delivered'))
+            else:
+                qs = qs.filter(status=status)
             
         category = self.request.GET.get('category')
         if category and category != 'All':
             qs = qs.filter(items__product__category__name=category).distinct()
             
         year = self.request.GET.get('year')
-        if not year:
+        query = self.request.GET.get('q')
+
+        # Default to current year only if no explicit year and no search query
+        if not year and not query:
             from datetime import datetime
             year = str(datetime.now().year)
             
-        if year and year != 'All':
+        if year and year != 'All' and not query:
             qs = qs.filter(trans_no__startswith=year)
             
-        query = self.request.GET.get('q')
         if query:
             qs = qs.filter(Q(trans_no__icontains=query) | Q(customer__name__icontains=query))
             
@@ -114,7 +140,7 @@ class DashboardOrderListView(LoginRequiredMixin, AdminRequiredMixin, ListView):
         current_year = datetime.now().year
         context['selected_year'] = self.request.GET.get('year', str(current_year))
         
-        context['statuses'] = ['New', 'Progressing', 'Shipped', 'Delivered', 'Cancelled']
+        context['statuses'] = ['ordered', 'packed', 'distached', 'inTransit', 'deliveryed', 'onhold', 'cancelled']
         context['categories'] = Category.objects.filter(is_active=True).order_by('order')
         # Generate years from 2024 to current year
         context['years'] = [str(y) for y in range(2024, current_year + 1)]
@@ -252,8 +278,9 @@ class DashboardCustomerListView(LoginRequiredMixin, AdminRequiredMixin, ListView
         if query:
             qs = qs.filter(
                 Q(name__icontains=query) | 
-                Q(contact_person_no__icontains=query)
-            )
+                Q(contact_person_no__icontains=query) |
+                Q(users__phone_number__icontains=query)
+            ).distinct()
             
         return qs
 
@@ -270,6 +297,9 @@ class DashboardCustomerListView(LoginRequiredMixin, AdminRequiredMixin, ListView
         context['total_customers'] = Customer.objects.count()
         context['total_orders'] = OnlineSales.objects.count()
         
+        from .models import State
+        context['states'] = State.objects.filter(is_active=True).order_by('name')
+        
         return context
 
 class DashboardCustomerExportView(DashboardCustomerListView):
@@ -281,7 +311,7 @@ class DashboardCustomerExportView(DashboardCustomerListView):
         response['Content-Disposition'] = 'attachment; filename="customers_full_report.csv"'
         
         writer = csv.writer(response)
-        writer.writerow(['S.No', 'Name', 'Phone', 'Password', 'Email', 'Address', 'City', 'State', 'Pincode', 'Orders Count', 'Status'])
+        writer.writerow(['S.No', 'Name', 'Phone', 'Email', 'Address', 'City', 'State', 'Pincode', 'Orders Count', 'Status'])
         
         queryset = self.get_queryset()
         for i, customer in enumerate(queryset, 1):
@@ -291,7 +321,6 @@ class DashboardCustomerExportView(DashboardCustomerListView):
                 i,
                 customer.name,
                 addr.phone if addr else customer.contact_person_no,
-                user.password if user else '-',
                 addr.email if addr else '',
                 f"{addr.address1} {addr.address2}" if addr else '',
                 addr.city_name if addr else '',
@@ -302,6 +331,76 @@ class DashboardCustomerExportView(DashboardCustomerListView):
             ])
             
         return response
+
+class CustomerToggleActiveView(LoginRequiredMixin, AdminRequiredMixin, View):
+    def post(self, request, pk):
+        try:
+            customer = Customer.objects.get(pk=pk)
+            customer.is_active = not customer.is_active
+            customer.save()
+            
+            # Optionally also deactivate associated user
+            # User.objects.filter(online_customer=customer).update(is_active=customer.is_active)
+            
+            return JsonResponse({'status': 'success', 'is_active': customer.is_active})
+        except Customer.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': 'Customer not found'}, status=404)
+
+class CustomerDetailAPIView(LoginRequiredMixin, AdminRequiredMixin, View):
+    def get(self, request, pk):
+        try:
+            customer = Customer.objects.prefetch_related('addresses').get(pk=pk)
+            addr = customer.addresses.first()
+            user = customer.users.first()
+            
+            data = {
+                'id': customer.id,
+                'name': customer.name,
+                'company': customer.company or '',
+                'contact_person': customer.contact_person or '',
+                'contact_person_no': customer.contact_person_no or (user.phone_number if user else ''),
+                'email': addr.email if addr else '',
+                'address1': addr.address1 if addr else '',
+                'address2': addr.address2 if addr else '',
+                'city_name': addr.city_name if addr else '',
+                'pincode': addr.pincode if addr else '',
+                'state_id': addr.state_id if addr and addr.state else '',
+                'is_active': customer.is_active,
+                'username': user.username if user else '',
+            }
+            return JsonResponse({'status': 'success', 'data': data})
+        except Customer.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': 'Customer not found'}, status=404)
+
+class CustomerUpdateAPIView(LoginRequiredMixin, AdminRequiredMixin, View):
+    def post(self, request, pk):
+        import json
+        try:
+            customer = Customer.objects.get(pk=pk)
+            data = json.loads(request.body)
+            
+            customer.name = data.get('name', customer.name)
+            # Remove company and contact_person update logic if not needed, 
+            # but keeping it in DB is fine as long as UI is removed.
+            customer.save()
+            
+            # Update Address
+            addr = customer.addresses.first()
+            if addr:
+                addr.email = data.get('email', addr.email)
+                addr.address1 = data.get('address1', addr.address1)
+                addr.address2 = data.get('address2', addr.address2)
+                addr.city_name = data.get('city_name', addr.city_name)
+                addr.pincode = data.get('pincode', addr.pincode)
+                if data.get('state_id'):
+                    addr.state_id = data.get('state_id')
+                addr.save()
+            
+            return JsonResponse({'status': 'success', 'message': 'Customer updated successfully'})
+        except Customer.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': 'Customer not found'}, status=404)
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
 
 class DashboardCustomerPrintView(DashboardCustomerListView):
     template_name = 'dashboard/customers_print.html'
@@ -680,3 +779,234 @@ class PricelistListAPIView(LoginRequiredMixin, AdminRequiredMixin, View):
     def get(self, request):
         names = Pricelist.objects.all().values_list('list_name', flat=True).distinct().order_by('list_name')
         return JsonResponse({'status': 'success', 'names': list(names)})
+
+class CustomerAutocompleteAPIView(LoginRequiredMixin, AdminRequiredMixin, View):
+    def get(self, request):
+        query = request.GET.get('q', '')
+        if len(query) < 2:
+            return JsonResponse({'status': 'success', 'results': []})
+            
+        customers = Customer.objects.filter(
+            Q(name__icontains=query) | 
+            Q(contact_person_no__icontains=query) |
+            Q(users__phone_number__icontains=query)
+        ).distinct().prefetch_related('users')[:10]
+        
+        results = []
+        for c in customers:
+            phone = c.contact_person_no
+            if not phone:
+                u = c.users.first()
+                phone = u.phone_number if u else ''
+                
+            results.append({
+                'id': c.id,
+                'name': c.name,
+                'phone': phone
+            })
+            
+        return JsonResponse({'status': 'success', 'results': results})
+
+class CustomerResetPasswordAPIView(LoginRequiredMixin, AdminRequiredMixin, View):
+    def post(self, request, pk):
+        try:
+            customer = Customer.objects.get(pk=pk)
+            data = json.loads(request.body)
+            new_password = data.get('password')
+            
+            if not new_password:
+                return JsonResponse({'status': 'error', 'message': 'Password is required'}, status=400)
+                
+            # Update all users associated with this customer
+            for user in customer.users.all():
+                user.set_password(new_password)
+                user.save()
+                
+            return JsonResponse({'status': 'success', 'message': 'Password reset successfully'})
+        except Customer.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': 'Customer not found'}, status=404)
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+
+class ProductAutocompleteAPIView(LoginRequiredMixin, AdminRequiredMixin, View):
+    def get(self, request):
+        query = request.GET.get('q', '')
+        if len(query) < 2:
+            return JsonResponse({'status': 'success', 'results': []})
+            
+        products = Product.objects.filter(
+            Q(name__icontains=query) | 
+            Q(code__icontains=query)
+        ).filter(is_active=True)[:10]
+        
+        results = [{'id': p.id, 'name': p.name, 'code': p.code} for p in products]
+        return JsonResponse({'status': 'success', 'results': results})
+
+class CategoryAutocompleteAPIView(LoginRequiredMixin, AdminRequiredMixin, View):
+    def get(self, request):
+        query = request.GET.get('q', '')
+        if len(query) < 2:
+            return JsonResponse({'status': 'success', 'results': []})
+            
+        categories = Category.objects.filter(
+            name__icontains=query,
+            is_active=True
+        )[:10]
+        
+        results = [{'id': c.id, 'name': c.name} for c in categories]
+        return JsonResponse({'status': 'success', 'results': results})
+
+class OrderAutocompleteAPIView(LoginRequiredMixin, AdminRequiredMixin, View):
+    def get(self, request):
+        query = request.GET.get('q', '')
+        if len(query) < 2:
+            return JsonResponse({'status': 'success', 'results': []})
+            
+        orders = OnlineSales.objects.filter(
+            Q(trans_no__icontains=query) | 
+            Q(customer__name__icontains=query)
+        ).select_related('customer')[:10]
+        
+        results = [{
+            'id': o.id, 
+            'trans_no': o.trans_no, 
+            'customer_name': o.customer.name,
+            'name': o.trans_no
+        } for o in orders]
+        return JsonResponse({'status': 'success', 'results': results})
+
+class PricelistAutocompleteAPIView(LoginRequiredMixin, AdminRequiredMixin, View):
+    def get(self, request):
+        query = request.GET.get('q', '')
+        if len(query) < 2:
+            return JsonResponse({'status': 'success', 'results': []})
+            
+        pricelists = Pricelist.objects.filter(
+            list_name__icontains=query
+        ).distinct()[:10]
+        
+        results = [{'id': p.id, 'name': p.name} for p in pricelists]
+        return JsonResponse({'status': 'success', 'results': results})
+
+
+class DashboardOrderUpdateStatusAPIView(LoginRequiredMixin, AdminRequiredMixin, View):
+    def post(self, request, trans_no):
+        try:
+            status = request.POST.get('status')
+            order = OnlineSales.objects.get(trans_no=trans_no)
+            order.status = status
+            order.save()
+            return JsonResponse({'status': 'success', 'message': f'Order {trans_no} updated to {status}'})
+        except OnlineSales.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': 'Order not found'}, status=404)
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+
+class DashboardOrderEditView(LoginRequiredMixin, AdminRequiredMixin, TemplateView):
+    template_name = 'dashboard/order_edit.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        trans_no = self.kwargs.get('trans_no')
+        order = get_object_or_404(OnlineSales, trans_no=trans_no)
+        
+        # Load all products and categories like in ProductListView
+        product_qs = Product.objects.filter(is_active=True, category__is_active=True).select_related('category')
+        
+        # Filter: code exists
+        product_qs = product_qs.filter(code__isnull=False).exclude(code='')
+        
+        # Annotation for numerical sorting by code
+        product_qs = product_qs.annotate(
+            padded_code=LPad('code', 10, Value('0'))
+        ).order_by('category__order', 'padded_code')
+        
+        # Pre-fill current items with historical pricing from tbl_onlinesales_items
+        order_items_dict = {}
+        for item in order.items.all():
+            # Use product_id (itemId in DB) as the primary key for matching
+            if item.product_id:
+                order_items_dict[str(item.product_id)] = {
+                    'qty': float(item.qty),
+                    'mrp': float(item.mrp) if item.mrp is not None else None,
+                    'rate': float(item.rate) if item.rate is not None else None
+                }
+        
+        # Attach order-specific data to each product for the template
+        products_list = list(product_qs)
+        for product in products_list:
+            item_data = order_items_dict.get(str(product.id), {})
+            product.initial_qty = int(item_data.get('qty', 0))
+            
+            # Pricing mapping
+            product.initial_mrp = item_data.get('mrp')
+            if product.initial_mrp is None:
+                product.initial_mrp = float(product.purchase_rate or product.original_price or product.price or 0)
+                
+            product.initial_rate = item_data.get('rate')
+            if product.initial_rate is None:
+                product.initial_rate = float(product.price or 0)
+            
+            product.initial_total = product.initial_qty * product.initial_rate
+
+        context['products'] = products_list
+        context['categories'] = Category.objects.filter(is_active=True).order_by('order')
+        context['order'] = order
+        context['order_items_data'] = order_items_dict
+        
+        return context
+
+class DashboardOrderUpdateAPIView(LoginRequiredMixin, AdminRequiredMixin, View):
+    def post(self, request, trans_no):
+        order = get_object_or_404(OnlineSales, trans_no=trans_no)
+        try:
+            data = json.loads(request.body)
+            items_data = data.get('items', []) # List of {product_id, quantity}
+            
+            with transaction.atomic():
+                # Clear existing items and re-add
+                order.items.all().delete()
+                
+                new_items = []
+                for item in items_data:
+                    try:
+                        product = Product.objects.get(id=item['product_id'])
+                        qty = decimal.Decimal(str(item['quantity']))
+                        if qty > 0:
+                            rate = product.price
+                            new_items.append(OnlineSalesItem(
+                                sales=order,
+                                product=product,
+                                item_name=product.name,
+                                item_code=product.code,
+                                rate=rate,
+                                mrp=product.original_price or product.purchase_rate or product.price,
+                                qty=qty,
+                                item_total=rate * qty,
+                                is_active=True,
+                                created_by=request.user
+                            ))
+                    except Product.DoesNotExist:
+                        continue
+                
+                if new_items:
+                    OnlineSalesItem.objects.bulk_create(new_items)
+                
+                # Recalculate order totals using Service
+                OrderService.recalculate_existing_order(order)
+                
+            return JsonResponse({'status': 'success', 'message': 'Order updated successfully'})
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+
+class DashboardCustomerImpersonateView(LoginRequiredMixin, AdminRequiredMixin, View):
+    def get(self, request, pk):
+        customer = get_object_or_404(Customer, pk=pk)
+        user = customer.users.first()
+        if not user:
+            return HttpResponse("No user account found for this customer", status=400)
+        
+        # Logout admin and login as the selected user
+        logout(request)
+        login(request, user)
+        return redirect('home')

@@ -22,19 +22,13 @@
     <div class="mb-12 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 no-print">
         <div>
             <h1 class="text-2xl md:text-4xl font-black text-gray-900 tracking-tight uppercase mb-2">Manage <span class="text-auraa-red">Customers</span></h1>
-            <p class="text-gray-500 font-bold uppercase tracking-widest text-[10px]">Overview of all customers and their status</p>
         </div>
         <div class="flex flex-wrap items-center gap-3">
             <div class="px-5 py-2.5 bg-auraa-red rounded-full shadow-lg shadow-auraa-red/30 flex items-center space-x-2 border border-red-500/30">
                 <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
                 <span class="text-[10px] font-black text-white uppercase tracking-widest">Customers: {{ total_customers }}</span>
             </div>
-            <div class="px-5 py-2.5 bg-blue-600 rounded-full shadow-lg shadow-blue-600/30 flex items-center space-x-2 border border-blue-500/30">
-                <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
-                <span class="text-[10px] font-black text-white uppercase tracking-widest">Orders: {{ total_orders }}</span>
-            </div>
             <a href="{% url 'dashboard_customers_print' %}?q={{ search_query }}&status={{ selected_status }}&orders={{ selected_orders }}&sort={{ sort_by }}&dir={{ sort_dir }}" 
-               target="_blank"
                class="px-5 py-2.5 bg-gray-900 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-black transition-all flex items-center space-x-2 shadow-lg shadow-gray-200">
                 <i data-lucide="printer" class="w-3.5 h-3.5"></i>
                 <span>Print</span>
@@ -54,7 +48,7 @@
     </div>
 
     <!-- Controls -->
-    <div class="mb-8 bg-auraa-red p-6 rounded-[2.5rem] shadow-xl relative group no-print">
+    <div class="mb-8 bg-auraa-red p-6 rounded-[2.5rem] shadow-xl relative group no-print sticky top-[114px] z-[50]">
         <div class="absolute inset-0 overflow-hidden rounded-[2.5rem] pointer-events-none">
             <div class="absolute -top-24 -right-24 w-48 h-48 bg-white/10 rounded-full blur-[60px] group-hover:bg-white/20 transition-all duration-1000"></div>
         </div>
@@ -68,6 +62,9 @@
                     <button type="button" id="clear-search-btn" onclick="clearSearch()" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors {% if not search_query %}hidden{% endif %}">
                         <i data-lucide="x" class="w-5 h-5"></i>
                     </button>
+                    <!-- Autocomplete Dropdown -->
+                    <div id="autocomplete-results" class="hidden absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-y-auto max-h-64 z-[100] animate-in fade-in slide-in-from-top-2 duration-200">
+                    </div>
                 </div>
                 <div class="relative w-full md:w-64">
                     <input type="hidden" name="status" id="status-input" value="{{ selected_status|default:'All' }}">
@@ -76,20 +73,20 @@
                             {% if selected_status and selected_status != 'All' %}
                                 {{ selected_status }}
                             {% else %}
-                                ALL STATUSES
+                                ALL STATUS
                             {% endif %}
                         </span>
                         <i data-lucide="chevron-down" id="admin-status-chevron" class="w-4 h-4 transition-transform shrink-0 text-gray-400"></i>
                     </button>
                     
                     <div id="admin-status-options" class="hidden absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-y-auto max-h-64 z-[70] animate-in fade-in slide-in-from-top-2 duration-200">
-                        <div onclick="selectAdminStatus('All', 'ALL STATUSES')" class="w-full px-6 py-3 text-center text-[10px] font-black uppercase tracking-widest cursor-pointer transition-colors border-b border-gray-100 {% if not selected_status or selected_status == 'All' %}bg-gray-500 text-white{% else %}text-gray-600 hover:bg-gray-50 hover:text-auraa-red{% endif %}">
-                            ALL STATUSES
+                        <div onclick="selectAdminStatus('All', 'ALL STATUS')" class="w-full px-6 py-3 text-center text-[10px] font-black uppercase tracking-widest cursor-pointer transition-colors border-b border-gray-100 {% if selected_status == 'All' or not selected_status %}bg-auraa-red text-white{% else %}text-gray-600 hover:bg-auraa-red hover:text-white{% endif %}">
+                            ALL STATUS
                         </div>
-                        <div onclick="selectAdminStatus('Active', 'ACTIVE')" class="w-full px-6 py-3 text-center text-[10px] font-black uppercase tracking-widest cursor-pointer transition-colors border-b border-gray-50 {% if selected_status == 'Active' %}bg-auraa-red text-white{% else %}text-gray-600 hover:bg-red-50 hover:text-auraa-red{% endif %}">
+                        <div onclick="selectAdminStatus('Active', 'ACTIVE')" class="w-full px-6 py-3 text-center text-[10px] font-black uppercase tracking-widest cursor-pointer transition-colors border-b border-gray-50 {% if selected_status == 'Active' %}bg-auraa-red text-white{% else %}text-gray-600 hover:bg-auraa-red hover:text-white{% endif %}">
                             ACTIVE
                         </div>
-                        <div onclick="selectAdminStatus('Inactive', 'INACTIVE')" class="w-full px-6 py-3 text-center text-[10px] font-black uppercase tracking-widest cursor-pointer transition-colors last:border-0 {% if selected_status == 'Inactive' %}bg-auraa-red text-white{% else %}text-gray-600 hover:bg-red-50 hover:text-auraa-red{% endif %}">
+                        <div onclick="selectAdminStatus('Inactive', 'INACTIVE')" class="w-full px-6 py-3 text-center text-[10px] font-black uppercase tracking-widest cursor-pointer transition-colors last:border-0 {% if selected_status == 'Inactive' %}bg-auraa-red text-white{% else %}text-gray-600 hover:bg-auraa-red hover:text-white{% endif %}">
                             INACTIVE
                         </div>
                     </div>
@@ -111,17 +108,30 @@
                     </button>
                     
                     <div id="admin-orders-options" class="hidden absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-y-auto max-h-64 z-[70] animate-in fade-in slide-in-from-top-2 duration-200">
-                        <div onclick="selectAdminOrders('All', 'ALL ORDERS')" class="w-full px-6 py-3 text-center text-[10px] font-black uppercase tracking-widest cursor-pointer transition-colors border-b border-gray-100 {% if not selected_orders or selected_orders == 'All' %}bg-gray-500 text-white{% else %}text-gray-600 hover:bg-gray-50 hover:text-auraa-red{% endif %}">
+                        <div onclick="selectAdminOrders('All', 'ALL ORDERS')" class="w-full px-6 py-3 text-center text-[10px] font-black uppercase tracking-widest cursor-pointer transition-colors border-b border-gray-100 {% if selected_orders == 'All' or not selected_orders %}bg-auraa-red text-white{% else %}text-gray-600 hover:bg-auraa-red hover:text-white{% endif %}">
                             ALL ORDERS
                         </div>
-                        <div onclick="selectAdminOrders('With', 'WITH ORDERS')" class="w-full px-6 py-3 text-center text-[10px] font-black uppercase tracking-widest cursor-pointer transition-colors border-b border-gray-50 {% if selected_orders == 'With' %}bg-auraa-red text-white{% else %}text-gray-600 hover:bg-red-50 hover:text-auraa-red{% endif %}">
+                        <div onclick="selectAdminOrders('With', 'WITH ORDERS')" class="w-full px-6 py-3 text-center text-[10px] font-black uppercase tracking-widest cursor-pointer transition-colors border-b border-gray-50 {% if selected_orders == 'With' %}bg-auraa-red text-white{% else %}text-gray-600 hover:bg-auraa-red hover:text-white{% endif %}">
                             WITH ORDERS
                         </div>
-                        <div onclick="selectAdminOrders('None', 'NO ORDERS')" class="w-full px-6 py-3 text-center text-[10px] font-black uppercase tracking-widest cursor-pointer transition-colors last:border-0 {% if selected_orders == 'None' %}bg-auraa-red text-white{% else %}text-gray-600 hover:bg-red-50 hover:text-auraa-red{% endif %}">
+                        <div onclick="selectAdminOrders('None', 'NO ORDERS')" class="w-full px-6 py-3 text-center text-[10px] font-black uppercase tracking-widest cursor-pointer transition-colors last:border-0 {% if selected_orders == 'None' %}bg-auraa-red text-white{% else %}text-gray-600 hover:bg-auraa-red hover:text-white{% endif %}">
                             NO ORDERS
                         </div>
                     </div>
                 </div>
+                
+                <div class="flex items-center gap-2">
+                    <button type="submit" class="bg-green-600 hover:bg-green-700 text-white border border-green-500/20 rounded-2xl px-8 py-3.5 text-[12px] font-black uppercase tracking-widest transition-all shadow-lg hover:shadow-xl active:scale-95 flex items-center gap-2">
+                        <i data-lucide="play" class="w-3 h-3 fill-current"></i>
+                        <span>GO</span>
+                    </button>
+
+                    <button type="button" onclick="resetFilters()" class="bg-blue-900 hover:bg-blue-800 text-white border border-blue-800/20 rounded-2xl px-8 py-3.5 text-[12px] font-black uppercase tracking-widest transition-all shadow-lg hover:shadow-xl active:scale-95 flex items-center gap-2">
+                        <i data-lucide="rotate-ccw" class="w-3 h-3"></i>
+                        <span>RESET</span>
+                    </button>
+                </div>
+
                 <noscript><button type="submit" class="hidden">Search</button></noscript>
             </form>
         </div>
@@ -132,35 +142,36 @@
         <div class="overflow-x-auto scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-transparent">
             <table class="min-w-[1000px] w-full text-left border-collapse">
                 <thead class="bg-gray-900 text-white">
-                    <tr class="border-b border-gray-800">
-                        <th class="py-6 px-6 text-[10px] font-black uppercase tracking-widest text-white/90 text-center w-24 whitespace-nowrap">
+                    <tr class="border-b border-gray-700">
+                        <th class="py-6 px-6 text-[10px] font-black uppercase tracking-widest text-white/90 text-center w-24 whitespace-nowrap border border-gray-700">
                             S.No.
                         </th>
-                        <th class="py-6 px-6 text-[10px] font-black uppercase tracking-widest text-white/90 whitespace-nowrap w-1/4">
+                        <th class="py-6 px-6 text-[10px] font-black uppercase tracking-widest text-white/90 whitespace-nowrap w-1/4 border border-gray-700">
                             Name
                         </th>
-                        <th class="py-6 px-6 text-[10px] font-black uppercase tracking-widest text-white/90 whitespace-nowrap">Contact</th>
-                        <th class="py-6 px-6 text-[10px] font-black uppercase tracking-widest text-white/90 whitespace-nowrap">Mobile No</th>
-                        <th class="py-6 px-6 text-[10px] font-black uppercase tracking-widest text-white/90 text-center cursor-pointer hover:bg-gray-800 transition-all group/sort whitespace-nowrap w-32" onclick="applySort('orders')">
+                        <th class="py-6 px-6 text-[10px] font-black uppercase tracking-widest text-white/90 whitespace-nowrap border border-gray-800">Contact</th>
+                        <th class="py-6 px-6 text-[10px] font-black uppercase tracking-widest text-white/90 whitespace-nowrap border border-gray-800">Mobile No</th>
+                        <th class="py-6 px-6 text-[10px] font-black uppercase tracking-widest text-white/90 text-center cursor-pointer hover:bg-gray-800 transition-all group/sort whitespace-nowrap w-32 border border-gray-800" onclick="applySort('orders')">
                             <div class="flex items-center justify-center space-x-1.5">
                                 <span>Orders Count</span>
                                 <i data-lucide="{% if sort_by == 'orders' %}{% if sort_dir == 'asc' %}arrow-up{% else %}arrow-down{% endif %}{% else %}arrow-up-down{% endif %}" 
                                    class="w-3.5 h-3.5 {% if sort_by == 'orders' %}text-auraa-red{% else %}text-white/30 group-hover/sort:text-white/60{% endif %} transition-colors"></i>
                             </div>
                         </th>
-                        <th class="py-6 px-6 text-[10px] font-black uppercase tracking-widest text-white/90 text-center whitespace-nowrap w-32">Status</th>
+                        <th class="py-6 px-6 text-[10px] font-black uppercase tracking-widest text-white/90 text-center whitespace-nowrap w-32 border border-gray-800">Status</th>
+                        <th class="py-6 px-6 text-[10px] font-black uppercase tracking-widest text-white/90 text-center whitespace-nowrap w-32 border border-gray-800">Actions</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-50">
                     {% for customer in customers %}
                     <tr class="hover:bg-gray-50/50 transition-colors group">
-                        <td class="py-6 px-6 text-center">
+                        <td class="py-6 px-6 text-center border border-gray-800">
                             <span class="text-sm font-black text-gray-900">{{ page_obj.start_index|add:forloop.counter0 }}</span>
                         </td>
-                        <td class="py-6 px-6">
+                        <td class="py-6 px-6 border border-gray-800">
                             <p class="text-sm font-black text-gray-900 uppercase tracking-tight truncate" title="{{ customer.name }}">{{ customer.name }}</p>
                         </td>
-                        <td class="py-6 px-6">
+                        <td class="py-6 px-6 border border-gray-800">
                             <div class="flex flex-col space-y-1">
                                 {% with addr=customer.addresses.first %}
                                     {% if addr %}
@@ -179,28 +190,42 @@
                                 {% endwith %}
                             </div>
                         </td>
-                        <td class="py-6 px-6">
+                        <td class="py-6 px-6 border border-gray-800">
                             {% with u=customer.users.first %}
                                 <span class="text-sm font-black text-auraa-red">{{ u.phone_number|default:customer.contact_person_no }}</span>
                             {% endwith %}
                         </td>
-                        <td class="py-6 px-6 text-center">
+                        <td class="py-6 px-6 text-center border border-gray-800">
                             <span class="px-4 py-1.5 bg-gray-100 text-sm font-black uppercase tracking-widest text-gray-700 rounded-xl">
                                 {{ customer.order_count }}
                             </span>
                         </td>
-                        <td class="py-6 px-6 text-center">
-                            {% if customer.is_active %}
-                            <span class="inline-flex items-center space-x-2 px-3 py-1 bg-green-50 text-green-600 border border-green-100 text-[9px] font-black uppercase tracking-widest rounded-full">
-                                <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
-                                <span>Active</span>
-                            </span>
-                            {% else %}
-                            <span class="inline-flex items-center space-x-2 px-3 py-1 bg-red-50 text-red-600 border border-red-100 text-[9px] font-black uppercase tracking-widest rounded-full">
-                                <span class="w-1.5 h-1.5 rounded-full bg-red-500"></span>
-                                <span>Inactive</span>
-                            </span>
-                            {% endif %}
+                        <td class="py-6 px-6 text-center border border-gray-800">
+                            <button onclick="toggleCustomerStatus({{ customer.id }}, this)" 
+                                    class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none {% if customer.is_active %}bg-green-500{% else %}bg-gray-300{% endif %}"
+                                    id="status-toggle-{{ customer.id }}">
+                                <span class="sr-only">Toggle Status</span>
+                                <span class="{% if customer.is_active %}translate-x-6{% else %}translate-x-1{% endif %} inline-block h-4 w-4 transform rounded-full bg-white transition-transform"></span>
+                            </button>
+                        </td>
+                        <td class="py-6 px-6 text-center border border-gray-800">
+                            <div class="flex items-center justify-center space-x-2">
+                                <button onclick="openEditCustomerModal({{ customer.id }})" 
+                                        class="p-2 bg-blue-900 text-white hover:bg-blue-800 rounded-xl transition-all shadow-sm"
+                                        title="Edit Customer">
+                                    <i data-lucide="edit-3" class="w-4 h-4"></i>
+                                </button>
+                                <button onclick="openResetPasswordModal({{ customer.id }}, '{{ customer.name|escapejs }}')" 
+                                        class="p-2 bg-auraa-red text-white hover:bg-red-600 rounded-xl transition-all shadow-sm"
+                                        title="Reset Password">
+                                    <i data-lucide="key-round" class="w-4 h-4"></i>
+                                </button>
+                                <a href="{% url 'dashboard_customer_impersonate' customer.id %}" 
+                                   class="p-2 bg-green-600 text-white hover:bg-green-700 rounded-xl transition-all shadow-sm"
+                                   title="Login as {{ customer.name }}">
+                                    <i data-lucide="log-in" class="w-4 h-4"></i>
+                                </a>
+                            </div>
                         </td>
                     </tr>
                     {% empty %}
@@ -258,6 +283,128 @@
     </div>
 </div>
 
+<!-- Edit Customer Modal -->
+<div id="edit-customer-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-300">
+    <div class="bg-white rounded-[2.5rem] w-full max-w-5xl overflow-hidden shadow-2xl animate-in zoom-in-95 duration-300">
+        <!-- Modal Header -->
+        <div class="bg-gray-900 px-10 py-8 flex justify-between items-center relative overflow-hidden">
+            <div class="absolute -top-12 -right-12 w-32 h-32 bg-auraa-red/20 rounded-full blur-3xl"></div>
+            <div class="relative z-10">
+                <h3 class="text-2xl font-black text-white uppercase tracking-tight">Edit <span class="text-auraa-red">Customer</span></h3>
+            </div>
+            <button onclick="closeEditCustomerModal()" class="relative z-10 w-10 h-10 flex items-center justify-center bg-red-500 hover:bg-red-600 text-white rounded-full transition-all shadow-lg shadow-red-500/20">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+        </div>
+
+        <form id="edit-customer-form" class="p-10">
+            <input type="hidden" id="edit-customer-id">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Row 1: Basic Info -->
+                <div>
+                    <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 px-1">Full Name</label>
+                    <input type="text" id="edit-name" required
+                           class="w-full px-5 py-3.5 bg-gray-50 border border-gray-100 rounded-2xl text-sm font-bold text-gray-900 focus:outline-none focus:ring-2 focus:ring-auraa-red/20 transition-all">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 px-1">Mobile No</label>
+                    <input type="text" id="edit-mobile" required
+                           class="w-full px-5 py-3.5 bg-gray-50 border border-gray-100 rounded-2xl text-sm font-bold text-gray-900 focus:outline-none focus:ring-2 focus:ring-auraa-red/20 transition-all">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 px-1">Email ID</label>
+                    <input type="email" id="edit-email"
+                           class="w-full px-5 py-3.5 bg-gray-50 border border-gray-100 rounded-2xl text-sm font-bold text-gray-900 focus:outline-none focus:ring-2 focus:ring-auraa-red/20 transition-all">
+                </div>
+
+                <!-- Row 2: Address -->
+                <div class="md:col-span-3">
+                    <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 px-1">Address</label>
+                    <textarea id="edit-address1" rows="2"
+                              class="w-full px-5 py-3.5 bg-gray-50 border border-gray-100 rounded-2xl text-sm font-bold text-gray-900 focus:outline-none focus:ring-2 focus:ring-auraa-red/20 transition-all resize-none"></textarea>
+                </div>
+
+                <!-- Row 3: Location Details -->
+                <div>
+                    <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 px-1">City</label>
+                    <input type="text" id="edit-city"
+                           class="w-full px-5 py-3.5 bg-gray-50 border border-gray-100 rounded-2xl text-sm font-bold text-gray-900 focus:outline-none focus:ring-2 focus:ring-auraa-red/20 transition-all">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 px-1">State</label>
+                    <select id="edit-state"
+                            class="w-full px-5 py-3.5 bg-gray-50 border border-gray-100 rounded-2xl text-sm font-bold text-gray-900 focus:outline-none focus:ring-2 focus:ring-auraa-red/20 transition-all">
+                        <option value="">Select State</option>
+                        {% for state in states %}
+                        <option value="{{ state.id }}">{{ state.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 px-1">Pincode</label>
+                    <input type="text" id="edit-pincode"
+                           class="w-full px-5 py-3.5 bg-gray-50 border border-gray-100 rounded-2xl text-sm font-bold text-gray-900 focus:outline-none focus:ring-2 focus:ring-auraa-red/20 transition-all">
+                </div>
+            </div>
+
+            <div class="mt-10 flex justify-end space-x-4">
+                <button type="button" onclick="closeEditCustomerModal()"
+                        class="px-8 py-3.5 bg-blue-900 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-blue-800 transition-all shadow-lg shadow-blue-900/20">
+                    Cancel
+                </button>
+                <button type="submit" id="edit-customer-submit-btn"
+                        class="px-10 py-3.5 bg-auraa-red text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-red-600 transition-all shadow-lg shadow-auraa-red/30 flex items-center justify-center gap-2 min-w-[160px]">
+                    <span id="edit-customer-btn-text">Save Changes</span>
+                    <i id="edit-customer-btn-spinner" data-lucide="loader-2" class="w-4 h-4 animate-spin hidden"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Reset Password Modal -->
+<div id="reset-password-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-300">
+    <div class="bg-white rounded-[2.5rem] w-full max-w-md overflow-hidden shadow-2xl animate-in zoom-in-95 duration-300">
+        <!-- Modal Header -->
+        <div class="bg-gray-900 px-8 py-6 flex justify-between items-center relative overflow-hidden">
+            <div class="relative z-10">
+                <h3 class="text-xl font-black text-white uppercase tracking-tight">Reset <span class="text-auraa-red">Password</span></h3>
+                <p id="reset-password-customer-name" class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1"></p>
+            </div>
+            <button onclick="closeResetPasswordModal()" class="relative z-10 w-8 h-8 flex items-center justify-center bg-red-500 hover:bg-red-600 text-white rounded-full transition-all shadow-lg shadow-red-500/20">
+                <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+        </div>
+
+        <form id="reset-password-form" class="p-8">
+            <input type="hidden" id="reset-password-customer-id">
+            <div class="space-y-6">
+                <div>
+                    <label class="block text-[10px] font-black text-gray-900 uppercase tracking-widest mb-2 px-1">New Password</label>
+                    <div class="relative">
+                        <i data-lucide="lock" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4"></i>
+                        <input type="password" id="new-password" required
+                               class="w-full pl-12 pr-12 py-3.5 bg-gray-50 border border-gray-100 rounded-2xl text-sm font-bold text-gray-900 focus:outline-none focus:ring-2 focus:ring-auraa-red/20 transition-all"
+                               placeholder="Enter new password">
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-8 flex justify-end space-x-3">
+                <button type="button" onclick="closeResetPasswordModal()"
+                        class="px-6 py-3 bg-blue-900 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-blue-800 transition-all">
+                    Cancel
+                </button>
+                <button type="submit" id="reset-password-submit-btn"
+                        class="px-8 py-3 bg-auraa-red text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-red-600 transition-all shadow-lg shadow-auraa-red/30 flex items-center justify-center gap-2 min-w-[160px]">
+                    <span id="reset-password-btn-text">Update Password</span>
+                    <i id="reset-password-btn-spinner" data-lucide="loader-2" class="w-4 h-4 animate-spin hidden"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <script>
 
     // Custom Dropdown Logic
@@ -271,7 +418,19 @@
 
     function selectAdminStatus(val, labelText) {
         document.getElementById('status-input').value = val;
-        document.getElementById('status-input').closest('form').submit();
+        document.getElementById('admin-status-label').innerText = labelText;
+        
+        // Update highlight instantly
+        const options = document.querySelectorAll('#admin-status-options div[onclick]');
+        options.forEach(opt => {
+            if (opt.getAttribute('onclick').includes(`'${val}'`)) {
+                opt.classList.add('bg-auraa-red', 'text-white');
+                opt.classList.remove('text-gray-600');
+            } else {
+                opt.classList.remove('bg-auraa-red', 'text-white');
+                opt.classList.add('text-gray-600');
+            }
+        });
     }
 
     window.addEventListener('click', () => {
@@ -308,7 +467,19 @@
 
     function selectAdminOrders(val, labelText) {
         document.getElementById('orders-filter-input').value = val;
-        document.getElementById('orders-filter-input').closest('form').submit();
+        document.getElementById('admin-orders-label').innerText = labelText;
+        
+        // Update highlight instantly
+        const options = document.querySelectorAll('#admin-orders-options div[onclick]');
+        options.forEach(opt => {
+            if (opt.getAttribute('onclick').includes(`'${val}'`)) {
+                opt.classList.add('bg-auraa-red', 'text-white');
+                opt.classList.remove('text-gray-600');
+            } else {
+                opt.classList.remove('bg-auraa-red', 'text-white');
+                opt.classList.add('text-gray-600');
+            }
+        });
     }
 
     // New Sorting Function
@@ -344,5 +515,266 @@
         document.getElementById('search-input').value = '';
         document.getElementById('search-input').closest('form').submit();
     }
+
+    function resetFilters() {
+        document.getElementById('search-input').value = '';
+        document.getElementById('status-input').value = 'All';
+        document.getElementById('orders-filter-input').value = 'All';
+        window.location.href = window.location.pathname;
+    }
+
+    // Customer Status Toggle
+    async function toggleCustomerStatus(id, btn) {
+        try {
+            const response = await fetch(`/dashboard/customers/${id}/toggle/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'Content-Type': 'application/json'
+                }
+            });
+            const data = await response.json();
+            
+            if (data.status === 'success') {
+                const dot = btn.querySelector('span:last-child');
+                if (data.is_active) {
+                    btn.classList.remove('bg-gray-300');
+                    btn.classList.add('bg-green-500');
+                    dot.classList.remove('translate-x-1');
+                    dot.classList.add('translate-x-6');
+                } else {
+                    btn.classList.remove('bg-green-500');
+                    btn.classList.add('bg-gray-300');
+                    dot.classList.remove('translate-x-6');
+                    dot.classList.add('translate-x-1');
+                }
+            } else {
+                alert(data.message || 'Error toggling status');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('A server error occurred');
+        }
+    }
+
+    // Edit Customer Modal Logic
+    async function openEditCustomerModal(id) {
+        try {
+            const response = await fetch(`/dashboard/customers/${id}/detail/`);
+            const result = await response.json();
+            
+            if (result.status === 'success') {
+                const data = result.data;
+                document.getElementById('edit-customer-id').value = data.id;
+                document.getElementById('edit-name').value = data.name;
+                document.getElementById('edit-mobile').value = data.contact_person_no;
+                document.getElementById('edit-email').value = data.email;
+                document.getElementById('edit-address1').value = data.address1;
+                document.getElementById('edit-city').value = data.city_name;
+                document.getElementById('edit-pincode').value = data.pincode;
+                document.getElementById('edit-state').value = data.state_id || '';
+                
+                document.getElementById('edit-customer-modal').classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            }
+        } catch (error) {
+            console.error('Error fetching customer details:', error);
+        }
+    }
+
+    function closeEditCustomerModal() {
+        document.getElementById('edit-customer-modal').classList.add('hidden');
+        document.body.style.overflow = '';
+    }
+
+    document.getElementById('edit-customer-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const id = document.getElementById('edit-customer-id').value;
+        const submitBtn = document.getElementById('edit-customer-submit-btn');
+        const btnText = document.getElementById('edit-customer-btn-text');
+        const btnSpinner = document.getElementById('edit-customer-btn-spinner');
+
+        const formData = {
+            name: document.getElementById('edit-name').value,
+            contact_person_no: document.getElementById('edit-mobile').value,
+            email: document.getElementById('edit-email').value,
+            address1: document.getElementById('edit-address1').value,
+            city_name: document.getElementById('edit-city').value,
+            pincode: document.getElementById('edit-pincode').value,
+            state_id: document.getElementById('edit-state').value,
+        };
+
+        // Show loading state
+        submitBtn.disabled = true;
+        btnText.innerText = 'Saving...';
+        btnSpinner.classList.remove('hidden');
+
+        try {
+            const response = await fetch(`/dashboard/customers/${id}/update/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+            const result = await response.json();
+            
+            if (result.status === 'success') {
+                toastr.success('Customer updated successfully', '', { timeOut: 1000 });
+                setTimeout(() => location.reload(), 1000);
+            } else {
+                toastr.error(result.message || 'Error updating customer');
+                // Reset loading state on error
+                submitBtn.disabled = false;
+                btnText.innerText = 'Save Changes';
+                btnSpinner.classList.add('hidden');
+            }
+        } catch (error) {
+            console.error('Error updating customer:', error);
+            toastr.error('A server error occurred');
+            // Reset loading state on error
+            submitBtn.disabled = false;
+            btnText.innerText = 'Save Changes';
+            btnSpinner.classList.add('hidden');
+        }
+    });
+
+    // Autocomplete Logic
+    const searchInput = document.getElementById('search-input');
+    const autocompleteResults = document.getElementById('autocomplete-results');
+    let debounceTimer;
+
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            const query = this.value.trim();
+            clearTimeout(debounceTimer);
+            
+            // Immediately clear and hide previous results while typing
+            autocompleteResults.innerHTML = '';
+            autocompleteResults.classList.add('hidden');
+            
+            if (query.length < 2) return;
+
+            debounceTimer = setTimeout(async () => {
+                // Show a clear loading state
+                autocompleteResults.innerHTML = `
+                    <div class="px-6 py-8 text-center bg-white rounded-xl" style="background-color: white !important;">
+                        <div class="inline-block w-8 h-8 border-[3px] border-red-600 border-t-transparent rounded-full animate-spin" style="border-color: #ef4444; border-top-color: transparent;"></div>
+                        <p style="color: #ef4444 !important;" class="text-[10px] font-black uppercase tracking-widest mt-3">Fetching Results...</p>
+                    </div>
+                `;
+                autocompleteResults.classList.remove('hidden');
+
+                try {
+                    const response = await fetch(`/dashboard/customers/autocomplete/?q=${encodeURIComponent(query)}`);
+                    const result = await response.json();
+                    
+                    if (result.status === 'success' && result.results.length > 0) {
+                        autocompleteResults.innerHTML = result.results.map(item => {
+                            const escapedValue = (item.phone || item.name).replace(/'/g, "\\'");
+                            return `
+                                <div onclick="selectAutocomplete('${escapedValue}')" 
+                                     style="background-color: white; color: black;"
+                                     class="autocomplete-item px-6 py-4 border-b border-gray-100 last:border-0 hover:bg-red-600 hover:text-white group cursor-pointer transition-colors bg-white">
+                                    <div class="flex flex-col">
+                                        <span style="color: #111827;" class="text-sm font-black uppercase tracking-tight group-hover:text-white">${item.name}</span>
+                                        <span style="color: #ef4444;" class="text-[10px] font-bold tracking-widest group-hover:text-white">${item.phone || ''}</span>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('');
+                        autocompleteResults.classList.remove('hidden');
+                    } else {
+                        autocompleteResults.innerHTML = '';
+                        autocompleteResults.classList.add('hidden');
+                    }
+                } catch (error) {
+                    console.error('Autocomplete error:', error);
+                }
+            }, 150);
+        });
+    }
+
+
+    // Close autocomplete when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!searchInput || !autocompleteResults) return;
+        if (!searchInput.contains(e.target) && !autocompleteResults.contains(e.target)) {
+            autocompleteResults.classList.add('hidden');
+        }
+    });
+
+    window.selectAutocomplete = function(value) {
+        searchInput.value = value;
+        autocompleteResults.classList.add('hidden');
+        searchInput.form.submit();
+    }
+
+    // Reset Password Logic
+    function openResetPasswordModal(id, name) {
+        document.getElementById('reset-password-customer-id').value = id;
+        document.getElementById('reset-password-customer-name').innerText = name;
+        document.getElementById('new-password').value = '';
+        document.getElementById('reset-password-modal').classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeResetPasswordModal() {
+        document.getElementById('reset-password-modal').classList.add('hidden');
+        document.body.style.overflow = '';
+    }
+
+    function togglePasswordVisibility(inputId) {
+        const input = document.getElementById(inputId);
+        const icon = event.currentTarget.querySelector('i');
+        if (input.type === 'password') {
+            input.type = 'text';
+            // update icon if needed
+        } else {
+            input.type = 'password';
+        }
+    }
+
+    document.getElementById('reset-password-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const id = document.getElementById('reset-password-customer-id').value;
+        const password = document.getElementById('new-password').value;
+        const submitBtn = document.getElementById('reset-password-submit-btn');
+        const btnText = document.getElementById('reset-password-btn-text');
+        const btnSpinner = document.getElementById('reset-password-btn-spinner');
+
+        // Show loading state
+        submitBtn.disabled = true;
+        btnText.innerText = 'Updating...';
+        btnSpinner.classList.remove('hidden');
+
+        try {
+            const response = await fetch(`/dashboard/customers/${id}/reset-password/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ password: password })
+            });
+            const result = await response.json();
+            
+            if (result.status === 'success') {
+                toastr.success('Password reset successfully', '', { timeOut: 1000 });
+                closeResetPasswordModal();
+            } else {
+                toastr.error(result.message || 'Error resetting password');
+            }
+        } catch (error) {
+            console.error('Error resetting password:', error);
+            toastr.error('A server error occurred');
+        } finally {
+            // Reset loading state
+            submitBtn.disabled = false;
+            btnText.innerText = 'Update Password';
+            btnSpinner.classList.add('hidden');
+        }
+    });
 </script>
 {% endblock %}

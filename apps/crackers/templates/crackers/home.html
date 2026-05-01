@@ -145,6 +145,61 @@
         right: 0;
         background: linear-gradient(to left, #ffffff, transparent);
     }
+
+    /* Video Slider Styles */
+    .video-slider-container {
+        position: relative;
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        overflow: hidden;
+    }
+    .video-slider-track {
+        display: flex;
+        transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        gap: 2rem;
+        padding: 2rem 0;
+    }
+    .video-slide {
+        flex: 0 0 100%;
+        display: flex;
+        justify-content: center;
+        transition: transform 0.5s ease;
+    }
+    @media (min-width: 1024px) {
+        .video-slide {
+            flex: 0 0 100%;
+        }
+    }
+    .slider-arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 60px;
+        height: 60px;
+        background: white;
+        color: #f5071d;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        cursor: pointer;
+        z-index: 20;
+        transition: all 0.3s ease;
+        border: 2px solid #f5071d;
+    }
+    .slider-arrow:hover {
+        background: var(--auraa-red);
+        color: white;
+        transform: translateY(-50%) scale(1.1);
+    }
+    .slider-arrow.prev { left: 1rem; }
+    .slider-arrow.next { right: 1rem; }
+
+    .review-text-content {
+        color: #f5071d !important;
+    }
 </style>
 {% endblock %}
 
@@ -328,7 +383,8 @@
                 <!-- Grid of Cards -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 relative z-10">
                     <!-- Customer Delight -->
-                    <div class="group p-8 md:p-10 rounded-[2.5rem] bg-white border border-white/10 hover:bg-slate-50 transition-all duration-700 hover:-translate-y-4 flex flex-col items-center text-center shadow-[0_20px_50px_rgba(0,0,0,0.1)] hover:shadow-[0_40px_80px_rgba(0,0,0,0.2)]">
+                    <div class="group relative overflow-hidden p-8 md:p-10 rounded-[2.5rem] bg-white border border-white/10 hover:bg-slate-50 transition-all duration-700 hover:-translate-y-4 flex flex-col items-center text-center shadow-[0_20px_50px_rgba(0,0,0,0.1)] hover:shadow-[0_40px_80px_rgba(0,0,0,0.2)]">
+                        <div class="absolute inset-0 flex items-center justify-center text-[20rem] font-black text-[#f5071d]/[0.08] pointer-events-none select-none group-hover:scale-110 transition-transform duration-1000">1</div>
                         <div class="w-20 h-20 bg-auraa-red text-white rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-2xl">
                             <i data-lucide="heart" class="w-10 h-10"></i>
                         </div>
@@ -336,7 +392,8 @@
                     </div>
 
                     <!-- Trust & Transparency -->
-                    <div class="group p-8 md:p-10 rounded-[2.5rem] bg-white border border-white/10 hover:bg-slate-50 transition-all duration-700 hover:-translate-y-4 flex flex-col items-center text-center shadow-[0_20px_50px_rgba(0,0,0,0.1)] hover:shadow-[0_40px_80px_rgba(0,0,0,0.2)]">
+                    <div class="group relative overflow-hidden p-8 md:p-10 rounded-[2.5rem] bg-white border border-white/10 hover:bg-slate-50 transition-all duration-700 hover:-translate-y-4 flex flex-col items-center text-center shadow-[0_20px_50px_rgba(0,0,0,0.1)] hover:shadow-[0_40px_80px_rgba(0,0,0,0.2)]">
+                        <div class="absolute inset-0 flex items-center justify-center text-[20rem] font-black text-[#f5071d]/[0.08] pointer-events-none select-none group-hover:scale-110 transition-transform duration-1000">2</div>
                         <div class="w-20 h-20 bg-blue-500 text-white rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-2xl">
                             <i data-lucide="shield-check" class="w-10 h-10"></i>
                         </div>
@@ -344,7 +401,8 @@
                     </div>
 
                     <!-- Responsibility -->
-                    <div class="group p-8 md:p-10 rounded-[2.5rem] bg-white border border-white/10 hover:bg-slate-50 transition-all duration-700 hover:-translate-y-4 flex flex-col items-center text-center shadow-[0_20px_50px_rgba(0,0,0,0.1)] hover:shadow-[0_40px_80px_rgba(0,0,0,0.2)]">
+                    <div class="group relative overflow-hidden p-8 md:p-10 rounded-[2.5rem] bg-white border border-white/10 hover:bg-slate-50 transition-all duration-700 hover:-translate-y-4 flex flex-col items-center text-center shadow-[0_20px_50px_rgba(0,0,0,0.1)] hover:shadow-[0_40px_80px_rgba(0,0,0,0.2)]">
+                        <div class="absolute inset-0 flex items-center justify-center text-[20rem] font-black text-[#f5071d]/[0.08] pointer-events-none select-none group-hover:scale-110 transition-transform duration-1000">3</div>
                         <div class="w-20 h-20 bg-emerald-500 text-white rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-2xl">
                             <i data-lucide="globe" class="w-10 h-10"></i>
                         </div>
@@ -352,7 +410,8 @@
                     </div>
 
                     <!-- Innovation -->
-                    <div class="group p-8 md:p-10 rounded-[2.5rem] bg-white border border-white/10 hover:bg-slate-50 transition-all duration-700 hover:-translate-y-4 flex flex-col items-center text-center shadow-[0_20px_50px_rgba(0,0,0,0.1)] hover:shadow-[0_40px_80px_rgba(0,0,0,0.2)]">
+                    <div class="group relative overflow-hidden p-8 md:p-10 rounded-[2.5rem] bg-white border border-white/10 hover:bg-slate-50 transition-all duration-700 hover:-translate-y-4 flex flex-col items-center text-center shadow-[0_20px_50px_rgba(0,0,0,0.1)] hover:shadow-[0_40px_80px_rgba(0,0,0,0.2)]">
+                        <div class="absolute inset-0 flex items-center justify-center text-[20rem] font-black text-[#f5071d]/[0.08] pointer-events-none select-none group-hover:scale-110 transition-transform duration-1000">4</div>
                         <div class="w-20 h-20 bg-purple-500 text-white rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-2xl">
                             <i data-lucide="zap" class="w-10 h-10"></i>
                         </div>
@@ -360,7 +419,8 @@
                     </div>
 
                     <!-- Safety & Security -->
-                    <div class="group p-8 md:p-10 rounded-[2.5rem] bg-white border border-white/10 hover:bg-slate-50 transition-all duration-700 hover:-translate-y-4 flex flex-col items-center text-center shadow-[0_20px_50px_rgba(0,0,0,0.1)] hover:shadow-[0_40px_80px_rgba(0,0,0,0.2)]">
+                    <div class="group relative overflow-hidden p-8 md:p-10 rounded-[2.5rem] bg-white border border-white/10 hover:bg-slate-50 transition-all duration-700 hover:-translate-y-4 flex flex-col items-center text-center shadow-[0_20px_50px_rgba(0,0,0,0.1)] hover:shadow-[0_40px_80px_rgba(0,0,0,0.2)]">
+                        <div class="absolute inset-0 flex items-center justify-center text-[20rem] font-black text-[#f5071d]/[0.08] pointer-events-none select-none group-hover:scale-110 transition-transform duration-1000">5</div>
                         <div class="w-20 h-20 bg-amber-500 text-white rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-2xl">
                             <i data-lucide="shield" class="w-10 h-10"></i>
                         </div>
@@ -557,10 +617,10 @@
                         <div class="w-2 h-2 bg-auraa-red rounded-full animate-ping flex-shrink-0"></div>
                         <h2 class="text-[12px] font-black uppercase tracking-[0.6em]">Happy Customers</h2>
                     </div>
-                    <p class="text-gray-600 text-2xl md:text-3xl font-bebas leading-tight tracking-wide">"Deliver products that families can trust with total confidence."</p>
+                    <p class="text-auraa-red text-2xl md:text-3xl font-bebas leading-tight tracking-wide">"Deliver products that families can trust with total confidence."</p>
                     
-                    <h3 class="text-4xl md:text-8xl lg:text-9xl font-black text-gray-900 uppercase tracking-tighter leading-none">
-                        What <span class="text-auraa-red italic selection:bg-gray-900 selection:text-white drop-shadow-[0_0_50px_rgba(245,7,29,0.1)]">They</span> Say
+                    <h3 class="text-4xl md:text-8xl lg:text-9xl font-black text-auraa-red uppercase tracking-tighter leading-none">
+                        What <span class="italic selection:bg-gray-900 selection:text-white drop-shadow-[0_0_50px_rgba(245,7,29,0.1)]">They</span> Say
                     </h3>
                     
                     <div class="w-24 h-1 bg-gradient-to-r from-transparent via-auraa-red to-transparent mx-auto opacity-50"></div>
@@ -578,9 +638,9 @@
                                 <span class="font-bold text-gray-900">{{ avg_rating|floatformat:1 }}</span>
                                 <span>Average Rating</span>
                                 <span class="opacity-30">|</span>
-                                <span class="whitespace-nowrap">{{ reviews_count }} Google Reviews</span>
+                                <span class="whitespace-nowrap">{{ reviews_count }}+ Google Reviews</span>
                             </div>
-                            <a href="https://search.google.com/local/writereview?placeid=ChIJo0p8Lh8qUzoR8-3tH3R4X7Q" target="_blank" class="flex items-center space-x-2.5 px-6 py-3 md:px-8 md:py-4 bg-[#0A325A] hover:bg-[#0C3D6E] border border-[#0A325A] rounded-full transition-all group/btn shadow-xl hover:shadow-2xl hover:-translate-y-1 w-full md:w-auto justify-center">
+                            <a href="https://www.google.com/maps/place//data=!4m3!3m2!1s0x3b06c9aa9b9f4741:0xd082609f94bf72c!12e1?source=g.page.m._&laa=merchant-review-solicitation" target="_blank" class="flex items-center space-x-2.5 px-6 py-3 md:px-8 md:py-4 bg-[#0A325A] hover:bg-[#0C3D6E] border border-[#0A325A] rounded-full transition-all group/btn shadow-xl hover:shadow-2xl hover:-translate-y-1 w-full md:w-auto justify-center">
                                 <img src="https://www.google.com/images/branding/googleg/1x/googleg_standard_color_128dp.png" class="w-5 h-5" alt="Google">
                                 <span class="text-sm font-black text-white uppercase tracking-wider whitespace-nowrap">Write a Google Review</span>
                                 <i data-lucide="external-link" class="w-4 h-4 text-white/70 group-hover/btn:text-white transition-colors"></i>
@@ -619,36 +679,54 @@
                 </div>
 
             <!-- Video Testimonials (Placeholder) -->
-            <div class="mt-40 space-y-16">
-                <div class="flex flex-col md:flex-row justify-between items-end gap-8">
+                <div class="mt-40 flex flex-col md:flex-row justify-between items-end gap-10 mb-16">
                     <div class="space-y-4">
-                        <h2 class="text-xs font-black text-auraa-red uppercase tracking-[0.4em]">Visual Stories</h2>
-                        <h3 class="text-4xl md:text-5xl font-black text-white uppercase tracking-tighter">Video Testimonials</h3>
+                        <h2 class="text-2xl font-black text-auraa-red uppercase tracking-[0.4em]">Visual Stories</h2>
+                        <h3 class="text-4xl md:text-5xl font-black text-gray-900 uppercase tracking-tighter">Video Testimonials</h3>
                     </div>
-                    <p class="bg-white text-auraa-red px-6 py-4 rounded-2xl font-bold max-w-sm shadow-xl border border-red-100 flex items-center space-x-3">
+                    <p class="bg-white text-auraa-red px-6 py-4 rounded-2xl font-bold max-w-md shadow-xl border border-red-100 flex items-center space-x-3 transition-transform hover:scale-105 duration-500">
                         <i data-lucide="check-circle" class="w-5 h-5 flex-shrink-0"></i>
                         <span>Watch our community celebrate with Auraa. Real moments, real joy.</span>
                     </p>
                 </div>
 
-                <div class="flex flex-col lg:flex-row justify-center items-center gap-12 lg:gap-20">
-                    <!-- Video 1 -->
-                    <div class="video-container group relative w-full max-w-[400px] aspect-[9/16] bg-black rounded-[3rem] overflow-hidden shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] transition-all duration-700 hover:-translate-y-4 hover:shadow-[0_80px_150px_-30px_rgba(0,0,0,0.6)]">
-                        <video class="w-full h-full object-cover z-0" controls preload="metadata" playsinline loading="lazy">
-                            <source src="{% static 'images/review1.mp4' %}" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 pointer-events-none"></div>
-                    </div>
+                <div class="video-slider-container">
+                    <button class="slider-arrow prev" onclick="moveVideoSlider(-1)">
+                        <i data-lucide="chevron-left" class="w-8 h-8"></i>
+                    </button>
+                    <button class="slider-arrow next" onclick="moveVideoSlider(1)">
+                        <i data-lucide="chevron-right" class="w-8 h-8"></i>
+                    </button>
+                    
+                    <div class="video-slider-track" id="videoSliderTrack">
+                        <!-- Video 1 -->
+                        <div class="video-slide">
+                            <div class="video-container group relative w-full max-w-[400px] aspect-[9/16] bg-black rounded-[3rem] overflow-hidden shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] transition-all duration-700 hover:-translate-y-4 hover:shadow-[0_80px_150px_-30px_rgba(0,0,0,0.6)]">
+                                <video class="w-full h-full object-cover z-0" controls preload="metadata" playsinline loading="lazy">
+                                    <source src="{% static 'images/review1.mp4' %}" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 pointer-events-none"></div>
+                            </div>
+                        </div>
 
-                    <!-- Video 2 -->
-                    <div class="video-container group relative w-full max-w-[400px] aspect-[9/16] bg-black rounded-[3rem] overflow-hidden shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] transition-all duration-700 hover:-translate-y-4 hover:shadow-[0_80px_150px_-30px_rgba(0,0,0,0.6)]">
-                        <video class="w-full h-full object-cover z-0" controls preload="metadata" playsinline loading="lazy">
-                            <source src="{% static 'images/review2.mp4' %}" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 pointer-events-none"></div>
+                        <!-- Video 2 -->
+                        <div class="video-slide">
+                            <div class="video-container group relative w-full max-w-[400px] aspect-[9/16] bg-black rounded-[3rem] overflow-hidden shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] transition-all duration-700 hover:-translate-y-4 hover:shadow-[0_80px_150px_-30px_rgba(0,0,0,0.6)]">
+                                <video class="w-full h-full object-cover z-0" controls preload="metadata" playsinline loading="lazy">
+                                    <source src="{% static 'images/review2.mp4' %}" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 pointer-events-none"></div>
+                            </div>
+                        </div>
                     </div>
+                </div>
+
+                <div class="text-center mt-12">
+                    <h3 class="text-5xl md:text-7xl font-black text-auraa-red uppercase tracking-tighter leading-none">
+                        Our Customer First Choice
+                    </h3>
                 </div>
             </div>
         </div>
@@ -710,7 +788,7 @@
                     <div class="text-center space-y-8">
                         <div class="inline-flex items-center space-x-3 bg-white text-auraa-red px-10 py-4 rounded-full shadow-2xl">
                             <i data-lucide="sparkles" class="w-4 h-4 animate-spin-slow"></i>
-                            <span class="text-[12px] font-black uppercase tracking-[0.6em]">The Auraa Advantage</span>
+                            <span class="text-[12px] font-black uppercase tracking-[0.6em]">The Auraa Advantages</span>
                         </div>
                         <h3 class="text-3xl md:text-5xl lg:text-6xl font-black text-white uppercase tracking-tighter leading-none mb-12 drop-shadow-2xl">
                             Why <span class="text-auraa-red italic underline decoration-white/10 underline-offset-8">Choose Auraa?</span>
@@ -771,9 +849,17 @@
                                 </div>
                                 <div class="pt-4 lg:pt-0">
                                     <h4 class="text-2xl font-black text-auraa-red uppercase tracking-tight mb-2">Future Innovation</h4>
-                                    <p class="text-auraa-red/80 text-sm font-medium leading-relaxed">
-                                        The bridge between tradition and the future. We reinvent the firework experience every single year with smarter ways to ignite joy.
-                                    </p>
+                                    <div class="space-y-4">
+                                        <p class="text-auraa-red/80 text-sm font-medium leading-relaxed">
+                                            The bridge between tradition and the future. We reinvent the firework experience every single year with smarter ways to ignite joy.
+                                        </p>
+                                        <p class="text-auraa-red/80 text-sm font-medium leading-relaxed">
+                                            Integrating cutting-edge technology to create safer, more precise, and environmentally conscious firework displays.
+                                        </p>
+                                        <p class="text-auraa-red/80 text-sm font-medium leading-relaxed">
+                                            Blending heritage craftsmanship with modern engineering to deliver experiences that feel both nostalgic and revolutionary.
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -787,4 +873,21 @@
 
 {% block extra_js %}
 <script src="{% static 'js/home_modern.js' %}"></script>
+<script>
+    let videoSlideIndex = 0;
+    function moveVideoSlider(direction) {
+        const track = document.getElementById('videoSliderTrack');
+        const slides = track.querySelectorAll('.video-slide');
+        const totalSlides = slides.length;
+        const visibleSlides = 1;
+        const maxIndex = totalSlides - visibleSlides;
+
+        videoSlideIndex += direction;
+        if (videoSlideIndex < 0) videoSlideIndex = 0;
+        if (videoSlideIndex > maxIndex) videoSlideIndex = maxIndex;
+
+        const slideWidth = slides[0].offsetWidth + 32; // width + gap
+        track.style.transform = `translateX(-${videoSlideIndex * slideWidth}px)`;
+    }
+</script>
 {% endblock %}

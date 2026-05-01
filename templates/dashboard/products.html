@@ -48,7 +48,7 @@
     </div>
 
     <!-- Controls -->
-    <div class="mb-8 bg-auraa-red p-6 rounded-[2.5rem] shadow-xl relative group no-print">
+    <div class="mb-8 bg-auraa-red p-6 rounded-[2.5rem] shadow-xl relative group no-print sticky top-[114px] z-[50]">
         <div class="absolute inset-0 overflow-hidden rounded-[2.5rem] pointer-events-none">
             <div class="absolute -top-24 -right-24 w-48 h-48 bg-white/10 rounded-full blur-[60px] group-hover:bg-white/20 transition-all duration-1000"></div>
         </div>
@@ -62,6 +62,9 @@
                     <button type="button" id="clear-search-btn" onclick="clearSearch()" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors {% if not search_query %}hidden{% endif %}">
                         <i data-lucide="x" class="w-5 h-5"></i>
                     </button>
+                    <!-- Autocomplete Dropdown -->
+                    <div id="autocomplete-results" class="hidden absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-y-auto max-h-64 z-[100] animate-in fade-in slide-in-from-top-2 duration-200">
+                    </div>
                 </div>
                 <div class="relative w-full md:w-64">
                     <input type="hidden" name="category" id="category-input" value="{{ selected_category|default:'All' }}">
@@ -77,11 +80,11 @@
                     </button>
                     
                     <div id="admin-cat-options" class="hidden absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-100 overflow-y-auto max-h-64 z-[70] animate-in fade-in slide-in-from-top-2 duration-200 scrollbar-thin scrollbar-thumb-auraa-red scrollbar-track-gray-100">
-                        <div onclick="selectAdminCat('All', 'ALL CATEGORIES')" class="w-full px-6 py-3 text-center text-[10px] font-black uppercase tracking-widest cursor-pointer transition-colors border-b border-gray-100 {% if not selected_category or selected_category == 'All' %}bg-gray-500 text-white{% else %}text-gray-600 hover:bg-gray-50 hover:text-auraa-red{% endif %}">
+                        <div onclick="selectAdminCat('All', 'ALL CATEGORIES')" class="w-full px-6 py-3 text-center text-[10px] font-black uppercase tracking-widest cursor-pointer transition-colors border-b border-gray-100 {% if selected_category == 'All' or not selected_category %}bg-auraa-red text-white{% else %}text-gray-600 hover:bg-auraa-red hover:text-white{% endif %}">
                             ALL CATEGORIES
                         </div>
                         {% for cat in categories %}
-                        <div onclick="selectAdminCat('{{ cat.name|escapejs }}', '{{ cat.name|escapejs }}')" class="w-full px-6 py-3 text-center text-[10px] font-black uppercase tracking-widest cursor-pointer transition-colors border-b border-gray-50 last:border-0 {% if selected_category == cat.name %}bg-auraa-red text-white{% else %}text-gray-600 hover:bg-red-50 hover:text-auraa-red{% endif %}">
+                        <div onclick="selectAdminCat('{{ cat.name|escapejs }}', '{{ cat.name|escapejs }}')" class="w-full px-6 py-3 text-center text-[10px] font-black uppercase tracking-widest cursor-pointer transition-colors border-b border-gray-50 last:border-0 {% if selected_category == cat.name %}bg-auraa-red text-white{% else %}text-gray-600 hover:bg-auraa-red hover:text-white{% endif %}">
                             {{ cat.name }}
                         </div>
                         {% endfor %}
@@ -101,17 +104,28 @@
                         <i data-lucide="chevron-down" id="admin-status-chevron" class="w-4 h-4 transition-transform shrink-0 text-gray-400"></i>
                     </button>
                     
-                    <div id="admin-status-options" class="hidden absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden z-[70] animate-in fade-in slide-in-from-top-2 duration-200">
-                        <div onclick="selectAdminStatus('All', 'ALL STATUS')" class="w-full px-6 py-3 text-center text-[10px] font-black uppercase tracking-widest cursor-pointer transition-colors border-b border-gray-100 {% if not selected_status or selected_status == 'All' %}bg-gray-500 text-white{% else %}text-gray-600 hover:bg-gray-50 hover:text-auraa-red{% endif %}">
-                            ALL STATUS
+                    <div id="admin-status-options" class="hidden absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-y-auto max-h-64 z-[70] animate-in fade-in slide-in-from-top-2 duration-200">
+                        <div onclick="selectAdminStatus('All', 'ALL STATUSES')" class="w-full px-6 py-3 text-center text-[10px] font-black uppercase tracking-widest cursor-pointer transition-colors border-b border-gray-100 {% if selected_status == 'All' or not selected_status %}bg-auraa-red text-white{% else %}text-gray-600 hover:bg-auraa-red hover:text-white{% endif %}">
+                            ALL STATUSES
                         </div>
-                        <div onclick="selectAdminStatus('Active', 'ENABLED')" class="w-full px-6 py-3 text-center text-[10px] font-black uppercase tracking-widest cursor-pointer transition-colors border-b border-gray-50 {% if selected_status == 'Active' %}bg-green-500 text-white{% else %}text-gray-600 hover:bg-green-50 hover:text-green-600{% endif %}">
-                            ENABLED
+                        <div onclick="selectAdminStatus('Active', 'ACTIVE')" class="w-full px-6 py-3 text-center text-[10px] font-black uppercase tracking-widest cursor-pointer transition-colors border-b border-gray-50 {% if selected_status == 'Active' %}bg-auraa-red text-white{% else %}text-gray-600 hover:bg-auraa-red hover:text-white{% endif %}">
+                            ACTIVE
                         </div>
-                        <div onclick="selectAdminStatus('Inactive', 'DISABLED')" class="w-full px-6 py-3 text-center text-[10px] font-black uppercase tracking-widest cursor-pointer transition-colors {% if selected_status == 'Inactive' %}bg-red-500 text-white{% else %}text-gray-600 hover:bg-red-50 hover:text-red-600{% endif %}">
-                            DISABLED
+                        <div onclick="selectAdminStatus('Inactive', 'INACTIVE')" class="w-full px-6 py-3 text-center text-[10px] font-black uppercase tracking-widest cursor-pointer transition-colors last:border-0 {% if selected_status == 'Inactive' %}bg-auraa-red text-white{% else %}text-gray-600 hover:bg-auraa-red hover:text-white{% endif %}">
+                            INACTIVE
                         </div>
                     </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button type="submit" class="bg-green-600 hover:bg-green-700 text-white border border-green-500/20 rounded-2xl px-8 py-3.5 text-[12px] font-black uppercase tracking-widest transition-all shadow-lg hover:shadow-xl active:scale-95 flex items-center gap-2">
+                        <i data-lucide="play" class="w-3 h-3 fill-current"></i>
+                        <span>GO</span>
+                    </button>
+
+                    <button type="button" onclick="resetFilters()" class="bg-blue-900 hover:bg-blue-800 text-white border border-blue-800/20 rounded-2xl px-8 py-3.5 text-[12px] font-black uppercase tracking-widest transition-all shadow-lg hover:shadow-xl active:scale-95 flex items-center gap-2">
+                        <i data-lucide="rotate-ccw" class="w-3 h-3"></i>
+                        <span>RESET</span>
+                    </button>
                 </div>
                 <noscript><button type="submit" class="hidden">Search</button></noscript>
             </form>
@@ -124,43 +138,44 @@
             <table class="w-full text-left border-collapse">
                 <thead class="bg-gray-900 text-white">
                     <tr class="border-b border-gray-800">
-                        <th class="py-6 px-4 text-center">
-                            <button onclick="toggleAllCategories()" title="Expand / Collapse All" class="text-white hover:text-auraa-red transition-colors">
-                                <i data-lucide="chevrons-down-up" class="w-4 h-4"></i>
-                            </button>
+                        <th class="py-6 px-8 text-[10px] font-black uppercase tracking-widest text-white/90 border border-gray-800">
+                            <div class="flex items-center gap-4">
+                                <button onclick="toggleAllCategories()" title="Expand / Collapse All" class="hover:scale-110 transition-transform p-1.5 bg-white/10 hover:bg-white/20 rounded-lg flex items-center justify-center">
+                                    <i data-lucide="layers-2" class="w-3.5 h-3.5"></i>
+                                </button>
+                                <span>Code</span>
+                            </div>
                         </th>
-                        <th class="py-6 px-8 text-[10px] font-black uppercase tracking-widest text-white/90">Code</th>
-                        <th class="py-6 px-4 text-[10px] font-black uppercase tracking-widest text-white/90">Image</th>
-                        <th class="py-6 px-4 text-[10px] font-black uppercase tracking-widest text-white/90">Product Name</th>
-                        <th class="py-6 px-4 text-[10px] font-black uppercase tracking-widest text-white/90 text-center">Content</th>
-                        <th class="py-6 px-4 text-[10px] font-black uppercase tracking-widest text-white/90 text-center">Actual Price</th>
-                        <th class="py-6 px-4 text-[10px] font-black uppercase tracking-widest text-white/90 text-center">Price</th>
-                        <th class="py-6 px-8 text-[10px] font-black uppercase tracking-widest text-white/90 text-center">Status</th>
+                        <th class="py-6 px-4 text-[10px] font-black uppercase tracking-widest text-white/90 border border-gray-800">Image</th>
+                        <th class="py-6 px-4 text-[10px] font-black uppercase tracking-widest text-white/90 border border-gray-800">Product Name</th>
+                        <th class="py-6 px-4 text-[10px] font-black uppercase tracking-widest text-white/90 text-center border border-gray-800">Content</th>
+                        <th class="py-6 px-4 text-[10px] font-black uppercase tracking-widest text-white/90 text-center border border-gray-800">Actual Price</th>
+                        <th class="py-6 px-4 text-[10px] font-black uppercase tracking-widest text-white/90 text-center border border-gray-800">Price</th>
+                        <th class="py-6 px-8 text-[10px] font-black uppercase tracking-widest text-white/90 text-center border border-gray-800">Status</th>
                     </tr>
                 </thead>
                     {% regroup products by category as category_list %}
                     {% for category_group in category_list %}
                         <tbody class="group transition-all">
                             <tr class="bg-auraa-red shadow-lg cursor-pointer transition-colors" onclick="toggleCategory('admin-cat-{{ category_group.grouper.id }}')">
-                                <td class="py-5 px-4 text-center">
-                                    <i data-lucide="chevron-down" id="icon-admin-cat-{{ category_group.grouper.id }}" class="w-5 h-5 text-white transition-transform duration-300"></i>
-                                </td>
-                                <td colspan="7" class="py-5 px-4">
-                                    <div class="flex justify-between items-center">
-                                        <h2 class="text-sm font-black uppercase tracking-[0.3em] text-white">{{ category_group.grouper.name }}</h2>
-                                        <span class="text-[10px] font-black text-blue-900 bg-white px-3 py-1 rounded-full border border-white shadow-sm">{{ category_group.list|length }} Items</span>
+                                <td colspan="7" class="py-5 px-8">
+                                    <div class="flex items-center gap-6">
+                                        <i data-lucide="minus" id="icon-admin-cat-{{ category_group.grouper.id }}" class="w-5 h-5 text-white transition-transform duration-300"></i>
+                                        <div class="flex flex-1 justify-between items-center">
+                                            <h2 class="text-sm font-black uppercase tracking-[0.3em] text-white">{{ category_group.grouper.name }}</h2>
+                                            <span class="text-[10px] font-black text-blue-900 bg-white px-3 py-1 rounded-full border border-white shadow-sm">{{ category_group.list|length }} Items</span>
+                                        </div>
                                     </div>
                                 </td>
                             </tr>
                         </tbody>
                         <tbody id="admin-cat-{{ category_group.grouper.id }}" class="divide-y divide-gray-50 transition-all duration-300">
                             {% for product in category_group.list %}
-                        <tr class="hover:bg-gray-50/50 transition-colors group">
-                            <td class="py-4 px-4"></td>
-                            <td class="py-4 px-8">
+                            <tr class="hover:bg-gray-50/50 transition-colors group">
+                                <td class="py-4 px-8 border border-gray-800">
                                 <span class="text-sm font-normal text-gray-900 uppercase">{{ product.code|default:"-" }}</span>
                             </td>
-                            <td class="py-4 px-4">
+                            <td class="py-4 px-4 border border-gray-800">
                                 {% if product.image %}
                                     <div class="w-12 h-12 rounded-2xl overflow-hidden border border-gray-100 shadow-sm shrink-0 cursor-zoom-in relative"
                                          onmouseenter="showImagePreview('{{ product.image|escapejs }}', '{{ product.name|escapejs }}')"
@@ -173,37 +188,39 @@
                                     </div>
                                 {% endif %}
                             </td>
-                            <td class="py-4 px-4">
+                            <td class="py-4 px-4 border border-gray-800">
                                 <div>
                                     <p class="text-sm font-normal text-gray-900 uppercase tracking-tight">{{ product.name }}</p>
                                     <p class="text-[9px] font-normal text-gray-400 uppercase tracking-widest">{{ product.category.name }}</p>
                                 </div>
                             </td>
-                            <td class="py-4 px-4 text-center">
+                            <td class="py-4 px-4 text-center border border-gray-800">
                                 <span class="text-sm font-normal text-gray-900 uppercase">{{ product.content|default:"-" }}</span>
                             </td>
-                            <td class="py-4 px-4 text-center">
+                            <td class="py-4 px-4 text-center border border-gray-800">
                                 {% if product.original_price %}
                                     <span class="text-sm font-bold text-gray-400 line-through">₹ {{ product.original_price }}</span>
                                 {% else %}
                                     <span class="text-sm font-bold text-gray-400">-</span>
                                 {% endif %}
                             </td>
-                            <td class="py-4 px-4 text-center">
+                            <td class="py-4 px-4 text-center border border-gray-800">
                                 <span class="text-sm font-normal text-auraa-red uppercase">₹ {{ product.price }}</span>
                             </td>
-                            <td class="py-4 px-8 flex justify-center items-center">
-                                <button onclick="toggleProduct(this, '{{ product.id }}')" 
-                                        class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none 
-                                        {% if product.is_disabled == 0 %}bg-green-500{% else %}bg-gray-200{% endif %}"
-                                        id="toggle-btn-{{ product.id }}">
-                                    <span class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform 
-                                          {% if product.is_disabled == 0 %}translate-x-6{% else %}translate-x-1{% endif %}"
-                                          id="toggle-dot-{{ product.id }}"></span>
-                                </button>
-                                <span id="toggle-label-{{ product.id }}" class="ml-3 text-[10px] font-black uppercase tracking-widest {% if product.is_disabled == 0 %}text-green-500{% else %}text-gray-400{% endif %}">
-                                    {% if product.is_disabled == 0 %}Enabled{% else %}Disabled{% endif %}
-                                </span>
+                            <td class="py-4 px-8 border border-gray-800">
+                                <div class="flex justify-center items-center">
+                                    <button onclick="toggleProduct(this, '{{ product.id }}')" 
+                                            class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none 
+                                            {% if product.is_disabled == 0 %}bg-green-500{% else %}bg-gray-200{% endif %}"
+                                            id="toggle-btn-{{ product.id }}">
+                                        <span class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform 
+                                              {% if product.is_disabled == 0 %}translate-x-6{% else %}translate-x-1{% endif %}"
+                                              id="toggle-dot-{{ product.id }}"></span>
+                                    </button>
+                                    <span id="toggle-label-{{ product.id }}" class="ml-3 text-[10px] font-black uppercase tracking-widest {% if product.is_disabled == 0 %}text-green-500{% else %}text-gray-400{% endif %}">
+                                        {% if product.is_disabled == 0 %}Enabled{% else %}Disabled{% endif %}
+                                    </span>
+                                </div>
                             </td>
                         </tr>
                     {% endfor %}
@@ -303,11 +320,18 @@ function toggleCategory(categoryId) {
     const icon = document.getElementById('icon-' + categoryId);
     if (body.classList.contains('hidden')) {
         body.classList.remove('hidden');
-        icon.classList.remove('-rotate-90');
+        if (icon) {
+            icon.setAttribute('data-lucide', 'minus');
+            icon.classList.remove('rotate-90');
+        }
     } else {
         body.classList.add('hidden');
-        icon.classList.add('-rotate-90');
+        if (icon) {
+            icon.setAttribute('data-lucide', 'plus');
+            icon.classList.add('rotate-90');
+        }
     }
+    if (window.lucide) lucide.createIcons();
 }
 
 function toggleAllCategories() {
@@ -333,11 +357,14 @@ function toggleAllCategories() {
     
     icons.forEach(icon => {
         if (anyHidden) {
-            icon.classList.remove('-rotate-90');
+            icon.setAttribute('data-lucide', 'minus');
+            icon.classList.remove('rotate-90');
         } else {
-            icon.classList.add('-rotate-90');
+            icon.setAttribute('data-lucide', 'plus');
+            icon.classList.add('rotate-90');
         }
     });
+    if (window.lucide) lucide.createIcons();
 }
 
 // Custom Category Dropdown Logic
@@ -403,6 +430,84 @@ function toggleClearSearchBtn() {
 function clearSearch() {
     document.getElementById('search-input').value = '';
     document.getElementById('search-input').closest('form').submit();
+}
+
+function resetFilters() {
+    document.getElementById('search-input').value = '';
+    document.getElementById('category-input').value = 'All';
+    document.getElementById('status-input').value = 'All';
+    window.location.href = window.location.pathname;
+}
+
+// Autocomplete Logic
+const searchInput = document.getElementById('search-input');
+const autocompleteResults = document.getElementById('autocomplete-results');
+let debounceTimer;
+
+if (searchInput) {
+    searchInput.addEventListener('input', function() {
+        const query = this.value.trim();
+        clearTimeout(debounceTimer);
+        
+        // Immediately clear and hide previous results while typing
+        autocompleteResults.innerHTML = '';
+        autocompleteResults.classList.add('hidden');
+        
+        if (query.length < 2) return;
+
+        debounceTimer = setTimeout(async () => {
+            // Show a clear loading state
+            autocompleteResults.innerHTML = `
+                <div class="px-6 py-8 text-center bg-white rounded-xl" style="background-color: white !important;">
+                    <div class="inline-block w-8 h-8 border-[3px] border-red-600 border-t-transparent rounded-full animate-spin" style="border-color: #ef4444; border-top-color: transparent;"></div>
+                    <p style="color: #ef4444 !important;" class="text-[10px] font-black uppercase tracking-widest mt-3">Fetching Results...</p>
+                </div>
+            `;
+            autocompleteResults.classList.remove('hidden');
+
+            try {
+                const response = await fetch(`/dashboard/products/autocomplete/?q=${encodeURIComponent(query)}`);
+                const result = await response.json();
+                
+                if (result.status === 'success' && result.results.length > 0) {
+                        autocompleteResults.innerHTML = result.results.map(item => {
+                            const escapedValue = (item.name || '').replace(/'/g, "\\'");
+                            return `
+                                <div onclick="selectAutocomplete('${escapedValue}')" 
+                                     style="background-color: white; color: black;"
+                                     class="autocomplete-item px-6 py-4 border-b border-gray-100 last:border-0 hover:bg-red-600 hover:text-white group cursor-pointer transition-colors bg-white">
+                                    <div class="flex flex-col">
+                                        <span style="color: #111827;" class="text-sm font-black uppercase tracking-tight group-hover:text-white">${item.name}</span>
+                                        <span style="color: #ef4444;" class="text-[10px] font-bold tracking-widest group-hover:text-white">${item.code || ''}</span>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('');
+                    autocompleteResults.classList.remove('hidden');
+                } else {
+                    autocompleteResults.innerHTML = '';
+                    autocompleteResults.classList.add('hidden');
+                }
+            } catch (error) {
+                console.error('Autocomplete error:', error);
+            }
+        }, 150);
+    });
+}
+
+
+// Close autocomplete when clicking outside
+document.addEventListener('click', function(e) {
+    if (!searchInput || !autocompleteResults) return;
+    if (!searchInput.contains(e.target) && !autocompleteResults.contains(e.target)) {
+        autocompleteResults.classList.add('hidden');
+    }
+});
+
+window.selectAutocomplete = function(value) {
+    searchInput.value = value;
+    autocompleteResults.classList.add('hidden');
+    searchInput.form.submit();
 }
 
 // Image Preview Logic

@@ -20,12 +20,12 @@
         <button onclick="toggleCartSummary()" class="flex items-center justify-between w-full mb-4 text-[10px] font-black uppercase tracking-[0.2em] text-auraa-red hover:text-gray-900 transition-colors group">
             <span>Order Details</span>
             <div class="flex items-center gap-2">
-                <span id="summary-toggle-text" class="text-[8px] opacity-60">Show</span>
-                <i data-lucide="chevron-up" id="summary-toggle-icon" class="w-3 h-3 transition-transform duration-300 rotate-180"></i>
+                <span id="summary-toggle-text" class="text-[8px] opacity-60">Hide</span>
+                <i data-lucide="chevron-up" id="summary-toggle-icon" class="w-3 h-3 transition-transform duration-300"></i>
             </div>
         </button>
 
-        <div id="cart-summary-details" style="max-height: 0px; opacity: 0;" class="space-y-4 overflow-hidden transition-all duration-500">
+        <div id="cart-summary-details" style="max-height: 1000px; opacity: 1; margin-top: 1rem;" class="space-y-4 overflow-hidden transition-all duration-500">
             <!-- Totals -->
             <div class="flex justify-between items-center text-[11px] font-bold uppercase tracking-wider text-gray-500">
                 <span>Net Total</span>
@@ -116,12 +116,13 @@
         }
     }
     
-    // Initialize state
+    // Initialize state (Show by default)
     document.addEventListener('DOMContentLoaded', () => {
         const summary = document.getElementById('cart-summary-details');
         if (summary) {
-            summary.style.maxHeight = '0px';
-            summary.style.opacity = '0';
+            summary.style.maxHeight = summary.scrollHeight + 'px';
+            summary.style.opacity = '1';
+            summary.style.marginTop = '1rem';
         }
     });
 </script>

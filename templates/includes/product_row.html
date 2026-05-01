@@ -16,7 +16,7 @@
 
     <!-- Product Code -->
     <td class="py-3 lg:py-4 px-1 lg:px-2 text-center border-r border-white border-b border-white" data-label="Product Code">
-        <span class="text-sm font-normal text-white transition-colors notranslate">{{ product.code|default:'-' }}</span>
+        <span class="text-sm font-normal text-white tracking-wide uppercase transition-colors notranslate">{{ product.code|default:'-' }}</span>
     </td>
 
     <!-- Product Name -->
@@ -37,12 +37,12 @@
 
     <!-- Content -->
     <td class="py-3 lg:py-4 px-1 lg:px-2 text-center border-r border-white border-b border-white" data-label="Content">
-        <span class="text-[11px] font-normal text-white uppercase tracking-wider">{% if product.unit.description %}{{ product.unit.description }}{% elif product.unit.name %}{{ product.unit.name }}{% else %}-{% endif %}</span>
+        <span class="text-sm font-normal text-white uppercase tracking-wider">{% if product.unit.description %}{{ product.unit.description }}{% elif product.unit.name %}{{ product.unit.name }}{% else %}-{% endif %}</span>
     </td>
 
     <!-- Actual Price -->
     <td class="py-3 lg:py-4 px-2 lg:px-4 text-center border-r border-white border-b border-white" data-label="Actual Price">
-        <span class="product-actual-price-value text-sm text-white/70 line-through font-normal notranslate">
+        <span class="product-actual-price-value text-sm text-white/70 line-through font-normal tracking-wide uppercase notranslate">
             {% if product.purchase_rate %}₹{{ product.purchase_rate }}{% else %}₹{{ product.price }}{% endif %}
         </span>
     </td>
@@ -50,7 +50,7 @@
     <!-- Price -->
     <td class="py-3 lg:py-4 px-1 lg:px-2 text-center border-r border-white border-b border-white" data-label="Price">
         <div class="bg-white px-2 lg:px-3 py-2 rounded-xl inline-block border border-white transition-all">
-            <span class="product-price-value text-xs lg:text-sm font-normal text-[#0A325A] notranslate">₹{{ product.price }}</span>
+            <span class="product-price-value text-sm font-normal text-[#0A325A] notranslate">₹{{ product.price }}</span>
         </div>
     </td>
 
@@ -70,7 +70,7 @@
     <!-- Total -->
     <td class="py-3 lg:py-4 px-2 lg:px-4 text-center border-b border-white" data-label="Total">
         <div class="flex items-center justify-center space-x-2">
-            <span class="text-lg font-normal text-white notranslate" id="total-{{ product.id }}">₹0</span>
+            <span class="text-sm font-normal text-white tracking-wide uppercase notranslate" id="total-{{ product.id }}">₹0</span>
         </div>
     </td>
 </tr>

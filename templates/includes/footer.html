@@ -147,10 +147,6 @@
         </div>
     </div>
 
-    <!-- Floating Up Bolt -->
-    <button id="scrollToTop" class="fixed bottom-36 right-6 md:bottom-10 md:right-10 w-14 h-14 md:w-16 md:h-16 bg-auraa-red rounded-2xl text-white shadow-2xl shadow-auraa-red/40 flex items-center justify-center translate-y-32 opacity-0 hover:scale-110 active:scale-95 transition-all duration-700 z-[100001] group">
-        <i data-lucide="arrow-up-to-line" class="w-6 h-6 group-hover:-translate-y-1 transition-transform"></i>
-    </button>
 </footer>
 
 <style>
@@ -175,18 +171,5 @@
         // Year update
         document.getElementById('current-year').textContent = new Date().getFullYear();
 
-        // Scroll Logic
-        const scrollBtn = document.getElementById('scrollToTop');
-        window.addEventListener('scroll', () => {
-            if (window.pageYOffset > 500) {
-                scrollBtn.classList.remove('translate-y-32', 'opacity-0');
-            } else {
-                scrollBtn.classList.add('translate-y-32', 'opacity-0');
-            }
-        });
-
-        scrollBtn.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
     });
 </script>

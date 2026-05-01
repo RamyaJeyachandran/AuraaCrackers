@@ -1,0 +1,70 @@
+{% load static %}
+<!-- Universal Scroll to Top Button -->
+<button id="scrollToTop" 
+        class="fixed bottom-10 right-10 w-14 h-14 bg-auraa-red rounded-2xl text-white shadow-2xl shadow-auraa-red/40 flex items-center justify-center transition-all duration-700 z-[999999] group opacity-0 pointer-events-none translate-y-20">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 group-hover:-translate-y-1 transition-transform">
+        <path d="m7 9 5-5 5 5M12 20V4M5 2h14"></path>
+    </svg>
+</button>
+
+<script>
+    (function() {
+        function initScrollToTop() {
+            const btn = document.getElementById('scrollToTop');
+            if (!btn) return;
+
+            // Function to get current scroll position from any possible source
+            function getScrollTop() {
+                // Check for dashboard layout section first
+                const dashboardSection = document.querySelector('section.overflow-y-auto');
+                if (dashboardSection) return dashboardSection.scrollTop;
+                
+                // Fallback to window/document
+                return window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+            }
+
+            function updateVisibility() {
+                const top = getScrollTop();
+                if (top > 300) {
+                    btn.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-20');
+                    btn.classList.add('opacity-100', 'pointer-events-auto', 'translate-y-0');
+                } else {
+                    btn.classList.add('opacity-0', 'pointer-events-none', 'translate-y-20');
+                    btn.classList.remove('opacity-100', 'pointer-events-auto', 'translate-y-0');
+                }
+            }
+
+            // Scroll action
+            btn.addEventListener('click', () => {
+                const dashboardSection = document.querySelector('section.overflow-y-auto');
+                if (dashboardSection) {
+                    dashboardSection.scrollTo({ top: 0, behavior: 'smooth' });
+                } else {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            });
+
+            // Listen to scroll events on window (covers most pages)
+            window.addEventListener('scroll', updateVisibility, { passive: true });
+            
+            // Also listen to scroll events on potential dashboard sections
+            document.addEventListener('scroll', (e) => {
+                if (e.target.classList && e.target.classList.contains('overflow-y-auto')) {
+                    updateVisibility();
+                }
+            }, true);
+
+            // Initial check
+            updateVisibility();
+            
+            // Periodic check for dynamic content/layout changes
+            setInterval(updateVisibility, 1000);
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initScrollToTop);
+        } else {
+            initScrollToTop();
+        }
+    })();
+</script>

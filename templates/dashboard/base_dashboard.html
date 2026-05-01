@@ -12,6 +12,10 @@
         .bg-auraa-red { background-color: #EF4444; }
         .text-auraa-red { color: #EF4444; }
         .sidebar-link-active { background-color: #EF4444 !important; color: white !important; }
+        .dropdown-active { background-color: #EF4444 !important; color: white !important; }
+        .dropdown-active span { color: white !important; }
+        .autocomplete-item:hover { background-color: #EF4444 !important; color: white !important; }
+        .autocomplete-item:hover span { color: white !important; }
     </style>
 </head>
 <body class="bg-gray-50 flex h-screen overflow-hidden">
@@ -92,6 +96,7 @@
     </main>
 
     {% include 'includes/global_modals.html' %}
+    {% include 'includes/scroll_to_top.html' %}
     <script>
         lucide.createIcons();
     </script>

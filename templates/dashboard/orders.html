@@ -20,7 +20,7 @@
     </div>
 
     <!-- Controls -->
-    <div class="mb-8 bg-auraa-red p-6 rounded-[2.5rem] shadow-xl relative group">
+    <div class="mb-8 bg-auraa-red p-6 rounded-[2.5rem] shadow-xl relative group sticky top-[114px] z-[80]">
         <div class="absolute inset-0 overflow-hidden rounded-[2.5rem] pointer-events-none">
             <div class="absolute -top-24 -right-24 w-48 h-48 bg-white/10 rounded-full blur-[60px] group-hover:bg-white/20 transition-all duration-1000"></div>
         </div>
@@ -34,60 +34,39 @@
                     <button type="button" id="clear-search-btn" onclick="clearSearch()" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors {% if not search_query %}hidden{% endif %}">
                         <i data-lucide="x" class="w-5 h-5"></i>
                     </button>
+                    <!-- Autocomplete Dropdown -->
+                    <div id="autocomplete-results" class="hidden absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-y-auto max-h-64 z-[100] animate-in fade-in slide-in-from-top-2 duration-200">
+                    </div>
                 </div>
                 <div class="relative w-full md:w-56">
                     <input type="hidden" name="status" id="status-input" value="{{ selected_status|default:'All' }}">
-                    <button type="button" onclick="toggleAdminCatDropdown(event)" class="w-full bg-white hover:bg-gray-50 border border-gray-100 rounded-2xl px-6 py-3.5 text-[10px] font-black uppercase tracking-widest text-gray-900 flex items-center justify-between transition-all group shadow-sm">
-                        <span id="admin-cat-label" class="truncate text-center w-full">
+                    <button type="button" data-dropdown-btn onclick="toggleAdminStatusDropdown(event)" class="w-full bg-white hover:bg-gray-50 border border-gray-100 rounded-2xl px-6 py-3.5 text-[10px] font-black uppercase tracking-widest text-gray-900 flex items-center justify-between transition-all group shadow-sm">
+                        <span id="admin-status-label" class="truncate text-center w-full">
                             {% if selected_status and selected_status != 'All' %}
                                 {{ selected_status }}
                             {% else %}
-                                ALL STATUSES
+                                ALL STATUS
                             {% endif %}
                         </span>
-                        <i data-lucide="chevron-down" id="admin-cat-chevron" class="w-4 h-4 transition-transform shrink-0 text-gray-400"></i>
+                        <i data-lucide="chevron-down" id="admin-status-chevron" class="w-4 h-4 transition-transform shrink-0 text-gray-400"></i>
                     </button>
                     
-                    <div id="admin-cat-options" class="hidden absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-y-auto max-h-64 z-[70] animate-in fade-in slide-in-from-top-2 duration-200 scrollbar-thin scrollbar-thumb-auraa-red scrollbar-track-gray-100">
-                        <div onclick="selectAdminCat('All', 'ALL STATUSES')" class="w-full px-6 py-3 text-center text-[10px] font-black uppercase tracking-widest cursor-pointer transition-colors border-b border-gray-100 {% if not selected_status or selected_status == 'All' %}bg-gray-500 text-white{% else %}text-gray-600 hover:bg-gray-50 hover:text-auraa-red{% endif %}">
-                            ALL STATUSES
+                    <div id="admin-status-options" class="hidden absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-y-auto max-h-64 z-[70] animate-in fade-in slide-in-from-top-2 duration-200 scrollbar-thin scrollbar-thumb-auraa-red scrollbar-track-gray-100">
+                        <div data-dropdown-item onclick="selectAdminStatus('All', 'ALL STATUS')" class="w-full px-6 py-3 text-center text-[10px] font-black uppercase tracking-widest cursor-pointer transition-colors border-b border-gray-100 {% if selected_status == 'All' or not selected_status %}bg-auraa-red text-white{% else %}text-gray-600 hover:bg-auraa-red hover:text-white{% endif %}">
+                            ALL STATUS
                         </div>
                         {% for st in statuses %}
-                        <div onclick="selectAdminCat('{{ st|escapejs }}', '{{ st|escapejs }}')" class="w-full px-6 py-3 text-center text-[10px] font-black uppercase tracking-widest cursor-pointer transition-colors border-b border-gray-50 last:border-0 {% if selected_status == st %}bg-auraa-red text-white{% else %}text-gray-600 hover:bg-red-50 hover:text-auraa-red{% endif %}">
+                        <div data-dropdown-item onclick="selectAdminStatus('{{ st|escapejs }}', '{{ st|escapejs }}')" class="w-full px-6 py-3 text-center text-[10px] font-black uppercase tracking-widest cursor-pointer transition-colors border-b border-gray-50 last:border-0 {% if selected_status == st %}bg-auraa-red text-white{% else %}text-gray-600 hover:bg-auraa-red hover:text-white{% endif %}">
                             {{ st }}
                         </div>
                         {% endfor %}
                     </div>
                 </div>
                 
-                <div class="relative w-full md:w-56">
-                    <input type="hidden" name="category" id="category-input" value="{{ selected_category|default:'All' }}">
-                    <button type="button" onclick="toggleAdminCatDropdown2(event)" class="w-full bg-white hover:bg-gray-50 border border-gray-100 rounded-2xl px-6 py-3.5 text-[10px] font-black uppercase tracking-widest text-gray-900 flex items-center justify-between transition-all group shadow-sm">
-                        <span id="admin-cat-label2" class="truncate text-center w-full">
-                            {% if selected_category and selected_category != 'All' %}
-                                {{ selected_category }}
-                            {% else %}
-                                ALL CATEGORIES
-                            {% endif %}
-                        </span>
-                        <i data-lucide="chevron-down" id="admin-cat-chevron2" class="w-4 h-4 transition-transform shrink-0 text-gray-400"></i>
-                    </button>
-                    
-                    <div id="admin-cat-options2" class="hidden absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-y-auto max-h-64 z-[70] animate-in fade-in slide-in-from-top-2 duration-200 scrollbar-thin scrollbar-thumb-auraa-red scrollbar-track-gray-100">
-                        <div onclick="selectAdminCat2('All', 'ALL CATEGORIES')" class="w-full px-6 py-3 text-center text-[10px] font-black uppercase tracking-widest cursor-pointer transition-colors border-b border-gray-100 {% if not selected_category or selected_category == 'All' %}bg-gray-500 text-white{% else %}text-gray-600 hover:bg-gray-50 hover:text-auraa-red{% endif %}">
-                            ALL CATEGORIES
-                        </div>
-                        {% for cat in categories %}
-                        <div onclick="selectAdminCat2('{{ cat.name|escapejs }}', '{{ cat.name|escapejs }}')" class="w-full px-6 py-3 text-center text-[10px] font-black uppercase tracking-widest cursor-pointer transition-colors border-b border-gray-50 last:border-0 {% if selected_category == cat.name %}bg-auraa-red text-white{% else %}text-gray-600 hover:bg-red-50 hover:text-auraa-red{% endif %}">
-                            {{ cat.name }}
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div>
 
                 <div class="relative w-full md:w-32">
                     <input type="hidden" name="year" id="year-input" value="{{ selected_year|default:'All' }}">
-                    <button type="button" onclick="toggleAdminYearDropdown(event)" class="w-full bg-white hover:bg-gray-50 border border-gray-100 rounded-2xl px-6 py-3.5 text-[10px] font-black uppercase tracking-widest text-gray-900 flex items-center justify-between transition-all group shadow-sm">
+                    <button type="button" data-dropdown-btn onclick="toggleAdminYearDropdown(event)" class="w-full bg-white hover:bg-gray-50 border border-gray-100 rounded-2xl px-6 py-3.5 text-[10px] font-black uppercase tracking-widest text-gray-900 flex items-center justify-between transition-all group shadow-sm">
                         <span id="admin-year-label" class="truncate text-center w-full">
                             {% if selected_year and selected_year != 'All' %}
                                 {{ selected_year }}
@@ -99,15 +78,26 @@
                     </button>
                     
                     <div id="admin-year-options" class="hidden absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-y-auto max-h-64 z-[70] animate-in fade-in slide-in-from-top-2 duration-200 scrollbar-thin scrollbar-thumb-auraa-red scrollbar-track-gray-100">
-                        <div onclick="selectAdminYear('All', 'YEAR')" class="w-full px-6 py-3 text-center text-[10px] font-black uppercase tracking-widest cursor-pointer transition-colors border-b border-gray-100 {% if not selected_year or selected_year == 'All' %}bg-gray-500 text-white{% else %}text-gray-600 hover:bg-gray-50 hover:text-auraa-red{% endif %}">
+                        <div data-dropdown-item onclick="selectAdminYear('All', 'YEAR')" class="w-full px-6 py-3 text-center text-[10px] font-black uppercase tracking-widest cursor-pointer transition-colors border-b border-gray-100 {% if selected_year == 'All' or not selected_year %}bg-auraa-red text-white{% else %}text-gray-600 hover:bg-auraa-red hover:text-white{% endif %}">
                             YEAR
                         </div>
                         {% for y in years %}
-                        <div onclick="selectAdminYear('{{ y|escapejs }}', '{{ y|escapejs }}')" class="w-full px-6 py-3 text-center text-[10px] font-black uppercase tracking-widest cursor-pointer transition-colors border-b border-gray-50 last:border-0 {% if selected_year == y %}bg-auraa-red text-white{% else %}text-gray-600 hover:bg-red-50 hover:text-auraa-red{% endif %}">
+                        <div data-dropdown-item onclick="selectAdminYear('{{ y|escapejs }}', '{{ y|escapejs }}')" class="w-full px-6 py-3 text-center text-[10px] font-black uppercase tracking-widest cursor-pointer transition-colors border-b border-gray-50 last:border-0 {% if selected_year == y %}bg-auraa-red text-white{% else %}text-gray-600 hover:bg-red-50 hover:text-auraa-red{% endif %}">
                             {{ y }}
                         </div>
                         {% endfor %}
                     </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button type="submit" class="bg-green-600 hover:bg-green-700 text-white border border-green-500/20 rounded-2xl px-8 py-3.5 text-[12px] font-black uppercase tracking-widest transition-all shadow-lg hover:shadow-xl active:scale-95 flex items-center gap-2">
+                        <i data-lucide="play" class="w-3 h-3 fill-current"></i>
+                        <span>GO</span>
+                    </button>
+
+                    <button type="button" onclick="resetFilters()" class="bg-blue-900 hover:bg-blue-800 text-white border border-blue-800/20 rounded-2xl px-8 py-3.5 text-[12px] font-black uppercase tracking-widest transition-all shadow-lg hover:shadow-xl active:scale-95 flex items-center gap-2">
+                        <i data-lucide="rotate-ccw" class="w-3 h-3"></i>
+                        <span>RESET</span>
+                    </button>
                 </div>
                 <noscript><button type="submit" class="hidden">Search</button></noscript>
             </form>
@@ -115,23 +105,23 @@
     </div>
 
     <!-- Orders Table -->
-    <div class="bg-white rounded-[2.5rem] border border-gray-100 shadow-xl overflow-hidden">
-        <div class="overflow-x-auto">
+    <div class="bg-white rounded-[2.5rem] border border-gray-100 shadow-xl overflow-hidden mb-20">
+        <div class="overflow-x-auto min-h-[450px]">
             <table class="w-full text-left border-collapse">
                 <thead class="bg-auraa-red text-white">
                     <tr class="border-b border-auraa-red/20">
-                        <th class="py-6 px-8 text-[10px] font-black uppercase tracking-widest text-white/90">Trans No</th>
-                        <th class="py-6 px-8 text-[10px] font-black uppercase tracking-widest text-white/90">Customer</th>
-                        <th class="py-6 px-8 text-[10px] font-black uppercase tracking-widest text-white/90 text-center">Amount</th>
-                        <th class="py-6 px-8 text-[10px] font-black uppercase tracking-widest text-white/90 text-center">Date</th>
-                        <th class="py-6 px-8 text-[10px] font-black uppercase tracking-widest text-white/90 text-center">Status</th>
-                        <th class="py-6 px-8 text-[10px] font-black uppercase tracking-widest text-white/90 text-center">Action</th>
+                        <th class="py-6 px-8 text-[10px] font-black uppercase tracking-widest text-white/90 border border-gray-800">Trans No</th>
+                        <th class="py-6 px-8 text-[10px] font-black uppercase tracking-widest text-white/90 border border-gray-800">Customer</th>
+                        <th class="py-6 px-8 text-[10px] font-black uppercase tracking-widest text-white/90 text-center border border-gray-800">Amount</th>
+                        <th class="py-6 px-8 text-[10px] font-black uppercase tracking-widest text-white/90 text-center border border-gray-800">Date</th>
+                        <th class="py-6 px-8 text-[10px] font-black uppercase tracking-widest text-white/90 text-center border border-gray-800">Status</th>
+                        <th class="py-6 px-8 text-[10px] font-black uppercase tracking-widest text-white/90 text-center border border-gray-800">Action</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-50">
                     {% for order in orders %}
                     <tr class="hover:bg-gray-50/50 transition-colors group">
-                        <td class="py-6 px-8">
+                        <td class="py-6 px-8 border border-gray-800">
                             <span class="text-sm font-black text-gray-900 uppercase">{{ order.trans_no }}</span>
                             {% if order.promo_code %}
                             <div class="mt-1">
@@ -139,7 +129,7 @@
                             </div>
                             {% endif %}
                         </td>
-                        <td class="py-6 px-8">
+                        <td class="py-6 px-8 border border-gray-800">
                             <div class="flex flex-col">
                                 <span class="text-sm font-black text-gray-900 uppercase">{{ order.customer.name }}</span>
                                 <div class="flex flex-col mt-0.5 space-y-0.5">
@@ -150,46 +140,48 @@
                                 </div>
                             </div>
                         </td>
-                        <td class="py-6 px-8 text-center">
+                        <td class="py-6 px-8 text-center border border-gray-800">
                             <span class="text-sm font-black text-gray-900 uppercase">₹ {{ order.grand_amt }}</span>
                         </td>
-                        <td class="py-6 px-8 text-center">
+                        <td class="py-6 px-8 text-center border border-gray-800">
                             <span class="text-xs font-bold text-gray-500 uppercase">{{ order.trans_dt|date:"M d, Y" }}</span>
                         </td>
-                        <td class="py-6 px-8 text-center">
-                            {% if order.status == 'New' or order.status == 'Ordered' %}
-                                <span class="inline-flex items-center space-x-2 px-3 py-1.5 bg-slate-900 text-white shadow-md shadow-slate-900/30 text-[9px] font-black uppercase tracking-widest rounded-full w-fit">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
-                                    <span>{{ order.status }}</span>
-                                </span>
-                            {% elif order.status == 'Progressing' %}
-                                <span class="inline-flex items-center space-x-2 px-3 py-1.5 bg-orange-500 text-white shadow-md shadow-orange-500/30 text-[9px] font-black uppercase tracking-widest rounded-full w-fit">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
-                                    <span>Progressing</span>
-                                </span>
-                            {% elif order.status == 'Shipped' %}
-                                <span class="inline-flex items-center space-x-2 px-3 py-1.5 bg-purple-500 text-white shadow-md shadow-purple-500/30 text-[9px] font-black uppercase tracking-widest rounded-full w-fit">
-                                    <i data-lucide="truck" class="w-2.5 h-2.5 text-white"></i>
-                                    <span>Shipped</span>
-                                </span>
-                            {% elif order.status == 'Delivered' %}
-                                <span class="inline-flex items-center space-x-2 px-3 py-1.5 bg-green-500 text-white shadow-md shadow-green-500/30 text-[9px] font-black uppercase tracking-widest rounded-full w-fit">
-                                    <i data-lucide="check" class="w-2.5 h-2.5 text-white"></i>
-                                    <span>Delivered</span>
-                                </span>
-                            {% elif order.status == 'Cancelled' %}
-                                <span class="inline-flex items-center space-x-2 px-3 py-1.5 bg-red-500 text-white shadow-md shadow-red-500/30 text-[9px] font-black uppercase tracking-widest rounded-full w-fit">
-                                    <i data-lucide="x" class="w-2.5 h-2.5 text-white"></i>
-                                    <span>Cancelled</span>
-                                </span>
-                            {% else %}
-                                <span class="inline-flex items-center space-x-2 px-3 py-1.5 bg-gray-500 text-white shadow-md shadow-gray-500/30 text-[9px] font-black uppercase tracking-widest rounded-full w-fit">
-                                    <span>{{ order.status }}</span>
-                                </span>
-                            {% endif %}
+                        <td class="py-6 px-8 text-center border border-gray-800">
+                            <div class="relative inline-block w-full min-w-[120px]">
+                                <button type="button" data-dropdown-btn
+                                        onclick="toggleTableStatusDropdown(event, '{{ order.trans_no }}')"
+                                        id="status-btn-{{ order.trans_no }}"
+                                        class="w-full px-4 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest flex items-center justify-between transition-all shadow-sm border border-transparent hover:shadow-md active:scale-95
+                                        {% if order.status|lower == 'ordered' or order.status == 'New' %}bg-blue-900 text-white
+                                        {% elif order.status|lower == 'packed' %}bg-orange-500 text-white
+                                        {% elif order.status|lower == 'distached' %}bg-indigo-600 text-white
+                                        {% elif order.status|lower == 'intransit' %}bg-blue-600 text-white
+                                        {% elif order.status|lower == 'deliveryed' %}bg-emerald-600 text-white
+                                        {% elif order.status|lower == 'onhold' %}bg-amber-500 text-white
+                                        {% elif order.status|lower == 'cancelled' %}bg-red-600 text-white
+                                        {% else %}bg-gray-800 text-white{% endif %}">
+                                    <span class="truncate">
+                                        {% if order.status == 'New' %}ordered{% else %}{{ order.status }}{% endif %}
+                                    </span>
+                                    <i data-lucide="chevron-down" class="w-3 h-3 ml-2 shrink-0 opacity-70"></i>
+                                </button>
+                                
+                                <div id="status-{{ order.trans_no }}-options" 
+                                     class="hidden absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden z-[70] animate-in fade-in slide-in-from-top-2 duration-200">
+                                    {% for st in statuses %}
+                                    <div data-dropdown-item onclick="updateOrderStatus('{{ order.trans_no }}', '{{ st }}', 'status-btn-{{ order.trans_no }}')"
+                                         class="px-4 py-3 text-[9px] font-black uppercase tracking-widest text-gray-700 hover:bg-blue-900 hover:text-white cursor-pointer transition-colors border-b border-gray-100 last:border-0 {% if order.status|lower == st|lower %}bg-blue-50 text-blue-900{% endif %}">
+                                        {{ st }}
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
                         </td>
-                        <td class="py-6 px-8 text-center">
+                        <td class="py-6 px-8 text-center border border-gray-800">
                             <div class="flex items-center justify-center space-x-2">
+                                <a href="{% url 'dashboard_order_edit' order.trans_no %}" title="Edit Order" class="p-2 bg-amber-500 text-white rounded-xl hover:bg-amber-600 transition-all transform hover:-translate-y-0.5 shadow-sm">
+                                    <i data-lucide="edit" class="w-4 h-4"></i>
+                                </a>
                                 <a href="{% url 'dashboard_order_detail' order.trans_no %}" title="View Order" class="p-2 bg-auraa-red text-white rounded-xl hover:bg-red-700 transition-all transform hover:-translate-y-0.5 shadow-sm">
                                     <i data-lucide="eye" class="w-4 h-4"></i>
                                 </a>
@@ -228,19 +220,35 @@
 
 <script>
 // Dropdown Toggle Logic
-function toggleAdminCatDropdown(e) {
+function toggleTableStatusDropdown(e, transNo) {
     if (e) e.stopPropagation();
-    const options = document.getElementById('admin-cat-options');
-    const chevron = document.getElementById('admin-cat-chevron');
+    const options = document.getElementById('status-' + transNo + '-options');
+    
+    // Close all other table status dropdowns
+    document.querySelectorAll('[id$="-options"]').forEach(opt => {
+        if (opt.id !== 'status-' + transNo + '-options' && opt.id.startsWith('status-')) {
+             opt.classList.add('hidden');
+        }
+    });
+    
+    // Close filter dropdowns
+    const filterStatus = document.getElementById('admin-status-options');
+    const filterYear = document.getElementById('admin-year-options');
+    if (filterStatus) filterStatus.classList.add('hidden');
+    if (filterYear) filterYear.classList.add('hidden');
+
+    if (options) options.classList.toggle('hidden');
+}
+
+function toggleAdminStatusDropdown(e) {
+    if (e) e.stopPropagation();
+    const options = document.getElementById('admin-status-options');
+    const chevron = document.getElementById('admin-status-chevron');
     
     // Close others
-    const opt2 = document.getElementById('admin-cat-options2');
-    const chev2 = document.getElementById('admin-cat-chevron2');
     const opt3 = document.getElementById('admin-year-options');
     const chev3 = document.getElementById('admin-year-chevron');
     
-    if (opt2) opt2.classList.add('hidden');
-    if (chev2) chev2.classList.remove('rotate-180');
     if (opt3) opt3.classList.add('hidden');
     if (chev3) chev3.classList.remove('rotate-180');
 
@@ -248,25 +256,6 @@ function toggleAdminCatDropdown(e) {
     if (chevron) chevron.classList.toggle('rotate-180');
 }
 
-function toggleAdminCatDropdown2(e) {
-    if (e) e.stopPropagation();
-    const options = document.getElementById('admin-cat-options2');
-    const chevron = document.getElementById('admin-cat-chevron2');
-    
-    // Close others
-    const opt1 = document.getElementById('admin-cat-options');
-    const chev1 = document.getElementById('admin-cat-chevron');
-    const opt3 = document.getElementById('admin-year-options');
-    const chev3 = document.getElementById('admin-year-chevron');
-    
-    if (opt1) opt1.classList.add('hidden');
-    if (chev1) chev1.classList.remove('rotate-180');
-    if (opt3) opt3.classList.add('hidden');
-    if (chev3) chev3.classList.remove('rotate-180');
-
-    if (options) options.classList.toggle('hidden');
-    if (chevron) chevron.classList.toggle('rotate-180');
-}
 
 function toggleAdminYearDropdown(e) {
     if (e) e.stopPropagation();
@@ -274,22 +263,18 @@ function toggleAdminYearDropdown(e) {
     const chevron = document.getElementById('admin-year-chevron');
     
     // Close others
-    const opt1 = document.getElementById('admin-cat-options');
-    const chev1 = document.getElementById('admin-cat-chevron');
-    const opt2 = document.getElementById('admin-cat-options2');
-    const chev2 = document.getElementById('admin-cat-chevron2');
+    const opt1 = document.getElementById('admin-status-options');
+    const chev1 = document.getElementById('admin-status-chevron');
     
     if (opt1) opt1.classList.add('hidden');
     if (chev1) chev1.classList.remove('rotate-180');
-    if (opt2) opt2.classList.add('hidden');
-    if (chev2) chev2.classList.remove('rotate-180');
 
     if (options) options.classList.toggle('hidden');
     if (chevron) chevron.classList.toggle('rotate-180');
 }
 
 // Selection Logic
-function selectAdminCat(val, labelText) {
+function selectAdminStatus(val, labelText) {
     const input = document.getElementById('status-input');
     if (input) {
         input.value = val;
@@ -298,14 +283,6 @@ function selectAdminCat(val, labelText) {
     }
 }
 
-function selectAdminCat2(val, labelText) {
-    const input = document.getElementById('category-input');
-    if (input) {
-        input.value = val;
-        const form = input.closest('form');
-        if (form) form.submit();
-    }
-}
 
 function selectAdminYear(val, labelText) {
     const input = document.getElementById('year-input');
@@ -318,11 +295,15 @@ function selectAdminYear(val, labelText) {
 
 // Global Click to Close
 window.addEventListener('click', () => {
-    ['admin-cat-options', 'admin-cat-options2', 'admin-year-options'].forEach(id => {
+    ['admin-status-options', 'admin-year-options'].forEach(id => {
         const opt = document.getElementById(id);
         if (opt) opt.classList.add('hidden');
     });
-    ['admin-cat-chevron', 'admin-cat-chevron2', 'admin-year-chevron'].forEach(id => {
+    // Close table status options
+    document.querySelectorAll('[id$="-options"]').forEach(opt => {
+        if (opt.id.startsWith('status-')) opt.classList.add('hidden');
+    });
+    ['admin-status-chevron', 'admin-year-chevron'].forEach(id => {
         const chev = document.getElementById(id);
         if (chev) chev.classList.remove('rotate-180');
     });
@@ -350,6 +331,84 @@ function clearSearch() {
     }
 }
 
+function resetFilters() {
+    document.getElementById('search-input').value = '';
+    document.getElementById('status-input').value = 'All';
+    document.getElementById('year-input').value = 'All';
+    window.location.href = window.location.pathname;
+}
+
+// Autocomplete Logic
+const searchInput = document.getElementById('search-input');
+const autocompleteResults = document.getElementById('autocomplete-results');
+let debounceTimer;
+
+if (searchInput) {
+    searchInput.addEventListener('input', function() {
+        const query = this.value.trim();
+        clearTimeout(debounceTimer);
+        
+        // Immediately clear and hide previous results while typing
+        autocompleteResults.innerHTML = '';
+        autocompleteResults.classList.add('hidden');
+        
+        if (query.length < 2) return;
+
+        debounceTimer = setTimeout(async () => {
+            // Show a clear loading state
+            autocompleteResults.innerHTML = `
+                <div class="px-6 py-8 text-center bg-white rounded-xl" style="background-color: white !important;">
+                    <div class="inline-block w-8 h-8 border-[3px] border-red-600 border-t-transparent rounded-full animate-spin" style="border-color: #ef4444; border-top-color: transparent;"></div>
+                    <p style="color: #ef4444 !important;" class="text-[10px] font-black uppercase tracking-widest mt-3">Fetching Results...</p>
+                </div>
+            `;
+            autocompleteResults.classList.remove('hidden');
+
+            try {
+                const response = await fetch(`/dashboard/orders/autocomplete/?q=${encodeURIComponent(query)}`);
+                const result = await response.json();
+                
+                if (result.status === 'success' && result.results.length > 0) {
+                    autocompleteResults.innerHTML = result.results.map(item => {
+                        const escapedName = item.name.replace(/'/g, "\\'");
+                        return `
+                            <div onclick="selectAutocomplete('${escapedName}')" 
+                                 style="background-color: white; color: black;"
+                                 class="autocomplete-item px-6 py-4 border-b border-gray-100 last:border-0 hover:bg-red-600 hover:text-white group cursor-pointer transition-colors bg-white">
+                                <div class="flex flex-col">
+                                    <span style="color: #111827;" class="text-sm font-black uppercase tracking-tight group-hover:text-white">${item.trans_no}</span>
+                                    <span style="color: #ef4444;" class="text-[10px] font-bold tracking-widest group-hover:text-white">${item.customer_name || ''}</span>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                    autocompleteResults.classList.remove('hidden');
+                } else {
+                    autocompleteResults.innerHTML = '';
+                    autocompleteResults.classList.add('hidden');
+                }
+            } catch (error) {
+                console.error('Autocomplete error:', error);
+            }
+        }, 150);
+    });
+}
+
+
+// Close autocomplete when clicking outside
+document.addEventListener('click', function(e) {
+    if (!searchInput || !autocompleteResults) return;
+    if (!searchInput.contains(e.target) && !autocompleteResults.contains(e.target)) {
+        autocompleteResults.classList.add('hidden');
+    }
+});
+
+window.selectAutocomplete = function(name) {
+    searchInput.value = name;
+    autocompleteResults.classList.add('hidden');
+    searchInput.form.submit();
+}
+
 // Print Logic
 function directPrint(url) {
     const iframe = document.getElementById('print-iframe');
@@ -362,6 +421,60 @@ function directPrint(url) {
         }
     };
     iframe.src = url + '?print=true&t=' + new Date().getTime();
+}
+
+// Update Order Status Logic
+async function updateOrderStatus(transNo, newStatus, elementOrId) {
+    try {
+        const element = typeof elementOrId === 'string' ? document.getElementById(elementOrId) : elementOrId;
+        const labelSpan = element.querySelector('span');
+        if (labelSpan) labelSpan.innerText = newStatus;
+
+        // Update color instantly for immediate feedback
+        const val = newStatus.toLowerCase();
+        element.className = 'w-full px-4 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest flex items-center justify-between transition-all shadow-sm border border-transparent hover:shadow-md active:scale-95';
+        
+        if (val === 'ordered') element.classList.add('bg-blue-900', 'text-white');
+        else if (val === 'packed') element.classList.add('bg-orange-500', 'text-white');
+        else if (val === 'distached') element.classList.add('bg-indigo-600', 'text-white');
+        else if (val === 'intransit') element.classList.add('bg-blue-600', 'text-white');
+        else if (val === 'deliveryed') element.classList.add('bg-emerald-600', 'text-white');
+        else if (val === 'onhold') element.classList.add('bg-amber-500', 'text-white');
+        else if (val === 'cancelled') element.classList.add('bg-red-600', 'text-white');
+        else element.classList.add('bg-gray-800', 'text-white');
+
+        // Close the options menu
+        const optionsMenu = document.getElementById('status-' + transNo + '-options');
+        if (optionsMenu) optionsMenu.classList.add('hidden');
+        
+        // Return focus to the button and refresh icons
+        element.focus();
+        if (window.lucide) lucide.createIcons();
+
+        const formData = new FormData();
+        formData.append('status', newStatus);
+        
+        const response = await fetch(`/dashboard/order/${transNo}/status/update/`, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        });
+        
+        const result = await response.json();
+        if (result.status === 'success') {
+            if (typeof toastr !== 'undefined') {
+                toastr.success(`Order ${transNo} status updated to ${newStatus}`);
+            }
+        } else {
+            alert('Error updating status: ' + result.message);
+            location.reload(); // Revert on error
+        }
+    } catch (error) {
+        console.error('Update status error:', error);
+        alert('An error occurred while updating status.');
+    }
 }
 </script>
 {% endblock %}

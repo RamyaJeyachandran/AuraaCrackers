@@ -20,7 +20,7 @@
                     
                     <!-- Auraa Profile Dropdown -->
                     <div class="relative group">
-                        <a href="{% url 'about' %}" class="text-[12px] font-black uppercase tracking-[0.25em] transition-colors text-[#0A325A] hover:text-[#f5071d] flex items-center gap-1.5 py-4 {% if '/about/' in request.path or '/vision/' in request.path or '/mission/' in request.path or '/founder-story/' in request.path or '/core-values/' in request.path or '/why-choose-us/' in request.path or '/brand-philosophy/' in request.path or '/auraa-promise/' in request.path or '/auraa-manifesto/' in request.path %}text-[#f5071d]{% endif %}">
+                        <a href="{% url 'founder_story' %}" class="text-[12px] font-black uppercase tracking-[0.25em] transition-colors text-[#0A325A] hover:text-[#f5071d] flex items-center gap-1.5 py-4 {% if '/about/' in request.path or '/vision/' in request.path or '/mission/' in request.path or '/founder-story/' in request.path or '/core-values/' in request.path or '/why-choose-us/' in request.path or '/brand-philosophy/' in request.path or '/auraa-promise/' in request.path or '/auraa-manifesto/' in request.path %}text-[#f5071d]{% endif %}">
                             Auraa Profile
                             <i data-lucide="chevron-down" class="w-3 h-3 opacity-50 group-hover:rotate-180 transition-transform duration-300"></i>
                             <span class="absolute bottom-0 left-0 h-0.5 bg-[#f5071d] transition-all duration-300 {% if '/about/' in request.path or '/vision/' in request.path or '/mission/' in request.path or '/founder-story/' in request.path or '/core-values/' in request.path or '/why-choose-us/' in request.path or '/brand-philosophy/' in request.path or '/auraa-promise/' in request.path or '/auraa-manifesto/' in request.path %}w-full{% else %}w-0 group-hover:w-full{% endif %}"></span>
@@ -28,9 +28,9 @@
                         
                         <!-- Dropdown Menu -->
                         <div class="absolute top-full left-0 w-64 bg-white rounded-2xl shadow-2xl border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-[99999] overflow-hidden py-2 translate-y-2 group-hover:translate-y-0">
-                            <a href="{% url 'about' %}" class="flex items-center space-x-3 px-6 py-3 text-[10px] font-black uppercase tracking-widest text-gray-600 hover:text-[#f5071d] hover:bg-red-50 transition-all">
-                                <i data-lucide="info" class="w-4 h-4"></i>
-                                <span>About Us</span>
+                            <a href="{% url 'founder_story' %}" class="flex items-center space-x-3 px-6 py-3 text-[10px] font-black uppercase tracking-widest text-gray-600 hover:text-[#f5071d] hover:bg-red-50 transition-all">
+                                <i data-lucide="history" class="w-4 h-4"></i>
+                                <span>Founder's Story</span>
                             </a>
                             <a href="{% url 'vision' %}" class="flex items-center space-x-3 px-6 py-3 text-[10px] font-black uppercase tracking-widest text-gray-600 hover:text-[#f5071d] hover:bg-red-50 transition-all">
                                 <i data-lucide="eye" class="w-4 h-4"></i>
@@ -39,10 +39,6 @@
                             <a href="{% url 'mission' %}" class="flex items-center space-x-3 px-6 py-3 text-[10px] font-black uppercase tracking-widest text-gray-600 hover:text-[#f5071d] hover:bg-red-50 transition-all">
                                 <i data-lucide="target" class="w-4 h-4"></i>
                                 <span>Our Mission</span>
-                            </a>
-                            <a href="{% url 'founder_story' %}" class="flex items-center space-x-3 px-6 py-3 text-[10px] font-black uppercase tracking-widest text-gray-600 hover:text-[#f5071d] hover:bg-red-50 transition-all">
-                                <i data-lucide="history" class="w-4 h-4"></i>
-                                <span>Founder's Story</span>
                             </a>
                             <a href="{% url 'core_values' %}" class="flex items-center space-x-3 px-6 py-3 text-[10px] font-black uppercase tracking-widest text-gray-600 hover:text-[#f5071d] hover:bg-red-50 transition-all">
                                 <i data-lucide="award" class="w-4 h-4"></i>
@@ -190,10 +186,9 @@
                     </button>
                     
                     <div id="mobile-profile-submenu" class="hidden pl-4 space-y-1 border-l-2 border-red-50 ml-4 mt-2">
-                        <a href="{% url 'about' %}" class="block px-4 py-2.5 text-[10px] font-black uppercase tracking-widest text-gray-500 hover:text-[#f5071d]">About Us</a>
+                        <a href="{% url 'founder_story' %}" class="block px-4 py-2.5 text-[10px] font-black uppercase tracking-widest text-gray-500 hover:text-[#f5071d]">Founder's Story</a>
                         <a href="{% url 'vision' %}" class="block px-4 py-2.5 text-[10px] font-black uppercase tracking-widest text-gray-500 hover:text-[#f5071d]">Our Vision</a>
                         <a href="{% url 'mission' %}" class="block px-4 py-2.5 text-[10px] font-black uppercase tracking-widest text-gray-500 hover:text-[#f5071d]">Our Mission</a>
-                        <a href="{% url 'founder_story' %}" class="block px-4 py-2.5 text-[10px] font-black uppercase tracking-widest text-gray-500 hover:text-[#f5071d]">Founder's Story</a>
                         <a href="{% url 'core_values' %}" class="block px-4 py-2.5 text-[10px] font-black uppercase tracking-widest text-gray-500 hover:text-[#f5071d]">Core Values</a>
                         <a href="{% url 'why_choose' %}" class="block px-4 py-2.5 text-[10px] font-black uppercase tracking-widest text-gray-500 hover:text-[#f5071d]">Why Choose Us</a>
                         <a href="{% url 'brand_philosophy' %}" class="block px-4 py-2.5 text-[10px] font-black uppercase tracking-widest text-gray-500 hover:text-[#f5071d]">Brand Philosophy</a>

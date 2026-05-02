@@ -159,8 +159,8 @@
                     {% regroup products by category as category_list %}
                     {% for category_group in category_list %}
                         <tbody class="group transition-all">
-                            <tr class="bg-auraa-red cursor-pointer transition-colors border border-gray-800" onclick="toggleCategory('admin-cat-{{ category_group.grouper.id }}')">
-                                <td colspan="7" class="py-5 px-8 border border-gray-800">
+                            <tr id="tr-admin-cat-{{ category_group.grouper.id }}" class="bg-auraa-red cursor-pointer transition-colors border border-gray-800" onclick="toggleCategory('admin-cat-{{ category_group.grouper.id }}')">
+                                <td id="td-admin-cat-{{ category_group.grouper.id }}" colspan="7" class="py-5 px-8 border border-gray-800">
                                     <div class="flex items-center gap-6">
                                         <i data-lucide="minus" id="icon-admin-cat-{{ category_group.grouper.id }}" class="w-5 h-5 text-white transition-transform duration-300"></i>
                                         <div class="flex flex-1 justify-between items-center">
@@ -320,17 +320,36 @@ function toggleProduct(btn, productId) {
 function toggleCategory(categoryId) {
     const body = document.getElementById(categoryId);
     const icon = document.getElementById('icon-' + categoryId);
+    const headerTr = document.getElementById('tr-' + categoryId);
+    const headerTd = document.getElementById('td-' + categoryId);
+    
     if (body.classList.contains('hidden')) {
         body.classList.remove('hidden');
         if (icon) {
             icon.setAttribute('data-lucide', 'minus');
             icon.classList.remove('rotate-90');
         }
+        if (headerTr) {
+            headerTr.classList.remove('border-white');
+            headerTr.classList.add('border-gray-800');
+        }
+        if (headerTd) {
+            headerTd.classList.remove('border-white');
+            headerTd.classList.add('border-gray-800');
+        }
     } else {
         body.classList.add('hidden');
         if (icon) {
             icon.setAttribute('data-lucide', 'plus');
             icon.classList.add('rotate-90');
+        }
+        if (headerTr) {
+            headerTr.classList.remove('border-gray-800');
+            headerTr.classList.add('border-white');
+        }
+        if (headerTd) {
+            headerTd.classList.remove('border-gray-800');
+            headerTd.classList.add('border-white');
         }
     }
     if (window.lucide) lucide.createIcons();
@@ -350,20 +369,39 @@ function toggleAllCategories() {
     }
     
     bodies.forEach(body => {
+        const id = body.id;
+        const icon = document.getElementById('icon-' + id);
+        const headerTr = document.getElementById('tr-' + id);
+        const headerTd = document.getElementById('td-' + id);
+
         if (anyHidden) {
             body.classList.remove('hidden');
+            if (icon) {
+                icon.setAttribute('data-lucide', 'minus');
+                icon.classList.remove('rotate-90');
+            }
+            if (headerTr) {
+                headerTr.classList.remove('border-white');
+                headerTr.classList.add('border-gray-800');
+            }
+            if (headerTd) {
+                headerTd.classList.remove('border-white');
+                headerTd.classList.add('border-gray-800');
+            }
         } else {
             body.classList.add('hidden');
-        }
-    });
-    
-    icons.forEach(icon => {
-        if (anyHidden) {
-            icon.setAttribute('data-lucide', 'minus');
-            icon.classList.remove('rotate-90');
-        } else {
-            icon.setAttribute('data-lucide', 'plus');
-            icon.classList.add('rotate-90');
+            if (icon) {
+                icon.setAttribute('data-lucide', 'plus');
+                icon.classList.add('rotate-90');
+            }
+            if (headerTr) {
+                headerTr.classList.remove('border-gray-800');
+                headerTr.classList.add('border-white');
+            }
+            if (headerTd) {
+                headerTd.classList.remove('border-gray-800');
+                headerTd.classList.add('border-white');
+            }
         }
     });
     if (window.lucide) lucide.createIcons();

@@ -431,11 +431,19 @@ class OrderDetailView(LoginRequiredMixin, TemplateView):
         context['items'] = order.items.all().select_related('product')
         
         # Stepper logic
-        stages = ['New', 'Progressing', 'Shipped', 'Delivered']
-        current_idx = stages.index(order.status) if order.status in stages else 0
+        stages = ['ORDERED', 'PACKED', 'DISPATCHED', 'IN TRANSIT', 'DELIVERED']
+        # Map current status to one of the stages for highlight, including legacy support
+        s_upper = order.status.upper()
+        if s_upper in ['NEW', 'ORDERED']: current_idx = 0
+        elif s_upper in ['PROGRESSING', 'PACKED']: current_idx = 1
+        elif s_upper in ['SHIPPED', 'DISPATCHED', 'DISTACHED']: current_idx = 2
+        elif s_upper in ['IN TRANSIT', 'INTRANSIT']: current_idx = 3
+        elif s_upper in ['DELIVERED', 'DELIVERYED']: current_idx = 4
+        else: current_idx = 0
+        
         context['stages'] = stages
         context['current_idx'] = current_idx
-        context['progress_per'] = current_idx * 33.33
+        context['progress_per'] = current_idx * 25 # 4 intervals for 5 stages
         return context
 
 class OrderStatusListView(LoginRequiredMixin, ListView):
@@ -454,9 +462,15 @@ class OrderStatusListView(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         # Add stepper data for each order
         orders = context['orders']
-        stages = ['New', 'Progressing', 'Shipped', 'Delivered']
+        stages = ['ORDERED', 'PACKED', 'DISPATCHED', 'IN TRANSIT', 'DELIVERED']
         for o in orders:
-            o.current_idx = stages.index(o.status) if o.status in stages else 0
+            s_upper = o.status.upper()
+            if s_upper in ['NEW', 'ORDERED']: o.current_idx = 0
+            elif s_upper in ['PROGRESSING', 'PACKED']: o.current_idx = 1
+            elif s_upper in ['SHIPPED', 'DISPATCHED', 'DISTACHED']: o.current_idx = 2
+            elif s_upper in ['IN TRANSIT', 'INTRANSIT']: o.current_idx = 3
+            elif s_upper in ['DELIVERED', 'DELIVERYED']: o.current_idx = 4
+            else: o.current_idx = 0
         context['stages'] = stages
         return context
 

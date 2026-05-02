@@ -99,16 +99,20 @@ class DashboardOrderListView(LoginRequiredMixin, AdminRequiredMixin, ListView):
         qs = OnlineSales.objects.all().select_related('customer', 'customer_address').order_by('-trans_dt')
         status = self.request.GET.get('status')
         if status and status != 'All':
-            if status == 'ordered':
-                qs = qs.filter(Q(status='ordered') | Q(status='New'))
-            elif status == 'packed':
-                qs = qs.filter(Q(status='packed') | Q(status='Progressing'))
-            elif status == 'distached':
-                qs = qs.filter(Q(status='distached') | Q(status='Shipped'))
-            elif status == 'deliveryed':
-                qs = qs.filter(Q(status='deliveryed') | Q(status='Delivered'))
+            # Support case-insensitive matching for robust filtering
+            status_upper = status.upper()
+            if status_upper == 'ORDERED':
+                qs = qs.filter(Q(status__iexact='ORDERED') | Q(status__iexact='ordered') | Q(status__iexact='New'))
+            elif status_upper == 'PACKED':
+                qs = qs.filter(Q(status__iexact='PACKED') | Q(status__iexact='packed') | Q(status__iexact='Progressing'))
+            elif status_upper == 'DISPATCHED':
+                qs = qs.filter(Q(status__iexact='DISPATCHED') | Q(status__iexact='dispatched') | Q(status__iexact='distached') | Q(status__iexact='Shipped'))
+            elif status_upper == 'DELIVERED':
+                qs = qs.filter(Q(status__iexact='DELIVERED') | Q(status__iexact='delivered') | Q(status__iexact='deliveryed'))
+            elif status_upper == 'IN TRANSIT':
+                qs = qs.filter(Q(status__iexact='IN TRANSIT') | Q(status__iexact='inTransit'))
             else:
-                qs = qs.filter(status=status)
+                qs = qs.filter(status__iexact=status)
             
         category = self.request.GET.get('category')
         if category and category != 'All':
@@ -140,7 +144,7 @@ class DashboardOrderListView(LoginRequiredMixin, AdminRequiredMixin, ListView):
         current_year = datetime.now().year
         context['selected_year'] = self.request.GET.get('year', str(current_year))
         
-        context['statuses'] = ['ordered', 'packed', 'distached', 'inTransit', 'deliveryed', 'onhold', 'cancelled']
+        context['statuses'] = ['ORDERED', 'PACKED', 'DISPATCHED', 'IN TRANSIT', 'DELIVERED', 'ON HOLD', 'CANCELLED']
         context['categories'] = Category.objects.filter(is_active=True).order_by('order')
         # Generate years from 2024 to current year
         context['years'] = [str(y) for y in range(2024, current_year + 1)]

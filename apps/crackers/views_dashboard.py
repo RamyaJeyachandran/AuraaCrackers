@@ -60,9 +60,9 @@ class DashboardProductListView(LoginRequiredMixin, AdminRequiredMixin, ListView)
             qs = qs.filter(category__name=category_name)
 
         status = self.request.GET.get('status')
-        if status == 'Active':
+        if status == 'Enabled' or status == 'Active':
             qs = qs.filter(is_disabled=0)
-        elif status == 'Inactive':
+        elif status == 'Disabled' or status == 'Inactive':
             qs = qs.filter(is_disabled=1)
             
         query = self.request.GET.get('q')
@@ -265,9 +265,9 @@ class DashboardCustomerListView(LoginRequiredMixin, AdminRequiredMixin, ListView
         
         # Status Filter
         status = self.request.GET.get('status')
-        if status == 'Active':
+        if status == 'Enabled' or status == 'Active':
             qs = qs.filter(is_active=True)
-        elif status == 'Inactive':
+        elif status == 'Disabled' or status == 'Inactive':
             qs = qs.filter(is_active=False)
             
         # Orders Filter

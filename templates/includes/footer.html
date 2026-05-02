@@ -131,18 +131,20 @@
             </div>
 
             <!-- Floating Bottom Bar (Pill) -->
-        <div class="max-w-5xl mx-auto mt-10 mb-20 md:mb-0 flex flex-col md:flex-row items-center justify-between gap-8 px-6 md:px-12 py-8 md:py-5 bg-gradient-to-r from-auraa-red via-[#8b1a24] to-[#0A325A] border border-white/20 rounded-[2.5rem] md:rounded-full shadow-[0_15px_40px_-5px_rgba(245,7,29,0.3)] relative overflow-hidden group/legal">
-            <!-- Glass Overlay for Texture -->
-            <div class="absolute inset-0 bg-white/5 backdrop-blur-sm pointer-events-none"></div>
+        <div class="max-w-5xl mx-auto mt-10 mb-20 md:mb-0 bg-gradient-to-r from-auraa-red via-[#8b1a24] to-[#0A325A] border border-white/20 rounded-[2.5rem] md:rounded-full shadow-[0_15px_40px_-5px_rgba(245,7,29,0.3)] relative overflow-hidden group/legal">
+            <!-- Glass Overlay for Texture (Removed blur to fix edge gaps) -->
+            <div class="absolute inset-0 bg-white/5 pointer-events-none"></div>
             
-            <p class="text-[10px] md:text-[11px] font-black uppercase tracking-[0.3em] md:tracking-[0.4em] text-white relative z-10 text-center md:text-left leading-relaxed">
-                © <span id="current-year">2026</span> Auraa Crackers — A Sparking Tradition.
-            </p>
-            
-            <div class="flex flex-wrap justify-center gap-6 md:gap-10 relative z-10 transition-all duration-300">
-                <a href="{% url 'privacy' %}" class="text-[10px] md:text-[11px] font-black uppercase tracking-[0.3em] text-white/80 hover:text-white transition-colors">Privacy</a>
-                <a href="{% url 'compliance' %}" class="text-[10px] md:text-[11px] font-black uppercase tracking-[0.3em] text-white/80 hover:text-white transition-colors">Compliance</a>
-                <a href="{% url 'terms' %}" class="text-[10px] md:text-[11px] font-black uppercase tracking-[0.3em] text-white/80 hover:text-white transition-colors">Terms</a>
+            <div class="flex flex-col md:flex-row items-center justify-between gap-8 px-6 md:px-12 py-8 md:py-5 relative z-10 w-full">
+                <p class="text-[10px] md:text-[11px] font-black uppercase tracking-[0.3em] md:tracking-[0.4em] text-white text-center md:text-left leading-relaxed">
+                    © <span id="current-year">2026</span> Auraa Crackers — A Sparking Tradition.
+                </p>
+                
+                <div class="flex flex-wrap justify-center gap-6 md:gap-10 transition-all duration-300">
+                    <a href="{% url 'privacy' %}" class="text-[10px] md:text-[11px] font-black uppercase tracking-[0.3em] text-white/80 hover:text-white transition-colors">Privacy</a>
+                    <a href="{% url 'compliance' %}" class="text-[10px] md:text-[11px] font-black uppercase tracking-[0.3em] text-white/80 hover:text-white transition-colors">Compliance</a>
+                    <a href="{% url 'terms' %}" class="text-[10px] md:text-[11px] font-black uppercase tracking-[0.3em] text-white/80 hover:text-white transition-colors">Terms</a>
+                </div>
             </div>
         </div>
         </div>

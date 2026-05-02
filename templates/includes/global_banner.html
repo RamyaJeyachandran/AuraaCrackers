@@ -1,0 +1,35 @@
+{% if active_banners and request.resolver_match.url_name != 'login' and '/admin/' not in request.path and '/dashboard/' not in request.path %}
+<div class="bg-[#0A325A] py-2.5 relative z-[100000] border-b border-white/10 overflow-hidden group">
+    <!-- Marquee Container -->
+    <div class="flex overflow-hidden whitespace-nowrap">
+        <div class="flex animate-marquee-fast hover:pause items-center space-x-12 px-12">
+            {% for i in "123"|make_list %} {# Loop a few times to ensure seamless wrap #}
+                {% for banner in active_banners %}
+                <div class="inline-flex items-center space-x-2">
+                    <p class="text-[10px] sm:text-[11px] font-black uppercase tracking-[0.2em] text-white">
+                        <span class="text-auraa-red">{{ banner.name }}:</span> 
+                        <span class="text-white/90">{{ banner.content|safe }}</span>
+                    </p>
+                    <span class="text-auraa-red/30 px-4">✦</span>
+                </div>
+                {% endfor %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<style>
+    @keyframes marquee {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-33.33%); } /* Matches the 3x loop for seamlessness */
+    }
+    .animate-marquee-fast {
+        animation: marquee 20s linear infinite;
+        display: inline-flex;
+        min-width: 100%;
+    }
+    .hover\:pause:hover {
+        animation-play-state: paused;
+    }
+</style>
+{% endif %}

@@ -11,7 +11,7 @@ from django.views import View
 from django.db import transaction
 from django.db.models import Q, Prefetch, IntegerField, Value, Min, Case, When, Sum, Count
 from django.db.models.functions import Cast, Coalesce, LPad
-from .models import Category, Product, OnlineSales, OnlineSalesItem, Customer, Pricelist, PricelistItem, Coupon, CustomerAddress
+from .models import Category, Product, OnlineSales, OnlineSalesItem, Customer, Pricelist, PricelistItem, Coupon, CustomerAddress, Banner
 from .services import OrderService
 from apps.users.models import User
 
@@ -1014,3 +1014,150 @@ class DashboardCustomerImpersonateView(LoginRequiredMixin, AdminRequiredMixin, V
         logout(request)
         login(request, user)
         return redirect('home')
+
+class DashboardBannerListView(LoginRequiredMixin, AdminRequiredMixin, ListView):
+    model = Banner
+    template_name = 'dashboard/banners.html'
+    context_object_name = 'banners'
+    
+    def get_queryset(self):
+        from django.conf import settings
+        return Banner.objects.filter(
+            website_id=settings.WEBSITE_ID,
+            company_id=settings.COMPANY_ID,
+            branch_id=settings.BRANCH_ID
+        ).order_by('-created_at')
+
+class BannerToggleActiveView(LoginRequiredMixin, AdminRequiredMixin, View):
+    def post(self, request, pk):
+        try:
+            banner = Banner.objects.get(pk=pk)
+            banner.is_active = not banner.is_active
+            banner.save()
+            return JsonResponse({'status': 'success', 'is_active': banner.is_active})
+        except Banner.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': 'Banner not found'}, status=404)
+
+class BannerDetailAPIView(LoginRequiredMixin, AdminRequiredMixin, View):
+    def get(self, request, pk):
+        try:
+            banner = Banner.objects.get(pk=pk)
+            data = {
+                'id': banner.id,
+                'name': banner.name,
+                'content': banner.content,
+                'is_show': banner.is_show,
+                'is_active': banner.is_active,
+            }
+            return JsonResponse({'status': 'success', 'data': data})
+        except Banner.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': 'Banner not found'}, status=404)
+
+class BannerSaveAPIView(LoginRequiredMixin, AdminRequiredMixin, View):
+    def post(self, request):
+        import json
+        from django.conf import settings
+        try:
+            data = json.loads(request.body)
+            banner_id = data.get('id')
+            
+            if banner_id:
+                banner = Banner.objects.get(pk=banner_id)
+                banner.updated_by = request.user.id
+            else:
+                banner = Banner(
+                    website_id=settings.WEBSITE_ID,
+                    company_id=settings.COMPANY_ID,
+                    branch_id=settings.BRANCH_ID,
+                    created_by=request.user.id
+                )
+            
+            banner.name = data.get('name')
+            banner.content = data.get('content')
+            banner.is_show = data.get('is_show', True)
+            # is_active is handled by the toggle view usually, but we can set it here too if needed
+            if not banner_id:
+                banner.is_active = True
+                
+            banner.save()
+            
+            return JsonResponse({
+                'status': 'success', 
+                'message': f'Banner {"updated" if banner_id else "created"} successfully'
+            })
+        except Banner.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': 'Banner not found'}, status=404)
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+
+class BannerDeleteAPIView(LoginRequiredMixin, AdminRequiredMixin, View):
+    def post(self, request, pk):
+        try:
+            banner = Banner.objects.get(pk=pk)
+            banner.delete()
+            return JsonResponse({'status': 'success', 'message': 'Banner deleted successfully'})
+        except Banner.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': 'Banner not found'}, status=404)
+
+class CouponDetailAPIView(LoginRequiredMixin, AdminRequiredMixin, View):
+    def get(self, request, pk):
+        try:
+            coupon = Coupon.objects.get(pk=pk)
+            data = {
+                'id': coupon.id,
+                'name': coupon.name,
+                'code': coupon.code,
+                'percentage': str(coupon.percentage),
+                'description': coupon.description,
+                'is_active': coupon.is_active,
+            }
+            return JsonResponse({'status': 'success', 'data': data})
+        except Coupon.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': 'Coupon not found'}, status=404)
+
+class CouponSaveAPIView(LoginRequiredMixin, AdminRequiredMixin, View):
+    def post(self, request):
+        import json
+        from django.conf import settings
+        try:
+            data = json.loads(request.body)
+            coupon_id = data.get('id')
+            
+            if coupon_id:
+                coupon = Coupon.objects.get(pk=coupon_id)
+                coupon.updated_by = request.user
+            else:
+                coupon = Coupon(
+                    website_id=settings.WEBSITE_ID,
+                    company_id=settings.COMPANY_ID,
+                    branch_id=settings.BRANCH_ID,
+                    created_by=request.user
+                )
+            
+            coupon.name = data.get('name')
+            coupon.code = data.get('code')
+            coupon.percentage = data.get('percentage')
+            coupon.description = data.get('description')
+            
+            if not coupon_id:
+                coupon.is_active = True
+                
+            coupon.save()
+            
+            return JsonResponse({
+                'status': 'success', 
+                'message': f'Coupon {"updated" if coupon_id else "created"} successfully'
+            })
+        except Coupon.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': 'Coupon not found'}, status=404)
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+
+class CouponDeleteAPIView(LoginRequiredMixin, AdminRequiredMixin, View):
+    def post(self, request, pk):
+        try:
+            coupon = Coupon.objects.get(pk=pk)
+            coupon.delete()
+            return JsonResponse({'status': 'success', 'message': 'Coupon deleted successfully'})
+        except Coupon.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': 'Coupon not found'}, status=404)

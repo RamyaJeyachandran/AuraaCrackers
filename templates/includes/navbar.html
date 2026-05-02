@@ -1,5 +1,6 @@
 {% load static %}
 <header class="{% if request.resolver_match.url_name == 'product_list' %}relative bg-white{% else %}fixed top-0{% endif %} w-full z-[99999]">
+    {% include 'includes/global_banner.html' %}
     {% include 'includes/topbar.html' %}
     <nav id="main-nav" class="w-full transition-all duration-300 bg-white py-1.5">
         <div class="max-w-7xl mx-auto px-4 lg:px-8">

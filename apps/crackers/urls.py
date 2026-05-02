@@ -15,7 +15,7 @@ from .views_dashboard import (
     DashboardOrderDetailView, DashboardOrderEstimateView, DashboardOrderDownloadView, DashboardCustomerListView, DashboardCustomerExportView, DashboardCustomerPrintView, AdminActiveCategoryListView,
     DashboardAnalysisView, DashboardReportCreateView, DashboardPricelistListView, PricelistToggleActiveView,
     DashboardPricelistCreateView, PricelistSaveView, DashboardPricelistDetailView, DashboardPricelistEditView,
-    PricelistUpdateView, DashboardCouponListView, CouponToggleActiveView,
+    PricelistUpdateView, DashboardCouponListView, CouponToggleActiveView, CouponDetailAPIView, CouponSaveAPIView, CouponDeleteAPIView, DashboardBannerListView, BannerToggleActiveView, BannerDetailAPIView, BannerSaveAPIView, BannerDeleteAPIView,
     PricelistCheckNameAPIView, PricelistVersionDetailAPIView, PricelistListAPIView,
     CustomerToggleActiveView, CustomerDetailAPIView, CustomerUpdateAPIView, CustomerAutocompleteAPIView,
     CustomerResetPasswordAPIView, ProductAutocompleteAPIView, CategoryAutocompleteAPIView, OrderAutocompleteAPIView,
@@ -59,6 +59,14 @@ urlpatterns = [
     path('dashboard/pricelists/<int:pk>/toggle/', PricelistToggleActiveView.as_view(), name='api_pricelist_toggle'),
     path('dashboard/coupons/', DashboardCouponListView.as_view(), name='dashboard_coupons'),
     path('dashboard/coupons/<int:pk>/toggle/', CouponToggleActiveView.as_view(), name='api_coupon_toggle'),
+    path('dashboard/coupons/<int:pk>/detail/', CouponDetailAPIView.as_view(), name='api_coupon_detail'),
+    path('dashboard/coupons/save/', CouponSaveAPIView.as_view(), name='api_coupon_save'),
+    path('dashboard/coupons/<int:pk>/delete/', CouponDeleteAPIView.as_view(), name='api_coupon_delete'),
+    path('dashboard/banners/', DashboardBannerListView.as_view(), name='dashboard_banners'),
+    path('dashboard/banners/<int:pk>/toggle/', BannerToggleActiveView.as_view(), name='api_banner_toggle'),
+    path('dashboard/banners/<int:pk>/detail/', BannerDetailAPIView.as_view(), name='api_banner_detail'),
+    path('dashboard/banners/save/', BannerSaveAPIView.as_view(), name='api_banner_save'),
+    path('dashboard/banners/<int:pk>/delete/', BannerDeleteAPIView.as_view(), name='api_banner_delete'),
     path('admin/category/', AdminActiveCategoryListView.as_view(), name='admin_active_categories'),
     
     # Autocomplete APIs

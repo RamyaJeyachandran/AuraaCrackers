@@ -1,5 +1,5 @@
 from django.conf import settings
-from .models import Category
+from .models import Category, Banner
 
 def website_id_processor(request):
     """
@@ -15,5 +15,6 @@ def website_id_processor(request):
         
     return {
         'WEBSITE_ID': website_id,
-        'footer_categories': footer_categories
+        'footer_categories': footer_categories,
+        'active_banners': Banner.objects.filter(is_show=True, is_active=True)
     }

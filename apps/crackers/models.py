@@ -470,5 +470,22 @@ class Testimonial(models.Model):
         db_table = 'tbl_testimonials'
         ordering = ['-created_at']
 
+
+class Banner(models.Model):
+    name = models.CharField(max_length=255, blank=True, null=True, db_column='name')
+    content = models.TextField(blank=True, null=True, db_column='content')
+    website_id = models.IntegerField(null=True, blank=True, db_column='websiteId', default=settings.WEBSITE_ID)
+    is_show = models.BooleanField(default=True, db_column='isShow')
+    is_active = models.BooleanField(default=True, db_column='isActive')
+    company_id = models.IntegerField(null=True, blank=True, db_column='companyId', default=settings.COMPANY_ID)
+    branch_id = models.IntegerField(null=True, blank=True, db_column='branchId', default=settings.BRANCH_ID)
+    created_at = models.DateTimeField(auto_now_add=True, db_column='createdDt')
+    created_by = models.IntegerField(null=True, blank=True, db_column='createdBy', default=settings.ADMIN_USER_ID)
+    updated_at = models.DateTimeField(auto_now=True, db_column='updatedDt')
+    updated_by = models.IntegerField(null=True, blank=True, db_column='updatedBy')
+
+    class Meta:
+        db_table = 'tbl_banner'
+
     def __str__(self):
-        return f"{self.name} - {self.rating} stars"
+        return self.name or f"Banner {self.id}"

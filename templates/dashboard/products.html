@@ -159,8 +159,8 @@
                     {% regroup products by category as category_list %}
                     {% for category_group in category_list %}
                         <tbody class="group transition-all">
-                            <tr class="bg-auraa-red shadow-lg cursor-pointer transition-colors" onclick="toggleCategory('admin-cat-{{ category_group.grouper.id }}')">
-                                <td colspan="7" class="py-5 px-8">
+                            <tr class="bg-auraa-red cursor-pointer transition-colors border border-gray-800" onclick="toggleCategory('admin-cat-{{ category_group.grouper.id }}')">
+                                <td colspan="7" class="py-5 px-8 border border-gray-800">
                                     <div class="flex items-center gap-6">
                                         <i data-lucide="minus" id="icon-admin-cat-{{ category_group.grouper.id }}" class="w-5 h-5 text-white transition-transform duration-300"></i>
                                         <div class="flex flex-1 justify-between items-center">

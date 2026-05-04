@@ -9,7 +9,9 @@
             <div class="w-10 h-10 lg:w-12 lg:h-12 rounded-xl overflow-hidden border border-white/20 bg-white/5 p-1 transition-transform group-hover/img:scale-110"
                  onclick="openProductSlideshow('{% if product.image %}{{ product.image }}{% else %}{% static 'images/no-image.png' %}{% endif %}', '{{ product.name|escapejs }}')">
                 <img src="{% if product.image %}{{ product.image }}{% else %}{% static 'images/no-image.png' %}{% endif %}" 
-                     alt="{{ product.name }}" class="w-full h-full object-contain" onerror="this.src='{% static 'images/no-image.png' %}'">
+                     alt="{{ product.name }}" class="w-full h-full object-contain" 
+                     loading="lazy"
+                     onerror="this.src='{% static 'images/no-image.png' %}'">
             </div>
         </div>
     </td>

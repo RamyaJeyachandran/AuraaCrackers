@@ -54,12 +54,6 @@ class ProductListView(ListView):
         queryset = queryset.annotate(
             padded_code=LPad('code', 10, Value('0'))
         )
-        # Group by category (lowest padded code in category), then by item padded code
-        queryset = queryset.annotate(
-            cat_min_padded=Min('category__products__code') # Fallback for now
-        ).annotate(
-            cat_min_padded_code=Min(LPad('category__products__code', 10, Value('0')))
-        )
 
         category_name = self.request.GET.get('category')
         query = self.request.GET.get('q')
@@ -91,11 +85,17 @@ class ProductListView(ListView):
             queryset = queryset.annotate(
                 order_count=Coalesce(Sum('onlinesalesitem__qty'), 0, output_field=DecimalField())
             ).order_by('-order_count', 'padded_code')
-        elif sort == 'name':
-            queryset = queryset.order_by('padded_code')
         else:
             # Default ordering: By category order, then by the LPAD result
             queryset = queryset.order_by('category__order', 'padded_code')
+
+        # Optimization: only fetch fields needed for the template to reduce memory and DB load
+        queryset = queryset.only(
+            'id', 'name', 'code', 'image', 'price', 'purchase_rate', 
+            'is_disabled', 'is_active',
+            'category__id', 'category__name', 'category__order',
+            'unit__name', 'unit__description'
+        )
         
         # If it's an AJAX request (using HX-Request or a custom header), return the partial
         if self.request.headers.get('x-requested-with') == 'XMLHttpRequest' or self.request.GET.get('ajax') == '1':

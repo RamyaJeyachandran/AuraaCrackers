@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% load static %}
-{% load static %}
 
 {% block title %}Order #{{ order.trans_no }} Details | Auraa Crackers{% endblock %}
 
@@ -28,6 +27,13 @@
         </div>
         
         <div class="flex items-center space-x-4">
+            {% if order.status|lower == 'new' or order.status|lower == 'ordered' or order.status|lower == 'on hold' or order.status|lower == 'onhold' %}
+                <a href="{% url 'order_edit' order.trans_no %}" class="flex items-center space-x-2 px-8 py-4 bg-auraa-red text-white rounded-2xl font-black uppercase tracking-widest text-[10px] hover:shadow-2xl transition-all transform hover:-translate-y-1 shadow-lg shadow-auraa-red/30">
+                    <i data-lucide="edit-3" class="w-4 h-4"></i>
+                    <span>Edit Order</span>
+                </a>
+            {% endif %}
+
             {% if order.status == 'Delivered' %}
             <button class="px-8 py-4 bg-gray-900 text-white rounded-2xl font-black uppercase tracking-widest text-[10px] hover:shadow-2xl transition-all transform hover:-translate-y-1">
                 Download Invoice
@@ -125,10 +131,10 @@
                                 </div>
                                 <div class="flex flex-col items-end">
                                     <span class="text-[9px] font-black uppercase tracking-widest text-gray-500 mb-1">Status</span>
-                                    <span class="px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest 
-                                                 {% if order.payment_status == 'Paid' or order.payment_status == 'Completed' %}bg-green-500/20 text-green-400
-                                                 {% else %}bg-orange-500/20 text-orange-400{% endif %}">
-                                        {{ order.payment_status }}
+                                        <span class="text-[11px] font-black uppercase tracking-widest
+                                                 {% if order.status == 'Delivered' %}bg-green-500/20 text-green-400
+                                                 {% else %}bg-orange-500/20 text-orange-400{% endif %} px-4 py-1 rounded-full">
+                                        {{ order.payment_status|default:"Pending" }}
                                     </span>
                                 </div>
                             </div>

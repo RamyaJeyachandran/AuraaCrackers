@@ -75,6 +75,7 @@ class OrderService:
     def process_order_checkout(cls, user, address_id, session_data):
         """
         Orchestrates the entire order pipeline: verification, creation, and cleanup.
+        Supports both new order creation and existing order updates (Edit Mode).
         """
         if not hasattr(user, 'online_customer') or not user.online_customer:
             raise ValueError("Customer profile not found for this user.")
@@ -88,6 +89,7 @@ class OrderService:
 
         promo_per = session_data.get('promo_per', 0)
         promo_code = session_data.get('promo_code', None)
+        editing_trans_no = session_data.get('editing_order_no')
 
         totals = cls.calculate_order_totals(cart_items, promo_per)
 
@@ -98,26 +100,44 @@ class OrderService:
 
         try:
             with transaction.atomic():
-                trans_no = cls.generate_next_trans_no()
+                if editing_trans_no:
+                    # UPDATE MODE
+                    order = OnlineSales.objects.select_for_update().get(
+                        trans_no=editing_trans_no, 
+                        customer=customer
+                    )
+                    order.customer_address = addr
+                    order.promo_per = promo_per
+                    order.promo_code = promo_code
+                    order.discount = totals['promo_discount']
+                    order.total_amt = totals['total_price']
+                    order.round_amt = totals['round_off']
+                    order.grand_amt = totals['grand_total']
+                    order.save()
+                    
+                    # Remove old items to replace with current cart state
+                    order.items.all().delete()
+                    trans_no = editing_trans_no
+                else:
+                    # NEW ORDER MODE
+                    trans_no = cls.generate_next_trans_no()
+                    order = OnlineSales.objects.create(
+                        customer=customer,
+                        customer_address=addr,
+                        trans_no=trans_no,
+                        trans_dt=timezone.now(),
+                        status='Ordered',
+                        promo_per=promo_per,
+                        promo_code=promo_code,
+                        discount=totals['promo_discount'],
+                        total_amt=totals['total_price'],
+                        round_amt=totals['round_off'],
+                        grand_amt=totals['grand_total'],
+                        is_active=True,
+                        created_by=user
+                    )
                 
-                # Create Sale Record
-                order = OnlineSales.objects.create(
-                    customer=customer,
-                    customer_address=addr,
-                    trans_no=trans_no,
-                    trans_dt=timezone.now(),
-                    status='Pending',
-                    promo_per=promo_per,
-                    promo_code=promo_code,
-                    discount=totals['promo_discount'],
-                    total_amt=totals['total_price'],
-                    round_amt=totals['round_off'],
-                    grand_amt=totals['grand_total'],
-                    is_active=True,
-                    created_by=user
-                )
-                
-                # Create Line Items
+                # Create Line Items (Unified logic for both modes)
                 items_to_create = [
                     OnlineSalesItem(
                         online_sales=order,
@@ -137,9 +157,8 @@ class OrderService:
                 # Cleanup Cart
                 cart_items.delete()
                 
-                logger.info(f"Order {trans_no} successfully placed for user {user.username}")
+                logger.info(f"Order {trans_no} successfully processed (Mode: {'Update' if editing_trans_no else 'New'})")
                 
-                # Success Logic Handheld by caller (Email trigger, session cleanup)
                 return order
 
         except Exception as e:

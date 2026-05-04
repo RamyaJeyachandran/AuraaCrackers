@@ -265,7 +265,7 @@
                                     {% for product in category_group.list %}
                                         <tr class="product-row bg-[#0A325A] border-b border-white" id="product-row-{{ product.id }}">
                                             <td class="py-3 px-2 text-center border-r border-white">
-                                                <img src="{% if product.image %}{{ product.image }}{% else %}{% static 'images/no-image.png' %}{% endif %}" class="w-10 h-10 object-contain mx-auto" onerror="this.src='{% static 'images/no-image.png' %}'">
+                                                <img src="{% if product.image %}{{ product.image }}{% else %}{% static 'images/no-image.png' %}{% endif %}" class="w-10 h-10 object-contain mx-auto" onerror="this.src='{% static "images/no-image.png" %}'">
                                             </td>
                                             <td class="py-3 px-2 text-center border-r border-white text-white text-sm font-bold uppercase">{{ product.code }}</td>
                                             <td class="py-3 px-2 text-center border-r border-white text-white text-sm font-bold uppercase">
@@ -385,43 +385,57 @@
 </div>
 
     {{ order_items_data|json_script:"current-items-data" }}
+    {{ product_pricing_json|json_script:"product-pricing-data" }}
     <script>
     // Configuration
     const transNo = "{{ order.trans_no }}";
     let promoPer = parseFloat("{{ order.promo_per|default:0 }}") || 0;
-    const productData = {
-        {% for p in products %}
-        "{{ p.id }}": { 
-            price: parseFloat("{{ p.order_rate|default:0 }}") || 0, 
-            mrp: parseFloat("{{ p.order_mrp|default:0 }}") || 0 
-        },
-        {% endfor %}
-    };
-    const initialItems = JSON.parse(document.getElementById('current-items-data').textContent);
+    const initialItems = JSON.parse(document.getElementById('current-items-data').textContent || '{}');
+    const productData = JSON.parse(document.getElementById('product-pricing-data').textContent || '{}');
     const quantities = {};
     
-    // Ensure all initial keys are handled as strings and values as numbers
+    // Initial Population from Server Data
     Object.keys(initialItems).forEach(key => {
-        quantities[String(key)] = parseInt(initialItems[key].qty) || 0;
+        const item = initialItems[key];
+        const qty = parseInt(item.qty);
+        if (!isNaN(qty) && qty > 0) {
+            quantities[String(key)] = qty;
+        }
     });
 
-    // Initialize UI on Load: Sync quantities to inputs
+    // Initialize UI on Load
     document.addEventListener('DOMContentLoaded', () => {
-        // Sync initial quantities to inputs and update row totals
-        Object.keys(quantities).forEach(id => {
-            const input = document.getElementById('qty-' + id);
-            if (input) {
-                input.value = quantities[id];
-                
-                const price = productData[id]?.price || 0;
+        // Step 1: If quantities came from server JSON, write them back into inputs.
+        // This handles the case where server-rendered inputs show 0 (Python matching failure)
+        // but the JSON data is correct. JS is the authoritative source.
+        if (Object.keys(quantities).length > 0) {
+            Object.keys(quantities).forEach(id => {
+                const input = document.getElementById('qty-' + id);
+                if (input) {
+                    input.value = quantities[id];
+                }
+                // Update the row total display for this product
+                const price = (productData[id] && productData[id].price) ? productData[id].price : 0;
                 const total = quantities[id] * price;
                 const totalEl = document.getElementById('total-' + id);
-                if (totalEl) totalEl.innerText = '₹ ' + total.toLocaleString();
-            }
-        });
-        
+                if (totalEl) totalEl.innerText = '₹ ' + total.toFixed(2);
+            });
+        } else {
+            // Step 2: Fallback — scan DOM inputs (for legacy orders with 0 in JSON)
+            document.querySelectorAll('input[id^="qty-"]').forEach(input => {
+                const qty = parseInt(input.value);
+                if (qty > 0) {
+                    const id = input.id.replace('qty-', '');
+                    quantities[id] = qty;
+                }
+            });
+        }
+
+        // Step 3: Sync the summary bar totals
         updateOrderEditUI();
+
         if (typeof updateStickyHeader === 'function') updateStickyHeader();
+        if (window.lucide) lucide.createIcons();
     });
 
     function updateQty(id, delta) {
@@ -450,7 +464,7 @@
             delete quantities[sid];
         }
         
-        const price = productData[sid]?.price || 0;
+        const price = (productData[sid] && productData[sid].price) ? productData[sid].price : 0;
         const total = qty * price;
         const totalEl = document.getElementById('total-' + id);
         if (totalEl) totalEl.innerText = '₹ ' + total.toLocaleString();

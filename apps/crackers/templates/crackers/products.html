@@ -556,14 +556,94 @@
             transform: translateY(0) scale(1);
         }
     }
+    /* Premium Page Loader */
+    #page-loader {
+        position: fixed;
+        inset: 0;
+        background: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 999999;
+        transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+    #page-loader.hidden-loader {
+        opacity: 0;
+        visibility: hidden;
+    }
+    .loader-logo {
+        width: 120px;
+        height: auto;
+        margin-bottom: 2rem;
+        animation: pulse-logo 2s ease-in-out infinite;
+    }
+    .loader-spinner {
+        width: 40px;
+        height: 40px;
+        border: 3px solid rgba(245, 7, 29, 0.1);
+        border-top-color: var(--auraa-red);
+        border-radius: 50%;
+        animation: spin-loader 1s linear infinite;
+    }
+    @keyframes pulse-logo {
+        0%, 100% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.05); opacity: 0.8; }
+    }
+    @keyframes spin-loader {
+        to { transform: rotate(360deg); }
+    }
+    .loader-text {
+        margin-top: 1.5rem;
+        font-family: 'Inter', sans-serif;
+        font-size: 10px;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 0.3em;
+        color: #0A325A;
+        animation: fade-text 1.5s ease-in-out infinite;
+    }
+    @keyframes fade-text {
+        0%, 100% { opacity: 0.5; }
+        50% { opacity: 1; }
+    }
 </style>
 {% endblock %}
 
 {% block content %}
+<!-- Premium Page Loader -->
+<div id="page-loader">
+    <img src="{% static 'images/logo.png' %}" alt="Auraa Crackers" class="loader-logo">
+    <div class="loader-spinner"></div>
+    <div class="loader-text">Loading</div>
+</div>
+
 <div class="max-w-full mx-auto px-2 lg:px-8 pt-2 lg:pt-4 pb-32 lg:pb-16">
     <div class="flex flex-col gap-4">
         <!-- Main Content (Now Full Width) -->
         <main class="flex-grow space-y-4">
+            {% if request.session.editing_order_no %}
+            <div class="mb-4 bg-[#0A325A]/5 border-2 border-[#0A325A]/10 rounded-[1.5rem] p-6 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-lg shadow-[#0A325A]/5 relative overflow-hidden">
+                <div class="absolute -right-8 -top-8 w-24 h-24 bg-[#0A325A]/5 rounded-full blur-2xl opacity-50"></div>
+                <div class="flex items-center space-x-5 relative z-10">
+                    <div class="w-12 h-12 bg-[#0A325A] text-white rounded-2xl flex items-center justify-center shadow-lg shadow-[#0A325A]/30">
+                        <i data-lucide="edit-3" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-black text-[#0A325A] uppercase tracking-tight">Edit Mode Active</h4>
+                        <p class="text-[10px] font-bold text-[#0A325A]/70 uppercase tracking-widest mt-0.5">Modifying Order #{{ request.session.editing_order_no }}</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-3 relative z-10">
+                    <a href="{% url 'order_edit_cancel' %}" class="px-6 py-2.5 bg-white text-auraa-red border border-red-100 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-auraa-red hover:text-white transition-all shadow-sm">
+                        Cancel Edit
+                    </a>
+                    <button onclick="toggleCartSidebar()" class="px-6 py-2.5 bg-[#0A325A] text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:shadow-lg transition-all transform hover:-translate-y-0.5">
+                        Review Changes
+                    </button>
+                </div>
+            </div>
+            {% endif %}
 
 
             <!-- Controls -->
@@ -774,7 +854,7 @@
                                             <span class="btn-3d-shadow"></span>
                                             <span class="btn-3d-edge btn-3d-edge-red"></span>
                                             <span class="btn-3d-front btn-3d-front-red py-4">
-                                                <span class="tracking-[0.2em]">PLACE ORDER</span>
+                                                <span class="tracking-[0.2em]">{% if request.session.editing_order_no %}UPDATE ORDER{% else %}PLACE ORDER{% endif %}</span>
                                             </span>
                                         </button>
                                     </div>
@@ -1935,7 +2015,15 @@
     window.addEventListener('load', updateStickyHeader);
     window.addEventListener('resize', updateStickyHeader);
     
-    // Also run immediately just in case
-    updateStickyHeader();
+    // Hide Page Loader on Load
+    window.addEventListener('load', () => {
+        const loader = document.getElementById('page-loader');
+        if (loader) {
+            loader.classList.add('hidden-loader');
+            setTimeout(() => {
+                loader.style.display = 'none';
+            }, 500);
+        }
+    });
 </script>
 {% endblock %}

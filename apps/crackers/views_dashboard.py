@@ -925,27 +925,41 @@ class DashboardOrderEditView(LoginRequiredMixin, AdminRequiredMixin, TemplateVie
             padded_code=LPad('code', 10, Value('0'))
         ).order_by('category__order', 'padded_code')
         
-        # Pre-fill current items with historical pricing from tbl_onlinesales_items
+        # Pre-fill current items with historical pricing
         order_items_dict = {}
-        for item in order.items.all():
-            # Use product_id (itemId in DB) as the primary key for matching
+        order_items_by_code = {}
+        
+        # Fetch items directly to be safe with legacy relationships
+        items_qs = OnlineSalesItem.objects.filter(online_sales=order)
+        
+        for item in items_qs:
+            item_data = {
+                'qty': float(item.qty or 0),
+                'mrp': float(item.mrp) if item.mrp is not None else None,
+                'rate': float(item.rate) if item.rate is not None else None
+            }
             if item.product_id:
-                order_items_dict[str(item.product_id)] = {
-                    'qty': float(item.qty),
-                    'mrp': float(item.mrp) if item.mrp is not None else None,
-                    'rate': float(item.rate) if item.rate is not None else None
-                }
+                order_items_dict[str(item.product_id)] = item_data
+            if item.item_code:
+                order_items_by_code[str(item.item_code)] = item_data
         
         # Attach order-specific data to each product for the template
         products_list = list(product_qs)
         for product in products_list:
-            item_data = order_items_dict.get(str(product.id), {})
+            # Try matching by ID first, then by Code (legacy fallback)
+            item_data = order_items_dict.get(str(product.id))
+            if not item_data and product.code:
+                item_data = order_items_by_code.get(str(product.code))
+            
+            if not item_data:
+                item_data = {}
+                
             product.initial_qty = int(item_data.get('qty', 0))
             
             # Pricing mapping
             product.initial_mrp = item_data.get('mrp')
             if product.initial_mrp is None:
-                product.initial_mrp = float(product.purchase_rate or product.original_price or product.price or 0)
+                product.initial_mrp = float(product.original_price or product.purchase_rate or product.price or 0)
                 
             product.initial_rate = item_data.get('rate')
             if product.initial_rate is None:
@@ -953,12 +967,31 @@ class DashboardOrderEditView(LoginRequiredMixin, AdminRequiredMixin, TemplateVie
             
             product.initial_total = product.initial_qty * product.initial_rate
 
+        # Create a lightweight mapping of product prices for the frontend
+        # AND rebuild order_items for JS keyed by product.id (Django PK)
+        # This guarantees quantities keys == productData keys in the browser
+        product_pricing_json = {}
+        order_items_for_js = {}
+        for product in products_list:
+            product_pricing_json[str(product.id)] = {
+                'price': float(product.initial_rate),
+                'mrp': float(product.initial_mrp)
+            }
+            if product.initial_qty > 0:
+                order_items_for_js[str(product.id)] = {
+                    'qty': product.initial_qty,
+                    'rate': float(product.initial_rate),
+                    'mrp': float(product.initial_mrp)
+                }
+
         context['products'] = products_list
         context['categories'] = Category.objects.filter(is_active=True).order_by('order')
         context['order'] = order
-        context['order_items_data'] = order_items_dict
+        context['order_items_data'] = order_items_for_js
+        context['product_pricing_json'] = product_pricing_json
         
         return context
+
 
 class DashboardOrderUpdateAPIView(LoginRequiredMixin, AdminRequiredMixin, View):
     def post(self, request, trans_no):
@@ -968,24 +1001,27 @@ class DashboardOrderUpdateAPIView(LoginRequiredMixin, AdminRequiredMixin, View):
             items_data = data.get('items', []) # List of {product_id, quantity}
             
             with transaction.atomic():
-                # Clear existing items and re-add
-                order.items.all().delete()
+                # Clear existing items — filter directly to be safe
+                OnlineSalesItem.objects.filter(online_sales=order).delete()
                 
                 new_items = []
                 for item in items_data:
                     try:
-                        product = Product.objects.get(id=item['product_id'])
+                        product = Product.objects.select_related('unit').get(id=item['product_id'])
                         qty = decimal.Decimal(str(item['quantity']))
                         if qty > 0:
                             rate = product.price
+                            mrp = product.original_price or product.purchase_rate or product.price
+                            unit_name = product.unit.name if product.unit else ''
                             new_items.append(OnlineSalesItem(
-                                sales=order,
+                                online_sales=order,
                                 product=product,
                                 item_name=product.name,
                                 item_code=product.code,
                                 rate=rate,
-                                mrp=product.original_price or product.purchase_rate or product.price,
+                                mrp=mrp,
                                 qty=qty,
+                                unit=unit_name,
                                 item_total=rate * qty,
                                 is_active=True,
                                 created_by=request.user

@@ -5,7 +5,8 @@ from .views import (
     BrandPhilosophyView, AuraaPromiseView, AuraaManifestoView, 
     CartAddAPIView, CartRemoveAPIView, CartListAPIView,
     CouponVerifyAPIView, OrderProcessingView, AddressAddAPIView, PlaceOrderAPIView,
-    OrderHistoryListView, OrderDetailView, OrderStatusListView, OrderDeleteAPIView, OrderEditView,
+    LoadOrderToCartView, CancelOrderEditView,
+    OrderHistoryListView, OrderDetailView, OrderStatusListView, OrderDeleteAPIView,
     TestimonialsView, StateListAPIView, CityListAPIView, PrivacyView, ComplianceView,
     ProductSearchAPIView
 )
@@ -81,7 +82,8 @@ urlpatterns = [
     path('orders/', OrderHistoryListView.as_view(), name='order_history'),
     path('order-status/', OrderStatusListView.as_view(), name='order_status'),
     path('order/<str:trans_no>/', OrderDetailView.as_view(), name='order_detail'),
-    path('order/<str:trans_no>/edit/', OrderEditView.as_view(), name='order_edit'),
+    path('order/<str:trans_no>/edit/', LoadOrderToCartView.as_view(), name='order_edit'),
+    path('order-edit/cancel/', CancelOrderEditView.as_view(), name='order_edit_cancel'),
     path('api/order/<str:trans_no>/delete/', OrderDeleteAPIView.as_view(), name='api_order_delete'),
     path('checkout/', OrderProcessingView.as_view(), name='checkout'),
     path('api/coupon/verify/', CouponVerifyAPIView.as_view(), name='api_coupon_verify'),

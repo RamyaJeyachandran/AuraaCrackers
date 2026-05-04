@@ -382,15 +382,17 @@ class PlaceOrderAPIView(LoginRequiredMixin, View):
             )
             
             # Post-processing (Session Cleanup + Email Task)
-            for k in ['promo_per', 'promo_code']:
+            editing_order = request.session.get('editing_order_no')
+            for k in ['promo_per', 'promo_code', 'editing_order_no']:
                 if k in request.session:
                     del request.session[k]
 
             send_order_success_emails_task.delay(user.id, order.id)
             
+            msg = 'Order updated successfully.' if editing_order else 'Order placed successfully. Our support team will contact you shortly.'
             return JsonResponse({
                 'status': 'success', 
-                'message': 'Our support team will contact you shortly.'
+                'message': msg
             })
 
         except ValueError as ve:
@@ -478,54 +480,17 @@ class OrderDeleteAPIView(LoginRequiredMixin, View):
     def post(self, request, trans_no):
         order = get_object_or_404(OnlineSales, trans_no=trans_no, customer=request.user.online_customer)
         
-        # Logic: Edit/Delete only if status is New/Progressing and not paid status completed
-        if order.status not in ['New', 'Progressing'] or order.payment_status in ['Paid', 'Completed']:
+        # Logic: Edit/Delete only if status is New/Progressing/Ordered
+        if order.status.lower() not in ['new', 'progressing', 'ordered', 'on hold', 'onhold']:
             return JsonResponse({'status': 'error', 'message': 'This order is locked and cannot be deleted.'}, status=403)
             
         order.is_active = False # Safe delete
         order.save()
         return JsonResponse({'status': 'success', 'message': 'Order deleted successfully.'})
 
-class OrderEditView(LoginRequiredMixin, TemplateView):
-    template_name = 'crackers/order_edit.html'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        trans_no = self.kwargs.get('trans_no')
-        order = get_object_or_404(OnlineSales, trans_no=trans_no, customer=self.request.user.online_customer)
-        
-        if order.status not in ['New', 'Progressing'] or order.payment_status in ['Paid', 'Completed']:
-            # Redirect back with error if not editable
-            return context # Will handle in template via warning
-            
-        context['order'] = order
-        context['items'] = order.items.all()
-        return context
+# Obsolete OrderEditView logic removed
 
-    def post(self, request, trans_no):
-        order = get_object_or_404(OnlineSales, trans_no=trans_no, customer=request.user.online_customer)
-        if order.status not in ['New', 'Progressing'] or order.payment_status in ['Paid', 'Completed']:
-            return JsonResponse({'status': 'error', 'message': 'Order locked.'}, status=403)
-
-        try:
-            with transaction.atomic():
-                for item in order.items.all():
-                    qty_key = f"qty_{item.id}"
-                    if qty_key in request.POST:
-                        new_qty = decimal.Decimal(request.POST[qty_key])
-                        if new_qty <= 0:
-                            item.delete()
-                        else:
-                            item.qty = new_qty
-                            item.item_total = item.rate * new_qty
-                            item.save()
-                
-                # Use centralized service for re-calculation
-                OrderService.recalculate_existing_order(order)
-                
-            return JsonResponse({'status': 'success', 'message': 'Order updated successfully.'})
-        except Exception as e:
-            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
 
 from django.core.cache import cache
 
@@ -551,6 +516,40 @@ class TestimonialsView(TemplateView):
             
         context.update(cached_data)
         return context
+
+class LoadOrderToCartView(LoginRequiredMixin, View):
+    def get(self, request, trans_no):
+        order = get_object_or_404(OnlineSales, trans_no=trans_no, customer=request.user.online_customer)
+        
+        # Guard: Check if editable (matching the buttons visibility)
+        s_lower = order.status.lower()
+        if s_lower not in ['new', 'ordered', 'on hold', 'onhold']:
+            return redirect('order_history')
+            
+        # Clear current cart
+        Cart.objects.filter(user=request.user).delete()
+        
+        # Populate cart from order items
+        for item in order.items.all():
+            Cart.objects.create(
+                user=request.user,
+                product=item.product,
+                quantity=item.qty
+            )
+            
+        # Set session for edit mode
+        request.session['editing_order_no'] = trans_no
+        
+        return redirect('product_list')
+
+class CancelOrderEditView(LoginRequiredMixin, View):
+    def get(self, request):
+        if 'editing_order_no' in request.session:
+            del request.session['editing_order_no']
+        
+        # Clear cart on cancel edit to restore clean state
+        Cart.objects.filter(user=request.user).delete()
+        return redirect('product_list')
 
 class StateListAPIView(View):
     def get(self, request):

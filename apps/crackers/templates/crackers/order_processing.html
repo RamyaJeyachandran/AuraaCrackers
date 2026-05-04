@@ -16,23 +16,31 @@
                         <h2 class="text-xl font-black uppercase tracking-widest text-white">Review Your Order</h2>
                     </div>
                     <div class="p-8">
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left">
-                                <thead>
-                                    <tr class="bg-auraa-red border-b border-white/10">
-                                        <th class="py-4 px-4 text-[10px] font-black uppercase tracking-widest text-white">Product</th>
-                                        <th class="py-4 text-center text-[10px] font-black uppercase tracking-widest text-white">Price</th>
-                                        <th class="py-4 text-center text-[10px] font-black uppercase tracking-widest text-white">Qty</th>
-                                        <th class="py-4 px-4 text-right text-[10px] font-black uppercase tracking-widest text-white">Total</th>
+                        <div class="overflow-x-auto rounded-[2.5rem] border-2 border-red-500/10 overflow-hidden shadow-sm">
+                            <table class="w-full text-left border-collapse">
+                                <thead class="bg-auraa-red">
+                                    <tr>
+                                        <th class="py-5 px-8 text-[10px] font-black uppercase tracking-widest text-white">Product Name</th>
+                                        <th class="py-5 text-center text-[10px] font-black uppercase tracking-widest text-white">Price</th>
+                                        <th class="py-5 text-center text-[10px] font-black uppercase tracking-widest text-white">Quantity</th>
+                                        <th class="py-5 px-8 text-right text-[10px] font-black uppercase tracking-widest text-white">Sub Total</th>
                                     </tr>
                                 </thead>
-                                <tbody class="divide-y divide-gray-50">
+                                <tbody class="divide-y divide-red-500/20">
                                     {% for item in cart_items %}
-                                    <tr>
-                                        <td class="py-4 text-sm font-bold text-gray-900">{{ item.product.name }}</td>
-                                        <td class="py-4 text-center text-sm font-bold text-gray-400 italic">₹{{ item.product.price }}</td>
-                                        <td class="py-4 text-center text-sm font-black">{{ item.quantity }}</td>
-                                        <td class="py-4 text-right text-sm font-black text-auraa-red">₹{{ item.total_price|floatformat:2 }}</td>
+                                    <tr class="hover:bg-red-50/40 transition-colors group">
+                                        <td class="py-6 px-8">
+                                            <span class="text-xs font-black text-gray-900 uppercase tracking-tight">{{ item.product.name }}</span>
+                                        </td>
+                                        <td class="py-6 text-center">
+                                            <span class="text-xs font-black text-gray-900">₹{{ item.product.price }}</span>
+                                        </td>
+                                        <td class="py-6 text-center">
+                                            <span class="inline-flex items-center justify-center w-8 h-8 rounded-xl bg-auraa-red text-white text-[10px] font-black shadow-lg shadow-auraa-red/20">{{ item.quantity }}</span>
+                                        </td>
+                                        <td class="py-6 px-8 text-right">
+                                            <span class="text-sm font-black text-[#0A325A]">₹{{ item.total_price|floatformat:2 }}</span>
+                                        </td>
                                     </tr>
                                     {% endfor %}
                                 </tbody>
@@ -57,7 +65,8 @@
                         <div class="grid grid-cols-1 gap-4" id="address-list">
                             {% for addr in addresses %}
                             <label class="relative block cursor-pointer group">
-                                <input type="radio" name="address_id" value="{{ addr.id }}" class="peer hidden" {% if addr.is_shipping_default %}checked{% endif %}>
+                                <input type="radio" name="address_id" value="{{ addr.id }}" class="peer hidden" 
+                                       {% if addr.is_shipping_default or addresses|length == 1 %}checked{% endif %}>
                                 <div class="p-6 rounded-2xl border-2 border-gray-100 bg-gray-50 transition-all peer-checked:border-auraa-red peer-checked:bg-red-50/30 group-hover:border-gray-200">
                                     <div class="flex justify-between items-start mb-2">
                                         <span class="text-[10px] font-black uppercase tracking-widest text-gray-900">Address {{ forloop.counter }}</span>
@@ -145,7 +154,7 @@
                                     <span class="btn-3d-shadow"></span>
                                     <span class="btn-3d-edge btn-3d-edge-red"></span>
                                     <span class="btn-3d-front btn-3d-front-red py-4">
-                                        <span id="btn-text" class="tracking-[0.2em]">CONFIRM ORDER</span>
+                                        <span id="btn-text" class="tracking-[0.2em]">{% if request.session.editing_order_no %}UPDATE ORDER{% else %}CONFIRM ORDER{% endif %}</span>
                                     </span>
                                 </button>
                             </div>

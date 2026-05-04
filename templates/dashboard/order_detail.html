@@ -4,29 +4,63 @@
 
 {% block title %}Order Details | Auraa Admin{% endblock %}
 
+{% block extra_head %}
+<style>
+    .detail-card {
+        background: white;
+        border-radius: 2rem;
+        border: 1px solid #f1f5f9;
+        box-shadow: 0 10px 40px -10px rgba(0,0,0,0.08);
+    }
+    .section-label {
+        font-size: 9px;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        color: #94a3b8;
+        margin-bottom: 4px;
+    }
+    .section-value {
+        font-size: 13px;
+        font-weight: 800;
+        text-transform: uppercase;
+        color: #0f172a;
+    }
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid #f8fafc;
+    }
+    .summary-row:last-child { border-bottom: none; }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
-    <!-- Header -->
-    <div class="mb-12 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-        <div>
-            <div class="flex items-center space-x-3 mb-2">
-                <a href="{% url 'dashboard_orders' %}" class="text-gray-400 hover:text-auraa-red transition-colors">
-                    <i data-lucide="arrow-left" class="w-6 h-6"></i>
-                </a>
-                <h1 class="text-4xl font-black text-gray-900 tracking-tight uppercase">Order <span class="text-auraa-red">{{ order.trans_no }}</span></h1>
+<div class="max-w-full mx-auto px-4 lg:px-8 pb-20">
+
+    <!-- Page Header -->
+    <div class="mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div class="flex items-center gap-4">
+            <a href="{% url 'dashboard_orders' %}" class="w-10 h-10 bg-white border border-gray-100 rounded-xl flex items-center justify-center shadow-sm hover:bg-gray-50 transition-colors">
+                <i data-lucide="arrow-left" class="w-4 h-4 text-gray-600"></i>
+            </a>
+            <div>
+                <h1 class="text-2xl font-black text-gray-900 tracking-tight uppercase">
+                    Order <span class="text-auraa-red">{{ order.trans_no }}</span>
+                </h1>
+                <p class="text-[9px] font-bold text-gray-400 uppercase tracking-widest mt-0.5">Order detailed history and contents</p>
             </div>
-            <p class="text-gray-500 font-bold uppercase tracking-widest text-[10px] ml-9">Order detailed history and contents page</p>
         </div>
-        <div class="flex items-center space-x-3">
-            <!-- Status Dropdown -->
-            <div class="relative group">
-                <select onchange="updateOrderStatus('{{ order.trans_no }}', this.value)" 
-                        class="px-5 py-2.5 rounded-full shadow-lg flex items-center space-x-2 border outline-none appearance-none cursor-pointer pr-10 text-[10px] font-black text-white uppercase tracking-widest
-                        {% if order.status|lower == 'deliveryed' %}bg-green-600 shadow-green-600/30 border-green-500/30
-                        {% elif order.status|lower == 'cancelled' or order.status|lower == 'onhold' %}bg-red-600 shadow-red-600/30 border-red-500/20
-                        {% elif order.status|lower == 'distached' or order.status|lower == 'intransit' %}bg-blue-600 shadow-blue-600/30 border-blue-500/30
-                        {% elif order.status|lower == 'packed' %}bg-orange-600 shadow-orange-600/30 border-orange-500/30
-                        {% else %}bg-slate-900 shadow-slate-900/30 border-slate-700{% endif %}">
+
+        <!-- Header Actions -->
+        <div class="flex items-center gap-3 flex-wrap">
+            <!-- Status Badge -->
+            <div class="relative">
+                <select onchange="updateOrderStatus('{{ order.trans_no }}', this.value)"
+                        class="pl-4 pr-9 py-2.5 rounded-xl shadow-md appearance-none cursor-pointer outline-none text-[10px] font-black text-white uppercase tracking-widest
+                        {% if order.status|lower == 'deliveryed' or order.status|lower == 'delivered' %}bg-green-600{% elif order.status|lower == 'cancelled' or order.status|lower == 'onhold' %}bg-red-600{% elif order.status|lower == 'distached' or order.status|lower == 'dispatched' or order.status|lower == 'intransit' %}bg-blue-600{% elif order.status|lower == 'packed' %}bg-orange-500{% else %}bg-slate-900{% endif %}">
                     <option value="ordered" {% if order.status|lower == 'ordered' or order.status == 'New' %}selected{% endif %}>Ordered</option>
                     <option value="packed" {% if order.status|lower == 'packed' or order.status == 'Progressing' %}selected{% endif %}>Packed</option>
                     <option value="distached" {% if order.status|lower == 'distached' or order.status == 'Shipped' %}selected{% endif %}>Dispatched</option>
@@ -35,141 +69,102 @@
                     <option value="onhold" {% if order.status|lower == 'onhold' %}selected{% endif %}>On Hold</option>
                     <option value="cancelled" {% if order.status|lower == 'cancelled' %}selected{% endif %}>Cancelled</option>
                 </select>
-                <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-white">
-                    <i data-lucide="chevron-down" class="w-3.5 h-3.5"></i>
+                <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-white">
+                    <i data-lucide="chevron-down" class="w-3 h-3"></i>
                 </div>
             </div>
 
-            <div class="px-5 py-2.5 bg-auraa-red rounded-full shadow-lg shadow-auraa-red/30 flex items-center space-x-2 border border-red-500/30">
-                <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
-                <span class="text-[10px] font-black text-white uppercase tracking-widest">Total products: {{ items.count }}</span>
+            <!-- Pills -->
+            <div class="flex items-center gap-2 bg-[#0A325A] px-4 py-2.5 rounded-xl shadow">
+                <i data-lucide="package" class="w-3.5 h-3.5 text-white"></i>
+                <span class="text-[10px] font-black text-white uppercase tracking-widest">{{ items.count }} Products</span>
             </div>
-
-            <div class="px-5 py-2.5 bg-orange-600 rounded-full shadow-lg shadow-orange-600/30 flex items-center space-x-2 border border-orange-500/30">
-                <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
-                <span class="text-[10px] font-black text-white uppercase tracking-widest">Total Qty: {{ total_qty|floatformat:0 }}</span>
+            <div class="flex items-center gap-2 bg-orange-500 px-4 py-2.5 rounded-xl shadow">
+                <i data-lucide="layers" class="w-3.5 h-3.5 text-white"></i>
+                <span class="text-[10px] font-black text-white uppercase tracking-widest">Qty: {{ total_qty|floatformat:0 }}</span>
             </div>
-            
-            <div class="px-5 py-2.5 bg-gray-900 rounded-full shadow-lg shadow-gray-900/30 flex items-center space-x-2 border border-gray-700">
+            <div class="flex items-center gap-2 bg-gray-900 px-4 py-2.5 rounded-xl shadow">
                 <i data-lucide="calendar" class="w-3.5 h-3.5 text-white"></i>
                 <span class="text-[10px] font-black text-white uppercase tracking-widest">{{ order.trans_dt|date:"M d, Y" }}</span>
             </div>
+
+            <!-- Print Button -->
+            <a href="{% url 'dashboard_order_estimate' order.trans_no %}" target="_blank" class="flex items-center gap-2 bg-blue-600 text-white px-4 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-blue-600/30 hover:bg-blue-700 transition-colors">
+                <i data-lucide="printer" class="w-3.5 h-3.5"></i>
+                Print
+            </a>
+
+            <!-- Edit Button -->
+            <a href="{% url 'dashboard_order_edit' order.trans_no %}" class="flex items-center gap-2 bg-auraa-red text-white px-4 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-auraa-red/30 hover:bg-red-700 transition-colors">
+                <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
+                Edit
+            </a>
         </div>
     </div>
 
-    <!-- Order Details Grid -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <!-- Customer Details -->
-        <div class="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-xl lg:col-span-1">
-            <div class="flex items-center space-x-3 mb-6">
-                <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center">
-                    <i data-lucide="user" class="w-5 h-5"></i>
-                </div>
-                <h2 class="bg-auraa-red text-white px-4 py-2 rounded-lg text-sm font-black uppercase tracking-widest inline-block shadow-sm shadow-auraa-red/20">Customer</h2>
-            </div>
-            <div class="space-y-4">
-                <div>
-                    <p class="text-[9px] font-black uppercase tracking-widest text-gray-400 mb-1">Name</p>
-                    <p class="text-sm font-bold text-gray-900 uppercase">{{ order.customer.name|replace_quotes }}</p>
-                </div>
-                <div>
-                    <p class="text-[9px] font-black uppercase tracking-widest text-gray-400 mb-1">Contact</p>
-                    <p class="text-sm font-bold text-gray-900 uppercase">{{ order.customer.contact_person_no }}</p>
-                </div>
-                {% if order.customer_address %}
-                <div>
-                    <p class="text-[9px] font-black uppercase tracking-widest text-gray-400 mb-1">Shipping Address</p>
-                    <p class="text-sm font-bold text-gray-900 uppercase">{{ order.customer_address.address1 }}<br>{{ order.customer_address.city }} {{ order.customer_address.zip_code }}</p>
-                </div>
-                {% endif %}
-            </div>
-        </div>
+    <!-- ===== 2-COLUMN LAYOUT ===== -->
+    <div class="flex flex-col lg:flex-row gap-6 items-start">
 
-        <!-- Order Summary -->
-        <div class="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-xl lg:col-span-1">
-            <div class="flex items-center space-x-3 mb-6">
-                <div class="w-10 h-10 bg-green-50 text-green-600 rounded-xl flex items-center justify-center">
-                    <i data-lucide="credit-card" class="w-5 h-5"></i>
-                </div>
-                <h2 class="bg-auraa-red text-white px-4 py-2 rounded-lg text-sm font-black uppercase tracking-widest inline-block shadow-sm shadow-auraa-red/20">Summary</h2>
-            </div>
-            <div class="space-y-4">
-                <div class="flex justify-between items-center">
-                    <p class="text-[9px] font-black uppercase tracking-widest text-gray-400">Total Amount</p>
-                    <p class="text-sm font-bold text-gray-900 uppercase">₹ {{ order.total_amt }}</p>
-                </div>
-                {% if order.promo_code %}
-                <div class="flex justify-between items-center text-auraa-red font-black">
-                    <div class="flex flex-col">
-                        <p class="text-[9px] font-black uppercase tracking-widest text-gray-400 mb-1">Promo Code</p>
-                        <p class="text-[10px] uppercase font-bold tracking-widest">{{ order.promo_code }} ({{ order.promo_per }}%)</p>
+        <!-- ===== LEFT: Order Product Table (flex-grow) ===== -->
+        <div class="flex-1 min-w-0 detail-card overflow-hidden">
+            <!-- Table Header -->
+            <div class="flex items-center justify-between px-6 py-5 border-b border-gray-200">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 bg-orange-50 text-orange-500 rounded-xl flex items-center justify-center">
+                        <i data-lucide="package" class="w-4 h-4"></i>
                     </div>
-                    <p class="text-sm font-bold uppercase">- ₹ {{ order.discount }}</p>
-                </div>
-                {% else %}
-                <div class="flex justify-between items-center">
-                    <p class="text-[9px] font-black uppercase tracking-widest text-gray-400">Discount</p>
-                    <p class="text-sm font-bold text-red-500 uppercase">- ₹ {{ order.discount }}</p>
-                </div>
-                {% endif %}
-                <div class="flex justify-between items-center">
-                    <p class="text-[9px] font-black uppercase tracking-widest text-gray-400">Packing Charges (3%)</p>
-                    <p class="text-sm font-bold text-gray-900 uppercase">₹ {{ order.calculated_packing_charges|floatformat:2 }}</p>
-                </div>
-                <div class="flex justify-between items-center">
-                    <p class="text-[9px] font-black uppercase tracking-widest text-gray-400">Round Off</p>
-                    <p class="text-sm font-bold text-gray-900 uppercase">₹ {{ order.round_amt|floatformat:2 }}</p>
-                </div>
-                <div class="pt-4 border-t border-gray-100 flex justify-between items-center">
-                    <p class="text-xs font-black uppercase tracking-widest text-gray-900">Grand Total</p>
-                    <p class="text-xl font-black text-auraa-red uppercase">₹ {{ order.grand_amt }}</p>
+                    <h2 class="text-sm font-black uppercase tracking-widest text-gray-900">Order Contents</h2>
                 </div>
             </div>
-            
-        </div>
 
-        <!-- Order Items -->
-        <div class="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-xl lg:col-span-3">
-            <div class="flex items-center space-x-3 mb-6">
-                <div class="w-10 h-10 bg-orange-50 text-orange-600 rounded-xl flex items-center justify-center">
-                    <i data-lucide="package" class="w-5 h-5"></i>
-                </div>
-                <h2 class="text-lg font-black uppercase tracking-widest text-gray-900">Order Contents</h2>
-            </div>
+            <!-- Product Table -->
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse">
-                    <thead class="bg-auraa-red text-white shadow-md">
+                    <thead class="bg-auraa-red">
                         <tr>
-                            <th class="py-4 px-6 text-[10px] font-black uppercase tracking-widest rounded-l-2xl w-16 text-center">S.No.</th>
-                            <th class="py-4 px-6 text-[10px] font-black uppercase tracking-widest">Item Code</th>
-                            <th class="py-4 px-6 text-[10px] font-black uppercase tracking-widest">Item Name</th>
-                            <th class="py-4 px-6 text-[10px] font-black uppercase tracking-widest text-center">Rate</th>
-                            <th class="py-4 px-6 text-[10px] font-black uppercase tracking-widest text-center">Qty</th>
-                            <th class="py-4 px-6 text-[10px] font-black uppercase tracking-widest text-right rounded-r-2xl">Total</th>
+                            <th class="py-3.5 px-5 text-[9px] font-black uppercase tracking-widest text-white w-14 text-center">S.No.</th>
+                            <th class="py-3.5 px-5 text-[9px] font-black uppercase tracking-widest text-white text-center w-16">Image</th>
+                            <th class="py-3.5 px-5 text-[9px] font-black uppercase tracking-widest text-white">Code</th>
+                            <th class="py-3.5 px-5 text-[9px] font-black uppercase tracking-widest text-white">Item Name</th>
+                            <th class="py-3.5 px-5 text-[9px] font-black uppercase tracking-widest text-white text-center">Rate</th>
+                            <th class="py-3.5 px-5 text-[9px] font-black uppercase tracking-widest text-white text-center">Qty</th>
+                            <th class="py-3.5 px-5 text-[9px] font-black uppercase tracking-widest text-white text-right">Total</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-50">
+                    <tbody>
                         {% for item in items %}
-                        <tr class="hover:bg-gray-50/50 transition-colors">
-                            <td class="py-4 px-6 text-center">
-                                <span class="text-sm font-black text-gray-900">{{ forloop.counter }}</span>
+                        <tr class="{% cycle 'bg-white' 'bg-slate-50/50' %} hover:bg-blue-50/30 transition-colors border-b border-gray-200">
+                            <td class="py-3.5 px-5 text-center">
+                                <span class="text-xs font-bold text-gray-400">{{ forloop.counter }}</span>
                             </td>
-                            <td class="py-4 px-6">
-                                <span class="text-sm font-black text-gray-900 uppercase">{{ item.item_code }}</span>
+                            <td class="py-3.5 px-5 text-center">
+                                <img src="{% if item.product.image %}{{ item.product.image }}{% else %}{% static 'images/no-image.png' %}{% endif %}" 
+                                     class="w-10 h-10 object-contain mx-auto rounded-lg bg-white border border-gray-100 p-1"
+                                     onerror="this.src='{% static 'images/no-image.png' %}'">
                             </td>
-                            <td class="py-4 px-6">
-                                <div class="flex flex-col">
-                                    <span class="text-sm font-black text-gray-900 uppercase">{{ item.item_name|replace_quotes }}</span>
+                            <td class="py-3.5 px-5">
+                                <span class="text-xs font-black text-[#0A325A] uppercase">{{ item.item_code }}</span>
+                            </td>
+                            <td class="py-3.5 px-5">
+                                <span class="text-sm font-bold text-gray-800 uppercase">{{ item.item_name|replace_quotes }}</span>
+                            </td>
+                            <td class="py-3.5 px-5 text-center">
+                                <span class="text-xs font-bold text-gray-600">₹ {{ item.rate }}</span>
+                            </td>
+                            <td class="py-3.5 px-5 text-center">
+                                <span class="inline-block px-3 py-1 bg-auraa-red text-[10px] font-black text-white rounded-lg tracking-widest">{{ item.qty|floatformat:"0" }}</span>
+                            </td>
+                            <td class="py-3.5 px-5 text-right">
+                                <span class="text-sm font-black text-gray-900">₹ {{ item.item_total }}</span>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="7" class="py-16 text-center">
+                                <div class="flex flex-col items-center gap-3 text-gray-300">
+                                    <i data-lucide="package-x" class="w-12 h-12"></i>
+                                    <p class="text-xs font-black uppercase tracking-widest">No items in this order</p>
                                 </div>
-                            </td>
-                            <td class="py-4 px-6 text-center">
-                                <span class="text-xs font-bold text-gray-600 uppercase">₹ {{ item.rate }}</span>
-                            </td>
-                            <td class="py-4 px-6 text-center">
-                                <span class="px-3 py-1 bg-auraa-red text-[10px] font-black uppercase tracking-widest text-white rounded-lg shadow-sm border border-red-500/20">{{ item.qty|floatformat:"0" }}</span>
-                            </td>
-                            <td class="py-4 px-6 text-right">
-                                <span class="text-sm font-black text-gray-900 uppercase">₹ {{ item.item_total }}</span>
                             </td>
                         </tr>
                         {% endfor %}
@@ -177,6 +172,86 @@
                 </table>
             </div>
         </div>
+
+        <!-- ===== RIGHT: Customer + Summary (sticky sidebar) ===== -->
+        <div class="w-full lg:w-80 xl:w-96 flex-shrink-0 right-sidebar flex flex-col gap-5">
+
+            <!-- Customer Card -->
+            <div class="detail-card p-6">
+                <div class="flex items-center gap-3 mb-5">
+                    <div class="w-9 h-9 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                        <i data-lucide="user" class="w-4 h-4"></i>
+                    </div>
+                    <h2 class="text-[10px] font-black uppercase tracking-widest text-white bg-auraa-red px-3 py-1.5 rounded-lg">Customer</h2>
+                </div>
+                <div class="space-y-4">
+                    <div>
+                        <p class="section-label">Name</p>
+                        <p class="section-value">{{ order.customer.name|replace_quotes }}</p>
+                    </div>
+                    <div>
+                        <p class="section-label">Contact</p>
+                        <p class="section-value">{{ order.customer.contact_person_no|default:"None" }}</p>
+                    </div>
+                    {% if order.customer_address %}
+                    <div>
+                        <p class="section-label">Shipping Address</p>
+                        <p class="section-value leading-relaxed">
+                            {{ order.customer_address.address1 }}<br>
+                            {% if order.customer_address.address2 %}{{ order.customer_address.address2 }}<br>{% endif %}
+                            {{ order.customer_address.city_name }}{% if order.customer_address.pincode %} - {{ order.customer_address.pincode }}{% endif %}
+                        </p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Summary Card -->
+            <div class="detail-card p-6">
+                <div class="flex items-center gap-3 mb-5">
+                    <div class="w-9 h-9 bg-green-50 text-green-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                        <i data-lucide="credit-card" class="w-4 h-4"></i>
+                    </div>
+                    <h2 class="text-[10px] font-black uppercase tracking-widest text-white bg-auraa-red px-3 py-1.5 rounded-lg">Summary</h2>
+                </div>
+                <div>
+                    <div class="summary-row">
+                        <p class="section-label mb-0">Total Amount</p>
+                        <p class="text-sm font-black text-gray-900">₹ {{ order.total_amt }}</p>
+                    </div>
+                    {% if order.promo_code %}
+                    <div class="summary-row">
+                        <div>
+                            <p class="section-label mb-0">Promo Code</p>
+                            <p class="text-[10px] font-bold text-auraa-red uppercase tracking-widest">{{ order.promo_code }} ({{ order.promo_per }}%)</p>
+                        </div>
+                        <p class="text-sm font-black text-auraa-red">- ₹ {{ order.discount }}</p>
+                    </div>
+                    {% else %}
+                    <div class="summary-row">
+                        <p class="section-label mb-0">Discount</p>
+                        <p class="text-sm font-black text-red-500">- ₹ {{ order.discount }}</p>
+                    </div>
+                    {% endif %}
+                    <div class="summary-row">
+                        <p class="section-label mb-0">Packing Charges (3%)</p>
+                        <p class="text-sm font-bold text-gray-700">₹ {{ order.calculated_packing_charges|floatformat:2 }}</p>
+                    </div>
+                    <div class="summary-row">
+                        <p class="section-label mb-0">Round Off</p>
+                        <p class="text-sm font-bold text-gray-700">₹ {{ order.round_amt|floatformat:2 }}</p>
+                    </div>
+                    <!-- Grand Total -->
+                    <div class="mt-4 pt-4 border-t-2 border-[#0A325A] flex justify-between items-center">
+                        <p class="text-xs font-black uppercase tracking-widest text-[#0A325A]">Grand Total</p>
+                        <p class="text-2xl font-black text-auraa-red">₹ {{ order.grand_amt }}</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- ===== END RIGHT ===== -->
+
     </div>
 </div>
 {% endblock %}
@@ -187,18 +262,14 @@ async function updateOrderStatus(transNo, newStatus) {
     try {
         const formData = new FormData();
         formData.append('status', newStatus);
-        
         const response = await fetch(`/dashboard/order/${transNo}/status/update/`, {
             method: 'POST',
             body: formData,
-            headers: {
-                'X-CSRFToken': '{{ csrf_token }}'
-            }
+            headers: { 'X-CSRFToken': '{{ csrf_token }}' }
         });
-        
         const result = await response.json();
         if (result.status === 'success') {
-            location.reload(); 
+            location.reload();
         } else {
             alert('Error updating status: ' + result.message);
         }

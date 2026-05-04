@@ -200,6 +200,13 @@
     .review-text-content {
         color: #f5071d !important;
     }
+
+    /* Image Protection */
+    img {
+        -webkit-touch-callout: none !important; /* Disable long-press menu on mobile */
+        -webkit-user-drag: none !important;     /* Disable dragging */
+        user-select: none !important;           /* Disable selection */
+    }
 </style>
 {% endblock %}
 
@@ -886,5 +893,14 @@
         const slideWidth = slides[0].offsetWidth + 32; // width + gap
         track.style.transform = `translateX(-${videoSlideIndex * slideWidth}px)`;
     }
+
+    // Image Protection Logic
+    document.addEventListener('contextmenu', function(e) {
+        if (e.target.tagName === 'IMG') e.preventDefault();
+    }, false);
+
+    document.addEventListener('dragstart', function(e) {
+        if (e.target.tagName === 'IMG') e.preventDefault();
+    }, false);
 </script>
 {% endblock %}

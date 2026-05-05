@@ -121,7 +121,7 @@ class ForgotPasswordAPIView(View):
                 import random
                 # Reset password to a random 6 digit code for temporary access
                 temp_pass = str(random.randint(100000, 999999))
-                user.password = temp_pass
+                user.set_password(temp_pass)
                 user.save()
                 
                 # Log reset PIN for internal use temporarily 
@@ -130,7 +130,8 @@ class ForgotPasswordAPIView(View):
                 
                 return JsonResponse({
                     'status': 'success', 
-                    'message': 'Secret reset instructions generated. Please contact support via WhatsApp/Email to verify and retrieve your temporary password.'
+                    'temp_password': temp_pass,
+                    'message': f'Your temporary password is: {temp_pass}. Please use this to login and change your password in your profile.'
                 })
             else:
                 return JsonResponse({

@@ -439,8 +439,20 @@
             loading.classList.add('hidden');
             
             if (data.status === 'success') {
-                showModal('Success', data.message, 'success');
-                showLogin();
+                const successContent = `
+                    <div class="space-y-4">
+                        <div class="p-6 bg-green-50 rounded-3xl border border-green-100">
+                            <p class="text-xs font-black uppercase tracking-widest text-green-600 mb-2">Temporary Password</p>
+                            <p class="text-4xl font-black text-gray-900 tracking-tighter">${data.temp_password}</p>
+                        </div>
+                        <p class="text-sm text-gray-500 font-medium leading-relaxed">
+                            Please use this temporary password to login. <span class="text-auraa-red font-bold">Important:</span> Change your password immediately from your profile after logging in.
+                        </p>
+                    </div>
+                `;
+                showModal('Password Reset', successContent, 'success', 'Login Now', () => {
+                    showLogin();
+                });
             } else {
                 showModal('Attention', data.message || 'Verification failed.', 'error');
             }

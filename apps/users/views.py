@@ -147,9 +147,16 @@ class ProfileUpdateAPIView(View):
             return JsonResponse({'status': 'error', 'message': 'Authentication required'}, status=401)
         
         try:
+            data = request.POST
+            new_password = data.get('new_password')
+            confirm_password = data.get('confirm_password')
+
+            if new_password and new_password != confirm_password:
+                return JsonResponse({'status': 'error', 'message': 'Passwords do not match.'}, status=400)
+
             user = AuthService.update_profile(
                 user=request.user, 
-                data=request.POST
+                data=data
             )
             
             return JsonResponse({

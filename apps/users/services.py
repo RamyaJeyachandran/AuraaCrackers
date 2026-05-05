@@ -114,17 +114,21 @@ class AuthService:
         try:
             with transaction.atomic():
                 # Update Auth User
-                user.full_name = name
-                user.email = email
+                if name:
+                    user.full_name = name
+                if email:
+                    user.email = email
+                    
                 if new_password:
-                    user.password = new_password
+                    user.set_password(new_password)
                 user.save()
 
                 # Update Linked Customer
                 if user.online_customer:
                     customer = user.online_customer
-                    customer.name = name
-                    customer.contact_person = name
+                    if name:
+                        customer.name = name
+                        customer.contact_person = name
                     customer.save()
 
                     # Update Default Address
@@ -135,10 +139,12 @@ class AuthService:
                     if addr:
                         addr.address1 = address1
                         addr.address2 = address2
-                        addr.state_id = state_id
+                        # Handle empty state_id from form
+                        addr.state_id = state_id if state_id and str(state_id).strip() else None
                         addr.city_name = city_name
                         addr.pincode = pincode
-                        addr.email = email
+                        if email:
+                            addr.email = email
                         addr.save()
                 
                 logger.info(f"Profile updated for user: {user.username}")

@@ -102,6 +102,8 @@ services:
 
   flower:
     build: .
+    volumes:
+      - .:/app
     command: sh -c "celery -A config.celery flower --port=5555"
     ports:
       - "5555:5555"
@@ -119,8 +121,8 @@ services:
       context: .
       dockerfile: nginx/Dockerfile
     ports:
-      - "${NGINX_PORT_HTTP:-80}:80"
-      - "${NGINX_PORT_HTTPS:-443}:443"
+      - "8081:80"
+      - "4431:443"
     volumes:
       - ./staticfiles:/var/www/static
       - ./media:/var/www/media

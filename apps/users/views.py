@@ -159,6 +159,11 @@ class ProfileUpdateAPIView(View):
                 data=data
             )
             
+            # If password was changed, update session to prevent logout
+            if new_password:
+                from django.contrib.auth import update_session_auth_hash
+                update_session_auth_hash(request, user)
+            
             return JsonResponse({
                 'status': 'success', 
                 'message': 'Profile updated successfully!',
@@ -170,10 +175,10 @@ class ProfileUpdateAPIView(View):
                 }
             })
         except Exception as e:
-            logger.error(f"Profile update exception: {str(e)}")
+            logger.error(f"Profile update error: {str(e)}", exc_info=True)
             return JsonResponse({
                 'status': 'error', 
-                'message': 'Update failed. Check your connection or contact support.'
+                'message': f'Update failed: {str(e)}' if settings.DEBUG else 'Update failed. Check your connection or contact support.'
             }, status=500)
 
 def logout_view(request):

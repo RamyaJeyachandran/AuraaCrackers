@@ -316,12 +316,12 @@ class Coupon(models.Model):
 
 class CustomerAddress(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE, db_column='customerId', related_name='addresses')
-    address1 = models.CharField(max_length=255, db_column='address1')
-    address2 = models.CharField(max_length=255, db_column='address2')
+    address1 = models.CharField(max_length=255, db_column='address1', null=True, blank=True)
+    address2 = models.CharField(max_length=255, db_column='address2', null=True, blank=True)
     country = models.ForeignKey(Country, on_delete=models.SET_NULL, blank=True, null=True, db_column='countryId')
     state = models.ForeignKey(State, on_delete=models.SET_NULL, blank=True, null=True, db_column='stateId')
-    city_name = models.CharField(max_length=100, db_column='cityName')
-    pincode = models.CharField(max_length=20, db_column='pincode')
+    city_name = models.CharField(max_length=100, db_column='cityName', null=True, blank=True)
+    pincode = models.CharField(max_length=20, db_column='pincode', null=True, blank=True)
     phone = models.CharField(max_length=20, db_column='phone')
     email = models.EmailField(max_length=255, blank=True, null=True, db_column='emailId')
     whatsapp_no = models.CharField(max_length=20, blank=True, null=True, db_column='whatsappNo')

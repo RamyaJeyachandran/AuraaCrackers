@@ -103,6 +103,7 @@ class AuthService:
         Synchronizes profile updates across User and Customer models.
         """
         name = data.get('name')
+        username = data.get('username')
         email = data.get('email')
         new_password = data.get('new_password')
         address1 = data.get('address1')
@@ -116,6 +117,8 @@ class AuthService:
                 # Update Auth User
                 if name:
                     user.full_name = name
+                if username:
+                    user.username = username
                 if email:
                     user.email = email
                     
@@ -131,21 +134,22 @@ class AuthService:
                         customer.contact_person = name
                     customer.save()
 
-                    # Update Default Address
-                    addr = CustomerAddress.objects.filter(
-                        customer=customer, 
-                        is_shipping_default=True
-                    ).first()
-                    if addr:
-                        addr.address1 = address1
-                        addr.address2 = address2
-                        # Handle empty state_id from form
-                        addr.state_id = state_id if state_id and str(state_id).strip() else None
-                        addr.city_name = city_name
-                        addr.pincode = pincode
-                        if email:
-                            addr.email = email
-                        addr.save()
+                    # Update Default Address only if address data is provided
+                    if any([address1, address2, state_id, city_name, pincode]):
+                        addr = CustomerAddress.objects.filter(
+                            customer=customer, 
+                            is_shipping_default=True
+                        ).first()
+                        if addr:
+                            if address1: addr.address1 = address1
+                            if address2: addr.address2 = address2
+                            if state_id and str(state_id).strip():
+                                addr.state_id = state_id
+                            if city_name: addr.city_name = city_name
+                            if pincode: addr.pincode = pincode
+                            if email:
+                                addr.email = email
+                            addr.save()
                 
                 logger.info(f"Profile updated for user: {user.username}")
                 return user

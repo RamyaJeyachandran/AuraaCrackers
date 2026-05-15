@@ -107,23 +107,23 @@ def fetch_google_reviews_task():
     except Exception as e:
         return f"Error in fetch_google_reviews_task: {str(e)}"
 
-# @shared_task
-# def trigger_n8n_order_webhook_task(order_id):
-#     """
-#     Sends detailed order and customer information to an n8n webhook.
-#     """
+@shared_task
+def trigger_n8n_order_webhook_task(order_id):
+    """
+    Webhook disabled.
+    """
+    return "Webhook disabled."
+
+# Original implementation (commented out for reference):
+# def trigger_n8n_order_webhook_task_original(order_id):
 #     webhook_url = getattr(settings, 'N8N_ORDER_WEBHOOK_URL', None)
 #     if not webhook_url:
 #         return "N8N_ORDER_WEBHOOK_URL not configured."
-# 
 #     try:
-#         # Fetch order with related data
 #         order = OnlineSales.objects.select_related('customer', 'customer_address').get(id=order_id)
 #         items = order.items.all().select_related('product')
 #         customer = order.customer
 #         address = order.customer_address
-# 
-#         # Safely get customer email
 #         customer_email = getattr(customer, 'email', None)
 #         if not customer_email:
 #             try:
@@ -131,8 +131,6 @@ def fetch_google_reviews_task():
 #                     customer_email = customer.created_by.email
 #             except Exception:
 #                 customer_email = None
-# 
-#         # Prepare payload
 #         payload = {
 #             "order": {
 #                 "id": order.id,
@@ -171,13 +169,9 @@ def fetch_google_reviews_task():
 #                 } for item in items
 #             ]
 #         }
-# 
-#         # Send request
 #         response = requests.post(webhook_url, json=payload, timeout=10)
 #         response.raise_for_status()
-#         
 #         return f"Successfully sent order {order.trans_no} to n8n. Status: {response.status_code}"
-# 
 #     except OnlineSales.DoesNotExist:
 #         return f"Order with ID {order_id} not found."
 #     except Exception as e:

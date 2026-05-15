@@ -186,7 +186,7 @@ BRANCH_ID  = 1
 ADMIN_USER_ID = 1
 WEBSITE_ID = 2
 MIN_ORDER_AMOUNT = 3000
-# N8N_ORDER_WEBHOOK_URL = env('N8N_ORDER_WEBHOOK_URL', default='')
+N8N_ORDER_WEBHOOK_URL = ''
 
 # ── Email Configuration ───────────────────────────────────────────────────────
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

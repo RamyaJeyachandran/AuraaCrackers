@@ -14,7 +14,7 @@ from django.conf import settings
 from django.utils import timezone
 from django.contrib.auth import get_user_model
 import decimal
-from .tasks import send_order_success_emails_task, send_order_error_emails_task #, trigger_n8n_order_webhook_task
+from .tasks import send_order_success_emails_task, send_order_error_emails_task, trigger_n8n_order_webhook_task
 from .services import OrderService
 from django.utils.text import slugify
 

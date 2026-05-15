@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import TemplateView, ListView
+from django.views.generic import TemplateView, ListView, DetailView
 from .models import Category, Product, Cart, Coupon, Customer, CustomerAddress, OnlineSales, OnlineSalesItem, Country, State, City, SerialNo, Testimonial
-from django.db.models import Q, Sum, F, Min, IntegerField, Value, CharField, Avg, DecimalField
+from django.db.models import Q, Sum, F, Min, IntegerField, Value, CharField, Avg, DecimalField, Max
 from django.db.models.functions import Length, Cast, Coalesce, LPad
 from django.http import JsonResponse
 from django.views import View
@@ -14,7 +14,7 @@ from django.conf import settings
 from django.utils import timezone
 from django.contrib.auth import get_user_model
 import decimal
-from .tasks import send_order_success_emails_task, send_order_error_emails_task
+from .tasks import send_order_success_emails_task, send_order_error_emails_task #, trigger_n8n_order_webhook_task
 from .services import OrderService
 from django.utils.text import slugify
 
@@ -109,6 +109,12 @@ class ProductListView(ListView):
         context['selected_category'] = self.request.GET.get('category', 'All')
         context['search_query'] = self.request.GET.get('q', '')
         context['sort_by'] = self.request.GET.get('sort', 'featured')
+
+        # Add a dynamic key segment for cache invalidation
+        last_prod_update = Product.objects.aggregate(Max('updated_at'))['updated_at__max']
+        last_cat_update = Category.objects.aggregate(Max('updated_at'))['updated_at__max']
+        context['cache_version'] = f"{last_prod_update.timestamp() if last_prod_update else 0}-{last_cat_update.timestamp() if last_cat_update else 0}"
+
         return context
 
 class ProductSearchAPIView(View):
@@ -388,6 +394,7 @@ class PlaceOrderAPIView(LoginRequiredMixin, View):
                     del request.session[k]
 
             send_order_success_emails_task.delay(user.id, order.id)
+            # trigger_n8n_order_webhook_task.delay(order.id)
             
             msg = 'Order updated successfully.' if editing_order else 'Order placed successfully. Our support team will contact you shortly.'
             return JsonResponse({
@@ -576,3 +583,51 @@ class CityListAPIView(View):
         cities = City.objects.filter(state_id=state_id, is_active=True).order_by('name')
         data = [{'id': c.id, 'name': c.name} for c in cities]
         return JsonResponse({'status': 'success', 'cities': data})
+
+class OrderDownloadView(LoginRequiredMixin, DetailView):
+    model = OnlineSales
+    slug_field = 'trans_no'
+    slug_url_kwarg = 'trans_no'
+    
+    def get_queryset(self):
+        user = self.request.user
+        if not hasattr(user, 'online_customer') or not user.online_customer:
+            return OnlineSales.objects.none()
+        return OnlineSales.objects.filter(customer=user.online_customer, is_active=True)
+
+    def get(self, request, *args, **kwargs):
+        from django.template.loader import get_template
+        from xhtml2pdf import pisa
+        from io import BytesIO
+        from django.http import HttpResponse
+        from django.db.models import Sum
+        
+        self.object = self.get_object()
+        template = get_template('dashboard/order_estimate_pdf.html')
+        
+        items = self.object.items.all().select_related('product').order_by('item_code')
+        for item in items:
+            item.unit_rate = item.rate
+            if item.qty > 0:
+                item.unit_discount = item.discount_amt / item.qty
+                item.final_rate = item.item_total / item.qty
+            else:
+                item.unit_discount = 0
+                item.final_rate = 0
+
+        context = {
+            'order': self.object,
+            'items': items,
+            'total_qty': items.aggregate(Sum('qty'))['qty__sum'] or 0,
+            'total_items': items.count(),
+        }
+        
+        html = template.render(context)
+        result = BytesIO()
+        pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), result)
+        
+        if not pdf.err:
+            response = HttpResponse(result.getvalue(), content_type='application/pdf')
+            response['Content-Disposition'] = f'attachment; filename="Estimate_{self.object.trans_no}.pdf"'
+            return response
+        return HttpResponse('Error generating PDF', status=400)

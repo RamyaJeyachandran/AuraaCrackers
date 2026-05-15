@@ -7,7 +7,7 @@
                 {% for banner in active_banners %}
                 <div class="inline-flex items-center space-x-2">
                     <p class="text-[10px] sm:text-[11px] font-black uppercase tracking-[0.2em] text-white">
-                        {% if request.resolver_match.url_name != 'login' %}
+                        {% if request.resolver_match.url_name != 'login' and request.resolver_match.url_name != 'home' %}
                         <span class="text-auraa-red">{{ banner.name }}:</span> 
                         {% endif %}
                         <span class="text-white/90">{{ banner.content|safe }}</span>

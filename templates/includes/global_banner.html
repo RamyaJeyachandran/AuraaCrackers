@@ -2,30 +2,37 @@
 <div class="bg-[#0A325A] py-2.5 relative z-[100000] border-b border-white/10 overflow-hidden group">
     <!-- Marquee Container -->
     <div class="flex overflow-hidden whitespace-nowrap">
-        <div class="flex animate-marquee-fast hover:pause items-center space-x-12 px-12">
-            {% for i in "123"|make_list %} {# Loop a few times to ensure seamless wrap #}
-                {% for banner in active_banners %}
-                <div class="inline-flex items-center space-x-2">
-                    <p class="text-[10px] sm:text-[11px] font-black uppercase tracking-[0.2em] text-white">
-                        <span class="text-white/90">{{ banner.content|safe }}</span>
-                    </p>
-                    <span class="text-auraa-red/30 px-4">✦</span>
-                </div>
-                {% endfor %}
+        <div class="flex animate-marquee-sequential hover:pause items-center">
+            {% for banner in active_banners %}
+            <div class="inline-flex items-center justify-center min-w-full px-4">
+                <p class="text-[10px] sm:text-[11px] font-black uppercase tracking-[0.2em] text-white">
+                    <span class="text-white/90">{{ banner.content|safe }}</span>
+                </p>
+                <span class="text-auraa-red/30 px-8">✦</span>
+            </div>
+            {% endfor %}
+            <!-- Duplicate first few to create seamless loop if needed, but for sequential we can just repeat the list -->
+            {% for banner in active_banners %}
+            <div class="inline-flex items-center justify-center min-w-full px-4">
+                <p class="text-[10px] sm:text-[11px] font-black uppercase tracking-[0.2em] text-white">
+                    <span class="text-white/90">{{ banner.content|safe }}</span>
+                </p>
+                <span class="text-auraa-red/30 px-8">✦</span>
+            </div>
             {% endfor %}
         </div>
     </div>
 </div>
 
 <style>
-    @keyframes marquee {
+    @keyframes marquee-sequential {
         0% { transform: translateX(0); }
-        100% { transform: translateX(-33.33%); } /* Matches the 3x loop for seamlessness */
+        100% { transform: translateX(-50%); } /* We move half the total width (since we duplicated) */
     }
-    .animate-marquee-fast {
-        animation: marquee 20s linear infinite;
+    .animate-marquee-sequential {
+        animation: marquee-sequential 15s linear infinite; /* Adjusted timing for sequential */
         display: inline-flex;
-        min-width: 100%;
+        min-width: 200%; /* Because we have 2 copies */
     }
     .hover\:pause:hover {
         animation-play-state: paused;

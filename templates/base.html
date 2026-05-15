@@ -345,7 +345,7 @@
     {% endif %}
 
     {% with url_name=request.resolver_match.url_name %}
-    <main class="flex-grow {% if url_name == 'product_list' or url_name == 'testimonials' %}pt-0{% elif user.is_authenticated and user.role.name in 'Admin,Super Admin' %}pt-16 lg:pt-36{% elif url_name == 'login' %}pt-16 lg:pt-24{% else %}pt-16 lg:pt-40{% endif %}">
+    <main class="flex-grow {% if url_name == 'product_list' or url_name == 'testimonials' %}pt-0{% elif user.is_authenticated and user.role.name in 'Admin,Super Admin' %}pt-24 lg:pt-44{% elif url_name == 'login' %}pt-24 lg:pt-32{% else %}pt-24 lg:pt-52{% endif %} {% if active_banners and '/admin/' not in request.path and '/dashboard/' not in request.path %} mt-10 md:mt-12 lg:mt-14 {% endif %}">
         {% block content %}{% endblock %}
     </main>
     {% endwith %}

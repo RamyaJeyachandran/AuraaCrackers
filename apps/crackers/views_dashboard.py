@@ -14,6 +14,9 @@ from django.db.models.functions import Cast, Coalesce, LPad
 from .models import Category, Product, OnlineSales, OnlineSalesItem, Customer, Pricelist, PricelistItem, Coupon, CustomerAddress, Banner
 from .services import OrderService
 from apps.users.models import User
+import os
+from django.core.files.storage import FileSystemStorage
+from django.conf import settings
 
 class AdminRequiredMixin(UserPassesTestMixin):
     def test_func(self):
@@ -76,6 +79,8 @@ class DashboardProductListView(LoginRequiredMixin, AdminRequiredMixin, ListView)
         context['selected_category'] = self.request.GET.get('category', 'All')
         context['selected_status'] = self.request.GET.get('status', 'All')
         context['search_query'] = self.request.GET.get('q', '')
+        from .models import Unit
+        context['units'] = Unit.objects.filter(is_active=True).order_by('name')
         return context
 
 class ProductToggleActiveView(LoginRequiredMixin, AdminRequiredMixin, View):
@@ -88,6 +93,187 @@ class ProductToggleActiveView(LoginRequiredMixin, AdminRequiredMixin, View):
             return JsonResponse({'status': 'success', 'is_enabled': product.is_disabled == 0})
         except Product.DoesNotExist:
             return JsonResponse({'status': 'error', 'message': 'Product not found'}, status=404)
+
+class ProductDetailAPIView(LoginRequiredMixin, AdminRequiredMixin, View):
+    def get(self, request, pk):
+        try:
+            product = Product.objects.select_related('category', 'unit').get(pk=pk)
+            data = {
+                'id': product.id,
+                'name': product.name,
+                'code': product.code or '',
+                'category_id': product.category_id,
+                'unit_id': product.unit_id,
+                'price': float(product.price),
+                'original_price': float(product.original_price) if product.original_price else None,
+                'purchase_rate': float(product.purchase_rate),
+                'description': product.description or '',
+                'sort_no': product.sort_no,
+                'image': product.image or '',
+                'is_disabled': product.is_disabled,
+                'is_active': product.is_active,
+            }
+            return JsonResponse({'status': 'success', 'data': data})
+        except Product.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': 'Product not found'}, status=404)
+
+class ProductUpdateAPIView(LoginRequiredMixin, AdminRequiredMixin, View):
+    def post(self, request, pk):
+        try:
+            product = Product.objects.get(pk=pk)
+            data = json.loads(request.body)
+            
+            product.name = data.get('name', product.name)
+            product.code = data.get('code', product.code)
+            product.category_id = data.get('category_id', product.category_id)
+            product.unit_id = data.get('unit_id', product.unit_id)
+            product.price = decimal.Decimal(str(data.get('price', product.price)))
+            
+            if 'original_price' in data:
+                val = data.get('original_price')
+                product.original_price = decimal.Decimal(str(val)) if val else None
+                
+            product.purchase_rate = decimal.Decimal(str(data.get('purchase_rate', product.purchase_rate)))
+            product.description = data.get('description', product.description)
+            product.sort_no = data.get('sort_no', product.sort_no)
+            product.image = data.get('image', product.image)
+            
+            if 'is_disabled' in data:
+                product.is_disabled = int(data.get('is_disabled'))
+            
+            product.save()
+            return JsonResponse({'status': 'success', 'message': 'Product updated successfully'})
+        except Product.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': 'Product not found'}, status=404)
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+
+class ProductDeleteAPIView(LoginRequiredMixin, AdminRequiredMixin, View):
+    def post(self, request, pk):
+        try:
+            product = Product.objects.get(pk=pk)
+            # Soft delete by setting is_active=False
+            product.is_active = False
+            product.save()
+            return JsonResponse({'status': 'success', 'message': 'Product deleted successfully'})
+        except Product.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': 'Product not found'}, status=404)
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+
+class ProductCreateAPIView(LoginRequiredMixin, AdminRequiredMixin, View):
+    def post(self, request):
+        from django.conf import settings
+        try:
+            data = json.loads(request.body)
+            
+            product = Product.objects.create(
+                name=data.get('name'),
+                code=data.get('code'),
+                category_id=data.get('category_id'),
+                unit_id=data.get('unit_id'),
+                price=decimal.Decimal(str(data.get('price', 0))),
+                purchase_rate=decimal.Decimal(str(data.get('purchase_rate', 0))),
+                description=data.get('description', ''),
+                sort_no=data.get('sort_no', 0),
+                image=data.get('image', ''),
+                company_id=settings.COMPANY_ID,
+                branch_id=settings.BRANCH_ID,
+                created_by=request.user,
+                is_active=True,
+                is_disabled=int(data.get('is_disabled', 0))
+            )
+            
+            return JsonResponse({'status': 'success', 'message': 'Product added successfully', 'id': product.id})
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+
+class ProductImageUploadAPIView(LoginRequiredMixin, AdminRequiredMixin, View):
+    def post(self, request):
+        if 'image' not in request.FILES:
+            return JsonResponse({'status': 'error', 'message': 'No image provided'}, status=400)
+            
+        try:
+            image_file = request.FILES['image']
+            fs = FileSystemStorage(location=os.path.join(settings.MEDIA_ROOT, 'products'))
+            filename = fs.save(image_file.name, image_file)
+            image_url = os.path.join(settings.MEDIA_URL, 'products', filename).replace('\\', '/')
+            return JsonResponse({'status': 'success', 'url': image_url})
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+
+class CategoryDetailAPIView(LoginRequiredMixin, AdminRequiredMixin, View):
+    def get(self, request, pk):
+        try:
+            category = Category.objects.get(pk=pk)
+            data = {
+                'id': category.id,
+                'name': category.name,
+                'image': category.image,
+                'order': category.order,
+            }
+            return JsonResponse({'status': 'success', 'data': data})
+        except Category.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': 'Category not found'}, status=404)
+
+class CategoryUpdateAPIView(LoginRequiredMixin, AdminRequiredMixin, View):
+    def post(self, request, pk):
+        try:
+            category = Category.objects.get(pk=pk)
+            data = json.loads(request.body)
+            category.name = data.get('name', category.name)
+            category.image = data.get('image', category.image)
+            category.order = data.get('order', category.order)
+            category.save()
+            return JsonResponse({'status': 'success', 'message': 'Category updated successfully'})
+        except Category.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': 'Category not found'}, status=404)
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+
+class CategoryCreateAPIView(LoginRequiredMixin, AdminRequiredMixin, View):
+    def post(self, request):
+        from django.conf import settings
+        try:
+            data = json.loads(request.body)
+            category = Category.objects.create(
+                name=data.get('name'),
+                image=data.get('image', ''),
+                order=data.get('order', 0),
+                company_id=settings.COMPANY_ID,
+                branch_id=settings.BRANCH_ID,
+                is_active=True
+            )
+            return JsonResponse({'status': 'success', 'message': 'Category added successfully', 'id': category.id})
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+
+class CategoryDeleteAPIView(LoginRequiredMixin, AdminRequiredMixin, View):
+    def post(self, request, pk):
+        try:
+            category = Category.objects.get(pk=pk)
+            category.is_active = False
+            category.save()
+            return JsonResponse({'status': 'success', 'message': 'Category deleted successfully'})
+        except Category.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': 'Category not found'}, status=404)
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+
+class CategoryImageUploadAPIView(LoginRequiredMixin, AdminRequiredMixin, View):
+    def post(self, request):
+        if 'image' not in request.FILES:
+            return JsonResponse({'status': 'error', 'message': 'No image provided'}, status=400)
+            
+        try:
+            image_file = request.FILES['image']
+            fs = FileSystemStorage(location=os.path.join(settings.MEDIA_ROOT, 'categories'))
+            filename = fs.save(image_file.name, image_file)
+            image_url = os.path.join(settings.MEDIA_URL, 'categories', filename).replace('\\', '/')
+            
+            return JsonResponse({'status': 'success', 'url': image_url})
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
 
 class DashboardOrderListView(LoginRequiredMixin, AdminRequiredMixin, ListView):
     model = OnlineSales
@@ -130,7 +316,7 @@ class DashboardOrderListView(LoginRequiredMixin, AdminRequiredMixin, ListView):
             qs = qs.filter(trans_no__startswith=year)
             
         if query:
-            qs = qs.filter(Q(trans_no__icontains=query) | Q(customer__name__icontains=query))
+            qs = qs.filter(Q(trans_no__icontains=query) | Q(customer__name__icontains=query) | Q(customer__contact_person_no__icontains=query))
             
         return qs
 
@@ -166,6 +352,170 @@ class DashboardOrderDetailView(LoginRequiredMixin, AdminRequiredMixin, DetailVie
         context['total_qty'] = items.aggregate(Sum('qty'))['qty__sum'] or 0
         return context
 
+class DashboardOrderExcelDownloadView(LoginRequiredMixin, AdminRequiredMixin, DetailView):
+    model = OnlineSales
+    slug_field = 'trans_no'
+    slug_url_kwarg = 'trans_no'
+
+    def get(self, request, *args, **kwargs):
+        from django.http import HttpResponse
+        from django.conf import settings
+        import os
+        order = self.get_object()
+        
+        # Try local file path for the image (sometimes works better if opened on same machine)
+        image_url = os.path.join(settings.BASE_DIR, 'static', 'images', 'payment.jpeg')
+
+        # Prepare data
+        items = order.items.all().select_related('product').order_by('item_code')
+        total_qty = 0
+        formatted_items = []
+        for i, item in enumerate(items, 1):
+            total_qty += item.qty
+            if item.qty > 0:
+                unit_discount = item.discount_amt / item.qty
+                final_rate = item.item_total / item.qty
+            else:
+                unit_discount = 0
+                final_rate = 0
+            
+            formatted_items.append({
+                'sno': i,
+                'code': item.item_code,
+                'name': item.item_name,
+                'qty': item.qty,
+                'rate': item.rate,
+                'discount': f"{unit_discount:.2f}",
+                'final_rate': f"{final_rate:.2f}",
+                'total': item.item_total
+            })
+
+        phone = order.customer_address.phone if (hasattr(order, 'customer_address') and order.customer_address) else order.customer.contact_person_no
+        address = ""
+        if hasattr(order, 'customer_address') and order.customer_address:
+            address = f"{order.customer_address.address1}, {order.customer_address.address2}, {order.customer_address.city_name} {order.customer_address.pincode}, {order.customer_address.state.name}, India"
+
+        # Build HTML for Excel
+        html = f"""
+        <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
+        <head>
+            <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+            <style>
+                table {{ border-collapse: collapse; width: 100%; font-family: Arial, sans-serif; font-size: 10pt; }}
+                td, th {{ border: 0.5pt solid #000; padding: 5px; }}
+                .text-left {{ text-align: left; }}
+                .text-center {{ text-align: center; }}
+                .text-right {{ text-align: right; }}
+                .header-row {{ background-color: #f2f2f2; font-weight: bold; }}
+                .company-header {{ font-size: 14pt; text-align: center; border: none; }}
+                .no-border {{ border: none; }}
+            </style>
+        </head>
+        <body>
+            <table>
+                <!-- Order Header -->
+                <tr>
+                    <td colspan="2"><b>Order No : {order.trans_no}</b></td>
+                    <td colspan="4" class="text-center" style="font-size: 12pt;"><b>ESTIMATE</b></td>
+                    <td colspan="2" class="text-right"><b>Date : {order.trans_dt.strftime('%d/%m/%Y')}</b></td>
+                </tr>
+                <tr><td colspan="8" class="no-border"></td></tr>
+                
+                <!-- Company Info -->
+                <tr><td colspan="8" class="company-header"><b>Auraa Crackers</b></td></tr>
+                <tr>
+                    <td colspan="4" class="no-border text-left"><b>Mobile: 90805 60340</b></td>
+                    <td colspan="4" class="no-border text-right"><b>E-mail: info@auraacrackers.com</b></td>
+                </tr>
+                <tr><td colspan="8" class="no-border text-center">S.No.226/5, D.No.1/177_5_20, Sivakasi Vembakottai Main Road, Pernaikenpatti Village, Sivakasi Taluk, Tamilnadu - 626 189</td></tr>
+                <tr><td colspan="8" class="no-border"></td></tr>
+                
+                <!-- Customer Section -->
+                <tr><td colspan="8" class="header-row text-left"><b>Customer Details</b></td></tr>
+                <tr><td colspan="8" class="text-left">{order.customer.name}<br>{phone}<br>{address}</td></tr>
+                <tr><td colspan="8" class="no-border"></td></tr>
+                
+                <!-- Items Table -->
+                <tr class="header-row">
+                    <th width="5%">S.No</th>
+                    <th width="10%">Code</th>
+                    <th width="35%">Product Name</th>
+                    <th width="8%">Qty</th>
+                    <th width="10%">Rate</th>
+                    <th width="10%">Discount</th>
+                    <th width="10%">Final Rate</th>
+                    <th width="12%">Amount</th>
+                </tr>
+        """
+        
+        for item in formatted_items:
+            html += f"""
+                <tr>
+                    <td class="text-center">{item['sno']}</td>
+                    <td class="text-center">{item['code']}</td>
+                    <td class="text-left">{item['name']}</td>
+                    <td class="text-center">{item['qty']}</td>
+                    <td class="text-right">{item['rate']}</td>
+                    <td class="text-right">{item['discount']}</td>
+                    <td class="text-right">{item['final_rate']}</td>
+                    <td class="text-right">{item['total']}</td>
+                </tr>
+            """
+            
+        html += f"""
+                <!-- Totals Section -->
+                <tr>
+                    <td colspan="6" class="no-border"></td>
+                    <td><b>Sub Total</b></td>
+                    <td class="text-right"><b>{order.total_amt}</b></td>
+                </tr>
+                <tr>
+                    <td colspan="6" class="no-border"></td>
+                    <td><b>Discount</b></td>
+                    <td class="text-right"><b>{order.discount}</b></td>
+                </tr>
+                <tr>
+                    <td colspan="6" class="text-left" style="border: 0.5pt solid #000; border-right: none;"><b>Total Quantity : {total_qty}</b></td>
+                    <td style="border: 0.5pt solid #000; border-left: none;"><b>Packing Charge</b></td>
+                    <td class="text-right"><b>{order.calculated_packing_charges}</b></td>
+                </tr>
+                <tr>
+                    <td colspan="6" class="text-left" style="border: 0.5pt solid #000; border-right: none;"><b>Total Items : {items.count()}</b></td>
+                    <td class="header-row" style="border: 0.5pt solid #000; border-left: none;"><b>Overall Total</b></td>
+                    <td class="text-right header-row"><b>{order.grand_amt}</b></td>
+                </tr>
+                <tr><td colspan="8" class="no-border"></td></tr>
+                
+                <!-- Bank Details -->
+                <tr><td colspan="8" class="header-row text-left"><b>Bank Details</b></td></tr>
+                <tr><td class="text-left"><b>Bank Name</b></td><td class="text-left"><b>HDFC Bank</b></td><td colspan="6" class="no-border"></td></tr>
+                <tr><td class="text-left"><b>Account Name</b></td><td class="text-left"><b>Auraa Crackers</b></td><td colspan="6" class="no-border"></td></tr>
+                <tr><td class="text-left"><b>Account No</b></td><td class="text-left" style='mso-number-format:"\@";'><b>50200085449911</b></td><td colspan="6" class="no-border"></td></tr>
+                <tr><td class="text-left"><b>IFSC Code</b></td><td class="text-left"><b>HDFC0000161</b></td><td colspan="6" class="no-border"></td></tr>
+                <tr><td class="text-left"><b>Branch</b></td><td class="text-left"><b>Sivakasi</b></td><td colspan="6" class="no-border"></td></tr>
+                <tr><td class="text-left"><b>UPI Id</b></td><td class="text-left"><b>ntprabhu-2@okhdfcbank</b></td><td colspan="6" class="no-border"></td></tr>
+                
+                <tr><td colspan="8" class="no-border"></td></tr>
+                <!-- Footer Message -->
+                <tr><td colspan="8" class="no-border text-left">Looking forward to serving you again.</td></tr>
+                <tr><td colspan="8" class="no-border"></td></tr>
+                <tr>
+                    <td colspan="8" class="no-border text-left">
+                        Warm Regards,<br>
+                        <b>Thangaprabu N</b><br>
+                        Auraa Crackers<br>
+                        <b>90805 60340</b>
+                    </td>
+                </tr>
+            </table>
+        </body>
+        </html>
+        """
+        
+        response = HttpResponse(html, content_type='application/vnd.ms-excel')
+        response['Content-Disposition'] = f'attachment; filename="Order_{order.trans_no}.xls"'
+        return response
+
 from django.utils.decorators import method_decorator
 from django.views.decorators.clickjacking import xframe_options_exempt
 
@@ -180,23 +530,69 @@ class DashboardOrderEstimateView(LoginRequiredMixin, AdminRequiredMixin, DetailV
     def get_context_data(self, **kwargs):
         from django.db.models import Sum
         context = super().get_context_data(**kwargs)
-        items = self.object.items.all().select_related('product').order_by('item_code')
+        order = self.object
+        items = order.items.all().select_related('product').order_by('item_code')
         
-        # Pre-calculate values for the template to match the image columns
+        total_qty = 0
         for item in items:
             item.unit_rate = item.rate
-            # Image shows Discount per unit? Let's check: 540 rate, 270 disc, 270 final, 540 amt for 2 qty.
-            # (540 - 270) * 2 = 540. So yes, discount in image is per unit.
-            if item.qty > 0:
-                item.unit_discount = item.discount_amt / item.qty
-                item.final_rate = item.item_total / item.qty
-            else:
+            try:
+                if item.qty and item.qty > 0:
+                    item.unit_discount = (item.discount_amt or 0) / item.qty
+                    item.final_rate = (item.item_total or 0) / item.qty
+                else:
+                    item.unit_discount = 0
+                    item.final_rate = 0
+            except (TypeError, decimal.DivisionByZero, ZeroDivisionError):
                 item.unit_discount = 0
                 item.final_rate = 0
+            total_qty += item.qty
         
-        context['items'] = items
-        context['total_qty'] = items.aggregate(Sum('qty'))['qty__sum'] or 0
-        context['total_items'] = items.count()
+        order.items_list = items
+        order.total_qty = total_qty
+        order.total_items_count = items.count()
+        
+        context['order'] = order
+        return context
+
+@method_decorator(xframe_options_exempt, name='dispatch')
+class DashboardBulkOrderEstimateView(LoginRequiredMixin, AdminRequiredMixin, TemplateView):
+    template_name = 'dashboard/bulk_order_estimate.html'
+
+    def get_context_data(self, **kwargs):
+        from django.db.models import Sum
+        context = super().get_context_data(**kwargs)
+        trans_nos_str = self.request.GET.get('trans_nos', '')
+        trans_nos = [t.strip() for t in trans_nos_str.split(',') if t.strip()]
+        
+        orders = OnlineSales.objects.filter(trans_no__in=trans_nos).select_related('customer', 'customer_address', 'customer_address__state').prefetch_related('items', 'items__product')
+        
+        # Sort orders in the same order as trans_nos provided
+        orders_dict = {order.trans_no: order for order in orders}
+        sorted_orders = [orders_dict[tn] for tn in trans_nos if tn in orders_dict]
+
+        for order in sorted_orders:
+            items = order.items.all().select_related('product').order_by('item_code')
+            total_qty = 0
+            for item in items:
+                item.unit_rate = item.rate
+                try:
+                    if item.qty and item.qty > 0:
+                        item.unit_discount = (item.discount_amt or 0) / item.qty
+                        item.final_rate = (item.item_total or 0) / item.qty
+                    else:
+                        item.unit_discount = 0
+                        item.final_rate = 0
+                except (TypeError, decimal.DivisionByZero, ZeroDivisionError):
+                    item.unit_discount = 0
+                    item.final_rate = 0
+                total_qty += item.qty
+            
+            order.items_list = items
+            order.total_qty = total_qty
+            order.total_items_count = items.count()
+
+        context['orders'] = sorted_orders
         return context
 
 class DashboardOrderDownloadView(LoginRequiredMixin, AdminRequiredMixin, DetailView):
@@ -868,13 +1264,15 @@ class OrderAutocompleteAPIView(LoginRequiredMixin, AdminRequiredMixin, View):
             
         orders = OnlineSales.objects.filter(
             Q(trans_no__icontains=query) | 
-            Q(customer__name__icontains=query)
+            Q(customer__name__icontains=query) |
+            Q(customer__contact_person_no__icontains=query)
         ).select_related('customer')[:10]
         
         results = [{
             'id': o.id, 
             'trans_no': o.trans_no, 
             'customer_name': o.customer.name,
+            'customer_phone': o.customer.contact_person_no,
             'name': o.trans_no
         } for o in orders]
         return JsonResponse({'status': 'success', 'results': results})

@@ -67,6 +67,95 @@
         .autocomplete-item:hover { background-color: #EF4444 !important; color: white !important; }
         .autocomplete-item:hover span { color: white !important; }
         
+        /* 4. PREMIUM 2026 3D TOOLTIPS */
+        [data-tooltip] {
+            position: relative;
+            cursor: pointer;
+        }
+        [data-tooltip]:before {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: calc(100% + 12px); 
+            left: 50%;
+            transform: translateX(-50%) translateY(15px) scale(0.95);
+            padding: 10px 16px;
+            background: linear-gradient(135deg, rgba(15, 65, 115, 0.98), rgba(10, 50, 90, 0.98));
+            backdrop-filter: blur(12px);
+            color: white;
+            font-size: 10px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            border-radius: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 
+                0 15px 35px rgba(0,0,0,0.3), 
+                0 5px 15px rgba(0,0,0,0.2),
+                inset 0 1px 0 rgba(255,255,255,0.2);
+            z-index: 99999;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        [data-tooltip]:after {
+            content: '';
+            position: absolute;
+            bottom: calc(100% + 4px);
+            left: 50%;
+            transform: translateX(-50%) translateY(15px);
+            border: 8px solid transparent;
+            border-top-color: rgba(15, 65, 115, 0.98);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
+            z-index: 99999;
+        }
+        @media (hover: hover) {
+            [data-tooltip]:hover:before, [data-tooltip]:hover:after {
+                opacity: 1;
+                visibility: visible;
+                transform: translateX(-50%) translateY(0) scale(1);
+            }
+        }
+
+        /* Fix z-index for rows to ensure tooltips are never cut off */
+        tr:hover {
+            position: relative;
+            z-index: 50 !important; /* Higher than thead but not excessively high */
+        }
+        
+        thead {
+            position: relative;
+            z-index: 10; /* Lower than hovered rows */
+        }
+        
+        .overflow-visible-important, .table-container {
+            overflow: visible !important;
+        }
+        
+        /* Tooltip positioning for elements near the right edge */
+        .tooltip-left:before {
+            left: auto !important;
+            right: 0 !important;
+            transform: translateX(0) translateY(15px) scale(0.95) !important;
+        }
+        .tooltip-left:after {
+            left: auto !important;
+            right: 15px !important;
+            transform: translateX(0) translateY(15px) !important;
+        }
+        @media (hover: hover) {
+            .tooltip-left:hover:before {
+                transform: translateX(0) translateY(0) scale(1) !important;
+            }
+            .tooltip-left:hover:after {
+                transform: translateX(0) translateY(0) !important;
+            }
+        }
+
         /* Toastr Premium Customization */
         #toast-container > .toast-success {
             background-color: #065f46 !important; /* Dark Green */
@@ -263,7 +352,13 @@
 
     {% with url_name=request.resolver_match.url_name %}
     {% if url_name != 'login' and 'dashboard_' not in url_name and 'admin_' not in url_name %}
-    {% include 'includes/footer.html' %}
+        {% include 'includes/footer.html' %}
+    {% else %}
+        <footer class="bg-gray-50 border-t border-gray-100 py-8 mt-auto">
+            <div class="max-w-[1600px] mx-auto px-4 text-center">
+                <p class="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">© 2026 Powered By <span class="text-auraa-red">Auraa Zena AI</span></p>
+            </div>
+        </footer>
     {% endif %}
     {% endwith %}
     

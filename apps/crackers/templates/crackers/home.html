@@ -168,7 +168,7 @@
     }
     @media (min-width: 1024px) {
         .video-slide {
-            flex: 0 0 100%;
+            flex: 0 0 calc(50% - 1rem);
         }
     }
     .slider-arrow {
@@ -213,7 +213,7 @@
 {% block content %}
 <div class="bg-auraa-red min-h-screen overflow-hidden text-white">
     <!-- Hero Section -->
-    <section class="relative min-h-[500px] md:min-h-screen flex items-start md:items-center pt-4 md:pt-20 overflow-hidden">
+    <section class="relative min-h-[500px] md:min-h-screen flex items-start md:items-center pt-4 md:pt-12 overflow-hidden">
         <!-- Hero content will now sit on the background color of the parent div -->
 
 
@@ -280,7 +280,7 @@
     </section>
 
     <!-- Exclusive Products Bento Grid -->
-    <section class="py-16 px-4 bg-white">
+    <section class="py-12 px-4 bg-white">
         <div class="max-w-7xl mx-auto">
             <div class="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
                 <div class="space-y-4">
@@ -357,7 +357,7 @@
 
 
     <!-- Core Values Section -->
-    <section class="py-16 px-6 bg-white relative overflow-hidden">
+    <section class="py-10 px-6 bg-white relative overflow-hidden">
         <!-- Floating Ambient Glows (Subtler for White Background) -->
         <div class="absolute top-1/4 left-0 w-[500px] h-[500px] bg-auraa-red/5 rounded-full blur-[120px] animate-pulse"></div>
         <div class="absolute bottom-1/4 right-0 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[150px] animate-pulse" style="animation-delay: 2s;"></div>
@@ -367,14 +367,14 @@
             <div class="absolute -top-6 -left-6 w-full h-full bg-gray-100 border border-gray-200 shadow-2xl rounded-[3rem] pointer-events-none transition-transform duration-1000 group-hover/main:-translate-x-2 group-hover/main:-translate-y-2"></div>
 
             <!-- The 2026 Asymmetric Floating Panel -->
-            <div class="relative bg-[#0A325A]/90 backdrop-blur-xl border border-white/10 p-6 sm:p-12 md:p-24 shadow-[0_80px_150px_-30px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.1)] overflow-hidden transition-all duration-700 hover:shadow-[0_100px_180px_-40px_rgba(0,0,0,0.7)]"
+            <div class="relative bg-[#0A325A]/90 backdrop-blur-xl border border-white/10 p-6 sm:p-10 md:p-16 shadow-[0_80px_150px_-30px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.1)] overflow-hidden transition-all duration-700 hover:shadow-[0_100px_180px_-40px_rgba(0,0,0,0.7)]"
                  style="border-radius: 3rem;">
                 
                 <!-- Internal Glow Accents -->
                 <div class="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-[100px] pointer-events-none"></div>
 
                 <!-- Section Header Internal -->
-                <div class="text-center space-y-6 mb-24 relative z-10">
+                <div class="text-center space-y-6 mb-16 relative z-10">
                     <div class="inline-flex items-center space-x-3 bg-white text-auraa-red px-8 py-3 rounded-full mb-4 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
                         <i data-lucide="award" class="w-5 h-5"></i>
                         <span class="text-[12px] font-black uppercase tracking-[0.4em]">Our Foundation</span>
@@ -444,7 +444,7 @@
 
 
     <!-- Trust & Compliance Section -->
-    <section class="py-20 bg-white rounded-[5rem] mx-4 shadow-2xl relative overflow-hidden text-gray-900 mb-12">
+    <section class="py-12 bg-white rounded-[5rem] mx-4 shadow-2xl relative overflow-hidden text-gray-900 mb-12">
         <div class="max-w-7xl mx-auto px-8 md:px-16">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
                 <div class="space-y-10">
@@ -508,12 +508,12 @@
     </section>
 
     <!-- Support Cluster Section - 2026 Asymmetric Redesign -->
-    <div class="py-16 bg-white px-6">
+    <div class="py-10 bg-white px-6">
         <div class="max-w-[1600px] mx-auto relative group/support">
             <!-- Layered Offset Background (Atmospheric Glow) -->
             <div class="absolute -inset-8 bg-auraa-red/[0.03] border border-auraa-red/5 rounded-[3rem] rotate-1 scale-105 pointer-events-none group-hover/support:rotate-0 group-hover/support:scale-100 transition-all duration-[1.5s]"></div>
 
-            <section class="relative bg-[#0A325A] px-6 py-16 sm:px-10 sm:py-24 md:px-16 md:py-32 shadow-[0_100px_150px_-40px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.1)] overflow-hidden transition-all duration-1000 group-hover/support:shadow-[0_120px_180px_-50px_rgba(0,0,0,0.6)] group-hover/support:-translate-y-4"
+            <section class="relative bg-[#0A325A] px-6 py-12 sm:px-10 sm:py-16 md:px-16 md:py-20 shadow-[0_100px_150px_-40px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.1)] overflow-hidden transition-all duration-1000 group-hover/support:shadow-[0_120px_180px_-50px_rgba(0,0,0,0.6)] group-hover/support:-translate-y-4"
                      style="border-radius: 3rem;">
                 
                 <!-- Inner 3D Background Decorative Layers -->
@@ -600,7 +600,7 @@
         </div>
     </div>
     <!-- Testimonials & Video Section -->
-    <section class="py-12 px-6 bg-white relative overflow-hidden">
+    <section class="py-8 px-6 bg-white relative overflow-hidden">
         <!-- Floating Red Orbs for Atmospheric Depth (Softened for White Background) -->
         <div class="absolute top-1/4 -right-24 w-[600px] h-[600px] bg-auraa-red/5 rounded-full blur-[120px] animate-pulse"></div>
         <div class="absolute bottom-1/4 -left-24 w-[500px] h-[500px] bg-blue-600/5 rounded-full blur-[150px] animate-pulse" style="animation-delay: 3s;"></div>
@@ -610,13 +610,13 @@
             <div class="absolute -inset-10 bg-[#0A325A]/[0.05] border border-gray-100 rounded-[3rem] -rotate-2 scale-105 pointer-events-none group-hover/testimonials:rotate-0 group-hover/testimonials:scale-100 transition-all duration-[2000ms]"></div>
             
             <!-- The 2026 Asymmetric Organic Container - Inverted to White as requested -->
-            <div class="relative bg-white px-6 py-16 sm:px-12 sm:py-24 md:px-20 md:py-32 overflow-hidden transition-all duration-1000"
+            <div class="relative bg-white px-6 py-12 sm:px-12 sm:py-16 md:px-20 md:py-20 overflow-hidden transition-all duration-1000"
                  style="border-radius: 3rem;">
                 
                 <!-- Inner Decorative Accents -->
                 <div class="absolute top-0 right-0 w-full h-full bg-[radial-gradient(circle_at_100%_0%,_rgba(245,7,29,0.1)_0%,_transparent_50%)] pointer-events-none"></div>
 
-                <div class="text-center space-y-8 mb-24 relative z-10">
+                <div class="text-center space-y-8 mb-12 relative z-10">
                     <div class="auraa-pill-label inline-flex items-center space-x-3 bg-white text-auraa-red px-10 py-4 rounded-full border border-gray-200 shadow-2xl">
                         <div class="w-2 h-2 bg-auraa-red rounded-full animate-ping flex-shrink-0"></div>
                         <h2 class="text-[12px] font-black uppercase tracking-[0.6em]">Happy Customers</h2>
@@ -683,7 +683,7 @@
                 </div>
 
             <!-- Video Testimonials (Placeholder) -->
-                <div class="mt-40 flex flex-col md:flex-row justify-between items-end gap-10 mb-16">
+                <div class="mt-16 flex flex-col md:flex-row justify-between items-end gap-10 mb-16">
                     <div class="space-y-4">
                         <h2 class="text-2xl font-black text-auraa-red uppercase tracking-[0.4em]">Visual Stories</h2>
                         <h3 class="text-4xl md:text-5xl font-black text-gray-900 uppercase tracking-tighter">Video Testimonials</h3>
@@ -736,12 +736,12 @@
         </div>
     </section>
     <!-- Celebrate with The Auraa - 2026 Premium Redesign -->
-    <div class="py-16 bg-[#0A325A] px-6">
+    <div class="py-10 bg-[#0A325A] px-6">
         <div class="max-w-6xl mx-auto relative group/cta">
             <!-- Layered Offset Background (Atmospheric Glow) -->
             <div class="absolute -inset-6 bg-white/10 border border-white/10 rounded-[3rem] -rotate-1 scale-105 pointer-events-none group-hover/cta:rotate-0 transition-all duration-[1s]"></div>
 
-            <section class="relative bg-white py-16 md:py-32 text-center text-auraa-red shadow-[0_50px_100px_-20px_rgba(0,0,0,0.1)] overflow-hidden transition-all duration-700 group-hover:-translate-y-4 group-hover:shadow-[0_80px_150px_-30px_rgba(245,7,29,0.2)]"
+            <section class="relative bg-white py-12 md:py-16 text-center text-auraa-red shadow-[0_50px_100px_-20px_rgba(0,0,0,0.1)] overflow-hidden transition-all duration-700 group-hover:-translate-y-4 group-hover:shadow-[0_80px_150px_-30px_rgba(245,7,29,0.2)]"
                      style="border-radius: 3rem;">
                 
                 <!-- Inner 3D Glow Effects -->
@@ -775,12 +775,12 @@
     </div>
 
     <!-- The Auraa Advantage Section (Why Choose Auraa) -->
-    <div class="py-16 bg-white px-6">
+    <div class="py-10 bg-white px-6">
         <div class="max-w-7xl mx-auto relative group/advantage">
             <!-- Layered Offset Background -->
             <div class="absolute -inset-10 bg-auraa-red/[0.03] border border-auraa-red/5 rounded-[3rem] rotate-2 scale-105 pointer-events-none group-hover/advantage:rotate-0 transition-all duration-[2s]"></div>
 
-            <section class="relative bg-[#0A325A] px-6 py-12 md:p-32 shadow-[0_120px_180px_-40px_rgba(0,0,0,0.8)] overflow-hidden transition-all duration-1000 group-hover/advantage:shadow-[0_150px_220px_-50px_rgba(0,0,0,0.9)] advantage-section">
+            <section class="relative bg-[#0A325A] px-6 py-10 md:py-16 md:px-16 shadow-[0_120px_180px_-40px_rgba(0,0,0,0.8)] overflow-hidden transition-all duration-1000 group-hover/advantage:shadow-[0_150px_220px_-50px_rgba(0,0,0,0.9)] advantage-section">
                 
                 <!-- Atmospheric Background Elements -->
                 <div class="absolute inset-0 z-0">
@@ -883,8 +883,9 @@
         const track = document.getElementById('videoSliderTrack');
         const slides = track.querySelectorAll('.video-slide');
         const totalSlides = slides.length;
-        const visibleSlides = 1;
-        const maxIndex = totalSlides - visibleSlides;
+        const isDesktop = window.innerWidth >= 1024;
+        const visibleSlides = isDesktop ? 2 : 1;
+        const maxIndex = Math.max(0, totalSlides - visibleSlides);
 
         videoSlideIndex += direction;
         if (videoSlideIndex < 0) videoSlideIndex = 0;

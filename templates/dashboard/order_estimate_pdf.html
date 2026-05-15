@@ -10,13 +10,15 @@
         }
         body {
             font-family: Helvetica, Arial, sans-serif;
-            font-size: 8pt;
-            line-height: 1.05;
+            font-size: 9pt;
+            line-height: 1.2;
             color: #000;
         }
+        .text-left { text-align: left; }
         .text-center { text-align: center; }
         .text-right { text-align: right; }
         .font-bold { font-weight: bold; }
+        .font-black { font-weight: 900; }
         .uppercase { text-transform: uppercase; }
         
         table {
@@ -24,220 +26,245 @@
             border-collapse: collapse;
         }
         
-        /* Header & Info (Borderless) */
-        .header-top td {
-            padding: 2px 0;
-            font-size: 9pt;
+        .header-table {
+            border: 1pt solid #000;
+        }
+        .header-table td {
+            border: none;
+            padding: 2px 8px;
             font-weight: bold;
         }
         
-        .contact-info td {
-            padding: 1px 0;
-            font-size: 8pt;
-            font-weight: bold;
-        }
-        
-        .company-section {
-            padding: 5px 0;
+        .company-info {
+            border: 1pt solid #000;
+            padding: 5px;
             text-align: center;
         }
         .company-name {
-            font-size: 18pt;
+            font-size: 13pt;
             font-weight: bold;
-            margin-bottom: 2px;
+            margin-bottom: 0;
+            line-height: 1;
+            border: none;
         }
         .company-address {
-            font-size: 7.5pt;
+            font-size: 9pt;
+            margin-top: 0;
             line-height: 1.1;
+            border: none;
         }
         
-        .customer-section {
-            margin: 5px 0;
+        .customer-table {
+            border: 1pt solid #000;
+            border-top: none;
+            border-bottom: none;
+            width: 100%;
         }
-        .section-title {
-            font-size: 8pt;
+        .customer-table td {
+            padding: 4px 8px;
+            border: none;
+        }
+        .customer-table .header-row {
+            background-color: #fff;
             font-weight: bold;
-            text-decoration: underline;
-            margin-bottom: 2px;
-        }
-        .customer-info {
-            padding-left: 5px;
+            text-transform: uppercase;
         }
         
-        /* Items Table (Bordered) */
-        .items-table {
-            margin: 5px 0;
+        .items-table th, .items-table td {
+            border: 1pt solid #000;
+            padding: 3px;
+            text-align: center;
         }
         .items-table th {
-            border: 0.5pt solid #000;
-            padding: 4px 2px;
-            font-size: 8pt;
-            background-color: #f5f5f5;
-        }
-        .items-table td {
-            border: 0.5pt solid #000;
-            padding: 3px 2px;
-            font-size: 8pt;
+            font-weight: bold;
         }
         
-        /* Totals (Borderless) */
         .totals-table td {
-            padding: 2px 5px;
-            font-weight: bold;
-            font-size: 8.5pt;
-        }
-        
-        /* Footer */
-        .footer-section {
-            margin-top: 5px;
-            font-size: 8.5pt;
-        }
-        .bank-details {
-            margin: 5px 0 8px 15px;
-        }
-        .bank-row {
-            margin-bottom: 1px;
-        }
-        .bank-label {
-            display: inline-block;
-            width: 100px;
+            border: 1pt solid #000;
+            border-left: none;
+            border-right: none;
+            padding: 3px 8px;
             font-weight: bold;
         }
-        
-        .signature-block {
-            margin-top: 10px;
+        .totals-table td:first-child {
+            border-left: 1pt solid #000;
         }
-        .sig-comp { font-weight: bold; color: #d90000; font-size: 10pt; }
+        .totals-table td:last-child {
+            border-right: 1pt solid #000;
+        }
         
-        /* Rupee Symbol Helper */
-        .rupee-cell {
-            font-family: "DejaVu Sans", sans-serif;
-            font-size: 10pt;
-            white-space: nowrap;
+        .bank-details-section {
+            margin-top: 15px;
+        }
+        .bank-details-table td {
+            padding: 2px 0;
+            vertical-align: top;
+        }
+        .colon-col {
+            width: 15px;
+            text-align: center;
+        }
+        .label-col {
+            width: 120px;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
-    <!-- Top Header -->
-    <table class="header-top">
-        <tr>
-            <td width="30%">Order No : {{ order.trans_no }}</td>
-            <td width="40%" class="text-center" style="font-size: 12pt;">ESTIMATE</td>
-            <td width="30%" class="text-right">Date : {{ order.trans_dt|date:"d/m/Y" }}</td>
-        </tr>
-    </table>
-    
-    <hr style="border: 0.2pt solid #000; margin: 2px 0;">
-    
-    <!-- Contact Info -->
-    <table class="contact-info">
-        <tr>
-            <td class="text-center" width="50%">Mobile : 90805 60340</td>
-            <td class="text-center" width="50%">E-mail : info@auraacrackers.com</td>
-        </tr>
-    </table>
-    
-    <hr style="border: 0.2pt solid #000; margin: 2px 0;">
-
-    <!-- Company Details -->
-    <div class="company-section">
-        <div class="company-name">AURAA CRACKERS</div>
-        <div class="company-address">
-            S.No.226/5, D.No.1/177_5_20, Sivakasi Vembakottai Main Road, Pernaikenpatti Village, Sivakasi Taluk,<br>
-            Tamilnadu - 626 189
-        </div>
-    </div>
-
-    <!-- Customer Section -->
-    <div class="customer-section">
-        <div class="section-title">CUSTOMER DETAILS</div>
-        <div class="customer-info">
-            <div class="font-bold uppercase" style="font-size: 9pt;">{{ order.customer.name }}</div>
-            <div class="font-bold" style="font-size: 8.5pt;">{{ order.customer_address.phone|default:order.customer.contact_person_no }}</div>
-            <div style="font-size: 8pt;">
-                {{ order.customer_address.address1 }}, {{ order.customer_address.address2 }},
-                {{ order.customer_address.city_name }} - {{ order.customer_address.pincode }}, {{ order.customer_address.state.name }}, India
-            </div>
-        </div>
-    </div>
-
-    <!-- Items Table -->
-    <table class="items-table">
-        <thead>
+    <div>
+        <!-- Top Header Row -->
+        <table class="header-table">
             <tr>
-                <th width="6%">S.No</th>
-                <th width="10%">Code</th>
-                <th width="36%" style="text-align: left;">Product Name</th>
-                <th width="8%">Qty</th>
-                <th width="10%">Rate</th>
-                <th width="8%">Disc</th>
-                <th width="10%">Final</th>
-                <th width="12%">Amount</th>
+                <td width="30%">Order No : {{ order.trans_no }}</td>
+                <td width="40%" class="text-center" style="font-size: 12pt;">ESTIMATE</td>
+                <td width="30%" class="text-right">Date : {{ order.trans_dt|date:"d/m/Y" }}</td>
             </tr>
-        </thead>
-        <tbody>
-            {% for item in items %}
-            <tr class="text-center">
-                <td>{{ forloop.counter }}</td>
-                <td>{{ item.product.code }}</td>
-                <td style="text-align: left; font-weight: bold;">{{ item.item_name }}</td>
-                <td>{{ item.qty|floatformat:0 }}</td>
-                <td>{{ item.unit_rate|floatformat:2 }}</td>
-                <td>{{ item.unit_discount|floatformat:2 }}</td>
-                <td class="font-bold">{{ item.final_rate|floatformat:2 }}</td>
-                <td class="font-bold">{{ item.item_total|floatformat:2 }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    
-    <!-- Totals Table -->
-    <table class="totals-table">
-        <tr>
-            <td width="55%" rowspan="4" style="vertical-align: top; font-weight: normal; font-size: 8pt;">
-                <div><span class="font-bold">Total Items :</span> {{ total_items }} &nbsp;&nbsp; <span class="font-bold">Total Quantity :</span> {{ total_qty|floatformat:0 }}</div>
-            </td>
-            <td width="30%" class="text-right uppercase">Sub Total :</td>
-            <td width="15%" class="text-center font-bold">{{ order.total_amt|floatformat:2 }}</td>
-        </tr>
-        <tr>
-            <td class="text-right uppercase">Discount :</td>
-            <td class="text-center font-bold">{{ order.discount|floatformat:2 }}</td>
-        </tr>
-        <tr>
-            <td class="text-right uppercase">Packing Charge :</td>
-            <td class="text-center font-bold">{{ order.calculated_packing_charges|floatformat:2 }}</td>
-        </tr>
-        <tr>
-            <td class="text-right uppercase" style="font-size: 10pt;">Overall Total :</td>
-            <td class="text-center font-bold" style="font-size: 10pt;">
-                {{ order.grand_amt|floatformat:2 }}
-            </td>
-        </tr>
-    </table>
-    
-    <!-- Footer Section -->
-    <div class="footer-section">
-        <p>Dear {{ order.customer.name }}, Thank you for choosing Auraa Crackers! We sincerely appreciate your purchase.</p>
-        <p class="font-bold uppercase" style="text-decoration: underline; margin: 3px 0;">Bank Details:</p>
+        </table>
         
-        <div class="bank-details">
-            <div class="bank-row"><span class="bank-label">Bank Name</span> : <span class="font-bold">Central Bank of India</span></div>
-            <div class="bank-row"><span class="bank-label">Account Name</span> : <span class="font-bold uppercase">Balaji N</span></div>
-            <div class="bank-row"><span class="bank-label">Account Number</span> : <span class="font-bold">5933315482</span></div>
-            <div class="bank-row"><span class="bank-label">IFSC Code</span> : <span class="font-bold">CBIN0283725</span></div>
-            <div class="bank-row"><span class="bank-label">Branch</span> : <span class="font-bold">Velachery, Chennai</span></div>
-            <div class="bank-row"><span class="bank-label">UPI Id</span> : <span class="font-bold">ntprabhu-2@okhdfcbank</span></div>
-        </div>
+        <!-- Contact & Company Row -->
+        <table class="company-info" style="border: 1pt solid #000;">
+            <tr>
+                <td style="border: none; padding: 5px;">
+                    <table style="margin-bottom: 2px; border: none;">
+                        <tr>
+                            <td class="text-left font-bold" style="font-size: 11pt; border: none;">Mobile : 90805 60340</td>
+                            <td class="text-right font-bold" style="font-size: 11pt; border: none;">E-mail : info@auraacrackers.com</td>
+                        </tr>
+                    </table>
+                    <div class="company-name">Auraa Crackers</div>
+                    <div class="company-address">
+                        S.No.226/5, D.No.1/177_5_20, Sivakasi Vembakottai Main Road, Pernaikenpatti Village, Sivakasi Taluk,<br>
+                        Tamilnadu - 626 189
+                    </div>
+                </td>
+            </tr>
+        </table>
 
-        <p style="font-style: italic; margin-top: 5px;">Looking forward to serving you again.</p>
+        <!-- Customer Details -->
+        <table class="customer-table">
+            <tr class="header-row">
+                <td>Customer Details</td>
+            </tr>
+            <tr>
+                <td>
+                    <div style="font-weight: bold; text-transform: uppercase;">{{ order.customer.name }}</div>
+                    <div>{{ order.customer_address.phone|default:order.customer.contact_person_no }}</div>
+                    <div style="color: #444;">
+                        {{ order.customer_address.address1 }}, {{ order.customer_address.address2 }},<br>
+                        {{ order.customer_address.city_name }} {{ order.customer_address.pincode }}, {{ order.customer_address.state.name }}, India
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+        <!-- Items Table -->
+        <table class="items-table" style="border-top: none;">
+            <thead>
+                <tr>
+                    <th width="5%">S.NO</th>
+                    <th width="10%">CODE</th>
+                    <th width="35%">PRODUCT NAME</th>
+                    <th width="10%">QUANTITY</th>
+                    <th width="10%">RATE/QTY</th>
+                    <th width="10%">DISCOUNT</th>
+                    <th width="10%">FINAL RATE</th>
+                    <th width="10%">AMOUNT</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ item.product.code }}</td>
+                    <td style="text-align: left;">{{ item.item_name }}</td>
+                    <td>{{ item.qty|floatformat:0 }}</td>
+                    <td>{{ item.unit_rate|floatformat:0 }}</td>
+                    <td>{{ item.unit_discount|floatformat:0 }}</td>
+                    <td>{{ item.final_rate|floatformat:0 }}</td>
+                    <td>{{ item.item_total|floatformat:0 }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Totals Section -->
+        <table class="totals-table">
+            <tr>
+                <td width="70%"></td>
+                <td width="18%" class="text-right uppercase">Sub Total :</td>
+                <td width="12%" class="text-center">{{ order.total_amt|floatformat:0 }}</td>
+            </tr>
+            <tr>
+                <td width="70%"></td>
+                <td width="18%" class="text-right uppercase">Discount :</td>
+                <td class="text-center">{{ order.discount|floatformat:0 }}</td>
+            </tr>
+            <tr>
+                <td width="70%">Total Quantity : {{ total_qty|floatformat:0 }}</td>
+                <td width="18%" class="text-right uppercase">Packing Charge :</td>
+                <td class="text-center">{{ order.calculated_packing_charges|floatformat:1 }}</td>
+            </tr>
+            <tr>
+                <td width="70%">Total Items : {{ total_items }}</td>
+                <td width="18%" class="text-right uppercase">Overall Total :</td>
+                <td class="text-center">{{ order.grand_amt|floatformat:0 }}</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Payment & Signature Section -->
+    <div style="margin-top: 20px;">
+        <p>Dear {{ order.customer.name }},</p>
+        <p>Thank you for choosing Auraa Crackers! We sincerely appreciate your purchase and are thrilled to have you as a valued customer.</p>
+        <p>To complete your purchase, please find our bank details below:</p>
         
-        <div class="signature-block">
-            <div class="font-bold">Warm Regards,</div>
-            <div class="uppercase" style="font-weight: bold; font-size: 10pt; margin-top: 1px;">Thangaprabu N</div>
-            <div class="sig-comp">Auraa Crackers</div>
-            <div class="font-bold" style="margin-top: 1px;">90805 60340</div>
+        <table class="bank-details-table" style="width: auto; margin-left: 0;">
+            <tr>
+                <td class="label-col">Bank Name</td>
+                <td class="colon-col">:</td>
+                <td class="font-bold">HDFC Bank</td>
+            </tr>
+            <tr>
+                <td class="label-col">Account Name</td>
+                <td class="colon-col">:</td>
+                <td class="font-bold">AURAA CRACKERS UNIT II</td>
+            </tr>
+            <tr>
+                <td class="label-col">Account Number</td>
+                <td class="colon-col">:</td>
+                <td class="font-bold">50200086196083</td>
+            </tr>
+            <tr>
+                <td class="label-col">IFSC Code</td>
+                <td class="colon-col">:</td>
+                <td class="font-bold">HDFC0006714</td>
+            </tr>
+            <tr>
+                <td class="label-col">Branch</td>
+                <td class="colon-col">:</td>
+                <td class="font-bold">Sivakasi</td>
+            </tr>
+            <tr>
+                <td class="label-col">UPI Id</td>
+                <td class="colon-col">:</td>
+                <td class="font-bold">ntprabhu-2@okhdfcbank</td>
+            </tr>
+        </table>
+
+        <p style="margin-top: 15px;">Looking forward to serving you again.</p>
+        
+        <div style="margin-top: 20px; line-height: 1.2; font-size: 10pt;">
+            Warm Regards,<br>
+            <span class="font-bold">Thangaprabu N</span><br>
+            Auraa Crackers<br>
+            <span class="font-bold">90805 60340</span>
         </div>
+    </div>
+
+    <pdf:nextpage />
+    
+    <div style="text-align: center; padding-top: 20px;">
+        <img src="static/images/payment.jpeg" width="500">
     </div>
 </body>
 </html>

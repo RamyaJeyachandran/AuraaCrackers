@@ -4,7 +4,7 @@
 {% block title %}Pricelist Management | Auraa Admin{% endblock %}
 
 {% block content %}
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+<div class="max-w-[1850px] mx-auto px-4 sm:px-6 lg:px-8 pb-20">
     <!-- Header -->
     <div class="mb-12 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 no-print">
         <div>
@@ -107,11 +107,11 @@
                         <td class="py-4 px-8 text-center border border-gray-800">
                             <div class="flex items-center justify-center space-x-3">
                                 <a href="{% url 'dashboard_pricelist_detail' pricelist.id %}" 
-                                   class="p-2 text-blue-500 hover:bg-blue-50 rounded-lg transition-colors" title="View">
+                                   class="p-2 text-blue-500 hover:bg-blue-50 rounded-lg transition-colors" data-tooltip="View Items">
                                     <i data-lucide="eye" class="w-5 h-5"></i>
                                 </a>
                                 <a href="{% url 'dashboard_pricelist_edit' pricelist.id %}" 
-                                   class="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors" title="Edit">
+                                   class="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors" data-tooltip="Edit Pricelist">
                                     <i data-lucide="edit-3" class="w-5 h-5"></i>
                                 </a>
                             </div>
@@ -253,6 +253,7 @@ function togglePricelist(btn, pricelistId) {
                 label.classList.remove('text-gray-400');
                 label.classList.add('text-green-500');
                 label.innerText = 'Active';
+                toastr.success('Pricelist activated successfully');
             } else {
                 btn.classList.remove('bg-green-500');
                 btn.classList.add('bg-gray-200');
@@ -261,13 +262,14 @@ function togglePricelist(btn, pricelistId) {
                 label.classList.remove('text-green-500');
                 label.classList.add('text-gray-400');
                 label.innerText = 'Inactive';
+                toastr.success('Pricelist deactivated successfully');
             }
         } else {
-            showModal('Error', data.message || 'Error toggling pricelist status', 'error');
+            toastr.error(data.message || 'Error toggling pricelist status');
         }
     })
     .catch(error => {
-        showModal('Error', 'A system error occurred. Please try again.', 'error');
+        toastr.error('A system error occurred. Please try again.');
     });
 }
 </script>

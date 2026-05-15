@@ -1,5 +1,5 @@
 {% load cache %}
-{% cache 3600 product_table_cache selected_category search_query sort_by %}
+{% cache 3600 product_table_cache_v2 selected_category search_query sort_by cache_version %}
 <div class="overflow-visible" id="product-table-container">
     <table class="w-full text-left responsive-table border-collapse">
         <!-- Pill-Shaped Floating Header -->

@@ -79,13 +79,15 @@
                     <tbody class="group transition-all">
                         <tr class="bg-auraa-red shadow-lg transition-colors border-t border-red-500">
                             <td class="py-4 px-4 text-center border-r border-red-500">
-                                <input type="checkbox" onchange="toggleBulkInputs(this, 'bulk-cat-{{ category.id }}', 'cat-group-{{ category.id }}')"
-                                       class="cat-checkbox w-5 h-5 rounded border-2 border-white text-white focus:ring-white bg-transparent cursor-pointer">
+                                <div class="flex items-center justify-center space-x-3">
+                                    <i data-lucide="minus" id="icon-cat-group-{{ category.id }}" class="w-4 h-4 text-white transition-all duration-300 cursor-pointer" onclick="event.stopPropagation(); toggleDashboardCategory('cat-group-{{ category.id }}')"></i>
+                                    <input type="checkbox" onchange="toggleBulkInputs(this, 'bulk-cat-{{ category.id }}', 'cat-group-{{ category.id }}')"
+                                           class="cat-checkbox w-5 h-5 rounded border-2 border-white text-white focus:ring-white bg-transparent cursor-pointer">
+                                </div>
                             </td>
                             <td colspan="10" class="py-4 px-4 cursor-pointer category-header" data-id="cat-group-{{ category.id }}" onclick="toggleDashboardCategory('cat-group-{{ category.id }}')">
                                 <div class="flex justify-between items-center">
                                     <div class="flex items-center space-x-3">
-                                        <i data-lucide="chevron-down" id="icon-cat-group-{{ category.id }}" class="w-5 h-5 text-white transition-transform duration-300"></i>
                                         <h2 class="text-xs font-black uppercase tracking-[0.3em] text-white">{{ category.name }}</h2>
                                     </div>
                                     <div class="flex items-center space-x-2">
@@ -337,10 +339,16 @@ function toggleDashboardCategory(id) {
 
     if (el.classList.contains('hidden')) {
         el.classList.remove('hidden');
-        icon.classList.remove('-rotate-90');
+        if (icon) {
+            icon.setAttribute('data-lucide', 'minus');
+            lucide.createIcons();
+        }
     } else {
         el.classList.add('hidden');
-        icon.classList.add('-rotate-90');
+        if (icon) {
+            icon.setAttribute('data-lucide', 'plus');
+            lucide.createIcons();
+        }
         if (bulkRow) bulkRow.classList.add('hidden');
     }
     calculateTotals();
@@ -420,13 +428,14 @@ function toggleAllCategories(show) {
         
         if (show) {
             body.classList.remove('hidden');
-            if (icon) icon.classList.remove('-rotate-90');
+            if (icon) icon.setAttribute('data-lucide', 'minus');
         } else {
             body.classList.add('hidden');
-            if (icon) icon.classList.add('-rotate-90');
+            if (icon) icon.setAttribute('data-lucide', 'plus');
             if (bulkRow) bulkRow.classList.add('hidden');
         }
     });
+    if (window.lucide) lucide.createIcons();
 }
 
 function toggleBulkInputs(checkbox, bulkRowId, productsBodyId) {

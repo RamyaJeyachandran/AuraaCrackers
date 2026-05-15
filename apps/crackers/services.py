@@ -4,6 +4,7 @@ from django.db import transaction
 from django.utils import timezone
 from django.conf import settings
 from django.shortcuts import get_object_or_404
+from django.db.models import Q
 from .models import Cart, OnlineSales, OnlineSalesItem, SerialNo, CustomerAddress, Product
 from .tasks import send_order_success_emails_task, send_order_error_emails_task
 
@@ -18,27 +19,33 @@ class OrderService:
     @staticmethod
     def generate_next_trans_no():
         """
-        Atomically generates and increments the next transaction number 
-        from the SerialNo model.
+        Generates the next transaction number in YYYYMMNNNN format.
+        YYYY = Year, MM = Month, NNNN = Running sequence (0001-9999).
         """
+        from django.utils import timezone
+        now = timezone.now()
+        period = now.strftime('%Y%m') # e.g., 202604
+        
         with transaction.atomic():
-            serial = SerialNo.objects.select_for_update().get(
-                table_name='tbl_online_sales', 
+            # Find the last order starting with the current YYYYMM
+            last_order = OnlineSales.objects.filter(
+                trans_no__startswith=period,
                 is_active=True
-            )
-            prefix = serial.prefix_no or ""
-            suffix = serial.suffix_no or ""
-            next_val = serial.next_no
-            sequence_val = serial.sequence_no
+            ).order_by('-trans_no').select_for_update().first()
             
-            # Format: {prefix}{year}{padded_sequence}{suffix}
-            # e.g., SO20260001
-            sequence_str = str(sequence_val).zfill(4)
-            trans_no = f"{prefix}{next_val}{sequence_str}{suffix}"
+            if last_order:
+                try:
+                    # Extract last 4 digits and increment
+                    # We use [-4:] to get the running number part
+                    last_seq = int(last_order.trans_no[-4:])
+                    new_seq = last_seq + 1
+                except (ValueError, TypeError):
+                    new_seq = 1
+            else:
+                new_seq = 1
             
-            # Update sequence for next run
-            serial.sequence_no += 1
-            serial.save()
+            # Format: 202604 + 0001 = 2026040001
+            trans_no = f"{period}{str(new_seq).zfill(4)}"
             
             return trans_no
 
@@ -86,6 +93,12 @@ class OrderService:
         cart_items = Cart.objects.filter(user=user).select_related('product')
         if not cart_items.exists():
             raise ValueError("Cart is empty.")
+
+        # Check for disabled products in cart
+        disabled_items = cart_items.filter(Q(product__is_active=False) | Q(product__is_disabled=1))
+        if disabled_items.exists():
+            item_names = ", ".join([item.product.name for item in disabled_items])
+            raise ValueError(f"The following items in your cart are currently unavailable: {item_names}. Please remove them to proceed.")
 
         promo_per = session_data.get('promo_per', 0)
         promo_code = session_data.get('promo_code', None)

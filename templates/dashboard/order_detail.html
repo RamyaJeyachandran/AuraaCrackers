@@ -43,13 +43,19 @@
     <!-- Page Header -->
     <div class="mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div class="flex items-center gap-4">
-            <a href="{% url 'dashboard_orders' %}" class="w-10 h-10 bg-white border border-gray-100 rounded-xl flex items-center justify-center shadow-sm hover:bg-gray-50 transition-colors">
+            <a href="{% url 'dashboard_orders' %}" class="w-10 h-10 bg-white border border-gray-100 rounded-xl flex items-center justify-center shadow-sm hover:bg-gray-50 transition-colors" data-tooltip="Back to Orders">
                 <i data-lucide="arrow-left" class="w-4 h-4 text-gray-600"></i>
             </a>
             <div>
-                <h1 class="text-2xl font-black text-gray-900 tracking-tight uppercase">
-                    Order <span class="text-auraa-red">{{ order.trans_no }}</span>
-                </h1>
+                <div class="flex items-center gap-3">
+                    <h1 class="text-2xl font-black text-gray-900 tracking-tight uppercase">
+                        Order <span class="text-auraa-red">{{ order.trans_no }}</span>
+                    </h1>
+                    <div class="flex items-center gap-2 bg-gray-900 px-3 py-1.5 rounded-lg shadow-sm">
+                        <i data-lucide="calendar" class="w-3 h-3 text-white"></i>
+                        <span class="text-[9px] font-black text-white uppercase tracking-widest">{{ order.trans_dt|date:"M d, Y" }}</span>
+                    </div>
+                </div>
                 <p class="text-[9px] font-bold text-gray-400 uppercase tracking-widest mt-0.5">Order detailed history and contents</p>
             </div>
         </div>
@@ -83,19 +89,27 @@
                 <i data-lucide="layers" class="w-3.5 h-3.5 text-white"></i>
                 <span class="text-[10px] font-black text-white uppercase tracking-widest">Qty: {{ total_qty|floatformat:0 }}</span>
             </div>
-            <div class="flex items-center gap-2 bg-gray-900 px-4 py-2.5 rounded-xl shadow">
-                <i data-lucide="calendar" class="w-3.5 h-3.5 text-white"></i>
-                <span class="text-[10px] font-black text-white uppercase tracking-widest">{{ order.trans_dt|date:"M d, Y" }}</span>
-            </div>
 
             <!-- Print Button -->
-            <a href="{% url 'dashboard_order_estimate' order.trans_no %}" target="_blank" class="flex items-center gap-2 bg-blue-600 text-white px-4 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-blue-600/30 hover:bg-blue-700 transition-colors">
+            <a href="{% url 'dashboard_order_estimate' order.trans_no %}" target="_blank" class="flex items-center gap-2 bg-emerald-500 text-white px-4 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-emerald-500/30 hover:bg-emerald-600 transition-colors" data-tooltip="Print Estimate">
                 <i data-lucide="printer" class="w-3.5 h-3.5"></i>
                 Print
             </a>
 
+            <!-- Download PDF -->
+            <a href="{% url 'dashboard_order_download' order.trans_no %}" class="flex items-center gap-2 bg-blue-500 text-white px-4 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-blue-500/30 hover:bg-blue-600 transition-colors" data-tooltip="Download PDF">
+                <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
+                PDF
+            </a>
+
+            <!-- Export Excel -->
+            <a href="{% url 'dashboard_order_excel' order.trans_no %}" class="flex items-center gap-2 bg-green-600 text-white px-4 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-green-600/30 hover:bg-green-700 transition-colors" data-tooltip="Export to Excel">
+                <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i>
+                Excel
+            </a>
+
             <!-- Edit Button -->
-            <a href="{% url 'dashboard_order_edit' order.trans_no %}" class="flex items-center gap-2 bg-auraa-red text-white px-4 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-auraa-red/30 hover:bg-red-700 transition-colors">
+            <a href="{% url 'dashboard_order_edit' order.trans_no %}" class="flex items-center gap-2 bg-auraa-red text-white px-4 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-auraa-red/30 hover:bg-red-700 transition-colors" data-tooltip="Edit Order Details">
                 <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
                 Edit
             </a>

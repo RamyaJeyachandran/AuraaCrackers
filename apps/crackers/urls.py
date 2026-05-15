@@ -8,12 +8,12 @@ from .views import (
     LoadOrderToCartView, CancelOrderEditView,
     OrderHistoryListView, OrderDetailView, OrderStatusListView, OrderDeleteAPIView,
     TestimonialsView, StateListAPIView, CityListAPIView, PrivacyView, ComplianceView,
-    ProductSearchAPIView
+    ProductSearchAPIView, OrderDownloadView
 )
 from .views_dashboard import (
     DashboardCategoryListView, DashboardProductListView, 
     ProductToggleActiveView, DashboardOrderListView, 
-    DashboardOrderDetailView, DashboardOrderEstimateView, DashboardOrderDownloadView, DashboardCustomerListView, DashboardCustomerExportView, DashboardCustomerPrintView, AdminActiveCategoryListView,
+    DashboardOrderDetailView, DashboardOrderEstimateView, DashboardBulkOrderEstimateView, DashboardOrderDownloadView, DashboardOrderExcelDownloadView, DashboardCustomerListView, DashboardCustomerExportView, DashboardCustomerPrintView, AdminActiveCategoryListView,
     DashboardAnalysisView, DashboardReportCreateView, DashboardPricelistListView, PricelistToggleActiveView,
     DashboardPricelistCreateView, PricelistSaveView, DashboardPricelistDetailView, DashboardPricelistEditView,
     PricelistUpdateView, DashboardCouponListView, CouponToggleActiveView, CouponDetailAPIView, CouponSaveAPIView, CouponDeleteAPIView, DashboardBannerListView, BannerToggleActiveView, BannerDetailAPIView, BannerSaveAPIView, BannerDeleteAPIView,
@@ -21,7 +21,9 @@ from .views_dashboard import (
     CustomerToggleActiveView, CustomerDetailAPIView, CustomerUpdateAPIView, CustomerAutocompleteAPIView,
     CustomerResetPasswordAPIView, ProductAutocompleteAPIView, CategoryAutocompleteAPIView, OrderAutocompleteAPIView,
     PricelistAutocompleteAPIView, DashboardOrderUpdateStatusAPIView, DashboardOrderEditView, DashboardOrderUpdateAPIView,
-    DashboardCustomerImpersonateView
+    DashboardCustomerImpersonateView, ProductDetailAPIView, ProductUpdateAPIView, ProductDeleteAPIView,
+    ProductCreateAPIView, ProductImageUploadAPIView, CategoryDetailAPIView, CategoryUpdateAPIView,
+    CategoryCreateAPIView, CategoryDeleteAPIView, CategoryImageUploadAPIView
 )
 
 urlpatterns = [
@@ -30,10 +32,24 @@ urlpatterns = [
     path('dashboard/categories/', DashboardCategoryListView.as_view(), name='dashboard_categories'),
     path('dashboard/products/', DashboardProductListView.as_view(), name='dashboard_products'),
     path('dashboard/products/<int:pk>/toggle/', ProductToggleActiveView.as_view(), name='api_product_toggle'),
+    path('dashboard/products/<int:pk>/detail/', ProductDetailAPIView.as_view(), name='api_product_detail'),
+    path('dashboard/products/<int:pk>/update/', ProductUpdateAPIView.as_view(), name='api_product_update'),
+    path('dashboard/products/<int:pk>/delete/', ProductDeleteAPIView.as_view(), name='api_product_delete'),
+    path('dashboard/products/create/', ProductCreateAPIView.as_view(), name='api_product_create'),
+    path('dashboard/products/upload-image/', ProductImageUploadAPIView.as_view(), name='api_product_image_upload'),
+    
+    # Category Dashboard APIs
+    path('dashboard/categories/<int:pk>/detail/', CategoryDetailAPIView.as_view(), name='api_category_detail'),
+    path('dashboard/categories/<int:pk>/update/', CategoryUpdateAPIView.as_view(), name='api_category_update'),
+    path('dashboard/categories/<int:pk>/delete/', CategoryDeleteAPIView.as_view(), name='api_category_delete'),
+    path('dashboard/categories/create/', CategoryCreateAPIView.as_view(), name='api_category_create'),
+    path('dashboard/categories/upload-image/', CategoryImageUploadAPIView.as_view(), name='api_category_image_upload'),
     path('dashboard/orders/', DashboardOrderListView.as_view(), name='dashboard_orders'),
+    path('dashboard/orders/bulk-estimate/', DashboardBulkOrderEstimateView.as_view(), name='dashboard_orders_bulk_estimate'),
     path('dashboard/order/<str:trans_no>/', DashboardOrderDetailView.as_view(), name='dashboard_order_detail'),
     path('dashboard/order/<str:trans_no>/estimate/', DashboardOrderEstimateView.as_view(), name='dashboard_order_estimate'),
     path('dashboard/order/<str:trans_no>/download/', DashboardOrderDownloadView.as_view(), name='dashboard_order_download'),
+    path('dashboard/order/<str:trans_no>/excel/', DashboardOrderExcelDownloadView.as_view(), name='dashboard_order_excel'),
     path('dashboard/order/<str:trans_no>/status/update/', DashboardOrderUpdateStatusAPIView.as_view(), name='api_order_status_update'),
     path('dashboard/order/<str:trans_no>/edit/', DashboardOrderEditView.as_view(), name='dashboard_order_edit'),
     path('dashboard/order/<str:trans_no>/update/', DashboardOrderUpdateAPIView.as_view(), name='api_order_update'),
@@ -82,6 +98,7 @@ urlpatterns = [
     path('orders/', OrderHistoryListView.as_view(), name='order_history'),
     path('order-status/', OrderStatusListView.as_view(), name='order_status'),
     path('order/<str:trans_no>/', OrderDetailView.as_view(), name='order_detail'),
+    path('order/<str:trans_no>/download/', OrderDownloadView.as_view(), name='order_download'),
     path('order/<str:trans_no>/edit/', LoadOrderToCartView.as_view(), name='order_edit'),
     path('order-edit/cancel/', CancelOrderEditView.as_view(), name='order_edit_cancel'),
     path('api/order/<str:trans_no>/delete/', OrderDeleteAPIView.as_view(), name='api_order_delete'),

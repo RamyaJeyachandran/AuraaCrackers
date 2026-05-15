@@ -3,15 +3,23 @@
 
 {% block title %}Orders Management | Auraa Admin{% endblock %}
 
+{% block extra_head %}
+{% endblock %}
+
 {% block content %}
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+<div class="max-w-[1850px] mx-auto px-4 sm:px-6 lg:px-8 pb-20">
     <!-- Header -->
     <div class="mb-12 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
         <div>
             <h1 class="text-4xl font-black text-gray-900 tracking-tight uppercase mb-2">Manage <span class="text-auraa-red">Orders</span></h1>
-            <p class="text-gray-500 font-bold uppercase tracking-widest text-[10px]">Overview of all customer orders</p>
         </div>
         <div class="flex items-center space-x-4">
+            <!-- Bulk Print Button -->
+            <button type="button" id="bulk-print-btn" onclick="bulkPrintSelected()" style="display: none;" class="bg-blue-900 hover:bg-blue-800 text-white border border-blue-800/20 rounded-full px-6 py-2.5 text-[10px] font-black uppercase tracking-widest transition-all shadow-lg hover:shadow-xl active:scale-95 flex items-center gap-2">
+                <i data-lucide="printer" class="w-3.5 h-3.5"></i>
+                <span id="bulk-print-count">PRINT SELECTED (0)</span>
+            </button>
+
             <div class="px-5 py-2.5 bg-auraa-red rounded-full shadow-lg shadow-auraa-red/30 flex items-center space-x-2 border border-red-500/30">
                 <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
                 <span class="text-[10px] font-black text-white uppercase tracking-widest">Total: {{ page_obj.paginator.count|default:orders.count }}</span>
@@ -28,7 +36,7 @@
             <form method="GET" class="relative w-full flex flex-col md:flex-row items-center gap-4">
                 <div class="relative w-full md:w-96 flex-shrink-0">
                     <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-[18px] h-[18px]"></i>
-                    <input type="text" name="q" id="search-input" placeholder="Search Trans No or Customer..." value="{{ search_query|default:'' }}" 
+                    <input type="text" name="q" id="search-input" placeholder="Search Trans No, Customer or Mobile..." value="{{ search_query|default:'' }}" 
                            class="w-full pl-12 pr-12 py-3.5 bg-white border border-gray-100 rounded-2xl text-sm font-bold text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white/40 transition-all"
                            oninput="toggleClearSearchBtn()">
                     <button type="button" id="clear-search-btn" onclick="clearSearch()" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors {% if not search_query %}hidden{% endif %}">
@@ -105,22 +113,28 @@
     </div>
 
     <!-- Orders Table -->
-    <div class="bg-white rounded-[2.5rem] border border-gray-100 shadow-xl overflow-hidden mb-20">
-        <div class="overflow-x-auto min-h-[450px]">
+    <div class="bg-white rounded-[2.5rem] border border-gray-100 shadow-xl table-container overflow-visible-important mb-20">
+        <div class="min-h-[450px] overflow-visible-important">
             <table class="w-full text-left border-collapse">
                 <thead class="bg-auraa-red text-white">
                     <tr class="border-b border-auraa-red/20">
+                        <th class="py-6 px-4 text-center border border-gray-800 first:rounded-tl-[2.5rem] w-12">
+                            <input type="checkbox" id="select-all-orders" class="w-5 h-5 rounded border-gray-300 text-auraa-red focus:ring-auraa-red cursor-pointer">
+                        </th>
                         <th class="py-6 px-8 text-[10px] font-black uppercase tracking-widest text-white/90 border border-gray-800">Trans No</th>
                         <th class="py-6 px-8 text-[10px] font-black uppercase tracking-widest text-white/90 border border-gray-800">Customer</th>
                         <th class="py-6 px-8 text-[10px] font-black uppercase tracking-widest text-white/90 text-center border border-gray-800">Amount</th>
                         <th class="py-6 px-8 text-[10px] font-black uppercase tracking-widest text-white/90 text-center border border-gray-800">Date</th>
                         <th class="py-6 px-8 text-[10px] font-black uppercase tracking-widest text-white/90 text-center border border-gray-800">Status</th>
-                        <th class="py-6 px-8 text-[10px] font-black uppercase tracking-widest text-white/90 text-center border border-gray-800">Action</th>
+                        <th class="py-6 px-8 text-[10px] font-black uppercase tracking-widest text-white/90 text-center border border-gray-800 last:rounded-tr-[2.5rem]">Action</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-50">
                     {% for order in orders %}
                     <tr class="hover:bg-gray-50/50 transition-colors group">
+                        <td class="py-6 px-4 text-center border border-gray-800">
+                            <input type="checkbox" class="order-checkbox w-5 h-5 rounded border-gray-300 text-auraa-red focus:ring-auraa-red cursor-pointer" data-trans-no="{{ order.trans_no }}">
+                        </td>
                         <td class="py-6 px-8 border border-gray-800">
                             <span class="text-sm font-black text-gray-900 uppercase">{{ order.trans_no }}</span>
                             {% if order.promo_code %}
@@ -181,24 +195,27 @@
                         </td>
                         <td class="py-6 px-8 text-center border border-gray-800">
                             <div class="flex items-center justify-center space-x-2">
-                                <a href="{% url 'dashboard_order_edit' order.trans_no %}" title="Edit Order" class="p-2 bg-amber-500 text-white rounded-xl hover:bg-amber-600 transition-all transform hover:-translate-y-0.5 shadow-sm">
+                                <a href="{% url 'dashboard_order_edit' order.trans_no %}" data-tooltip="Edit Order" class="p-2 bg-amber-500 text-white rounded-xl hover:bg-amber-600 transition-all transform hover:scale-110 shadow-lg shadow-amber-500/20">
                                     <i data-lucide="edit" class="w-4 h-4"></i>
                                 </a>
-                                <a href="{% url 'dashboard_order_detail' order.trans_no %}" title="View Order" class="p-2 bg-auraa-red text-white rounded-xl hover:bg-red-700 transition-all transform hover:-translate-y-0.5 shadow-sm">
+                                <a href="{% url 'dashboard_order_detail' order.trans_no %}" data-tooltip="View Order" class="p-2 bg-auraa-red text-white rounded-xl hover:bg-red-700 transition-all transform hover:scale-110 shadow-lg shadow-auraa-red/20">
                                     <i data-lucide="eye" class="w-4 h-4"></i>
                                 </a>
-                                <button onclick="directPrint('{% url 'dashboard_order_estimate' order.trans_no %}')" title="Print Estimate" class="p-2 bg-emerald-500 text-white rounded-xl hover:bg-emerald-600 transition-all transform hover:-translate-y-0.5 shadow-sm">
+                                <button onclick="directPrint('{% url 'dashboard_order_estimate' order.trans_no %}')" data-tooltip="Print Order" class="p-2 bg-emerald-500 text-white rounded-xl hover:bg-emerald-600 transition-all transform hover:scale-110 shadow-lg shadow-emerald-500/20">
                                     <i data-lucide="printer" class="w-4 h-4"></i>
                                 </button>
-                                <a href="{% url 'dashboard_order_download' order.trans_no %}" title="Download Estimate" class="p-2 bg-blue-500 text-white rounded-xl hover:bg-blue-600 transition-all transform hover:-translate-y-0.5 shadow-sm">
-                                    <i data-lucide="download" class="w-4 h-4"></i>
+                                <a href="{% url 'dashboard_order_download' order.trans_no %}" data-tooltip="Download PDF" class="p-2 bg-blue-500 text-white rounded-xl hover:bg-blue-600 transition-all transform hover:scale-110 shadow-lg shadow-blue-500/20">
+                                    <i data-lucide="file-text" class="w-4 h-4"></i>
+                                </a>
+                                <a href="{% url 'dashboard_order_excel' order.trans_no %}" data-tooltip="Download Excel" class="p-2 bg-blue-900 text-white rounded-xl hover:bg-blue-800 transition-all transform hover:scale-110 shadow-lg shadow-blue-900/20 tooltip-left">
+                                    <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
                                 </a>
                             </div>
                         </td>
                     </tr>
                     {% empty %}
                     <tr>
-                        <td colspan="6" class="py-32 text-center">
+                        <td colspan="7" class="py-32 text-center">
                             <div class="flex flex-col items-center">
                                 <div class="w-20 h-20 bg-gray-50 rounded-[2rem] flex items-center justify-center text-gray-200 mb-6">
                                     <i data-lucide="shopping-cart" class="w-10 h-10"></i>
@@ -218,7 +235,7 @@
 </div>
 
 <!-- Hidden Iframe for Direct Printing -->
-<iframe id="print-iframe" style="display:none;"></iframe>
+<iframe id="print-iframe" style="visibility:hidden; position:absolute; width:0; height:0; border:none;"></iframe>
 
 <script>
 // Dropdown Toggle Logic
@@ -379,7 +396,11 @@ if (searchInput) {
                                  class="autocomplete-item px-6 py-4 border-b border-gray-100 last:border-0 hover:bg-red-600 hover:text-white group cursor-pointer transition-colors bg-white">
                                 <div class="flex flex-col">
                                     <span style="color: #111827;" class="text-sm font-black uppercase tracking-tight group-hover:text-white">${item.trans_no}</span>
-                                    <span style="color: #ef4444;" class="text-[10px] font-bold tracking-widest group-hover:text-white">${item.customer_name || ''}</span>
+                                    <div class="flex items-center gap-2">
+                                        <span style="color: #ef4444;" class="text-[10px] font-bold tracking-widest group-hover:text-white uppercase">${item.customer_name || ''}</span>
+                                        <span class="text-[10px] text-gray-300 group-hover:text-white/40">•</span>
+                                        <span style="color: #6b7280;" class="text-[10px] font-bold tracking-widest group-hover:text-white uppercase">${item.customer_phone || ''}</span>
+                                    </div>
                                 </div>
                             </div>
                         `;
@@ -412,18 +433,31 @@ window.selectAutocomplete = function(name) {
 }
 
 // Print Logic
+let printFallbackTimer;
 function directPrint(url) {
     const iframe = document.getElementById('print-iframe');
     if (!iframe) return;
     
-    iframe.onload = function() {
-        if (iframe.contentWindow) {
-            iframe.contentWindow.focus();
-            iframe.contentWindow.print();
-        }
-    };
-    iframe.src = url + '?print=true&t=' + new Date().getTime();
+    // Set fallback timer - if we don't hear back from iframe in 3 seconds, open new tab
+    clearTimeout(printFallbackTimer);
+    const printUrl = url.includes('?') ? `${url}&print=true` : `${url}?print=true`;
+    
+    printFallbackTimer = setTimeout(() => {
+        console.log('Print fallback triggered - opening new tab');
+        window.open(printUrl, '_blank');
+    }, 3500);
+
+    // Reset iframe src
+    iframe.src = printUrl + '&t=' + new Date().getTime();
 }
+
+// Listen for print confirmation from iframe
+window.addEventListener('message', (event) => {
+    if (event.data === 'auraa_print_started') {
+        console.log('Direct print confirmed by iframe');
+        clearTimeout(printFallbackTimer);
+    }
+}, false);
 
 // Update Order Status Logic
 async function updateOrderStatus(transNo, newStatus, elementOrId) {
@@ -477,6 +511,60 @@ async function updateOrderStatus(transNo, newStatus, elementOrId) {
         console.error('Update status error:', error);
         alert('An error occurred while updating status.');
     }
+}
+
+// Bulk Selection and Printing Logic
+document.addEventListener('DOMContentLoaded', () => {
+    const selectAllCheckbox = document.getElementById('select-all-orders');
+    const bulkPrintBtn = document.getElementById('bulk-print-btn');
+    const bulkPrintCount = document.getElementById('bulk-print-count');
+
+    function updateBulkPrintUI() {
+        const checkboxes = document.querySelectorAll('.order-checkbox');
+        const selectedCheckboxes = document.querySelectorAll('.order-checkbox:checked');
+        const selectedCount = selectedCheckboxes.length;
+        
+        if (selectedCount > 0) {
+            bulkPrintBtn.style.display = 'flex';
+            bulkPrintCount.innerText = `PRINT SELECTED (${selectedCount})`;
+        } else {
+            bulkPrintBtn.style.display = 'none';
+        }
+        
+        // Update Select All state
+        if (selectAllCheckbox) {
+            selectAllCheckbox.checked = selectedCount === checkboxes.length && checkboxes.length > 0;
+            selectAllCheckbox.indeterminate = selectedCount > 0 && selectedCount < checkboxes.length;
+        }
+    }
+
+    // Use event delegation for individual checkboxes
+    document.addEventListener('change', (e) => {
+        if (e.target.classList.contains('order-checkbox')) {
+            updateBulkPrintUI();
+        }
+        if (e.target.id === 'select-all-orders') {
+            const checkboxes = document.querySelectorAll('.order-checkbox');
+            checkboxes.forEach(cb => {
+                cb.checked = e.target.checked;
+            });
+            updateBulkPrintUI();
+        }
+    });
+
+    // Initial check
+    updateBulkPrintUI();
+});
+
+function bulkPrintSelected() {
+    const selectedTransNos = Array.from(document.querySelectorAll('.order-checkbox:checked'))
+        .map(cb => cb.getAttribute('data-trans-no'));
+    
+    if (selectedTransNos.length === 0) return;
+
+    // Use the bulk print URL
+    const bulkPrintUrl = `/dashboard/orders/bulk-estimate/?trans_nos=${selectedTransNos.join(',')}`;
+    directPrint(bulkPrintUrl);
 }
 </script>
 {% endblock %}

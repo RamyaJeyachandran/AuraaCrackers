@@ -3,31 +3,100 @@
 
 {% block title %}My Orders | Auraa Crackers{% endblock %}
 
+{% block extra_head %}
+<style>
+    /* 4. PREMIUM 2026 3D TOOLTIPS */
+    [data-tooltip] {
+        position: relative;
+        cursor: pointer;
+    }
+    [data-tooltip]:before {
+        content: attr(data-tooltip);
+        position: absolute;
+        bottom: calc(100% + 12px); /* Changed to bottom to appear ABOVE the button */
+        left: 50%;
+        transform: translateX(-50%) translateY(15px) scale(0.95);
+        padding: 10px 16px;
+        background: linear-gradient(135deg, rgba(15, 65, 115, 0.98), rgba(10, 50, 90, 0.98));
+        backdrop-filter: blur(12px);
+        color: white;
+        font-size: 10px;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+        border-radius: 12px;
+        white-space: nowrap;
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        box-shadow: 
+            0 15px 35px rgba(0,0,0,0.3), 
+            0 5px 15px rgba(0,0,0,0.2),
+            inset 0 1px 0 rgba(255,255,255,0.2);
+        z-index: 99999;
+        border: 1px solid rgba(255,255,255,0.05);
+    }
+    [data-tooltip]:after {
+        content: '';
+        position: absolute;
+        bottom: calc(100% + 4px); /* Perfectly aligned */
+        left: 50%;
+        transform: translateX(-50%) translateY(15px);
+        border: 8px solid transparent;
+        border-top-color: rgba(15, 65, 115, 0.98); /* Changed to border-top to point DOWN */
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        pointer-events: none;
+        z-index: 99999;
+    }
+    @media (hover: hover) {
+        [data-tooltip]:hover:before, [data-tooltip]:hover:after {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0) scale(1);
+        }
+    }
+
+    /* Fix z-index for rows to ensure tooltips are never cut off */
+    tr:hover {
+        position: relative;
+        z-index: 100 !important;
+    }
+    
+    /* Ensure the table container doesn't cut off tooltips */
+    .table-container {
+        overflow: visible !important;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="max-w-[95%] mx-auto px-4 sm:px-6 lg:px-8 py-12">
     <div class="mb-12">
         <h1 class="text-4xl font-black text-gray-900 tracking-tight uppercase">My <span class="text-auraa-red">Orders</span></h1>
         <p class="mt-2 text-gray-500 font-bold uppercase tracking-widest text-xs">Track and manage your order history</p>
     </div>
 
-    <div class="bg-white rounded-[2rem] border border-gray-100 shadow-xl overflow-hidden">
-        <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse">
+    <div class="bg-white rounded-[2rem] border border-gray-100 shadow-xl table-container overflow-hidden">
+        <div class="w-full">
+            <table class="w-full text-left border-separate border-spacing-0">
                 <thead>
-                    <tr class="bg-auraa-red border-b border-white/10">
-                        <th class="py-5 px-8 text-[10px] font-black uppercase tracking-widest text-white">Order #</th>
-                        <th class="py-5 px-8 text-[10px] font-black uppercase tracking-widest text-white">Date</th>
-                        <th class="py-5 px-8 text-[10px] font-black uppercase tracking-widest text-white">Total Amount</th>
-                        <th class="py-5 px-8 text-[10px] font-black uppercase tracking-widest text-white">Payment</th>
-                        <th class="py-5 px-8 text-[10px] font-black uppercase tracking-widest text-white">Status</th>
-                        <th class="py-5 px-8 text-[10px] font-black uppercase tracking-widest text-white text-right">Actions</th>
+                    <tr class="bg-auraa-red">
+                        <th class="py-6 px-8 text-[10px] font-black uppercase tracking-widest text-white first:rounded-tl-[2rem]">Order #</th>
+                        <th class="py-6 px-8 text-[10px] font-black uppercase tracking-widest text-white">Date</th>
+                        <th class="py-6 px-8 text-[10px] font-black uppercase tracking-widest text-white">Total Amount</th>
+                        <th class="py-6 px-8 text-[10px] font-black uppercase tracking-widest text-white">Payment</th>
+                        <th class="py-6 px-8 text-[10px] font-black uppercase tracking-widest text-white">Status</th>
+                        <th class="py-6 px-8 text-[10px] font-black uppercase tracking-widest text-white text-right last:rounded-tr-[2rem]">Actions</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-50">
                     {% for order in orders %}
                     <tr class="hover:bg-gray-50/50 transition-colors group">
                         <td class="py-6 px-8">
-                            <span class="font-black text-gray-900 uppercase tracking-tight">#{{ order.trans_no }}</span>
+                            <span class="font-black text-gray-900 uppercase tracking-tight">{{ order.trans_no }}</span>
                         </td>
                         <td class="py-6 px-8">
                             <span class="text-xs font-bold text-gray-500">{{ order.trans_dt|date:"d M, Y H:i" }}</span>
@@ -55,27 +124,32 @@
                             <div class="flex items-center justify-end space-x-2.5">
                                 <a href="{% url 'order_detail' order.trans_no %}" 
                                    class="p-2.5 bg-[#0A325A] text-white rounded-xl hover:bg-gray-900 transition-all transform hover:scale-110 shadow-lg shadow-[#0A325A]/20"
-                                   title="View Order">
+                                   data-tooltip="View Order">
                                     <i data-lucide="eye" class="w-4 h-4"></i>
+                                </a>
+
+                                <a href="{% url 'order_download' order.trans_no %}" 
+                                   class="p-2.5 bg-red-600 text-white rounded-xl hover:bg-red-700 transition-all transform hover:scale-110 shadow-lg shadow-red-600/20"
+                                   data-tooltip="Download PDF">
+                                    <i data-lucide="download" class="w-4 h-4"></i>
                                 </a>
                                 
                                 {% if order.status|lower == 'new' or order.status|lower == 'ordered' or order.status|lower == 'on hold' or order.status|lower == 'onhold' %}
-                                    {% if order.status.lower in 'new,ordered,on hold,onhold' %}
                                     <a href="{% url 'order_edit' order.trans_no %}" 
                                        class="p-2.5 bg-green-600 text-white rounded-xl hover:bg-green-700 transition-all transform hover:scale-110 shadow-lg shadow-green-600/20"
-                                       title="Edit Order">
+                                       data-tooltip="Edit Order">
                                         <i data-lucide="edit-3" class="w-4 h-4"></i>
                                     </a>
                                     <button onclick="confirmDelete('{{ order.trans_no }}')" 
                                             class="p-2.5 bg-red-600 text-white rounded-xl hover:bg-red-700 transition-all transform hover:scale-110 shadow-lg shadow-red-600/20"
-                                            title="Delete Order">
+                                            data-tooltip="Delete Order">
                                         <i data-lucide="trash-2" class="w-4 h-4"></i>
                                     </button>
-                                    {% endif %}
                                 {% endif %}
                             </div>
                         </td>
                     </tr>
+
                     {% empty %}
                     <tr>
                         <td colspan="6" class="py-20 text-center">

@@ -4,6 +4,8 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from .models import OnlineSales, Testimonial
 import os
+import requests
+import logging
 from apify_client import ApifyClient
 from django.core.cache import cache
 
@@ -28,7 +30,7 @@ def send_order_success_emails_task(user_id, order_id):
         ).exclude(email__isnull=True).exclude(email='').values_list('email', flat=True)
         
         if admin_emails:
-            admin_subject = f"New Order Received - {order.trans_no}"
+            admin_subject = f"Beta Version - New Order Received - {order.trans_no}"
             admin_message = f"Hello Admin,\n\nA new order has been placed by {user.full_name or user.username}.\n\nOrder No: {order.trans_no}\nTotal Amount: ₹{order.grand_amt}\nCustomer Mobile: {user.phone_number or 'N/A'}\n\nPlease login to the dashboard to process the order."
             send_mail(admin_subject, admin_message, settings.DEFAULT_FROM_EMAIL, list(set(admin_emails)), fail_silently=True)
     except Exception as e:
@@ -104,3 +106,79 @@ def fetch_google_reviews_task():
         
     except Exception as e:
         return f"Error in fetch_google_reviews_task: {str(e)}"
+
+@shared_task
+def trigger_n8n_order_webhook_task(order_id):
+    """
+    Sends detailed order and customer information to an n8n webhook.
+    """
+    webhook_url = getattr(settings, 'N8N_ORDER_WEBHOOK_URL', None)
+    if not webhook_url:
+        return "N8N_ORDER_WEBHOOK_URL not configured."
+
+    try:
+        # Fetch order with related data
+        order = OnlineSales.objects.select_related('customer', 'customer_address').get(id=order_id)
+        items = order.items.all().select_related('product')
+        customer = order.customer
+        address = order.customer_address
+
+        # Safely get customer email
+        customer_email = getattr(customer, 'email', None)
+        if not customer_email:
+            try:
+                if customer.created_by:
+                    customer_email = customer.created_by.email
+            except Exception:
+                customer_email = None
+
+        # Prepare payload
+        payload = {
+            "order": {
+                "id": order.id,
+                "trans_no": order.trans_no,
+                "trans_dt": order.trans_dt.isoformat() if order.trans_dt else None,
+                "status": order.status,
+                "total_amt": float(order.total_amt),
+                "discount": float(order.discount),
+                "round_amt": float(order.round_amt),
+                "grand_amt": float(order.grand_amt),
+                "promo_code": order.promo_code,
+                "promo_per": float(order.promo_per) if order.promo_per else 0,
+            },
+            "customer": {
+                "id": customer.id,
+                "name": customer.name,
+                "email": customer_email,
+                "phone": customer.contact_person_no,
+                "company": customer.company,
+            },
+            "shipping_address": {
+                "address1": address.address1 if address else None,
+                "address2": address.address2 if address else None,
+                "city": address.city_name if address else None,
+                "pincode": address.pincode if address else None,
+                "phone": address.phone if address else None,
+            },
+            "items": [
+                {
+                    "product_name": item.item_name,
+                    "product_code": item.item_code,
+                    "qty": float(item.qty),
+                    "rate": float(item.rate),
+                    "mrp": float(item.mrp),
+                    "item_total": float(item.item_total),
+                } for item in items
+            ]
+        }
+
+        # Send request
+        response = requests.post(webhook_url, json=payload, timeout=10)
+        response.raise_for_status()
+        
+        return f"Successfully sent order {order.trans_no} to n8n. Status: {response.status_code}"
+
+    except OnlineSales.DoesNotExist:
+        return f"Order with ID {order_id} not found."
+    except Exception as e:
+        return f"Error sending order to n8n: {str(e)}"

@@ -52,6 +52,7 @@
                             <div class="relative">
                                 <i data-lucide="phone" class="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5 transition-transform group-focus-within/input:scale-110 group-focus-within/input:text-auraa-red"></i>
                                 <input required type="tel" name="mobile" placeholder="9876543210" maxlength="10" 
+                                       oninput="this.value = this.value.replace(/[^0-9]/g, '');"
                                        class="w-full pl-16 pr-8 py-5 bg-gray-50 border-2 border-transparent rounded-full text-base font-bold text-gray-900 shadow-inner transition-all hover:bg-white hover:border-gray-200 focus:bg-white focus:border-auraa-red outline-none placeholder:text-gray-300">
                             </div>
                         </div>
@@ -62,12 +63,16 @@
                                 <i data-lucide="lock" class="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5 transition-transform group-focus-within/input:scale-110 group-focus-within/input:text-auraa-red"></i>
                                 <input required type="password" name="password" id="login-password" placeholder="••••••••" 
                                        class="w-full pl-16 pr-14 py-5 bg-gray-50 border-2 border-transparent rounded-full text-base font-bold text-gray-900 shadow-inner transition-all hover:bg-white hover:border-gray-200 focus:bg-white focus:border-auraa-red outline-none placeholder:text-gray-300">
-                                <button type="button" onclick="togglePasswordVisibility('login-password', this)" class="absolute right-6 top-1/2 -translate-y-1/2 text-gray-400 hover:text-auraa-red transition-colors focus:outline-none">
+                                <button type="button" onclick="togglePasswordVisibility('login-password', this)" 
+                                        class="absolute right-6 top-1/2 -translate-y-1/2 text-gray-400 hover:text-auraa-red transition-colors focus:outline-none"
+                                        data-tooltip="Show/Hide Password">
                                     <i data-lucide="eye" class="w-5 h-5"></i>
                                 </button>
                             </div>
                             <div class="flex justify-end px-6">
-                                <button type="button" onclick="showForgotPassword()" class="text-[9px] font-black uppercase tracking-widest text-auraa-red hover:underline decoration-2 underline-offset-4">Forgot Password?</button>
+                                <button type="button" onclick="showForgotPassword()" 
+                                        class="text-[9px] font-black uppercase tracking-widest text-auraa-red hover:underline decoration-2 underline-offset-4"
+                                        data-tooltip="Recover security access">Forgot Password?</button>
                             </div>
                         </div>
 
@@ -92,6 +97,7 @@
                                 <div class="relative">
                                     <i data-lucide="phone" class="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5"></i>
                                     <input required type="tel" name="mobile" placeholder="9876543210" maxlength="10" 
+                                           oninput="this.value = this.value.replace(/[^0-9]/g, '');"
                                            class="w-full pl-16 pr-8 py-5 bg-gray-50 border-2 border-transparent rounded-full text-base font-bold text-gray-900 shadow-inner focus:bg-white focus:border-auraa-red outline-none">
                                 </div>
                             </div>
@@ -117,7 +123,7 @@
                             <input required type="text" name="full_name" placeholder="Name *" class="w-full px-8 py-4 bg-gray-50 border-2 border-transparent rounded-full text-sm font-bold shadow-inner focus:bg-white focus:border-auraa-red outline-none transition-all">
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                            <input required type="tel" name="mobile" placeholder="Mobile *" maxlength="10" class="w-full px-8 py-4 bg-gray-50 border-2 border-transparent rounded-full text-sm font-bold shadow-inner focus:bg-white focus:border-auraa-red outline-none transition-all">
+                            <input required type="tel" name="mobile" placeholder="Mobile *" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '');" class="w-full px-8 py-4 bg-gray-50 border-2 border-transparent rounded-full text-sm font-bold shadow-inner focus:bg-white focus:border-auraa-red outline-none transition-all">
                             <input type="email" name="email" placeholder="Email" class="w-full px-8 py-4 bg-gray-50 border-2 border-transparent rounded-full text-sm font-bold shadow-inner focus:bg-white focus:border-auraa-red outline-none transition-all">
                         </div>
                         <input required type="password" name="password" placeholder="Password *" class="w-full px-8 py-4 bg-gray-50 border-2 border-transparent rounded-full text-sm font-bold shadow-inner focus:bg-white focus:border-auraa-red outline-none transition-all">
@@ -151,8 +157,12 @@
                                     </div>
                                 </div>
                             </div>
-                            <input required type="text" name="city_name" placeholder="City *" class="w-full px-6 py-4 bg-gray-50 border-2 border-transparent rounded-full text-sm font-bold shadow-inner focus:bg-white focus:border-auraa-red outline-none transition-all">
-                            <input required type="text" name="pincode" placeholder="Pin *" maxlength="6" class="w-full px-6 py-4 bg-gray-50 border-2 border-transparent rounded-full text-sm font-bold shadow-inner focus:bg-white focus:border-auraa-red outline-none transition-all">
+                            <input required type="text" name="city_name" placeholder="City *" 
+                                   oninput="this.value = this.value.replace(/[0-9]/g, '');"
+                                   class="w-full px-6 py-4 bg-gray-50 border-2 border-transparent rounded-full text-sm font-bold shadow-inner focus:bg-white focus:border-auraa-red outline-none transition-all">
+                            <input required type="text" name="pincode" placeholder="Pin Code *" maxlength="6" 
+                                   oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+                                   class="w-full px-6 py-4 bg-gray-50 border-2 border-transparent rounded-full text-sm font-bold shadow-inner focus:bg-white focus:border-auraa-red outline-none transition-all">
                         </div>
                         <input type="hidden" name="country_id" value="1">
                         <div class="btn-3d-wrapper pt-4 px-12 mb-6">

@@ -1,0 +1,120 @@
+{% load static %}
+<!-- Estimate Container -->
+<div class="max-w-[210mm] mx-auto bg-white p-[1cm] shadow-2xl border border-gray-100 print-container {% if not forloop.last %}mb-8{% endif %}" style="{% if not forloop.last %}page-break-after: always;{% endif %}">
+    <!-- Top Header -->
+    <div class="border border-black overflow-hidden">
+        <div class="flex justify-between border-b border-black text-[10px] font-bold">
+            <div class="p-1 px-2">Order No : {{ order.trans_no }}</div>
+            <div class="flex-grow text-center py-1 font-black text-xs">ESTIMATE</div>
+            <div class="p-1 px-2">Date : {{ order.trans_dt|date:"d/m/Y" }}</div>
+        </div>
+        
+        <div class="flex flex-col items-center py-1 relative">
+            <div class="absolute left-2 top-1 text-[9px] font-bold">Mobile : 90805 60340</div>
+            <div class="absolute right-2 top-1 text-[9px] font-bold">E-mail : info@auraacrackers.com</div>
+            
+            <h1 class="text-lg font-black uppercase tracking-tight">Auraa Crackers</h1>
+            <p class="text-[9px] font-medium text-center max-w-[80%] mt-1">
+                S.No.226/5, D.No.1/177_5_20, Sivakasi Vembakottai Main Road, Pernaikenpatti Village, Sivakasi Taluk,<br>
+                Tamilnadu - 626 189
+            </p>
+        </div>
+    </div>
+
+    <!-- Customer Details -->
+    <table class="w-full border-collapse border-x border-black">
+        <tr class="bg-gray-50">
+            <td class="p-1 px-2 text-[9px] font-black uppercase tracking-widest">Customer Details</td>
+        </tr>
+        <tr>
+            <td class="p-1 px-2">
+                <div class="text-[10px] font-black uppercase">{{ order.customer.name }}</div>
+                <div class="text-[10px] font-medium">{{ order.customer_address.phone|default:order.customer.contact_person_no }}</div>
+                <div class="text-[10px] font-medium text-gray-600 mt-1 max-w-[400px]">
+                    {{ order.customer_address.address1 }}, {{ order.customer_address.address2 }},<br>
+                    {{ order.customer_address.city_name }} {{ order.customer_address.pincode }}, {{ order.customer_address.state.name }}, India
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <!-- Items Table -->
+    <table class="w-full border-collapse border border-black border-t-0 mb-4">
+        <thead>
+            <tr class="bg-gray-50 text-[9px] font-black uppercase text-center">
+                <th class="border border-black p-1 w-8">S.No</th>
+                <th class="border border-black p-1 w-12">Code</th>
+                <th class="border border-black p-1 text-left">Product Name</th>
+                <th class="border border-black p-1 w-16">Quantity</th>
+                <th class="border border-black p-1 w-16">Rate/Qty</th>
+                <th class="border border-black p-1 w-16">Discount</th>
+                <th class="border border-black p-1 w-16">Final Rate</th>
+                <th class="border border-black p-1 w-20">Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr class="text-[10px] font-medium text-center">
+                <td class="border border-black p-1">{{ forloop.counter }}</td>
+                <td class="border border-black p-1">{{ item.product.code }}</td>
+                <td class="border border-black p-1 text-left font-bold">{{ item.item_name }}</td>
+                <td class="border border-black p-1">{{ item.qty|floatformat:0 }}</td>
+                <td class="border border-black p-1">{{ item.unit_rate|floatformat:2 }}</td>
+                <td class="border border-black p-1">{{ item.unit_discount|floatformat:2 }}</td>
+                <td class="border border-black p-1 font-bold">{{ item.final_rate|floatformat:2 }}</td>
+                <td class="border border-black p-1 font-black">{{ item.item_total|floatformat:2 }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr class="text-[10px] font-black">
+                <td colspan="7" class="border border-black p-1 text-right uppercase">Sub Total :</td>
+                <td class="border border-black p-1 text-center">{{ order.total_amt }}</td>
+            </tr>
+            <tr class="text-[10px] font-black">
+                <td colspan="7" class="border border-black p-1 text-right uppercase">Discount :</td>
+                <td class="border border-black p-1 text-center">{{ order.discount }}</td>
+            </tr>
+            <tr class="text-[10px] font-black bg-gray-50">
+                <td colspan="3" class="border border-black border-r-0 p-1 text-left">Total Quantity : {{ order.total_qty|floatformat:0 }}</td>
+                <td colspan="4" class="border border-black border-l-0 p-1 text-right uppercase">Packing Charge :</td>
+                <td class="border border-black p-1 text-center">{{ order.calculated_packing_charges|floatformat:2 }}</td>
+            </tr>
+            <tr class="text-[10px] font-black">
+                <td colspan="3" class="border border-black border-r-0 p-1 text-left">Total Items : {{ order.total_items_count }}</td>
+                <td colspan="4" class="border border-black border-l-0 p-1 text-right uppercase bg-gray-100">Overall Total :</td>
+                <td class="border border-black p-1 text-center bg-gray-100 text-sm">₹ {{ order.grand_amt }}</td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <!-- Footer Message -->
+    <div class="text-[10px] mb-6">
+        <p class="font-medium mb-4">Dear {{ order.customer.name }},</p>
+        <p class="font-medium mb-4">Thank you for choosing Auraa Crackers! We sincerely appreciate your purchase and are thrilled to have you as a valued customer.</p>
+        <p class="font-medium mb-4 uppercase font-black">To complete your purchase, please find our bank details below:</p>
+        
+        <div class="space-y-1 ml-4 mb-6">
+            <div class="flex"><span class="w-32 font-black uppercase">Bank Name</span><span class="mr-2">:</span><span class="font-bold">HDFC Bank</span></div>
+            <div class="flex"><span class="w-32 font-black uppercase">Account Name</span><span class="mr-2">:</span><span class="font-bold uppercase">AURAA CRACKERS UNIT II</span></div>
+            <div class="flex"><span class="w-32 font-black uppercase">Account Number</span><span class="mr-2">:</span><span class="font-bold">50200086196083</span></div>
+            <div class="flex"><span class="w-32 font-black uppercase">IFSC Code</span><span class="mr-2">:</span><span class="font-bold">HDFC0006714</span></div>
+            <div class="flex"><span class="w-32 font-black uppercase">Branch</span><span class="mr-2">:</span><span class="font-bold">Sivakasi</span></div>
+            <div class="flex"><span class="w-32 font-black uppercase">UPI Id</span><span class="mr-2">:</span><span class="font-bold">ntprabhu-2@okhdfcbank</span></div>
+        </div>
+
+        <p class="font-medium italic mb-4">Looking forward to serving you again.</p>
+        
+        <div class="mt-4">
+            <p class="text-[10px] font-bold">Warm Regards,</p>
+            <p class="text-sm font-black uppercase mt-1">Thangaprabu N</p>
+            <p class="text-[10px] font-bold text-auraa-red">Auraa Crackers</p>
+            <p class="text-xs font-black mt-1">90805 60340</p>
+        </div>
+    </div>
+
+    <!-- Payment Image Page -->
+    <div style="page-break-before: always;" class="flex items-center justify-center pt-8">
+        <img src="{% static 'images/payment.jpeg' %}" alt="Payment Details" class="max-w-full h-auto">
+    </div>
+</div>

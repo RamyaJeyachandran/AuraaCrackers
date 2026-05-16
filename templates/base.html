@@ -136,7 +136,7 @@
             overflow: visible !important;
         }
         
-        /* Tooltip positioning for elements near the right edge */
+        /* Tooltip positioning utilities */
         .tooltip-left:before {
             left: auto !important;
             right: 0 !important;
@@ -147,12 +147,29 @@
             right: 15px !important;
             transform: translateX(0) translateY(15px) !important;
         }
+        
+        .tooltip-bottom:before {
+            top: calc(100% + 12px) !important;
+            bottom: auto !important;
+            transform: translateX(-50%) translateY(-15px) scale(0.95) !important;
+        }
+        .tooltip-bottom:after {
+            top: calc(100% + 4px) !important;
+            bottom: auto !important;
+            transform: translateX(-50%) translateY(-15px) !important;
+            border-top-color: transparent !important;
+            border-bottom-color: rgba(15, 65, 115, 0.98) !important;
+        }
+
         @media (hover: hover) {
             .tooltip-left:hover:before {
                 transform: translateX(0) translateY(0) scale(1) !important;
             }
             .tooltip-left:hover:after {
                 transform: translateX(0) translateY(0) !important;
+            }
+            .tooltip-bottom:hover:before, .tooltip-bottom:hover:after {
+                transform: translateX(-50%) translateY(0) scale(1) !important;
             }
         }
 
@@ -356,7 +373,7 @@
     {% else %}
         <footer class="bg-gray-50 border-t border-gray-100 py-8 mt-auto">
             <div class="max-w-[1600px] mx-auto px-4 text-center">
-                <p class="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">© 2026 Powered By <span class="text-auraa-red">Auraa Zen AI</span></p>
+                <p class="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">Powered by <span class="text-auraa-red">Auraa ZenAi</span> © 2026. All rights reserved.</p>
             </div>
         </footer>
     {% endif %}

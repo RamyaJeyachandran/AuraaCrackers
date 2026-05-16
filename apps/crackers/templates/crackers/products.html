@@ -647,8 +647,8 @@
 
 
             <!-- Controls -->
-            <div id="filter-controls-bar" class="bg-auraa-red p-3 sm:p-4 rounded-[1.5rem] shadow-xl sticky top-0 z-[9999] group">
-                <div class="absolute inset-0 overflow-hidden rounded-[2.5rem] pointer-events-none">
+            <div id="filter-controls-bar" class="bg-auraa-red p-3 sm:p-4 rounded-[1.5rem] shadow-xl sticky top-0 z-[9999] group !overflow-visible">
+                <div class="absolute inset-0 !overflow-visible rounded-[2.5rem] pointer-events-none">
                     <div class="absolute -top-24 -right-24 w-48 h-48 bg-white/10 rounded-full blur-[60px] group-hover:bg-white/20 transition-all duration-1000"></div>
                 </div>
                 <div class="relative z-30 flex flex-col xl:flex-row gap-3 lg:gap-4 justify-between xl:items-center w-full">
@@ -740,7 +740,7 @@
                         <!-- Sort Dropdown -->
                         <div class="relative z-40" id="custom-sort-container">
                                 <button onclick="toggleSortDropdown(event)" data-tooltip="Sort Products"
-                                        class="bg-[#0A325A] hover:bg-[#072442] border border-white/20 text-white rounded-lg px-3 h-10 lg:h-12 flex items-center gap-2 text-xs font-bold transition-all whitespace-nowrap shadow-inner">
+                                        class="tooltip-bottom bg-[#0A325A] hover:bg-[#072442] border border-white/20 text-white rounded-lg px-3 h-10 lg:h-12 flex items-center gap-2 text-xs font-bold transition-all whitespace-nowrap shadow-inner">
                                     <i data-lucide="arrow-up-down" id="sort-chevron" class="w-3.5 h-3.5 transition-transform"></i>
                                     <span id="current-sort-label" class="hidden sm:inline">
                                         {% if sort_by == 'price-low' %}Price: Low to High
@@ -778,7 +778,7 @@
                             </div>
 
                             <!-- Reset Filters Button -->
-                            <button id="reset-filters-btn" onclick="resetAllFilters()" class="{% if not search_query and selected_category == 'All' and sort_by == 'featured' %}hidden{% endif %} flex items-center justify-center w-10 h-10 lg:w-12 lg:h-12 bg-[#0A325A] border border-white/20 text-white rounded-lg transition-all shadow-inner group" data-tooltip="Reset All Filters">
+                            <button id="reset-filters-btn" onclick="resetAllFilters()" class="{% if not search_query and selected_category == 'All' and sort_by == 'featured' %}hidden{% endif %} tooltip-bottom flex items-center justify-center w-10 h-10 lg:w-12 lg:h-12 bg-[#0A325A] border border-white/20 text-white rounded-lg transition-all shadow-inner group" data-tooltip="Reset All Filters">
                                 <i data-lucide="rotate-ccw" class="w-4 h-4 group-hover:-rotate-90 transition-transform"></i>
                             </button>
                         </div>

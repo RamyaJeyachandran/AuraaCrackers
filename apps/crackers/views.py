@@ -396,7 +396,7 @@ class PlaceOrderAPIView(LoginRequiredMixin, View):
             send_order_success_emails_task.delay(user.id, order.id)
             # trigger_n8n_order_webhook_task.delay(order.id)
             
-            msg = 'Order updated successfully.' if editing_order else 'Order placed successfully. Our support team will contact you shortly.'
+            msg = f'Order {order.trans_no} updated successfully.' if editing_order else f'Order {order.trans_no} placed successfully. Our support team will contact you shortly.'
             return JsonResponse({
                 'status': 'success', 
                 'message': msg

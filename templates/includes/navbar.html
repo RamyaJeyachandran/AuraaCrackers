@@ -2,7 +2,7 @@
 <header class="{% if request.resolver_match.url_name == 'product_list' %}relative bg-white{% else %}fixed top-0{% endif %} w-full z-[99999]">
     {% include 'includes/global_banner.html' %}
     {% include 'includes/topbar.html' %}
-    <nav id="main-nav" class="w-full transition-all duration-300 bg-white py-1.5">
+    <nav id="main-nav" class="w-full transition-all duration-300 bg-white py-1">
         <div class="max-w-7xl mx-auto px-4 lg:px-8">
             <div class="flex justify-between items-center w-full">
                 <!-- Mobile Logo -->
@@ -21,7 +21,7 @@
                     
                     <!-- Auraa Profile Dropdown -->
                     <div class="relative group">
-                        <a href="{% url 'founder_story' %}" class="text-[12px] font-black uppercase tracking-[0.25em] transition-colors text-[#0A325A] hover:text-[#f5071d] flex items-center gap-1.5 py-4 {% if '/about/' in request.path or '/vision/' in request.path or '/mission/' in request.path or '/founder-story/' in request.path or '/core-values/' in request.path or '/why-choose-us/' in request.path or '/brand-philosophy/' in request.path or '/auraa-promise/' in request.path or '/auraa-manifesto/' in request.path %}text-[#f5071d]{% endif %}">
+                        <a href="{% url 'founder_story' %}" class="text-[12px] font-black uppercase tracking-[0.25em] transition-colors text-[#0A325A] hover:text-[#f5071d] flex items-center gap-1.5 py-1.5 {% if '/about/' in request.path or '/vision/' in request.path or '/mission/' in request.path or '/founder-story/' in request.path or '/core-values/' in request.path or '/why-choose-us/' in request.path or '/brand-philosophy/' in request.path or '/auraa-promise/' in request.path or '/auraa-manifesto/' in request.path %}text-[#f5071d]{% endif %}">
                             Auraa Profile
                             <i data-lucide="chevron-down" class="w-3 h-3 opacity-50 group-hover:rotate-180 transition-transform duration-300"></i>
                             <span class="absolute bottom-0 left-0 h-0.5 bg-[#f5071d] transition-all duration-300 {% if '/about/' in request.path or '/vision/' in request.path or '/mission/' in request.path or '/founder-story/' in request.path or '/core-values/' in request.path or '/why-choose-us/' in request.path or '/brand-philosophy/' in request.path or '/auraa-promise/' in request.path or '/auraa-manifesto/' in request.path %}w-full{% else %}w-0 group-hover:w-full{% endif %}"></span>
@@ -348,12 +348,12 @@
         window.addEventListener('scroll', function() {
             if (window.scrollY > 20) {
                 nav.classList.add('shadow-md');
-                nav.classList.add('py-1');
-                nav.classList.remove('py-1.5');
+                nav.classList.add('py-0.5');
+                nav.classList.remove('py-1');
             } else {
                 nav.classList.remove('shadow-md');
-                nav.classList.remove('py-1');
-                nav.classList.add('py-1.5');
+                nav.classList.remove('py-0.5');
+                nav.classList.add('py-1');
             }
         });
 

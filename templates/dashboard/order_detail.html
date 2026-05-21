@@ -66,8 +66,9 @@
             <div class="relative">
                 <select onchange="updateOrderStatus('{{ order.trans_no }}', this.value)"
                         class="pl-4 pr-9 py-2.5 rounded-xl shadow-md appearance-none cursor-pointer outline-none text-[10px] font-black text-white uppercase tracking-widest
-                        {% if order.status|lower == 'deliveryed' or order.status|lower == 'delivered' %}bg-green-600{% elif order.status|lower == 'cancelled' or order.status|lower == 'onhold' %}bg-red-600{% elif order.status|lower == 'distached' or order.status|lower == 'dispatched' or order.status|lower == 'intransit' %}bg-blue-600{% elif order.status|lower == 'packed' %}bg-orange-500{% else %}bg-slate-900{% endif %}">
+                        {% if order.status|lower == 'deliveryed' or order.status|lower == 'delivered' %}bg-green-600{% elif order.status|lower == 'cancelled' or order.status|lower == 'onhold' %}bg-red-600{% elif order.status|lower == 'distached' or order.status|lower == 'dispatched' or order.status|lower == 'intransit' %}bg-blue-600{% elif order.status|lower == 'packed' %}bg-orange-500{% elif order.status|lower == 'payment received' %}bg-teal-600{% else %}bg-slate-900{% endif %}">
                     <option value="ordered" {% if order.status|lower == 'ordered' or order.status == 'New' %}selected{% endif %}>Ordered</option>
+                    <option value="payment received" {% if order.status|lower == 'payment received' %}selected{% endif %}>Payment Received</option>
                     <option value="packed" {% if order.status|lower == 'packed' or order.status == 'Progressing' %}selected{% endif %}>Packed</option>
                     <option value="distached" {% if order.status|lower == 'distached' or order.status == 'Shipped' %}selected{% endif %}>Dispatched</option>
                     <option value="inTransit" {% if order.status|lower == 'intransit' %}selected{% endif %}>In Transit</option>

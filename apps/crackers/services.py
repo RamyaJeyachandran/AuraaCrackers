@@ -20,16 +20,17 @@ class OrderService:
     def generate_next_trans_no():
         """
         Generates the next transaction number in YYYYMMNNNN format.
-        YYYY = Year, MM = Month, NNNN = Running sequence (0001-9999).
+        YYYY = Year, MM = Month, NNNN = Running sequence (0001-9999) based on the year.
         """
         from django.utils import timezone
         now = timezone.now()
         period = now.strftime('%Y%m') # e.g., 202604
+        year_prefix = now.strftime('%Y') # e.g., 2026
         
         with transaction.atomic():
-            # Find the last order starting with the current YYYYMM
+            # Find the last order starting with the current YYYY
             last_order = OnlineSales.objects.filter(
-                trans_no__startswith=period,
+                trans_no__startswith=year_prefix,
                 is_active=True
             ).order_by('-trans_no').select_for_update().first()
             

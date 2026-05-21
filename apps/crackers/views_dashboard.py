@@ -330,7 +330,7 @@ class DashboardOrderListView(LoginRequiredMixin, AdminRequiredMixin, ListView):
         current_year = datetime.now().year
         context['selected_year'] = self.request.GET.get('year', str(current_year))
         
-        context['statuses'] = ['ORDERED', 'PACKED', 'DISPATCHED', 'IN TRANSIT', 'DELIVERED', 'ON HOLD', 'CANCELLED']
+        context['statuses'] = ['ORDERED', 'PAYMENT RECEIVED', 'PACKED', 'DISPATCHED', 'IN TRANSIT', 'DELIVERED', 'ON HOLD', 'CANCELLED']
         context['categories'] = Category.objects.filter(is_active=True).order_by('order')
         # Generate years from 2024 to current year
         context['years'] = [str(y) for y in range(2024, current_year + 1)]

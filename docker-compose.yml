@@ -4,8 +4,6 @@ services:
     command: redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru
     volumes:
       - redis_data:/data
-    ports:
-      - "6380:6379"
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 10s
@@ -30,8 +28,6 @@ services:
       - CELERY_RESULT_BACKEND=redis://redis:6379/0
       - CACHE_URL=redis://redis:6379/1
       - APIFY_TOKEN=${APIFY_TOKEN}
-    ports:
-      - "8001:8000"
     depends_on:
       redis:
         condition: service_healthy
@@ -84,8 +80,6 @@ services:
     volumes:
       - .:/app
     command: sh -c "celery -A config.celery flower --port=5555"
-    ports:
-      - "5556:5555"
     environment:
       - PYTHONPATH=/app
       - CELERY_BROKER_URL=redis://redis:6379/0

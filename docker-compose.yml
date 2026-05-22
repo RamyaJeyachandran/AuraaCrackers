@@ -5,7 +5,7 @@ services:
     volumes:
       - redis_data:/data
     ports:
-      - "6379:6379"
+      - "6380:6379"
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 10s
@@ -31,7 +31,7 @@ services:
       - CACHE_URL=redis://redis:6379/1
       - APIFY_TOKEN=${APIFY_TOKEN}
     ports:
-      - "8000:8000"
+      - "8001:8000"
     depends_on:
       redis:
         condition: service_healthy
@@ -85,7 +85,7 @@ services:
       - .:/app
     command: sh -c "celery -A config.celery flower --port=5555"
     ports:
-      - "5555:5555"
+      - "5556:5555"
     environment:
       - PYTHONPATH=/app
       - CELERY_BROKER_URL=redis://redis:6379/0

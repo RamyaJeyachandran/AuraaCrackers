@@ -6,6 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title class="notranslate" translate="no">{% block title %}Auraa Crackers | Premium Firecrackers from Sivakasi{% endblock %}</title>
     
+    <!-- Fix for cached 301 redirects landing on beta site instead of main site -->
+    <script>
+        // Only redirect if they are on the root of the beta site AND they don't have beta=true in the URL
+        if (window.location.hostname === 'crackers.auraazenai.com' && window.location.pathname === '/' && !window.location.search.includes('beta=true')) {
+            window.location.replace("https://auraapyrotech.com/?clear_cache=" + new Date().getTime());
+        }
+    </script>
+
     <!-- Meta Tags -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">

@@ -124,25 +124,25 @@
                         <td class="py-6 px-8 text-right">
                             <div class="flex items-center justify-end space-x-2.5">
                                 <a href="{% url 'order_detail' order.trans_no %}" 
-                                   class="p-2.5 bg-[#0A325A] text-white rounded-xl hover:bg-gray-900 transition-all transform hover:scale-110 shadow-lg shadow-[#0A325A]/20"
+                                   class="inline-flex items-center justify-center w-9 h-9 bg-[#0A325A] text-white rounded-xl hover:bg-gray-900 transition-all transform hover:scale-110 shadow-lg shadow-[#0A325A]/20"
                                    data-tooltip="View Order">
                                     <i data-lucide="eye" class="w-4 h-4"></i>
                                 </a>
 
                                 <a href="{% url 'order_download' order.trans_no %}" 
-                                   class="p-2.5 bg-red-600 text-white rounded-xl hover:bg-red-700 transition-all transform hover:scale-110 shadow-lg shadow-red-600/20"
+                                   class="inline-flex items-center justify-center w-9 h-9 bg-red-600 text-white rounded-xl hover:bg-red-700 transition-all transform hover:scale-110 shadow-lg shadow-red-600/20"
                                    data-tooltip="Download PDF">
                                     <i data-lucide="download" class="w-4 h-4"></i>
                                 </a>
                                 
                                 {% if order.status|lower == 'new' or order.status|lower == 'ordered' or order.status|lower == 'on hold' or order.status|lower == 'onhold' %}
                                     <a href="{% url 'order_edit' order.trans_no %}" 
-                                       class="p-2.5 bg-green-600 text-white rounded-xl hover:bg-green-700 transition-all transform hover:scale-110 shadow-lg shadow-green-600/20"
+                                       class="inline-flex items-center justify-center w-9 h-9 bg-green-600 text-white rounded-xl hover:bg-green-700 transition-all transform hover:scale-110 shadow-lg shadow-green-600/20"
                                        data-tooltip="Edit Order">
                                         <i data-lucide="edit-3" class="w-4 h-4"></i>
                                     </a>
                                     <button onclick="confirmDelete('{{ order.trans_no }}')" 
-                                            class="p-2.5 bg-red-600 text-white rounded-xl hover:bg-red-700 transition-all transform hover:scale-110 shadow-lg shadow-red-600/20"
+                                            class="inline-flex items-center justify-center w-9 h-9 bg-red-600 text-white rounded-xl hover:bg-red-700 transition-all transform hover:scale-110 shadow-lg shadow-red-600/20"
                                             data-tooltip="Delete Order">
                                         <i data-lucide="trash-2" class="w-4 h-4"></i>
                                     </button>
@@ -214,25 +214,25 @@
                 <span class="text-[9px] font-black text-gray-400 uppercase tracking-widest">Actions</span>
                 <div class="flex items-center space-x-2">
                     <a href="{% url 'order_detail' order.trans_no %}" 
-                       class="p-2.5 bg-[#0A325A] text-white rounded-xl active:scale-95 transition-all shadow-md"
+                       class="flex items-center justify-center w-10 h-10 bg-[#0A325A] text-white rounded-2xl active:scale-95 transition-all shadow-md"
                        title="View Order">
                         <i data-lucide="eye" class="w-4 h-4"></i>
                     </a>
 
                     <a href="{% url 'order_download' order.trans_no %}" 
-                       class="p-2.5 bg-red-600 text-white rounded-xl active:scale-95 transition-all shadow-md"
+                       class="flex items-center justify-center w-10 h-10 bg-red-600 text-white rounded-2xl active:scale-95 transition-all shadow-md"
                        title="Download PDF">
                         <i data-lucide="download" class="w-4 h-4"></i>
                     </a>
                     
                     {% if order.status|lower == 'new' or order.status|lower == 'ordered' or order.status|lower == 'on hold' or order.status|lower == 'onhold' %}
                         <a href="{% url 'order_edit' order.trans_no %}" 
-                           class="p-2.5 bg-green-600 text-white rounded-xl active:scale-95 transition-all shadow-md"
+                           class="flex items-center justify-center w-10 h-10 bg-green-600 text-white rounded-2xl active:scale-95 transition-all shadow-md"
                            title="Edit Order">
                             <i data-lucide="edit-3" class="w-4 h-4"></i>
                         </a>
                         <button onclick="confirmDelete('{{ order.trans_no }}')" 
-                                class="p-2.5 bg-red-600 text-white rounded-xl active:scale-95 transition-all shadow-md"
+                                class="flex items-center justify-center w-10 h-10 bg-red-600 text-white rounded-2xl active:scale-95 transition-all shadow-md"
                                 title="Delete Order">
                             <i data-lucide="trash-2" class="w-4 h-4"></i>
                         </button>

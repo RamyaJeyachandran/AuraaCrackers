@@ -79,7 +79,8 @@
         <p class="mt-2 text-gray-500 font-bold uppercase tracking-widest text-xs">Track and manage your order history</p>
     </div>
 
-    <div class="bg-white rounded-[2rem] border border-gray-100 shadow-xl table-container overflow-hidden">
+    <!-- Desktop View: Table (Visible on desktop, hidden on mobile) -->
+    <div class="hidden md:block bg-white rounded-[2rem] border border-gray-100 shadow-xl table-container overflow-hidden">
         <div class="w-full">
             <table class="w-full text-left border-separate border-spacing-0">
                 <thead>
@@ -149,7 +150,6 @@
                             </div>
                         </td>
                     </tr>
-
                     {% empty %}
                     <tr>
                         <td colspan="6" class="py-20 text-center">
@@ -167,6 +167,91 @@
                 </tbody>
             </table>
         </div>
+    </div>
+
+    <!-- Mobile View: Card List (Visible on mobile, hidden on desktop) -->
+    <div class="block md:hidden space-y-6">
+        {% for order in orders %}
+        <div class="bg-white rounded-[2rem] border border-gray-100 shadow-lg p-6 space-y-5">
+            <!-- Header: Order # and Status -->
+            <div class="flex justify-between items-start pb-4 border-b border-gray-100">
+                <div class="space-y-1">
+                    <span class="text-[9px] font-black text-gray-400 uppercase tracking-widest block">Order Number</span>
+                    <span class="font-black text-gray-900 uppercase tracking-tight text-sm">{{ order.trans_no }}</span>
+                </div>
+                <span class="px-3 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest border
+                             {% if order.status == 'Delivered' %}bg-green-100 text-green-600 border-green-200
+                             {% elif order.status == 'Cancelled' %}bg-red-100 text-red-600 border-red-200
+                             {% else %}bg-auraa-red/10 text-auraa-red border-auraa-red/10{% endif %}">
+                    {{ order.status }}
+                </span>
+            </div>
+
+            <!-- Details: Date, Amount, Payment -->
+            <div class="grid grid-cols-2 gap-y-4 gap-x-2">
+                <div>
+                    <span class="text-[9px] font-black text-gray-400 uppercase tracking-widest block mb-0.5">Date</span>
+                    <span class="text-xs font-bold text-gray-600">{{ order.trans_dt|date:"d M, Y H:i" }}</span>
+                </div>
+                <div>
+                    <span class="text-[9px] font-black text-gray-400 uppercase tracking-widest block mb-0.5">Total Amount</span>
+                    <span class="text-sm font-black text-auraa-red">₹{{ order.grand_amt }}</span>
+                </div>
+                <div class="col-span-2">
+                    <span class="text-[9px] font-black text-gray-400 uppercase tracking-widest block mb-0.5">Payment</span>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-[10px] font-black uppercase tracking-widest {% if order.payment_status == 'Paid' or order.payment_status == 'Completed' %}text-green-500{% else %}text-orange-500{% endif %}">
+                            {{ order.payment_status|default:"Pending" }}
+                        </span>
+                        <span class="text-gray-300 text-xs">|</span>
+                        <span class="text-[9px] text-gray-500 font-bold italic">{{ order.payment_method|default:"N/A" }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="pt-4 border-t border-gray-100 flex items-center justify-between">
+                <span class="text-[9px] font-black text-gray-400 uppercase tracking-widest">Actions</span>
+                <div class="flex items-center space-x-2">
+                    <a href="{% url 'order_detail' order.trans_no %}" 
+                       class="p-2.5 bg-[#0A325A] text-white rounded-xl active:scale-95 transition-all shadow-md"
+                       title="View Order">
+                        <i data-lucide="eye" class="w-4 h-4"></i>
+                    </a>
+
+                    <a href="{% url 'order_download' order.trans_no %}" 
+                       class="p-2.5 bg-red-600 text-white rounded-xl active:scale-95 transition-all shadow-md"
+                       title="Download PDF">
+                        <i data-lucide="download" class="w-4 h-4"></i>
+                    </a>
+                    
+                    {% if order.status|lower == 'new' or order.status|lower == 'ordered' or order.status|lower == 'on hold' or order.status|lower == 'onhold' %}
+                        <a href="{% url 'order_edit' order.trans_no %}" 
+                           class="p-2.5 bg-green-600 text-white rounded-xl active:scale-95 transition-all shadow-md"
+                           title="Edit Order">
+                            <i data-lucide="edit-3" class="w-4 h-4"></i>
+                        </a>
+                        <button onclick="confirmDelete('{{ order.trans_no }}')" 
+                                class="p-2.5 bg-red-600 text-white rounded-xl active:scale-95 transition-all shadow-md"
+                                title="Delete Order">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        </button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="bg-white rounded-[2rem] border border-gray-100 shadow-xl p-12 text-center">
+            <div class="flex flex-col items-center">
+                <div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center text-gray-200 mb-6">
+                    <i data-lucide="shopping-bag" class="w-10 h-10"></i>
+                </div>
+                <h3 class="text-xl font-black text-gray-900 uppercase">No orders yet</h3>
+                <p class="text-gray-400 text-xs font-bold uppercase tracking-widest mt-2">Time to fill that cart!</p>
+                <a href="{% url 'product_list' %}" class="mt-8 px-8 py-3 bg-auraa-red text-white rounded-full font-black uppercase tracking-widest text-[10px] hover:shadow-xl transition-all transform hover:-translate-y-1">Start Shopping</a>
+            </div>
+        </div>
+        {% endfor %}
     </div>
 </div>
 

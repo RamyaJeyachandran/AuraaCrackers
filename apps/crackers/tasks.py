@@ -30,7 +30,7 @@ def send_order_success_emails_task(user_id, order_id):
         ).exclude(email__isnull=True).exclude(email='').values_list('email', flat=True)
         
         if admin_emails:
-            admin_subject = f"Beta Version - New Order Received - {order.trans_no}"
+            admin_subject = f"New Order Received - {order.trans_no}"
             admin_message = f"Hello Admin,\n\nA new order has been placed by {user.full_name or user.username}.\n\nOrder No: {order.trans_no}\nTotal Amount: ₹{order.grand_amt}\nCustomer Mobile: {user.phone_number or 'N/A'}\n\nPlease login to the dashboard to process the order."
             send_mail(admin_subject, admin_message, settings.DEFAULT_FROM_EMAIL, list(set(admin_emails)), fail_silently=True)
     except Exception as e:

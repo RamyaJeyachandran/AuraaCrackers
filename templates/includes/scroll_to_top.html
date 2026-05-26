@@ -28,6 +28,16 @@
                 if (top > 300) {
                     btn.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-20');
                     btn.classList.add('opacity-100', 'pointer-events-auto', 'translate-y-0');
+                    
+                    // Prevent overlapping with mobile sticky bar on product page
+                    const stickyBar = document.getElementById('mobile-sticky-bar');
+                    if (stickyBar && window.innerWidth < 1024) {
+                        btn.classList.remove('bottom-10');
+                        btn.classList.add('bottom-24');
+                    } else {
+                        btn.classList.add('bottom-10');
+                        btn.classList.remove('bottom-24');
+                    }
                 } else {
                     btn.classList.add('opacity-0', 'pointer-events-none', 'translate-y-20');
                     btn.classList.remove('opacity-100', 'pointer-events-auto', 'translate-y-0');

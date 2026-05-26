@@ -2017,15 +2017,19 @@
     window.addEventListener('load', updateStickyHeader);
     window.addEventListener('resize', updateStickyHeader);
     
-    // Hide Page Loader on Load
-    window.addEventListener('load', () => {
+    // Hide Page Loader on DOMContentLoaded or after a fast safety timeout (1s) to ensure sub-second loads
+    function hideLoader() {
         const loader = document.getElementById('page-loader');
-        if (loader) {
+        if (loader && !loader.classList.contains('hidden-loader')) {
             loader.classList.add('hidden-loader');
             setTimeout(() => {
                 loader.style.display = 'none';
             }, 500);
         }
-    });
+    }
+    document.addEventListener('DOMContentLoaded', hideLoader);
+    window.addEventListener('load', hideLoader);
+    // Safety fallback: force hide loader after 1 second in case of slow image downloads
+    setTimeout(hideLoader, 1000);
 </script>
 {% endblock %}

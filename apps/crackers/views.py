@@ -631,3 +631,65 @@ class OrderDownloadView(LoginRequiredMixin, DetailView):
             response['Content-Disposition'] = f'attachment; filename="Estimate_{self.object.trans_no}.pdf"'
             return response
         return HttpResponse('Error generating PDF', status=400)
+
+import tempfile
+import os
+try:
+    from faster_whisper import WhisperModel
+except ImportError:
+    WhisperModel = None
+
+whisper_model = None
+
+@method_decorator(csrf_exempt, name='dispatch')
+class SpeechToTextAPIView(View):
+    def post(self, request):
+        global whisper_model
+        
+        audio_file = request.FILES.get('audio')
+        if not audio_file:
+            return JsonResponse({'status': 'error', 'message': 'No audio file provided'}, status=400)
+            
+        if WhisperModel is None:
+            return JsonResponse({'status': 'error', 'message': 'faster-whisper is not installed'}, status=500)
+            
+        temp_audio_path = None
+        try:
+            if whisper_model is None:
+                # Load the model
+                whisper_model = WhisperModel("small", device="cpu", compute_type="int8")
+                
+            # Save the uploaded file to a temporary location
+            with tempfile.NamedTemporaryFile(delete=False, suffix=".webm") as temp_audio:
+                for chunk in audio_file.chunks():
+                    temp_audio.write(chunk)
+                temp_audio_path = temp_audio.name
+                
+            # Transcribe
+            segments, info = whisper_model.transcribe(temp_audio_path, beam_size=5)
+            
+            # Check language
+            detected_lang = info.language
+            if detected_lang not in ['en', 'ta', 'hi']:
+                os.unlink(temp_audio_path)
+                return JsonResponse({
+                    'status': 'error',
+                    'message': 'Please speak in Tamil, Hindi, or English.',
+                    'detected_language': detected_lang
+                }, status=400)
+                
+            text = " ".join([segment.text for segment in segments]).strip()
+            
+            # Clean up
+            os.unlink(temp_audio_path)
+            
+            return JsonResponse({
+                'status': 'success',
+                'text': text,
+                'language': detected_lang
+            })
+            
+        except Exception as e:
+            if temp_audio_path and os.path.exists(temp_audio_path):
+                os.unlink(temp_audio_path)
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)

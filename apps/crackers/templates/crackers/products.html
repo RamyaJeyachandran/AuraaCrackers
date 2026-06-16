@@ -689,16 +689,23 @@
                             <div class="flex-grow relative h-full flex items-center bg-white rounded-r-xl">
                                 {% if selected_category %}<input type="hidden" name="category" id="category-hidden-input" value="{{ selected_category }}">{% endif %}
                                 <input type="text" name="q" id="search-input" placeholder="Search for a product" value="{{ search_query|default:'' }}" autocomplete="off"
-                                    class="w-full h-full px-4 text-xs lg:text-sm font-medium text-gray-700 border-none outline-none focus:ring-0 rounded-r-xl"
+                                    class="w-full h-full px-4 pr-24 text-xs lg:text-sm font-medium text-gray-700 border-none outline-none focus:ring-0 rounded-r-xl"
                                     oninput="handleSearchInput(event)" onfocus="handleSearchFocus()" onkeydown="handleSearchKeydown(event)">
                                 
+                                <!-- Mic Button -->
+                                <button type="button" id="mic-btn" onclick="toggleRecording()" 
+                                        class="absolute right-10 flex items-center justify-center w-8 h-8 rounded-full text-gray-400 hover:text-auraa-red hover:bg-red-50 transition-all z-10" title="Voice Search">
+                                    <i data-lucide="mic" id="mic-icon" class="w-4 h-4"></i>
+                                    <span id="mic-pulse" class="absolute inset-0 rounded-full border-2 border-auraa-red opacity-0 pointer-events-none"></span>
+                                </button>
+
                                 <button type="button" id="clear-search" onclick="clearAutocompleteSearch()" 
-                                        class="absolute right-4 text-gray-400 hover:text-gray-600 transition-colors {% if not search_query %}hidden{% endif %} z-10">
+                                        class="absolute right-3 text-gray-400 hover:text-gray-600 transition-colors {% if not search_query %}hidden{% endif %} z-10 p-1">
                                     <i data-lucide="x" class="w-4 h-4"></i>
                                 </button>
                                 
                                 <!-- Loading Spinner -->
-                                <div id="search-loading" class="absolute right-10 hidden z-10">
+                                <div id="search-loading" class="absolute right-20 hidden z-10">
                                     <i data-lucide="loader-2" class="w-4 h-4 text-gray-400 animate-spin"></i>
                                 </div>
                                 
@@ -783,6 +790,17 @@
                                 <i data-lucide="rotate-ccw" class="w-4 h-4 group-hover:-rotate-90 transition-transform"></i>
                             </button>
                         </div>
+                </div>
+            </div>
+
+            <!-- Voice Search Toast -->
+            <div id="voice-toast" class="fixed top-24 left-1/2 transform -translate-x-1/2 bg-white/95 backdrop-blur-md border border-red-200 shadow-2xl rounded-2xl px-6 py-4 flex items-center gap-3 z-[99999] transition-all duration-300 opacity-0 pointer-events-none translate-y-[-20px]">
+                <div class="w-10 h-10 bg-red-50 rounded-full flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="alert-triangle" class="w-5 h-5 text-auraa-red"></i>
+                </div>
+                <div>
+                    <h4 class="text-[11px] font-black uppercase tracking-widest text-[#0A325A] mb-0.5" id="voice-toast-title">Language Not Supported</h4>
+                    <p class="text-[10px] font-medium text-gray-500" id="voice-toast-msg">Please speak in Tamil, Hindi, or English.</p>
                 </div>
             </div>
 
@@ -2031,5 +2049,123 @@
     window.addEventListener('load', hideLoader);
     // Safety fallback: force hide loader after 1 second in case of slow image downloads
     setTimeout(hideLoader, 1000);
+
+    // Voice Search Logic
+    let mediaRecorder = null;
+    let audioChunks = [];
+    let isRecording = false;
+
+    async function toggleRecording() {
+        const micBtn = document.getElementById('mic-btn');
+        const micIcon = document.getElementById('mic-icon');
+        const searchInput = document.getElementById('search-input');
+        const searchLoading = document.getElementById('search-loading');
+        
+        if (isRecording) {
+            // Stop recording
+            if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+                mediaRecorder.stop();
+            }
+            return;
+        }
+
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaRecorder = new MediaRecorder(stream);
+            audioChunks = [];
+
+            mediaRecorder.addEventListener("dataavailable", event => {
+                audioChunks.push(event.data);
+            });
+
+            mediaRecorder.addEventListener("stop", async () => {
+                isRecording = false;
+                micBtn.classList.remove('bg-red-100');
+                micBtn.classList.remove('text-auraa-red');
+                micBtn.classList.add('text-gray-400');
+                
+                // Re-create the mic icon properly so Lucide picks it up again
+                micBtn.innerHTML = '<i data-lucide="mic" id="mic-icon" class="w-4 h-4"></i><span id="mic-pulse" class="absolute inset-0 rounded-full border-2 border-auraa-red opacity-0 pointer-events-none"></span>';
+                if (window.lucide) lucide.createIcons();
+                
+                // Stop all tracks to release microphone
+                stream.getTracks().forEach(track => track.stop());
+                
+                const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                const formData = new FormData();
+                formData.append('audio', audioBlob, 'voice.webm');
+                
+                searchInput.placeholder = "Processing speech...";
+                searchLoading.classList.remove('hidden');
+
+                // Let the user know it might take a while on CPU
+                let slowWarningTimeout = setTimeout(() => {
+                    showVoiceToast("Processing", "AI is analyzing your voice... this may take up to a minute on CPU.");
+                }, 5000);
+
+                try {
+                    const response = await fetch('/api/speech-to-text/', {
+                        method: 'POST',
+                        body: formData
+                    });
+                    const data = await response.json();
+                    
+                    if (data.status === 'success') {
+                        searchInput.value = data.text;
+                        handleSearchInput({ target: searchInput });
+                        showVoiceToast("Success", "Speech recognized successfully!");
+                    } else {
+                        showVoiceToast("Speech Error", data.message || "Failed to process speech.");
+                        searchInput.value = '';
+                    }
+                } catch (err) {
+                    console.error("Speech API Error:", err);
+                    showVoiceToast("Network Error", "Could not reach speech service or request timed out.");
+                } finally {
+                    clearTimeout(slowWarningTimeout);
+                    searchInput.placeholder = "Search for a product";
+                    searchLoading.classList.add('hidden');
+                }
+            });
+
+            mediaRecorder.start();
+            isRecording = true;
+            
+            // Update UI for recording
+            micBtn.classList.add('bg-red-100');
+            micBtn.classList.add('text-auraa-red');
+            micBtn.classList.remove('text-gray-400');
+            // Re-create icon for square (stop)
+            micBtn.innerHTML = '<i data-lucide="square" id="mic-icon" class="w-4 h-4"></i><span id="mic-pulse" class="absolute inset-0 rounded-full border-2 border-auraa-red opacity-0 pointer-events-none animate-ping"></span>';
+            if (window.lucide) lucide.createIcons();
+            
+            searchInput.placeholder = "Listening... Click to stop";
+            searchInput.value = '';
+            
+        } catch (err) {
+            console.error("Microphone access denied or not available", err);
+            showVoiceToast("Microphone Error", "Please allow microphone access to use voice search.");
+        }
+    }
+
+    function showVoiceToast(title, message) {
+        const toast = document.getElementById('voice-toast');
+        const titleEl = document.getElementById('voice-toast-title');
+        const msgEl = document.getElementById('voice-toast-msg');
+        
+        if (titleEl) titleEl.innerText = title;
+        if (msgEl) msgEl.innerText = message;
+        
+        if (toast) {
+            toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-[-20px]');
+            toast.classList.add('opacity-100', 'translate-y-0');
+            
+            setTimeout(() => {
+                toast.classList.remove('opacity-100', 'translate-y-0');
+                toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-[-20px]');
+            }, 4000);
+        }
+    }
+
 </script>
 {% endblock %}

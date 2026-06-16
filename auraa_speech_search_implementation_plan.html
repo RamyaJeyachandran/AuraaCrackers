@@ -1,0 +1,381 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans)}
+.plan{padding:1.5rem 0}
+.hero{background:var(--color-background-secondary);border-radius:var(--border-radius-lg);padding:1.5rem;margin-bottom:1.5rem;border:0.5px solid var(--color-border-tertiary)}
+.hero h1{font-size:20px;font-weight:500;color:var(--color-text-primary);margin-bottom:4px}
+.hero p{font-size:13px;color:var(--color-text-secondary);line-height:1.6}
+.hero-meta{display:flex;gap:12px;margin-top:12px;flex-wrap:wrap}
+.badge{font-size:11px;font-weight:500;padding:3px 10px;border-radius:20px;background:var(--color-background-info);color:var(--color-text-info)}
+.badge.warn{background:var(--color-background-warning);color:var(--color-text-warning)}
+.badge.suc{background:var(--color-background-success);color:var(--color-text-success)}
+.section{margin-bottom:1.5rem}
+.section-head{font-size:13px;font-weight:500;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.section-head i{font-size:15px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem}
+.card-title{font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:4px;display:flex;align-items:center;gap:6px}
+.card-title i{font-size:15px;color:var(--color-text-secondary)}
+.card p{font-size:12px;color:var(--color-text-secondary);line-height:1.5}
+.flow{display:flex;flex-direction:column;gap:0}
+.flow-step{display:flex;gap:12px;align-items:flex-start}
+.flow-line{display:flex;flex-direction:column;align-items:center}
+.flow-dot{width:28px;height:28px;border-radius:50%;background:var(--color-background-info);color:var(--color-text-info);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;flex-shrink:0}
+.flow-connector{width:1px;height:24px;background:var(--color-border-tertiary);margin:0 auto}
+.flow-body{padding-bottom:1.25rem;flex:1}
+.flow-body h3{font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:3px}
+.flow-body p{font-size:12px;color:var(--color-text-secondary);line-height:1.5}
+.flow-body .code{background:var(--color-background-secondary);border-radius:6px;padding:6px 10px;font-family:var(--font-mono);font-size:11px;color:var(--color-text-primary);margin-top:6px;line-height:1.6;border:0.5px solid var(--color-border-tertiary)}
+.lang-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px}
+.lang-card{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:10px 12px;background:var(--color-background-primary)}
+.lang-name{font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:4px}
+.lang-tag{font-size:11px;color:var(--color-text-secondary);display:block;margin-bottom:6px}
+.lang-keywords{font-size:11px;color:var(--color-text-secondary);line-height:1.5}
+.lang-keywords span{display:inline-block;background:var(--color-background-secondary);border-radius:4px;padding:1px 6px;margin:1px 2px 1px 0}
+.state-machine{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden}
+.sm-row{display:flex;align-items:stretch;border-bottom:0.5px solid var(--color-border-tertiary)}
+.sm-row:last-child{border-bottom:none}
+.sm-state{width:140px;flex-shrink:0;padding:10px 12px;background:var(--color-background-secondary);border-right:0.5px solid var(--color-border-tertiary);display:flex;align-items:center;gap:8px}
+.sm-state i{font-size:16px;color:var(--color-text-secondary)}
+.sm-state-name{font-size:12px;font-weight:500;color:var(--color-text-primary)}
+.sm-desc{flex:1;padding:10px 12px;font-size:12px;color:var(--color-text-secondary);line-height:1.5}
+.sm-action{width:180px;flex-shrink:0;padding:10px 12px;border-left:0.5px solid var(--color-border-tertiary);font-size:11px;color:var(--color-text-secondary);line-height:1.5;font-family:var(--font-mono)}
+.warn-box{background:var(--color-background-warning);border:0.5px solid var(--color-border-warning);border-radius:var(--border-radius-md);padding:10px 14px;display:flex;gap:10px;align-items:flex-start;margin-top:8px}
+.warn-box i{font-size:16px;color:var(--color-text-warning);flex-shrink:0;margin-top:1px}
+.warn-box p{font-size:12px;color:var(--color-text-warning);line-height:1.5}
+.ui-preview{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden}
+.ui-bar{background:var(--color-background-secondary);padding:10px 14px;display:flex;align-items:center;gap:10px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.ui-search{flex:1;background:var(--color-background-primary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:7px 12px;display:flex;align-items:center;gap:8px}
+.ui-search i{font-size:16px;color:var(--color-text-secondary)}
+.ui-search span{font-size:13px;color:var(--color-text-secondary)}
+.mic-btn{width:36px;height:36px;border-radius:50%;border:0.5px solid var(--color-border-secondary);background:var(--color-background-primary);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.mic-btn i{font-size:18px;color:var(--color-text-secondary)}
+.mic-btn.active{background:var(--color-background-danger);border-color:var(--color-border-danger)}
+.mic-btn.active i{color:var(--color-text-danger)}
+.ui-toast{margin:10px 14px;background:var(--color-background-warning);border:0.5px solid var(--color-border-warning);border-radius:var(--border-radius-md);padding:8px 12px;display:flex;align-items:center;gap:8px}
+.ui-toast i{font-size:15px;color:var(--color-text-warning)}
+.ui-toast span{font-size:12px;color:var(--color-text-warning)}
+.ui-listening{margin:10px 14px;background:var(--color-background-danger);border-radius:var(--border-radius-md);padding:8px 12px;display:flex;align-items:center;gap:10px}
+.ui-listening span{font-size:12px;color:var(--color-text-danger);font-weight:500}
+.pulse{display:flex;gap:3px;align-items:center}
+.pulse-bar{width:3px;border-radius:2px;background:var(--color-text-danger);animation:pulse 1s ease-in-out infinite}
+.pulse-bar:nth-child(1){height:8px;animation-delay:0s}
+.pulse-bar:nth-child(2){height:14px;animation-delay:.15s}
+.pulse-bar:nth-child(3){height:10px;animation-delay:.3s}
+.pulse-bar:nth-child(4){height:16px;animation-delay:.1s}
+.pulse-bar:nth-child(5){height:8px;animation-delay:.25s}
+@keyframes pulse{0%,100%{transform:scaleY(.6)}50%{transform:scaleY(1)}}
+.timeline{display:flex;flex-direction:column;gap:0}
+.tl-item{display:flex;gap:14px}
+.tl-left{display:flex;flex-direction:column;align-items:center;width:80px;flex-shrink:0}
+.tl-phase{font-size:10px;font-weight:500;color:var(--color-text-secondary);text-align:center;padding-top:4px}
+.tl-bar{width:2px;flex:1;background:var(--color-border-tertiary);margin:4px auto 0}
+.tl-item:last-child .tl-bar{display:none}
+.tl-content{padding-bottom:1.25rem;flex:1}
+.tl-content h3{font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:4px}
+.tl-content ul{list-style:none;padding:0}
+.tl-content li{font-size:12px;color:var(--color-text-secondary);line-height:1.6;display:flex;align-items:flex-start;gap:6px}
+.tl-content li::before{content:"–";color:var(--color-text-tertiary);flex-shrink:0}
+.divider{border:none;border-top:0.5px solid var(--color-border-tertiary);margin:1.25rem 0}
+</style>
+
+<div class="plan">
+
+<div class="hero">
+  <h1>Auraa Crackers — Voice Search Implementation Plan</h1>
+  <p>Speech-to-text product search for <strong>auraapyrotech.com/products/</strong> — supporting Tamil, Hindi, English, and code-switched combinations. 500+ products across 40+ categories, with graceful fallback for unsupported languages.</p>
+  <div class="hero-meta">
+    <span class="badge"><i class="ti ti-microphone" aria-hidden="true"></i> Web Speech API</span>
+    <span class="badge warn">Tamil · Hindi · English</span>
+    <span class="badge suc">500+ Products</span>
+    <span class="badge">40+ Categories</span>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head"><i class="ti ti-eye" aria-hidden="true"></i> UI Design — Search Bar with Mic</div>
+  <div class="ui-preview">
+    <div class="ui-bar">
+      <div class="ui-search">
+        <i class="ti ti-search" aria-hidden="true"></i>
+        <span>Search products... (or tap mic)</span>
+      </div>
+      <div class="mic-btn" title="Start voice search">
+        <i class="ti ti-microphone" aria-hidden="true"></i>
+      </div>
+    </div>
+    <div class="ui-listening">
+      <div class="pulse" aria-hidden="true">
+        <div class="pulse-bar"></div><div class="pulse-bar"></div><div class="pulse-bar"></div>
+        <div class="pulse-bar"></div><div class="pulse-bar"></div>
+      </div>
+      <span>Listening... speak in Tamil, Hindi or English</span>
+    </div>
+    <div class="ui-toast">
+      <i class="ti ti-alert-triangle" aria-hidden="true"></i>
+      <span>Please speak in Tamil, Hindi, or English. Other languages are not supported.</span>
+    </div>
+  </div>
+  <p style="font-size:11px;color:var(--color-text-secondary);margin-top:6px;padding:0 2px">Mock showing: mic button, active listening state (animated bars), and the unsupported-language toast.</p>
+</div>
+
+<hr class="divider">
+
+<div class="section">
+  <div class="section-head"><i class="ti ti-language" aria-hidden="true"></i> Language Detection &amp; Support</div>
+  <div class="lang-grid">
+    <div class="lang-card">
+      <div class="lang-name">Tamil</div>
+      <span class="lang-tag">BCP-47: <code>ta-IN</code></span>
+      <div class="lang-keywords">
+        <span>ஸ்பார்க்லர்</span><span>பட்டாசு</span><span>பூப்பாத்திரம்</span><span>ராக்கெட்</span><span>chakkar</span>
+      </div>
+    </div>
+    <div class="lang-card">
+      <div class="lang-name">Hindi</div>
+      <span class="lang-tag">BCP-47: <code>hi-IN</code></span>
+      <div class="lang-keywords">
+        <span>अनार</span><span>फुलझड़ी</span><span>पटाखे</span><span>राकेट</span><span>bomb</span>
+      </div>
+    </div>
+    <div class="lang-card">
+      <div class="lang-name">English</div>
+      <span class="lang-tag">BCP-47: <code>en-IN</code></span>
+      <div class="lang-keywords">
+        <span>sparkler</span><span>rocket</span><span>flower pot</span><span>chakkar</span><span>bomb</span>
+      </div>
+    </div>
+    <div class="lang-card">
+      <div class="lang-name">Code-mixed</div>
+      <span class="lang-tag">Multi-pass detection</span>
+      <div class="lang-keywords">
+        <span>chakkar வேண்டும்</span><span>sparkler दो</span><span>bomb please</span>
+      </div>
+    </div>
+  </div>
+  <div class="warn-box" style="margin-top:10px">
+    <i class="ti ti-info-circle" aria-hidden="true"></i>
+    <p>If the detected language is none of the above (e.g. French, German, Arabic), show a dismissable banner: <em>"Please speak in Tamil, Hindi, or English. நன்றி / धन्यवाद."</em> Do not block the user — allow them to retry immediately.</p>
+  </div>
+</div>
+
+<hr class="divider">
+
+<div class="section">
+  <div class="section-head"><i class="ti ti-arrows-exchange" aria-hidden="true"></i> Speech Search Flow</div>
+  <div class="flow">
+
+    <div class="flow-step">
+      <div class="flow-line"><div class="flow-dot">1</div><div class="flow-connector"></div></div>
+      <div class="flow-body">
+        <h3>User taps mic button</h3>
+        <p>Button turns red with animated waveform bars. Mic icon pulsates. Status message: "Listening… speak in Tamil, Hindi or English". Recognition starts simultaneously on <code>ta-IN</code>, <code>hi-IN</code>, <code>en-IN</code> (three parallel SpeechRecognition instances).</p>
+        <div class="code">const recognizers = ['ta-IN','hi-IN','en-IN'].map(lang =&gt; {<br>
+&nbsp;&nbsp;const r = new SpeechRecognition();<br>
+&nbsp;&nbsp;r.lang = lang; r.interimResults = true;<br>
+&nbsp;&nbsp;return r;<br>
+});</div>
+      </div>
+    </div>
+
+    <div class="flow-step">
+      <div class="flow-line"><div class="flow-dot">2</div><div class="flow-connector"></div></div>
+      <div class="flow-body">
+        <h3>Confidence-based language winner</h3>
+        <p>Each recognizer fires <code>onresult</code> with a confidence score. The recognizer with the highest confidence for its final result "wins" and provides the transcript. For code-mixed speech, merge transcripts from all three.</p>
+        <div class="code">// Winner = highest confidence final result<br>
+const best = results.reduce((a,b) =&gt;<br>
+&nbsp;&nbsp;b.confidence &gt; a.confidence ? b : a);</div>
+      </div>
+    </div>
+
+    <div class="flow-step">
+      <div class="flow-line"><div class="flow-dot">3</div><div class="flow-connector"></div></div>
+      <div class="flow-body">
+        <h3>Language validation check</h3>
+        <p>If none of the three recognizers produce a confident result (all below threshold ~0.4), classify as "unsupported language". Show toast: <em>"Please speak in Tamil, Hindi, or English"</em>. Stop all recognizers and reset to idle.</p>
+      </div>
+    </div>
+
+    <div class="flow-step">
+      <div class="flow-line"><div class="flow-dot">4</div><div class="flow-connector"></div></div>
+      <div class="flow-body">
+        <h3>Keyword extraction &amp; normalization</h3>
+        <p>Extract product-relevant terms from the transcript. Map Tamil/Hindi synonyms to English product names using a local keyword dictionary (e.g., "அனார்" → "flower pot", "फुलझड़ी" → "sparkler"). Handle typos with fuzzy matching.</p>
+        <div class="code">const SYNONYMS = {<br>
+&nbsp;&nbsp;"அனார்":"flower pot","فولجهड़ी":"sparkler",<br>
+&nbsp;&nbsp;"पटाखे":"cracker","ராக்கெட்":"rocket"<br>
+};</div>
+      </div>
+    </div>
+
+    <div class="flow-step">
+      <div class="flow-line"><div class="flow-dot">5</div><div class="flow-connector"></div></div>
+      <div class="flow-body">
+        <h3>Product list filtering</h3>
+        <p>Run normalized keywords against product names, product codes, and category names. Rank results: exact match → starts-with → contains. Scroll the product table to the first match, highlight matching rows, and update the category filter dropdown if a category name was spoken.</p>
+      </div>
+    </div>
+
+    <div class="flow-step">
+      <div class="flow-line"><div class="flow-dot">6</div><div class="flow-connector"></div></div>
+      <div class="flow-body">
+        <h3>Results + feedback</h3>
+        <p>Show matched transcript in the search box (e.g., "You said: sparkler"). Display match count badge ("22 products found"). Mic resets to idle. If no match found: "No products found for '<em>term</em>'. Try: sparkler, rocket, bomb…"</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<hr class="divider">
+
+<div class="section">
+  <div class="section-head"><i class="ti ti-topology-star-3" aria-hidden="true"></i> State Machine</div>
+  <div class="state-machine">
+    <div class="sm-row">
+      <div class="sm-state"><i class="ti ti-player-stop" aria-hidden="true"></i><span class="sm-state-name">idle</span></div>
+      <div class="sm-desc">Mic button visible and ready. Search box shows placeholder text. No recognizers active.</div>
+      <div class="sm-action">→ listening on tap</div>
+    </div>
+    <div class="sm-row">
+      <div class="sm-state"><i class="ti ti-waveform" aria-hidden="true"></i><span class="sm-state-name">listening</span></div>
+      <div class="sm-desc">Mic is red. Waveform animates. All 3 recognizers active. Interim transcript shown in search box as user speaks.</div>
+      <div class="sm-action">→ processing on silence/final</div>
+    </div>
+    <div class="sm-row">
+      <div class="sm-state"><i class="ti ti-loader" aria-hidden="true"></i><span class="sm-state-name">processing</span></div>
+      <div class="sm-desc">Recognizers stopped. Confidence winner selected. Keyword extraction running. Spinner shown.</div>
+      <div class="sm-action">→ results or error</div>
+    </div>
+    <div class="sm-row">
+      <div class="sm-state"><i class="ti ti-check" aria-hidden="true"></i><span class="sm-state-name">results</span></div>
+      <div class="sm-desc">Products filtered and scrolled to. "You said: …" shown. Match count badge visible. Mic ready for next query.</div>
+      <div class="sm-action">→ idle on clear</div>
+    </div>
+    <div class="sm-row">
+      <div class="sm-state"><i class="ti ti-alert-circle" aria-hidden="true"></i><span class="sm-state-name">unsupported</span></div>
+      <div class="sm-desc">Toast: "Please speak in Tamil, Hindi, or English." Mic resets. No product changes made.</div>
+      <div class="sm-action">→ idle on dismiss or retry</div>
+    </div>
+    <div class="sm-row">
+      <div class="sm-state"><i class="ti ti-wifi-off" aria-hidden="true"></i><span class="sm-state-name">no-speech</span></div>
+      <div class="sm-desc">No audio detected for 5 seconds. Mic auto-stops. Soft message: "No speech detected. Tap to try again."</div>
+      <div class="sm-action">→ idle after 3s</div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<div class="section">
+  <div class="section-head"><i class="ti ti-calendar" aria-hidden="true"></i> Phased Rollout</div>
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-left"><span class="tl-phase">Phase 1<br>Week 1–2</span><div class="tl-bar"></div></div>
+      <div class="tl-content">
+        <h3>Foundation — English only</h3>
+        <ul>
+          <li>Add mic button to existing search bar UI</li>
+          <li>Integrate Web Speech API with <code>en-IN</code> only</li>
+          <li>Implement state machine (idle → listening → results)</li>
+          <li>Basic keyword → product name matching</li>
+          <li>Browser compatibility check (Chrome/Edge primary)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-left"><span class="tl-phase">Phase 2<br>Week 3–4</span><div class="tl-bar"></div></div>
+      <div class="tl-content">
+        <h3>Multilingual — Tamil &amp; Hindi</h3>
+        <ul>
+          <li>Add parallel recognition for <code>ta-IN</code> and <code>hi-IN</code></li>
+          <li>Build Tamil/Hindi ↔ product name synonym dictionary</li>
+          <li>Confidence-based language winner logic</li>
+          <li>Unsupported language detection + toast message</li>
+          <li>Category name recognition ("show me rockets", "sparkler category")</li>
+        </ul>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-left"><span class="tl-phase">Phase 3<br>Week 5–6</span><div class="tl-bar"></div></div>
+      <div class="tl-content">
+        <h3>Polish &amp; Code-mixing</h3>
+        <ul>
+          <li>Handle Tanglish / Hinglish code-mixed phrases</li>
+          <li>Fuzzy matching for mispronounced product names</li>
+          <li>Price-range voice queries ("show crackers under 100 rupees")</li>
+          <li>Mic permission denied → instructional fallback UI</li>
+          <li>Analytics: track most common voice queries</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<div class="section">
+  <div class="section-head"><i class="ti ti-device-mobile" aria-hidden="true"></i> Key Technical Considerations</div>
+  <div class="cards">
+    <div class="card">
+      <div class="card-title"><i class="ti ti-shield" aria-hidden="true"></i> Browser support</div>
+      <p>Web Speech API supported in Chrome 25+, Edge 79+, Safari 14.1+. Firefox requires fallback (no native support). Show "use Chrome/Edge for voice search" for unsupported browsers.</p>
+    </div>
+    <div class="card">
+      <div class="card-title"><i class="ti ti-lock" aria-hidden="true"></i> Mic permissions</div>
+      <p>Prompt <code>getUserMedia</code> on first tap. Cache permission state. On denial, show: "Enable microphone in browser settings to use voice search."</p>
+    </div>
+    <div class="card">
+      <div class="card-title"><i class="ti ti-cpu" aria-hidden="true"></i> Performance</div>
+      <p>Three parallel recognizer instances are lightweight. Stop all on first final result to free resources. Debounce interim results to avoid excessive re-renders.</p>
+    </div>
+    <div class="card">
+      <div class="card-title"><i class="ti ti-accessible" aria-hidden="true"></i> Accessibility</div>
+      <p>Mic button with <code>aria-label="Start voice search"</code>. Live region for recognition status. Keyboard shortcut (Alt+M) to toggle. Never remove text search fallback.</p>
+    </div>
+    <div class="card">
+      <div class="card-title"><i class="ti ti-wifi-off" aria-hidden="true"></i> Offline graceful</div>
+      <p>Web Speech API requires internet. On network loss, show "Voice search needs internet connection" and revert to text search silently.</p>
+    </div>
+    <div class="card">
+      <div class="card-title"><i class="ti ti-device-mobile" aria-hidden="true"></i> Mobile-first</div>
+      <p>Auraa's audience is primarily mobile. Mic button must be thumb-reachable (min 44×44px). Listening state UI must be clearly visible at small viewport sizes.</p>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<div class="section">
+  <div class="section-head"><i class="ti ti-book" aria-hidden="true"></i> Synonym Dictionary — Sample Entries</div>
+  <div class="cards" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr))">
+    <div class="card">
+      <div class="card-title">Sparklers</div>
+      <p style="font-family:var(--font-mono);font-size:11px;line-height:1.8">sparkler · வேலாயுதம் · வான்வேடிக்கை · फुलझड़ी · agarbatti · electric sparkler</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Flower Pot / Anaar</div>
+      <p style="font-family:var(--font-mono);font-size:11px;line-height:1.8">flower pot · anaar · அனார் · அணார் · अनार · fountain · குழல் மத்தாப்பு</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Chakkar / Spinner</div>
+      <p style="font-family:var(--font-mono);font-size:11px;line-height:1.8">chakkar · chakra · சக்கரம் · चक्कर · spinner · wheel · ground chakkar</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Rocket</div>
+      <p style="font-family:var(--font-mono);font-size:11px;line-height:1.8">rocket · ராக்கெட் · राकेट · fancy rocket · lunik · sky dancer</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Bomb / Cracker</div>
+      <p style="font-family:var(--font-mono);font-size:11px;line-height:1.8">bomb · வெடி · बम · atom bomb · bijili · பிஜிலி · bijli · laxmi</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Garland / Ladi</div>
+      <p style="font-family:var(--font-mono);font-size:11px;line-height:1.8">garland · ladi · mala · தொடர் · माला · 1000 wala · celebration</p>
+    </div>
+  </div>
+</div>
+
+</div>

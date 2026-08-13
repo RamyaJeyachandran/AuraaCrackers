@@ -1,6 +1,6 @@
 import decimal
 import logging
-from django.db import transaction
+from django.db import connection, transaction
 from django.utils import timezone
 from django.conf import settings
 from django.shortcuts import get_object_or_404
@@ -140,21 +140,47 @@ class OrderService:
                 else:
                     # NEW ORDER MODE
                     trans_no = cls.generate_next_trans_no()
-                    order = OnlineSales.objects.create(
-                        customer=customer,
-                        customer_address=addr,
-                        trans_no=trans_no,
-                        trans_dt=timezone.now(),
-                        status='Ordered',
-                        promo_per=promo_per,
-                        promo_code=promo_code,
-                        discount=totals['promo_discount'],
-                        total_amt=totals['total_price'],
-                        round_amt=totals['round_off'],
-                        grand_amt=totals['grand_total'],
-                        is_active=True,
-                        created_by=user
-                    )
+                    sid = transaction.savepoint()
+                    try:
+                        order = OnlineSales.objects.create(
+                            customer=customer,
+                            customer_address=addr,
+                            trans_no=trans_no,
+                            trans_dt=timezone.now(),
+                            status='Ordered',
+                            promo_per=promo_per,
+                            promo_code=promo_code,
+                            discount=totals['promo_discount'],
+                            total_amt=totals['total_price'],
+                            round_amt=totals['round_off'],
+                            grand_amt=totals['grand_total'],
+                            is_active=True,
+                            created_by=user
+                        )
+                        transaction.savepoint_commit(sid)
+                    except Exception as err:
+                        transaction.savepoint_rollback(sid)
+                        if 'pkey' in str(err).lower() or 'duplicate key' in str(err).lower():
+                            logger.warning("Primary key sequence out-of-sync for tbl_online_sales. Repairing sequence...")
+                            with connection.cursor() as cursor:
+                                cursor.execute("SELECT setval(pg_get_serial_sequence('tbl_online_sales', 'id'), COALESCE((SELECT MAX(id) FROM tbl_online_sales), 0) + 1, false);")
+                            order = OnlineSales.objects.create(
+                                customer=customer,
+                                customer_address=addr,
+                                trans_no=trans_no,
+                                trans_dt=timezone.now(),
+                                status='Ordered',
+                                promo_per=promo_per,
+                                promo_code=promo_code,
+                                discount=totals['promo_discount'],
+                                total_amt=totals['total_price'],
+                                round_amt=totals['round_off'],
+                                grand_amt=totals['grand_total'],
+                                is_active=True,
+                                created_by=user
+                            )
+                        else:
+                            raise err
                 
                 # Create Line Items (Unified logic for both modes)
                 items_to_create = [
@@ -171,7 +197,20 @@ class OrderService:
                         created_by=user
                     ) for item in cart_items
                 ]
-                OnlineSalesItem.objects.bulk_create(items_to_create)
+                
+                sid_item = transaction.savepoint()
+                try:
+                    OnlineSalesItem.objects.bulk_create(items_to_create)
+                    transaction.savepoint_commit(sid_item)
+                except Exception as err:
+                    transaction.savepoint_rollback(sid_item)
+                    if 'pkey' in str(err).lower() or 'duplicate key' in str(err).lower():
+                        logger.warning("Primary key sequence out-of-sync for tbl_onlinesales_items. Repairing sequence...")
+                        with connection.cursor() as cursor:
+                            cursor.execute("SELECT setval(pg_get_serial_sequence('tbl_onlinesales_items', 'id'), COALESCE((SELECT MAX(id) FROM tbl_onlinesales_items), 0) + 1, false);")
+                        OnlineSalesItem.objects.bulk_create(items_to_create)
+                    else:
+                        raise err
                 
                 # Cleanup Cart
                 cart_items.delete()

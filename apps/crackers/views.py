@@ -14,10 +14,12 @@ from django.conf import settings
 from django.utils import timezone
 from django.contrib.auth import get_user_model
 import decimal
+import logging
 from .tasks import send_order_success_emails_task, send_order_error_emails_task, trigger_n8n_order_webhook_task
 from .services import OrderService
 from django.utils.text import slugify
 
+logger = logging.getLogger(__name__)
 User = get_user_model()
 
 class HomeView(TemplateView):
@@ -393,9 +395,11 @@ class PlaceOrderAPIView(LoginRequiredMixin, View):
                 if k in request.session:
                     del request.session[k]
 
-            send_order_success_emails_task.delay(user.id, order.id)
-            # trigger_n8n_order_webhook_task.delay(order.id)
-            
+            try:
+                send_order_success_emails_task.delay(user.id, order.id)
+            except Exception as celery_err:
+                logger.warning(f"Could not queue order email task: {celery_err}")
+
             msg = f'Order {order.trans_no} updated successfully.' if editing_order else f'Order {order.trans_no} placed successfully. Our support team will contact you shortly.'
             return JsonResponse({
                 'status': 'success', 
@@ -403,17 +407,17 @@ class PlaceOrderAPIView(LoginRequiredMixin, View):
             })
 
         except ValueError as ve:
-            # Handle user-friendly errors (Min order not met, cart empty, etc.)
+            # Handle user-friendly errors (Min order not met, cart empty, missing address, etc.)
             return JsonResponse({
                 'status': 'error', 
                 'message': str(ve)
             }, status=400)
             
         except Exception as e:
-            # Generic error to hide internals
+            logger.exception(f"Unhandled error during order placement for user {user.username}: {str(e)}")
             return JsonResponse({
                 'status': 'error', 
-                'message': 'Failed to place order. Our engineers have been notified.'
+                'message': f'Failed to place order: {str(e)}' if settings.DEBUG else 'Failed to place order. Our engineers have been notified.'
             }, status=500)
 
 

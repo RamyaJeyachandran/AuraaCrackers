@@ -89,7 +89,12 @@ class OrderService:
             raise ValueError("Customer profile not found for this user.")
 
         customer = user.online_customer
-        addr = get_object_or_404(CustomerAddress, id=address_id, customer=customer)
+        if not address_id:
+            raise ValueError("Please select or add a shipping address.")
+        try:
+            addr = CustomerAddress.objects.get(id=address_id, customer=customer)
+        except CustomerAddress.DoesNotExist:
+            raise ValueError("Selected shipping address was not found.")
         
         cart_items = Cart.objects.filter(user=user).select_related('product')
         if not cart_items.exists():
@@ -177,7 +182,10 @@ class OrderService:
 
         except Exception as e:
             logger.error(f"Critical error during order processing for user {user.username}: {str(e)}")
-            send_order_error_emails_task.delay(user.id, str(e))
+            try:
+                send_order_error_emails_task.delay(user.id, str(e))
+            except Exception as celery_err:
+                logger.warning(f"Could not send order error email task: {celery_err}")
             raise e
 
     @classmethod

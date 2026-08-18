@@ -377,7 +377,22 @@ class AddressAddAPIView(LoginRequiredMixin, View):
         return JsonResponse({'status': 'success', 'message': 'Address added successfully.', 'id': addr.id})
 
 class PlaceOrderAPIView(LoginRequiredMixin, View):
+
+    # ---------------------------------------------------------------
+    # TEMPORARY FLAG — set to False to re-enable order placement
+    ORDER_PLACEMENT_DISABLED = True
+    # ---------------------------------------------------------------
+
     def post(self, request):
+        # Block order placement when the flag is active.
+        # No database writes and no emails are triggered.
+        if self.ORDER_PLACEMENT_DISABLED:
+            return JsonResponse({
+                'status': 'error',
+                'message': 'Order placement is temporarily unavailable. Please try again later.',
+                'code': 'ORDER_PLACEMENT_UNAVAILABLE',
+            }, status=503)
+
         user = request.user
         addr_id = request.POST.get('address_id')
         

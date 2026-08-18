@@ -389,6 +389,7 @@ class PlaceOrderAPIView(LoginRequiredMixin, View):
         if self.ORDER_PLACEMENT_DISABLED:
             return JsonResponse({
                 'status': 'error',
+                'title': 'Order Placement Temporarily Unavailable',
                 'message': 'Order placement is temporarily unavailable. Please try again later.',
                 'code': 'ORDER_PLACEMENT_UNAVAILABLE',
             }, status=503)

@@ -241,8 +241,10 @@
                 
                 if (data.min_order) {
                     showModal('Minimum Order Required', data.message, 'warning');
+                } else if (data.code === 'ORDER_PLACEMENT_UNAVAILABLE') {
+                    showModal('Order Placement Temporarily Unavailable', data.message, 'warning');
                 } else {
-                    showModal('Order Failed', data.message, 'error');
+                    showModal(data.title || 'Order Failed', data.message, 'error');
                 }
             }
         } catch (err) {

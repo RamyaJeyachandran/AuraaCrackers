@@ -265,7 +265,7 @@
                                     {% for product in category_group.list %}
                                         <tr class="product-row bg-[#0A325A] border-b border-white" id="product-row-{{ product.id }}">
                                             <td class="py-3 px-2 text-center border-r border-white">
-                                                <img src="{% if product.image %}{{ product.image }}{% else %}{% static 'images/no-image.png' %}{% endif %}" class="w-10 h-10 object-contain mx-auto" onerror="this.src='{% static "images/no-image.png" %}'">
+                                                 <img src="{% if product.image and 'noimage' not in product.image and 'no-image' not in product.image %}{{ product.image }}{% else %}{% static 'images/product_logo.jpeg' %}{% endif %}" class="w-10 h-10 object-contain mx-auto" onerror="this.onerror=null; this.src='{% static "images/product_logo.jpeg" %}';">
                                             </td>
                                             <td class="py-3 px-2 text-center border-r border-white text-white text-sm font-bold uppercase">{{ product.code }}</td>
                                             <td class="py-3 px-2 text-center border-r border-white text-white text-sm font-bold uppercase">

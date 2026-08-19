@@ -183,17 +183,11 @@
                                 <span class="text-sm font-normal text-gray-900 uppercase">{{ product.code|default:"-" }}</span>
                             </td>
                             <td class="py-4 px-4 border border-gray-800">
-                                {% if product.image %}
-                                    <div class="w-12 h-12 rounded-2xl overflow-hidden border border-gray-100 shadow-sm shrink-0 cursor-zoom-in relative"
-                                         onmouseenter="showImagePreview('{{ product.image|escapejs }}', '{{ product.name|escapejs }}')"
-                                         onmouseleave="hideImagePreview()">
-                                        <img src="{{ product.image }}" alt="{{ product.name }}" class="w-full h-full object-cover">
-                                    </div>
-                                {% else %}
-                                    <div class="w-12 h-12 bg-gray-100 rounded-2xl flex items-center justify-center text-gray-300 shrink-0">
-                                        <i data-lucide="package" class="w-5 h-5"></i>
-                                    </div>
-                                {% endif %}
+                                <div class="w-12 h-12 rounded-2xl overflow-hidden border border-gray-100 shadow-sm shrink-0 cursor-zoom-in relative"
+                                     onmouseenter="showImagePreview('{{ product.get_image_url|escapejs }}', '{{ product.name|escapejs }}')"
+                                     onmouseleave="hideImagePreview()">
+                                    <img src="{{ product.get_image_url }}" alt="{{ product.name }}" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='{% static 'images/product_logo.jpeg' %}';">
+                                </div>
                             </td>
                             <td class="py-4 px-4 border border-gray-800">
                                 <div>

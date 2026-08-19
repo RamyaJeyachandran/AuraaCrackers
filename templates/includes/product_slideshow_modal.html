@@ -14,15 +14,15 @@
             <div id="slideshow-track" class="flex h-full w-[400%] transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)]">
                 <!-- Slide 1: Product Image -->
                 <div class="w-1/4 h-full flex items-center justify-center p-4">
-                    <img id="ss-product-img" src="" alt="Product" class="max-w-full max-h-full object-contain drop-shadow-lg">
+                    <img id="ss-product-img" src="" alt="Product" class="max-w-full max-h-full object-contain drop-shadow-lg" onerror="this.onerror=null; this.src='{% static 'images/product_logo.jpeg' %}';">
                 </div>
                 <!-- Slide 2: Logo -->
                 <div class="w-1/4 h-full flex items-center justify-center p-6 bg-gray-50">
-                    <img src="{% static 'images/logo.png' %}" alt="Auraa Logo" class="max-w-[200px] object-contain">
+                    <img src="{% static 'images/product_logo.jpeg' %}" alt="Auraa Logo" class="max-w-[200px] object-contain">
                 </div>
                 <!-- Slide 3: Logo -->
                 <div class="w-1/4 h-full flex items-center justify-center p-6">
-                    <img src="{% static 'images/logo.png' %}" alt="Auraa Logo" class="max-w-[200px] object-contain grayscale opacity-20">
+                    <img src="{% static 'images/product_logo.jpeg' %}" alt="Auraa Logo" class="max-w-[200px] object-contain grayscale opacity-20">
                 </div>
                 <!-- Slide 4: Video -->
                 <div class="w-1/4 h-full flex items-center justify-center bg-black">
@@ -68,6 +68,8 @@
     const totalSlides = 4;
     let autoSlideInterval;
 
+    const DEFAULT_PRODUCT_LOGO = "{% static 'images/product_logo.jpeg' %}";
+
     function openProductSlideshow(imgSrc, name) {
         const modal = document.getElementById('product-slideshow-modal');
         const container = document.getElementById('slideshow-container');
@@ -79,8 +81,18 @@
         currentSlideIndex = 0;
         updateSlidePosition();
 
-        // Set content
-        productImg.src = imgSrc;
+        // Attach fresh onerror handler on every modal open so 404 images always fall back to product_logo.jpeg
+        productImg.onerror = function() {
+            this.onerror = null;
+            this.src = DEFAULT_PRODUCT_LOGO;
+        };
+
+        if (imgSrc && !imgSrc.includes('noimage') && !imgSrc.includes('no-image') && !imgSrc.includes('list_product_image')) {
+            productImg.src = imgSrc;
+        } else {
+            productImg.src = DEFAULT_PRODUCT_LOGO;
+        }
+
         productName.innerText = name;
 
         // Show modal

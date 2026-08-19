@@ -692,9 +692,9 @@
                                     class="w-full h-full px-4 pr-24 text-xs lg:text-sm font-medium text-gray-700 border-none outline-none focus:ring-0 rounded-r-xl"
                                     oninput="handleSearchInput(event)" onfocus="handleSearchFocus()" onkeydown="handleSearchKeydown(event)">
                                 
-                                <!-- Mic Button -->
+                                <!-- Mic Button (Temporarily Hidden) -->
                                 <button type="button" id="mic-btn" onclick="toggleRecording()" 
-                                        class="absolute right-10 flex items-center justify-center w-8 h-8 rounded-full text-gray-400 hover:text-auraa-red hover:bg-red-50 transition-all z-10" title="Voice Search">
+                                        class="hidden absolute right-10 flex items-center justify-center w-8 h-8 rounded-full text-gray-400 hover:text-auraa-red hover:bg-red-50 transition-all z-10" title="Voice Search">
                                     <i data-lucide="mic" id="mic-icon" class="w-4 h-4"></i>
                                     <span id="mic-pulse" class="absolute inset-0 rounded-full border-2 border-auraa-red opacity-0 pointer-events-none"></span>
                                 </button>

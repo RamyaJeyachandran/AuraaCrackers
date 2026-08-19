@@ -153,9 +153,9 @@
                                 <span class="text-xs font-bold text-gray-400">{{ forloop.counter }}</span>
                             </td>
                             <td class="py-3.5 px-5 text-center">
-                                <img src="{% if item.product.image %}{{ item.product.image }}{% else %}{% static 'images/no-image.png' %}{% endif %}" 
+                                <img src="{% if item.product.image and 'noimage' not in item.product.image and 'no-image' not in item.product.image %}{{ item.product.image }}{% else %}{% static 'images/product_logo.jpeg' %}{% endif %}" 
                                      class="w-10 h-10 object-contain mx-auto rounded-lg bg-white border border-gray-100 p-1"
-                                     onerror="this.src='{% static 'images/no-image.png' %}'">
+                                     onerror="this.onerror=null; this.src='{% static 'images/product_logo.jpeg' %}';">
                             </td>
                             <td class="py-3.5 px-5">
                                 <span class="text-xs font-black text-[#0A325A] uppercase">{{ item.item_code }}</span>

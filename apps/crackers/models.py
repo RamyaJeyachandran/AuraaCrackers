@@ -162,6 +162,20 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
+    @property
+    def get_image_url(self):
+        if not self.image or 'noimage' in self.image or 'no-image' in self.image or 'list_product_image' in self.image:
+            return '/static/images/product_logo.jpeg'
+        if 'auraacrackers.com/images/upload/' in self.image:
+            filename = self.image.split('/')[-1]
+            import os
+            from django.conf import settings
+            local_path = os.path.join(settings.BASE_DIR, 'static', 'images', 'products', filename)
+            if os.path.exists(local_path):
+                return f'/static/images/products/{filename}'
+            return '/static/images/product_logo.jpeg'
+        return self.image
+
 class Cart(models.Model):
     """
     A temporary storage for items a user intends to purchase. 

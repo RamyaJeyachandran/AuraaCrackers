@@ -60,15 +60,15 @@
                     <div class="p-8 flex items-center space-x-8 hover:bg-gray-50/50 transition-all relative z-10 hover:z-[1001]">
                         <div class="relative w-20 h-20 bg-gray-50 border border-gray-100 rounded-3xl flex-shrink-0 group/img flex items-center justify-center p-2 shadow-sm">
                             <div class="w-full h-full overflow-hidden rounded-2xl relative">
-                                <img src="{% if item.product.image and 'noimage' not in item.product.image and 'list_product_image' not in item.product.image %}{{ item.product.image }}{% else %}{% static 'images/logo.png' %}{% endif %}" 
-                                        onclick="showZoom('{% if item.product.image and 'noimage' not in item.product.image and 'list_product_image' not in item.product.image %}{{ item.product.image }}{% else %}{% static 'images/logo.png' %}{% endif %}', '{{ item.item_name|escapejs }}')"
+                                <img src="{% if item.product.image and 'noimage' not in item.product.image and 'list_product_image' not in item.product.image %}{{ item.product.image }}{% else %}{% static 'images/product_logo.jpeg' %}{% endif %}" 
+                                        onclick="showZoom('{% if item.product.image and "noimage" not in item.product.image and "list_product_image" not in item.product.image %}{{ item.product.image }}{% else %}{% static "images/product_logo.jpeg" %}{% endif %}', '{{ item.item_name|escapejs }}')"
                                         alt="{{ item.item_name }}" class="w-full h-full object-contain transition-transform duration-700 group-hover/img:scale-110 cursor-zoom-in">
                             </div>
                             
                             <!-- Hover Popout Preview (Modern 2026 Style) -->
                             <div class="hidden lg:flex absolute left-[125%] top-1/2 -translate-y-1/2 w-64 h-64 bg-white rounded-[2.5rem] shadow-[0_40px_80px_-15px_rgba(0,0,0,0.6),0_0_30px_rgba(255,255,255,0.2)] opacity-0 invisible group-hover/img:opacity-100 group-hover/img:visible group-hover/img:scale-105 transition-all duration-300 z-[1000] pointer-events-none flex-col transform origin-left overflow-hidden border border-white/40 backdrop-blur-3xl">
                                 <div class="relative w-full aspect-square p-6 flex items-center justify-center bg-white overflow-hidden">
-                                    <img src="{% if item.product.image and 'noimage' not in item.product.image and 'list_product_image' not in item.product.image %}{{ item.product.image }}{% else %}{% static 'images/logo.png' %}{% endif %}" alt="{{ item.item_name }}" class="w-full h-full object-contain transition-all duration-700 group-hover/img:scale-105">
+                                    <img src="{% if item.product.image and 'noimage' not in item.product.image and 'list_product_image' not in item.product.image %}{{ item.product.image }}{% else %}{% static 'images/product_logo.jpeg' %}{% endif %}" alt="{{ item.item_name }}" class="w-full h-full object-contain transition-all duration-700 group-hover/img:scale-105">
                                     <div class="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent pointer-events-none"></div>
                                 </div>
                                 <div class="px-6 py-5 bg-gray-50/80 border-t border-gray-100 flex flex-col items-center">

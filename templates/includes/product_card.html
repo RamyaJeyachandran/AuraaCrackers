@@ -1,6 +1,6 @@
 <div class="group bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm transition-all duration-300 flex flex-col {% if not product.is_active %}opacity-60 grayscale-[0.5]{% else %}hover:shadow-xl{% endif %}">
     <div class="relative aspect-square overflow-hidden bg-gray-50">
-        <img src="{% if product.image %}{{ product.image }}{% else %}{% static 'images/no-image.png' %}{% endif %}" alt="{{ product.name }}" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 {% if product.is_active %}group-hover:scale-110{% endif %}" onerror="this.src='{% static 'images/no-image.png' %}'">
+        <img src="{{ product.get_image_url }}" alt="{{ product.name }}" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 {% if product.is_active %}group-hover:scale-110{% endif %}" onerror="this.onerror=null; this.src='{% static 'images/product_logo.jpeg' %}';">
         
         <!-- Hover Overlay for Zoom -->
         {% if product.is_active %}

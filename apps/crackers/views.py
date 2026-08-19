@@ -380,7 +380,7 @@ class PlaceOrderAPIView(LoginRequiredMixin, View):
 
     # ---------------------------------------------------------------
     # TEMPORARY FLAG — set to False to re-enable order placement
-    ORDER_PLACEMENT_DISABLED = True
+    ORDER_PLACEMENT_DISABLED = False
     # ---------------------------------------------------------------
 
     def post(self, request):

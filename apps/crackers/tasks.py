@@ -11,6 +11,8 @@ from django.core.cache import cache
 
 User = get_user_model()
 
+logger = logging.getLogger(__name__)
+
 @shared_task
 def send_order_success_emails_task(user_id, order_id):
     try:
@@ -21,21 +23,28 @@ def send_order_success_emails_task(user_id, order_id):
         if user.email:
             subject = f"Order Confirmation - {order.trans_no}"
             message = f"Hi {user.full_name or user.username},\n\nYour order {order.trans_no} has been placed successfully. Our team will contact you soon.\n\nTotal Amount: ₹{order.grand_amt}\n\nThank you for choosing Auraa Crackers!"
-            send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [user.email], fail_silently=True)
+            try:
+                send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [user.email], fail_silently=False)
+                logger.info(f"Order confirmation email sent to customer: {user.email}")
+            except Exception as mail_err:
+                logger.error(f"Failed to send order confirmation email to {user.email}: {mail_err}", exc_info=True)
 
         # 2. Admin Notification
-        admin_emails = User.objects.filter(
+        admin_emails = list(set(User.objects.filter(
             is_active=True,
             role__name__in=['Admin', 'Super Admin']
-        ).exclude(email__isnull=True).exclude(email='').values_list('email', flat=True)
+        ).exclude(email__isnull=True).exclude(email='').values_list('email', flat=True)))
         
         if admin_emails:
             admin_subject = f"New Order Received - {order.trans_no}"
             admin_message = f"Hello Admin,\n\nA new order has been placed by {user.full_name or user.username}.\n\nOrder No: {order.trans_no}\nTotal Amount: ₹{order.grand_amt}\nCustomer Mobile: {user.phone_number or 'N/A'}\n\nPlease login to the dashboard to process the order."
-            send_mail(admin_subject, admin_message, settings.DEFAULT_FROM_EMAIL, list(set(admin_emails)), fail_silently=True)
+            try:
+                send_mail(admin_subject, admin_message, settings.DEFAULT_FROM_EMAIL, admin_emails, fail_silently=False)
+                logger.info(f"Order notification email sent to admins: {admin_emails}")
+            except Exception as mail_err:
+                logger.error(f"Failed to send admin order notification email: {mail_err}", exc_info=True)
     except Exception as e:
-        # Log error
-        print(f"Error sending order success emails: {str(e)}")
+        logger.error(f"Error in send_order_success_emails_task for order_id {order_id}: {str(e)}", exc_info=True)
 
 @shared_task
 def send_order_error_emails_task(user_id, error_msg):
@@ -43,12 +52,11 @@ def send_order_error_emails_task(user_id, error_msg):
         user = User.objects.get(id=user_id)
         subject = f"CRITICAL: Order Placement Failed - User {user.username}"
         message = f"Order failed for user {user.username} (ID: {user.id}).\n\nError: {error_msg}"
-        # Send to admins
         admin_emails = [email for name, email in settings.ADMINS] if settings.ADMINS else []
         if admin_emails:
-            send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, admin_emails, fail_silently=True)
+            send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, admin_emails, fail_silently=False)
     except Exception as e:
-        print(f"Error sending order error emails: {str(e)}")
+        logger.error(f"Error sending order error email: {str(e)}", exc_info=True)
 
 @shared_task
 def fetch_google_reviews_task():

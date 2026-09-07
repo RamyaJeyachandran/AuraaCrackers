@@ -467,7 +467,9 @@ class OrderDetailView(LoginRequiredMixin, TemplateView):
         user = self.request.user
         order = get_object_or_404(OnlineSales, trans_no=trans_no, customer=user.online_customer)
         context['order'] = order
-        context['items'] = order.items.all().select_related('product')
+        context['items'] = order.items.all().select_related('product').annotate(
+            padded_code=LPad('item_code', 10, Value('0'))
+        ).order_by('padded_code')
         
         # Stepper logic
         stages = ['ORDERED', 'PACKED', 'DISPATCHED', 'IN TRANSIT', 'DELIVERED']
@@ -635,7 +637,9 @@ class OrderDownloadView(LoginRequiredMixin, DetailView):
         self.object = self.get_object()
         template = get_template('dashboard/order_estimate_pdf.html')
         
-        items = self.object.items.all().select_related('product').order_by('item_code')
+        items = self.object.items.all().select_related('product').annotate(
+            padded_code=LPad('item_code', 10, Value('0'))
+        ).order_by('padded_code')
         for item in items:
             item.unit_rate = item.rate
             if item.qty > 0:

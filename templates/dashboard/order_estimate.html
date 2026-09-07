@@ -36,7 +36,7 @@
 </head>
 <body class="bg-white">
     <!-- Estimate Container -->
-    {% with order.items.all as items %}
+    {% with order.items_list as items %}
         {% include 'includes/order_estimate_content.html' with order=order items=items %}
     {% endwith %}
     </div>

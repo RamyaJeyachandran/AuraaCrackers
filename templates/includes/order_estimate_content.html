@@ -56,7 +56,7 @@
             {% for item in items %}
             <tr class="text-[10px] font-medium text-center">
                 <td class="border border-black p-1">{{ forloop.counter }}</td>
-                <td class="border border-black p-1">{{ item.product.code }}</td>
+                <td class="border border-black p-1">{{ item.item_code|default:item.product.code }}</td>
                 <td class="border border-black p-1 text-left font-bold">{{ item.item_name }}</td>
                 <td class="border border-black p-1">{{ item.qty|floatformat:0 }}</td>
                 <td class="border border-black p-1">{{ item.unit_rate|floatformat:2 }}</td>

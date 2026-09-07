@@ -346,8 +346,10 @@ class DashboardOrderDetailView(LoginRequiredMixin, AdminRequiredMixin, DetailVie
     def get_context_data(self, **kwargs):
         from django.db.models import Sum
         context = super().get_context_data(**kwargs)
-        # Optimize by pre-fetching products for all items in one go
-        items = self.object.items.all().select_related('product', 'product__category').order_by('item_code')
+        # Optimize by pre-fetching products for all items in one go and sort numerically by item_code
+        items = self.object.items.all().select_related('product', 'product__category').annotate(
+            padded_code=LPad('item_code', 10, Value('0'))
+        ).order_by('padded_code')
         context['items'] = items
         context['total_qty'] = items.aggregate(Sum('qty'))['qty__sum'] or 0
         return context
@@ -366,8 +368,10 @@ class DashboardOrderExcelDownloadView(LoginRequiredMixin, AdminRequiredMixin, De
         # Try local file path for the image (sometimes works better if opened on same machine)
         image_url = os.path.join(settings.BASE_DIR, 'static', 'images', 'payment.jpeg')
 
-        # Prepare data
-        items = order.items.all().select_related('product').order_by('item_code')
+        # Prepare data - sort items numerically by item_code
+        items = order.items.all().select_related('product').annotate(
+            padded_code=LPad('item_code', 10, Value('0'))
+        ).order_by('padded_code')
         total_qty = 0
         formatted_items = []
         for i, item in enumerate(items, 1):
@@ -531,7 +535,9 @@ class DashboardOrderEstimateView(LoginRequiredMixin, AdminRequiredMixin, DetailV
         from django.db.models import Sum
         context = super().get_context_data(**kwargs)
         order = self.object
-        items = order.items.all().select_related('product').order_by('item_code')
+        items = order.items.all().select_related('product').annotate(
+            padded_code=LPad('item_code', 10, Value('0'))
+        ).order_by('padded_code')
         
         total_qty = 0
         for item in items:
@@ -572,7 +578,9 @@ class DashboardBulkOrderEstimateView(LoginRequiredMixin, AdminRequiredMixin, Tem
         sorted_orders = [orders_dict[tn] for tn in trans_nos if tn in orders_dict]
 
         for order in sorted_orders:
-            items = order.items.all().select_related('product').order_by('item_code')
+            items = order.items.all().select_related('product').annotate(
+                padded_code=LPad('item_code', 10, Value('0'))
+            ).order_by('padded_code')
             total_qty = 0
             for item in items:
                 item.unit_rate = item.rate
@@ -610,7 +618,9 @@ class DashboardOrderDownloadView(LoginRequiredMixin, AdminRequiredMixin, DetailV
         self.object = self.get_object()
         template = get_template('dashboard/order_estimate_pdf.html')
         
-        items = self.object.items.all().select_related('product').order_by('item_code')
+        items = self.object.items.all().select_related('product').annotate(
+            padded_code=LPad('item_code', 10, Value('0'))
+        ).order_by('padded_code')
         for item in items:
             item.unit_rate = item.rate
             if item.qty > 0:

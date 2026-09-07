@@ -19,35 +19,57 @@ class OrderService:
     @staticmethod
     def generate_next_trans_no():
         """
-        Generates the next transaction number in YYYYMMNNNN format.
-        YYYY = Year, MM = Month, NNNN = Running sequence (0001-9999) based on the year.
+        Generates the next transaction number in YYYYMMNNNN format safely under high concurrency.
+        Uses `SerialNo` table with atomic row-level locks (`select_for_update`) to prevent duplicate order numbers.
         """
         from django.utils import timezone
         now = timezone.now()
-        period = now.strftime('%Y%m') # e.g., 202604
+        period = now.strftime('%Y%m') # e.g., 202609
         year_prefix = now.strftime('%Y') # e.g., 2026
         
         with transaction.atomic():
-            # Find the last order starting with the current YYYY
-            last_order = OnlineSales.objects.filter(
-                trans_no__startswith=year_prefix,
-                is_active=True
-            ).order_by('-trans_no').select_for_update().first()
+            # Get or lock the SerialNo counter row for this period
+            serial, created = SerialNo.objects.select_for_update().get_or_create(
+                table_name='tbl_online_sales',
+                prefix_no=period,
+                defaults={'next_no': 1, 'sequence_no': 1}
+            )
             
-            if last_order:
-                try:
-                    # Extract last 4 digits and increment
-                    # We use [-4:] to get the running number part
-                    last_seq = int(last_order.trans_no[-4:])
-                    new_seq = last_seq + 1
-                except (ValueError, TypeError):
-                    new_seq = 1
+            if created or serial.next_no <= 1:
+                # First time for this period or uninitialized: compute next number from existing orders in DB
+                last_order = OnlineSales.objects.filter(
+                    trans_no__startswith=year_prefix,
+                    is_active=True
+                ).order_by('-trans_no').first()
+                
+                if last_order and last_order.trans_no and len(last_order.trans_no) >= 4:
+                    try:
+                        last_seq = int(last_order.trans_no[-4:])
+                        next_seq = last_seq + 1
+                    except (ValueError, TypeError):
+                        next_seq = 1
+                else:
+                    next_seq = 1
+                
+                serial.next_no = next_seq + 1
+                seq_num = next_seq
             else:
-                new_seq = 1
+                seq_num = serial.next_no
+                serial.next_no += 1
             
-            # Format: 202604 + 0001 = 2026040001
-            trans_no = f"{period}{str(new_seq).zfill(4)}"
+            serial.sequence_no = seq_num
+            serial.save()
+
+            trans_no = f"{period}{str(seq_num).zfill(4)}"
             
+            # Uniqueness check: skip any existing trans_no
+            while OnlineSales.objects.filter(trans_no=trans_no).exists():
+                seq_num = serial.next_no
+                serial.next_no += 1
+                serial.sequence_no = seq_num
+                serial.save()
+                trans_no = f"{period}{str(seq_num).zfill(4)}"
+
             return trans_no
 
     @classmethod

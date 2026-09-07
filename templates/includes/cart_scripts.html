@@ -56,6 +56,8 @@
                 // Persist Promo from session
                 if (data.promo_per) window.currentPromoPer = data.promo_per;
                 if (data.promo_code) window.currentPromoCode = data.promo_code;
+                window.isMinOrderExempt = !!data.is_min_order_exempt;
+                window.minOrderAmount = (typeof data.min_order_amount !== 'undefined') ? data.min_order_amount : 3000;
                 
                 updateUI();
             }
@@ -158,7 +160,7 @@
         const minOrderDiff = document.getElementById('cart-min-order-diff');
 
         if (sidebarCheckoutBtn) {
-            const MIN_ORDER = 3000;
+            const MIN_ORDER = (typeof window.minOrderAmount !== 'undefined') ? window.minOrderAmount : 3000;
             if (roundedOverall < MIN_ORDER) {
                 sidebarCheckoutBtn.disabled = true;
                 sidebarCheckoutBtn.classList.add('opacity-50', 'cursor-not-allowed', 'grayscale');
@@ -333,7 +335,7 @@
 
         const overallText = sidebarOverallTotal ? sidebarOverallTotal.innerText.replace('₹', '').trim() : "0";
         const overall = parseFloat(overallText) || 0;
-        const MIN_ORDER = 3000;
+        const MIN_ORDER = (typeof window.minOrderAmount !== 'undefined') ? window.minOrderAmount : 3000;
 
         if (overall < MIN_ORDER) {
             // Button is disabled, but if reached somehow, show error in sidebar

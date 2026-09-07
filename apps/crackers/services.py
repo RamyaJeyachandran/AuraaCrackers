@@ -113,7 +113,11 @@ class OrderService:
         totals = cls.calculate_order_totals(cart_items, promo_per)
 
         # Minimum Order Guard
-        if totals['grand_total'] < settings.MIN_ORDER_AMOUNT:
+        user_phone = getattr(user, 'phone_number', '') or ''
+        exempt_numbers = getattr(settings, 'MIN_ORDER_EXEMPT_MOBILE_NUMBERS', set())
+        is_exempt = user_phone in exempt_numbers
+
+        if not is_exempt and totals['grand_total'] < settings.MIN_ORDER_AMOUNT:
             diff = settings.MIN_ORDER_AMOUNT - totals['grand_total']
             raise ValueError(f"Minimum order threshold not met. Short by ₹{diff}.")
 

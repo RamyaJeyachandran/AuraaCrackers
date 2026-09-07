@@ -186,6 +186,7 @@ BRANCH_ID  = 1
 ADMIN_USER_ID = 1
 WEBSITE_ID = 2
 MIN_ORDER_AMOUNT = 3000
+MIN_ORDER_EXEMPT_MOBILE_NUMBERS = {'9489435625', '8754416888', '9080560340', '9677570276'}
 N8N_ORDER_WEBHOOK_URL = ''
 
 # ── Email Configuration ───────────────────────────────────────────────────────

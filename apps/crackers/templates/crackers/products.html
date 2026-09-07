@@ -1402,7 +1402,7 @@
             return;
         }
         const overall = parseFloat(summaryOverall.innerText.replace('₹', '').trim()) || 0;
-        const MIN_ORDER = 3000;
+        const MIN_ORDER = (typeof window.minOrderAmount !== 'undefined') ? window.minOrderAmount : 3000;
         if (overall < MIN_ORDER) {
             const diff = MIN_ORDER - overall;
             showModal('Minimum Order Required', `The minimum order for your location is ₹${MIN_ORDER.toFixed(2)}. You need ₹${diff.toFixed(2)} more to place the order.`, 'warning');

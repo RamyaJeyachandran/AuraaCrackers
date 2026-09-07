@@ -257,11 +257,17 @@ class CartListAPIView(View):
         promo_code = request.session.get('promo_code', None)
         promo_per = request.session.get('promo_per', 0)
         
+        user_phone = getattr(request.user, 'phone_number', '') or ''
+        exempt_numbers = getattr(settings, 'MIN_ORDER_EXEMPT_MOBILE_NUMBERS', set())
+        is_exempt = user_phone in exempt_numbers
+
         return JsonResponse({
             'status': 'success', 
             'items': data,
             'promo_code': promo_code,
-            'promo_per': promo_per
+            'promo_per': promo_per,
+            'is_min_order_exempt': is_exempt,
+            'min_order_amount': 0 if is_exempt else settings.MIN_ORDER_AMOUNT
         })
 
 class CouponVerifyAPIView(View):
@@ -317,7 +323,11 @@ class OrderProcessingView(LoginRequiredMixin, TemplateView):
         promo_per = self.request.session.get('promo_per', 0)
         totals = OrderService.calculate_order_totals(cart_items, promo_per)
         
-        if totals['grand_total'] < settings.MIN_ORDER_AMOUNT:
+        user_phone = getattr(user, 'phone_number', '') or ''
+        exempt_numbers = getattr(settings, 'MIN_ORDER_EXEMPT_MOBILE_NUMBERS', set())
+        is_exempt = user_phone in exempt_numbers
+
+        if not is_exempt and totals['grand_total'] < settings.MIN_ORDER_AMOUNT:
             return redirect('product_list')
 
         return super().dispatch(request, *args, **kwargs)

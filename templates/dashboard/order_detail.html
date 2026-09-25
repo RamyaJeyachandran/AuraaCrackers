@@ -202,11 +202,11 @@
                 <div class="space-y-4">
                     <div>
                         <p class="section-label">Name</p>
-                        <p class="section-value">{{ order.customer.name|replace_quotes }}</p>
+                        <p class="section-value">{% if order.customer %}{{ order.customer.name|replace_quotes }}{% else %}-{% endif %}</p>
                     </div>
                     <div>
                         <p class="section-label">Contact</p>
-                        <p class="section-value">{{ order.customer.contact_person_no|default:"None" }}</p>
+                        <p class="section-value">{% if order.customer %}{{ order.customer.contact_person_no|default:"None" }}{% else %}None{% endif %}</p>
                     </div>
                     {% if order.customer_address %}
                     <div>

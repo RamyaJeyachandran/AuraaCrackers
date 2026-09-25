@@ -145,9 +145,9 @@
                         </td>
                         <td class="py-6 px-8 border border-gray-800">
                             <div class="flex flex-col">
-                                <span class="text-sm font-black text-gray-900 uppercase">{{ order.customer.name }}</span>
+                                <span class="text-sm font-black text-gray-900 uppercase">{% if order.customer %}{{ order.customer.name }}{% else %}-{% endif %}</span>
                                 <div class="flex flex-col mt-0.5 space-y-0.5">
-                                    <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Phone: {{ order.customer_address.phone|default:order.customer.contact_person_no }}</span>
+                                    <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Phone: {% if order.customer_address %}{{ order.customer_address.phone }}{% elif order.customer %}{{ order.customer.contact_person_no }}{% else %}-{% endif %}</span>
                                     {% if order.customer_address.email %}
                                         <span class="text-[10px] font-bold text-gray-400 lowercase tracking-tight">{{ order.customer_address.email }}</span>
                                     {% endif %}

@@ -1320,7 +1320,7 @@ class DashboardOrderEditView(LoginRequiredMixin, AdminRequiredMixin, TemplateVie
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         trans_no = self.kwargs.get('trans_no')
-        order = get_object_or_404(OnlineSales, trans_no=trans_no)
+        order = get_object_or_404(OnlineSales.objects.select_related('customer'), trans_no=trans_no)
         
         # Load all products and categories like in ProductListView
         product_qs = Product.objects.filter(is_active=True, category__is_active=True).select_related('category')
